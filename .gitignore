@@ -1,0 +1,29 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+<<<<<<< Updated upstream
+.idea/
+*.iml
+out
+gen
+=======
+.idea
+*.iml
+out
+gen
+>>>>>>> Stashed changes
+boss-xtrain-common/boss-xtrain-cache-redis/src/main/resources/
+boss-xtrain-common/boss-xtrain-cache-redis/src/test/
+boss-xtrain-common/boss-xtrain-config/src/main/resources/
+boss-xtrain-common/boss-xtrain-config/src/test/
+boss-xtrain-common/boss-xtrain-core/src/main/resources/
+boss-xtrain-common/boss-xtrain-core/src/test/
+boss-xtrain-common/boss-xtrain-db-transaction/src/main/resources/
+boss-xtrain-common/boss-xtrain-db-transaction/src/test/
+boss-xtrain-common/boss-xtrain-log/src/test/
+boss-xtrain-common/boss-xtrain-util/src/main/resources/
+boss-xtrain-common/boss-xtrain-util/src/test/
+boss-xtrain-common/src/
+src/
