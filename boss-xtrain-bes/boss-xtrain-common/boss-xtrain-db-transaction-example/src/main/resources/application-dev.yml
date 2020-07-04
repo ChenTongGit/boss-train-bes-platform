@@ -1,0 +1,24 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: seata-server-client
+  # druid 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: bosstrain
+    password: Boss20Train@#$
+    url: jdbc:mysql://123.57.156.184:3306/alidb_test?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+
+seata:
+  application-id: ${spring.application.name}
+  tx-service-group: demo1-server-group # Seata 事务组, 高版本没找到相关配置, 是否可配置未知 选用默认default
+  # 服务配置项
+  service:
+    # 虚拟组和分组的映射 1.0.0以上好像将vgroup-mapping 改为 vgroupMapping, 此处是否影响未测试
+    vgroupMapping:
+      # 此处Key对应 tx-service-group 的 Value, 此处 value 默认 default
+      demo1-server-group: default
+    # 分组和 Seata 服务的映射 默认端口8091
+    grouplist:
+      default: 123.57.156.184:8091
