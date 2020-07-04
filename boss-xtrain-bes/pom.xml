@@ -10,7 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>boss-xtrain-common</module>
-        <module>boss-bes-exam-center</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
