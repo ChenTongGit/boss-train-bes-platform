@@ -12,12 +12,21 @@
     <artifactId>boss-xtrain-common</artifactId>
     <packaging>pom</packaging>
     <modules>
+<<<<<<< HEAD
         <module>boss-xtrain-cache-redis</module>
         <module>boss-xtrain-config</module>
         <module>boss-xtrain-core</module>
         <module>boss-xtrain-db-transaction</module>
         <module>boss-xtrain-log</module>
         <module>boss-xtrain-util</module>
+=======
+        <module>boss-xtrain-util</module>
+        <module>boss-xtrain-log</module>
+        <module>boss-xtrain-core</module>
+        <module>boss-xtrain-cache-redis</module>
+        <module>boss-xtrain-db-transaction</module>
+        <module>boss-xtrain-config</module>
+>>>>>>> devqyq
     </modules>
 
 

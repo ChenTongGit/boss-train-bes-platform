@@ -118,7 +118,10 @@
                 <version>${swagger.version}</version>
             </dependency>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> devqyq
         </dependencies>
     </dependencyManagement>
 
