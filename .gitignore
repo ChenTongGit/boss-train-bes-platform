@@ -13,12 +13,4 @@ gen
 *.iml
 out
 gen
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-cache-redis/src/
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-config/src/
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-core/src/
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-db-transaction/src/
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-log/src/
-boss-xtrain-bes/boss-xtrain-common/boss-xtrain-util/src/
-boss-xtrain-bes/boss-xtrain-common/src/
-boss-xtrain-bes/src/
 >>>>>>> Stashed changes
