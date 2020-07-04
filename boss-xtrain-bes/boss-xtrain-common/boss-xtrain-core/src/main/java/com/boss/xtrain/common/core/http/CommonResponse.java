@@ -16,15 +16,25 @@ import lombok.Data;
 @Data
 public class CommonResponse<T>{
 
-    // 应用程序版本号
+    /**
+     * 应用程序版本号
+     **/
     private String version = ResponseConstant.SYSTEM_VERSION;
-    // 返回应答码:0表示成功
+    /**
+     * 返回应答码:0表示成功
+     **/
     private Integer code;
-    // 返回信息
+    /**
+     * 返回消息
+     */
     private String msg;
-    // 加密标志:1标记加密|0标记不加密
+    /**
+     * 加密标志:1标记加密|0标记不加密
+     */
     private Integer flag = ResponseConstant.NOT_ENCRYPT_FLAG;
-    // 泛型。存放VO对象
+    /**
+     * 泛型。存放VO对象
+     */
     private T data;
 
     public CommonResponse(Integer code, String msg, Integer flag, T data) {

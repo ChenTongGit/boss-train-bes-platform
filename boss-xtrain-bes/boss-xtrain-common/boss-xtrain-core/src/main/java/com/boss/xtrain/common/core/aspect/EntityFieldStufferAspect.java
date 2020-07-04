@@ -1,6 +1,6 @@
-package com.boss.xtrain.common.core.annotation;
+package com.boss.xtrain.common.core.aspect;
 
-import java.util.Date;
+
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +31,24 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 @Component
 @Configuration
-public class DaoAspect {
+public class EntityFieldStufferAspect {
+
+	/**
+	 * 创建人属性
+	 */
 	private static final String CREATE_BY = "createBy";
+	/**
+	 * 更新人属性
+	 */
 	private static final String UPDATE_BY = "updateBy";
+	/**
+	 * 组织ID属性
+	 */
+	private static final String ORG_ID = "organizationId";
+	/**
+	 * 公司ID属性
+	 */
+	private static final String COMPANY = "companyId";
 
 	@Pointcut("execution(* com.boss.xtrain.*.dao.*.update*(..))")
 	public void daoUpdate() {
@@ -53,12 +68,14 @@ public class DaoAspect {
 		}
 		HttpServletRequest request = attributes.getRequest();
 		String token = request.getHeader("token");
-		String username = getUserName();
-		if (token != null && username != null) {
+		EntityFields entityFields = getEntityFields();
+		if (token != null && entityFields != null) {
 			Object[] objects = pjp.getArgs();
 			if (objects != null && objects.length > 0) {
 				for (Object arg : objects) {
-					BeanUtils.setProperty(arg, UPDATE_BY , username);
+					BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
+					BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
+					BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrganizationId());
 				}
 			}
 		}
@@ -75,23 +92,21 @@ public class DaoAspect {
 		Object[] objects = pjp.getArgs();
 		if (objects != null && objects.length > 0) {
 			for (Object arg : objects) {
-				String username = getUserName();
-				if (username == null) {
+				EntityFields entityFields = getEntityFields();
+				if (entityFields == null) {
 					continue;
 				}
 				if (StringUtils.isBlank(BeanUtils.getProperty(arg, CREATE_BY))) {
-					BeanUtils.setProperty(arg, CREATE_BY, username);
+					BeanUtils.setProperty(arg, CREATE_BY, entityFields.getUpdatedBy());
 				}
 			}
 		}
 		return pjp.proceed();
 	}
 
-	private String getUserName() {
-		//TODO		return SecurityUtils.getUsername();
-		if (new Random(20).nextInt()<10){
-			return null;
-		}
-		return "test user";
+	private EntityFields getEntityFields() {
+		//TODO		return SecurityUtils.getUsername();从自定义token中获取数据 || 从缓存中获取
+
+		return new EntityFields();
 	}
 }

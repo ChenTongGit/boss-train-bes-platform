@@ -8,4 +8,5 @@ package com.boss.xtrain.common.core.web.service;
  * @modified
  **/
 public abstract class BaseService {
+
 }

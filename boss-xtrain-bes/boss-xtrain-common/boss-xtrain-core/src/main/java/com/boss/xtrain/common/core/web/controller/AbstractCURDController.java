@@ -14,4 +14,5 @@ package com.boss.xtrain.common.core.web.controller;
  **/
 public abstract class AbstractCURDController<D, T, V, Q, M> extends AbstractController {
     // TODO 需要修改
+    
 }

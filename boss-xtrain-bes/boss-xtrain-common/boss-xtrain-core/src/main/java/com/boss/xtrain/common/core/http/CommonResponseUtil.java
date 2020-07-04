@@ -17,6 +17,15 @@ public class CommonResponseUtil {
 
     private CommonResponseUtil(){}
 
+    /**
+     * 
+     * @author ChenTong
+     * @param msg
+ * @param data
+ * @param flag
+     * @return com.boss.xtrain.common.core.http.CommonResponse<T>
+     * @date 2020/7/4 13:26
+     */
     public static <T> CommonResponse<T> ok(String msg, T data, Integer flag){
         return new CommonResponse<>(ResponseConstant.SUCCESS, msg, flag, data);
     }

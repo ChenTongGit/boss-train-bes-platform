@@ -37,4 +37,56 @@ public abstract class BaseVO implements Serializable {
      * 备注
      */
     private String remark;
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public BaseVO(String createBy, Boolean status, Date createTime, String remark) {
+        this.createBy = createBy;
+        this.status = status;
+        this.createTime = createTime;
+        this.remark = remark;
+    }
+
+    public BaseVO() {
+    }
+
+    @Override
+    public String toString() {
+        return "BaseVO{" +
+                "createBy='" + createBy + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

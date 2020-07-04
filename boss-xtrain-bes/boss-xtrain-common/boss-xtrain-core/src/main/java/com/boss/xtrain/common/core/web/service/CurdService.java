@@ -14,7 +14,7 @@ import java.util.List;
  * @author tangyi
  * @date 2018-08-25 17:22
  */
-public abstract class CrudService<M extends CommonMapper<T>, T extends BaseDTO,V extends BaseVO, Q extends BaseQuery> extends BaseService {
+public abstract class CurdService<M extends CommonMapper<T>, T extends BaseDTO,V extends BaseVO, Q extends BaseQuery> extends BaseService {
 
     @Resource
     protected M dao;
