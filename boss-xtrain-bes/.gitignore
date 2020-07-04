@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Default ignored files
 /shelf/
 /workspace.xml
@@ -18,7 +18,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-
+.gitignore
 .idea/
 
 ## File-based project format:
@@ -76,5 +76,4 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
->>>>>>> devqyq
 fabric.properties
