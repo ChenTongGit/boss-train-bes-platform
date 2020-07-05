@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 /**
  * @description 数据源配置类
  *
- * <br> 设置jdbc链接信息，以构造函数的方式注入DataSourceProperties
+ * <br> 设置DataSourceProxy，以实现分布式事务的控制
  *
  * @author lzx
  * @data 2020.07.03
@@ -34,7 +34,7 @@ public class DataSourceProxyAutoConfiguration {
     /**
      * 初始化 DataSourceProxy
      *
-     * @param druidDataSource druidDataSource实例
+     * @param druidDataSource druidDataSource实例，代理对数据源的访问
      * @return  DataSourceProxy
      */
     @Bean
