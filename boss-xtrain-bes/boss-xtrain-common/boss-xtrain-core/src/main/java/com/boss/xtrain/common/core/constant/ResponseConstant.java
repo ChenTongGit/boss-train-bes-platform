@@ -14,7 +14,7 @@ public class ResponseConstant {
     private ResponseConstant(){}
 
     // 请求成功 code-0
-    public static final int SUCCESS = 0;
+    public static final String SUCCESS = "0";
     // 系统版本号
     public static final String SYSTEM_VERSION = "release-v1.0";
     // 响应加密

@@ -1,21 +1,20 @@
 package com.boss.xtrain.common.core.aspect;
 
-
-import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.boss.xtrain.common.redis.api.RedisUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 
 
 /**
@@ -32,6 +31,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 @Configuration
 public class EntityFieldStufferAspect {
+
+	@Resource
+	private RedisUtil redisUtil;
 
 	/**
 	 * 创建人属性
@@ -62,23 +64,19 @@ public class EntityFieldStufferAspect {
 
 	@Around("daoUpdate()")
 	public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		if (attributes == null) {
-			return pjp.proceed();
-		}
-		HttpServletRequest request = attributes.getRequest();
-		String token = request.getHeader("token");
+
 		EntityFields entityFields = getEntityFields();
-		if (token != null && entityFields != null) {
-			Object[] objects = pjp.getArgs();
-			if (objects != null && objects.length > 0) {
-				for (Object arg : objects) {
-					BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
-					BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
-					BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrganizationId());
-				}
+		if (entityFields == null) return pjp.proceed();
+
+		Object[] objects = pjp.getArgs();
+		if (objects != null && objects.length > 0) {
+			for (Object arg : objects) {
+				BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
+				BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
+				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrganizationId());
 			}
 		}
+
 		return pjp.proceed();
 
 	}
@@ -105,8 +103,13 @@ public class EntityFieldStufferAspect {
 	}
 
 	private EntityFields getEntityFields() {
-		//TODO		return SecurityUtils.getUsername();从自定义token中获取数据 || 从缓存中获取
-
-		return new EntityFields();
+		//TODO		return SecurityUtils.getUserID();从自定义token中获取数据 || 从缓存中获取EntityFields entityFields =(EntityFields) redisUtil.get("current:"+"id");
+		EntityFields entityFields = new EntityFields();
+//		redisUtil.hashGetAll(key)
+		entityFields.setCompanyId(11L);
+		entityFields.setCreatedBy(1L);
+		entityFields.setUpdatedBy(2L);
+		entityFields.setOrganizationId(1L);
+		return entityFields;
 	}
 }
