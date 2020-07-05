@@ -1,0 +1,7 @@
+com\boss\train\bes\common\transaction\example\dao\UserDao.class
+com\boss\train\bes\common\transaction\example\service\UserService.class
+com\boss\train\bes\common\transaction\example\service\impl\UserServiceImpl.class
+com\boss\train\bes\common\transaction\example\controller\UserCrudController.class
+com\boss\train\bes\common\transaction\example\entity\User.class
+com\boss\train\bes\common\transaction\example\App.class
+com\boss\train\bes\common\transaction\example\configuration\RootConfig.class
