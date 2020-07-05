@@ -1,9 +1,9 @@
 package com.boss.xtrain.common.core.web.service;
 
+import com.boss.xtrain.common.core.web.dao.CommonMapper;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.boss.xtrain.common.core.pojo.BaseVO;
-import com.boss.xtrain.common.core.web.dao.CommonMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;

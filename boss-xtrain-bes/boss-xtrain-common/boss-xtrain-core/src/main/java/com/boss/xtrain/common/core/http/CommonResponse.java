@@ -23,7 +23,7 @@ public class CommonResponse<T>{
     /**
      * 返回应答码:0表示成功
      **/
-    private Integer code;
+    private String code;
     /**
      * 返回消息
      */
@@ -37,19 +37,19 @@ public class CommonResponse<T>{
      */
     private T data;
 
-    public CommonResponse(Integer code, String msg, Integer flag, T data) {
+    public CommonResponse(String code, String msg, Integer flag, T data) {
         this.code = code;
         this.flag = flag;
         this.data = data;
         this.msg = msg;
     }
 
-    public CommonResponse(Integer code, String msg){
+    public CommonResponse(String code, String msg){
         this.code = code;
         this.msg = msg;
     }
 
-    public CommonResponse(Integer code, String msg, T data){
+    public CommonResponse(String code, String msg, T data){
         this.msg = msg;
         this.code = code;
         this.data = data;
