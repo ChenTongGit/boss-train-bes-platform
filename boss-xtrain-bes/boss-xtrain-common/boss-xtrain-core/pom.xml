@@ -40,6 +40,14 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- pagehelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.11</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/tk.mybatis/mapper 通用mapper-->
         <dependency>
             <groupId>tk.mybatis</groupId>
