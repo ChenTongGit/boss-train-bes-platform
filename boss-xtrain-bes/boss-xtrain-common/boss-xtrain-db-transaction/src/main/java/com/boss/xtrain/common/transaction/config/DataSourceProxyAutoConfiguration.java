@@ -1,4 +1,4 @@
-package com.boss.train.bes.common.transaction.configuration;
+package com.boss.xtrain.common.transaction.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.seata.rm.datasource.DataSourceProxy;
