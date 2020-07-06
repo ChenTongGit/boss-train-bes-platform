@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  * @data 2020.07.03
  */
 @Configuration
-public class DataSourceProxyAutoConfiguration {
+public class DataSourceProxyConfig {
 
     /**
      * 配置数据源代理，用于事务回滚

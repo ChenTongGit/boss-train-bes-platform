@@ -61,7 +61,7 @@ application.yml中的seata.tx-service-group和seata.service.vgroupMapping
 - 修改application.yml中的数据源配置，改为自己的数据库
 - 在application或者javaconfig类引入DataSourceProxyAutoConfiguration.class
 ```java
-@Import(DataSourceProxyAutoConfiguration.class)
+@Import(DataSourceProxyConfig.class)
 ```
 - 在需要开启分布式事务的方法上加上注解
 ```java
