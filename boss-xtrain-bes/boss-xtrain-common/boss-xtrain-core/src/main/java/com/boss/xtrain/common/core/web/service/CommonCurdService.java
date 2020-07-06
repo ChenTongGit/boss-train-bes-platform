@@ -1,6 +1,8 @@
 package com.boss.xtrain.common.core.web.service;
 
 
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.boss.xtrain.common.core.pojo.BaseVO;
@@ -26,31 +28,32 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
     List<V> selectByCondition(Q query);
 
     /**
-     * 通过主键查询数据
+     * 分页查询
      * @author ChenTong
-     * @param id Object数据库主键
-     * @return int
-     * @date 2020/6/22 7:16
+     * @param query
+     * @return com.boss.xtrain.common.core.http.CommonPage<V>
+     * @date 2020/7/6 10:20
      */
-    /**V selectByPrimaryKey(K id);**/
+    CommonPage<V> findPage(CommonRequest<Q> query);
+
 
     /**
      * 通过主键删除数据
      * @author ChenTong
-     * @param id Object数据库主键
+     * @param dto Object数据库主键
      * @return int
      * @date 2020/6/22 7:18
      */
-    int delete(Long id);
+    int delete(T dto);
 
     /**
      * 批量删除数据
      * @author ChenTong
-     * @param ids id列表
+     * @param dtoList id列表
      * @return int
      * @date 2020/7/4 9:09
      */
-    int delete(Long[] ids);
+    int delete(List<T> dtoList);
 
     /**
      * 更新用户数据
