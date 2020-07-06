@@ -26,7 +26,7 @@ seata:
   enabled: true
   application-id: ${spring.application.name} # 可自定义，目前设置为微服务应用名，不需要修改
 
-  # 这里的 tx-service-group 分布式事务组，要和服务端保持一致
+  # 这里的 tx-service-group 分布式事务组，要和服务端保持一致，组内只有一个集群，无需更改
   tx-service-group: base-data-group
 
   # 指定注册中心和配置中心 用来读取原来的registry.conf和file.conf信息 不需要自行修改
@@ -57,7 +57,7 @@ seata:
       default: ${spring.seata-url.seata-host}:${spring.seata-url.seata-port}
     vgroupMapping:
 
-      # 这里的 demo1-server-group 改为与服务端一致的分布式事务组名
+      # 这里的 base-data-group 改为与服务端一致的分布式事务组名
       base-data-group: default
 
     disable-global-transaction: false
