@@ -4,13 +4,9 @@ import com.boss.xtrain.common.core.web.dao.CommonMapper;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.boss.xtrain.common.core.pojo.BaseVO;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.page.PageMethod;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author tangyi
@@ -20,6 +16,7 @@ public abstract class CurdService<M extends CommonMapper<T>, T extends BaseDTO,V
 
     @Resource
     protected M dao;
+
 
 }
 

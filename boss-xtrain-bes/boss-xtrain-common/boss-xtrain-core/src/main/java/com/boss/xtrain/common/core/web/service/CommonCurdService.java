@@ -1,6 +1,5 @@
 package com.boss.xtrain.common.core.web.service;
 
-
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
@@ -49,11 +48,13 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
     /**
      * 批量删除数据
      * @author ChenTong
+<<<<<<< HEAD
      * @param dtoList id列表
      * @return int
      * @date 2020/7/4 9:09
      */
     int delete(List<T> dtoList);
+
 
     /**
      * 更新用户数据
