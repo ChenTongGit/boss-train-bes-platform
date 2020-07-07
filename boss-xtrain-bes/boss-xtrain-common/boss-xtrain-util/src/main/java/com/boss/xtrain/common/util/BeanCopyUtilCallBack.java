@@ -1,4 +1,4 @@
-package com.boss.xtrain.util;
+package com.boss.xtrain.common.util;
 
 @FunctionalInterface
 public interface BeanCopyUtilCallBack <S, T> {

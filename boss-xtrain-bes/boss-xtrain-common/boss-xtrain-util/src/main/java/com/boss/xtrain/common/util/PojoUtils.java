@@ -132,10 +132,20 @@ public class PojoUtils {
     }
     /**
      * 集合数据的拷贝
+     * 以下为使用方法
+     * @Test
+     * public void listCopyUp() {
+     *     List<UserDO> userDOList = new ArrayList();
+     *     userDOList.add(new UserDO(1L, "Van", 18, 1));
+     *     userDOList.add(new UserDO(2L, "VanVan", 20, 2));
+     *     List<UserVO> userVOList = BeanCopyUtil.copyListProperties(userDOList, UserVO::new);
+     *     log.info("userVOList:{}",userVOList);
+     * }
      * @param sources: 数据源类
      * @param target: 目标类::new(eg: UserVO::new)
      * @return
      */
+
     public static <S, T> List<T> copyListProperties(List<S> sources, Supplier<T> target) {
         return copyListProperties(sources, target, null);
     }
