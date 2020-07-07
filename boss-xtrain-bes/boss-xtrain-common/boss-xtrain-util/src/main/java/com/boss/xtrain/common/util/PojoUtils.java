@@ -11,6 +11,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class PojoUtils {
     private PojoUtils() {
@@ -115,9 +116,9 @@ public class PojoUtils {
      * @param <Q>
      * @throws Exception
      */
+    @Deprecated
     public static <T, Q> void copyList(List<T> sourceList, List<Q> targetList, Class<Q> clazz) {
         Assert.notNull(sourceList, "Source must not be null");
-
         try {
             for (T source : sourceList) {
                 // 通过反射获取泛型对象，临时存储数据
@@ -128,6 +129,47 @@ public class PojoUtils {
         } catch (Exception e) {
             throw new FatalBeanException("拷贝列表失败", e);
         }
+    }
+    /**
+     * 集合数据的拷贝
+     * 以下为使用方法
+     * @Test
+     * public void listCopyUp() {
+     *     List<UserDO> userDOList = new ArrayList();
+     *     userDOList.add(new UserDO(1L, "Van", 18, 1));
+     *     userDOList.add(new UserDO(2L, "VanVan", 20, 2));
+     *     List<UserVO> userVOList = BeanCopyUtil.copyListProperties(userDOList, UserVO::new);
+     *     log.info("userVOList:{}",userVOList);
+     * }
+     * @param sources: 数据源类
+     * @param target: 目标类::new(eg: UserVO::new)
+     * @return
+     */
+
+    public static <S, T> List<T> copyListProperties(List<S> sources, Supplier<T> target) {
+        return copyListProperties(sources, target, null);
+    }
+
+
+    /**
+     * 带回调函数的集合数据的拷贝（可自定义字段拷贝规则）
+     * @param sources: 数据源类
+     * @param target: 目标类::new(eg: UserVO::new)
+     * @param callBack: 回调函数
+     * @return
+     */
+    public static <S, T> List<T> copyListProperties(List<S> sources, Supplier<T> target, BeanCopyUtilCallBack<S, T> callBack) {
+        List<T> list = new ArrayList<>(sources.size());
+        for (S source : sources) {
+            T t = target.get();
+            copyProperties(source, t);
+            list.add(t);
+            if (callBack != null) {
+                // 回调
+                callBack.callBack(source, t);
+            }
+        }
+        return list;
     }
 
 }

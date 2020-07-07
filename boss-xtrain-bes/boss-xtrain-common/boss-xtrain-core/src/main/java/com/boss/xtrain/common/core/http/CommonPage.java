@@ -11,66 +11,67 @@ import java.util.List;
  * @since
  */
 public class CommonPage<T> implements Serializable {
+
     private static final long serialVersionUID = -347093683285644318L;
     /**
-     * 当前页码
+     *
      */
-    private Integer pageIndex;
+    private int pageNum;
     /**
-     * 每页数据条数
+     *
      */
-    private Integer pageSize;
+    private int pageSize;
     /**
-     * 总页数
+     *
      */
-    private Integer pageNum;
-    /** 总记录数 */
-    private long total;
+    private long totalSize;
+    /**
+     *
+     */
+    private int totalPages;
 
-    /** 列表数据 */
-    private List<T> rows;
+    /**
+     * 分页内容
+     */
+    private List<?> content;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public Integer getPageIndex() {
-        return pageIndex;
-    }
-
-    public void setPageIndex(Integer pageIndex) {
-        this.pageIndex = pageIndex;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public Integer getPageNum() {
+    public int getPageNum() {
         return pageNum;
     }
 
-    public void setPageNum(Integer pageNum) {
+    public void setPageNum(int pageNum) {
         this.pageNum = pageNum;
     }
 
-    public long getTotal() {
-        return total;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setTotal(long total) {
-        this.total = total;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public List<T> getRows() {
-        return rows;
+    public long getTotalSize() {
+        return totalSize;
     }
 
-    public void setRows(List<T> rows) {
-        this.rows = rows;
+    public void setTotalSize(long totalSize) {
+        this.totalSize = totalSize;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public List getContent() {
+        return content;
+    }
+
+    public void setContent(List<?> content) {
+        this.content = content;
     }
 }
