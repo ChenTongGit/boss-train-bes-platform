@@ -2,7 +2,6 @@ package com.boss.xtrain.common.core.web.controller;
 
 
 import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -19,13 +18,13 @@ import java.util.List;
  */
 public interface CommonCRUDApi<D,Q,V>  {
 
-    CommonResponse<Integer> create(@RequestBody @Valid CommonRequest<D> request);
+    CommonResponseOld<Integer> create(@RequestBody @Valid CommonRequest<D> request);
 
-    CommonResponse<List<V>> selectList(@RequestBody @Valid CommonRequest<Q> request);
+    CommonResponseOld<List<V>> selectList(@RequestBody @Valid CommonRequest<Q> request);
 
     CommonRequest<V> select(@RequestBody @Valid CommonRequest<Q> request);
 
-    CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
+    CommonResponseOld<Integer> update(@RequestBody @Valid CommonRequest<D> request);
 
-    CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
+    CommonResponseOld<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
 }

@@ -23,40 +23,53 @@ public class CommonResponseUtil {
      * 
      * @author ChenTong
      * @param msg
- * @param data
- * @param flag
+     * @param data
      * @return com.boss.xtrain.common.core.http.CommonResponse<T>
      * @date 2020/7/4 13:26
      */
-    public static <T> CommonResponse<T> ok(String msg, T data, Integer flag){
-        return new CommonResponse<>(ResponseConstant.SUCCESS, msg, flag, data);
+    public static <T> CommonResponse<T> ok(String code, String msg, T data){
+
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, msg, code);
+        commonResponse.setData(data);
+        return commonResponse;
     }
 
-    public static <T> CommonResponse<T> ok(String msg, T data){
-        return new CommonResponse<>(ResponseConstant.SUCCESS, msg, data);
-    }
 
     public static <T> CommonResponse<T> ok(T data){
-        return new CommonResponse<>(ResponseConstant.SUCCESS, ResponseConstant.SUCCESS_MSG, data);
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse);
+        commonResponse.setData(data);
+        return commonResponse;
     }
 
     public static <T> CommonResponse<T> ok(String code, String msg){
-        return new CommonResponse<>(code, msg);
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, msg, code);
+        return commonResponse;
     }
 
     public static <T> CommonResponse<T> error(String code, String msg){
-        return new CommonResponse<>(code, msg);
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, msg, code);
+        return commonResponse;
     }
 
     public static <T> CommonResponse<T> error(SystemError error){
-        return new CommonResponse<>(error.getCode(), error.getMessage());
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, error.getMessage(), error.getCode());
+        return commonResponse;
     }
     public static <T> CommonResponse<T> error(BusinessError error){
-        return new CommonResponse<>(error.getCode(), error.getMessage());
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, error.getMessage(), error.getCode());
+        return commonResponse;
     }
 
 
     public static <T> CommonResponse<T> warn(String code, String msg){
-        return new CommonResponse<>(code, msg);
+        CommonResponse<T> commonResponse = new CommonResponse<>();
+        AppUtils.setResponseExtendInfo(commonResponse, code, msg);
+        return commonResponse;
     }
 }
