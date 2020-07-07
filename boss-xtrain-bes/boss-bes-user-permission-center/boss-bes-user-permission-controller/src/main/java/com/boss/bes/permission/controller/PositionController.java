@@ -8,6 +8,7 @@ import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.common.core.http.ResponseHeader;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -54,16 +55,16 @@ public class PositionController{
         }catch (ServiceException e){
             throw  new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_INSERT_ERROR);
         }
-//        CommonResponse<List<T>> response = new CommonResponse<>();
-//        // 设置head
-//        ResponseHead head = new ResponseHead();
-//        // 成功情况下默认为0
-//        head.setAnswerBackCode("0");
-//        head.setAppVersion("v1.0.0");
-//        response.setHead(head);
-//        // 设置body
-//        response.setBody(list);
-        return null;
+        CommonResponse<Integer> response = new CommonResponse<>();
+        // 设置head
+        ResponseHeader head = new ResponseHeader();
+        // 成功情况下默认为0
+        head.setCode("0");
+        head.setVersion("v1.0.0");
+        response.setHeader(head);
+        // 设置body
+        response.setData(affectRow);
+        return response;
 
     }
 }
