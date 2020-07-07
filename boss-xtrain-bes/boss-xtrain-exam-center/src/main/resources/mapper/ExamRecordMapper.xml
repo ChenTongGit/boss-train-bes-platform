@@ -9,7 +9,7 @@
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="t_pr_id" property="tPrId" jdbcType="BIGINT" />
-    <result column="t_p_id" property="tPId" jdbcType="BIGINT" />
+    <result column="t_p_id" property="paperId" jdbcType="BIGINT" />
     <result column="plan_start_time" property="planStartTime" jdbcType="TIMESTAMP" />
     <result column="plan_end_time" property="planEndTime" jdbcType="TIMESTAMP" />
     <result column="actual_start_time" property="actualStartTime" jdbcType="TIMESTAMP" />

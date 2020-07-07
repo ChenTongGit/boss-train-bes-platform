@@ -15,4 +15,9 @@ import com.boss.xtrain.common.core.pojo.BaseDTO;
  **/
 public class AnswerRecordDTO extends BaseDTO {
 
+
+    /**
+     *
+     */
+    private Long examRecordId;
 }

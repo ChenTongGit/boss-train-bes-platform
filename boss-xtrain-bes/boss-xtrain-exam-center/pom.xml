@@ -56,6 +56,12 @@
             <artifactId>boss-xtrain-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

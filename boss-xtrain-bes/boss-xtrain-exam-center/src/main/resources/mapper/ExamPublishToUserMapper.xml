@@ -8,7 +8,7 @@
       This element was generated on Tue Jul 07 18:01:22 CST 2020.
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="t_p_id" property="tPId" jdbcType="BIGINT" />
+    <result column="t_p_id" property="paperId" jdbcType="BIGINT" />
     <result column="t_u_id" property="tUId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
