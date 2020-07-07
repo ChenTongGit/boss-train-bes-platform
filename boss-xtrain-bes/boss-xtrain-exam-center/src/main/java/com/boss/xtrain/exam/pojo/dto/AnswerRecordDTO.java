@@ -1,5 +1,7 @@
 package com.boss.xtrain.exam.pojo.dto;
 
+import com.boss.xtrain.common.core.pojo.BaseDTO;
+
 /**
  * 作答记录dto
  *
@@ -11,5 +13,6 @@ package com.boss.xtrain.exam.pojo.dto;
  * @see
  * @since
  **/
-public class AnswerRecordDTO {
+public class AnswerRecordDTO extends BaseDTO {
+
 }

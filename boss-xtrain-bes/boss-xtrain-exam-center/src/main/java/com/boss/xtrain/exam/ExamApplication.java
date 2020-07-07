@@ -1,5 +1,6 @@
 package com.boss.xtrain.exam;
 
+import com.boss.xtrain.common.core.constant.CommonConstant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see
  * @since
  **/
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {CommonConstant.BASE_PACKAGE})
 public class ExamApplication {
     public static void main(String[] args) {
         SpringApplication.run(ExamApplication.class, args);
