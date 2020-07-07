@@ -43,7 +43,7 @@ public class PositionController{
     @ApiLog
     public CommonResponse<Integer> addPosition(@RequestBody@Valid CommonRequest<PositionListVO> request){
         Map<String,PositionListVO> body = request.getBody();
-        PositionListVO addVo = body.get("vo");
+        PositionListVO addVo = body.get("positionVo");
         PositionDTO dto = new PositionDTO();
         PojoUtils.copyProperties(addVo,dto);
         IdWorker idWorker = new IdWorker();
