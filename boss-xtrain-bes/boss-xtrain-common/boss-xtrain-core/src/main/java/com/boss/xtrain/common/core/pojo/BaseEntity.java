@@ -6,6 +6,8 @@
  */  
 package com.boss.xtrain.common.core.pojo;
 
+import io.swagger.models.auth.In;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -28,7 +30,7 @@ public abstract class BaseEntity implements Serializable {
      */
     private Long id;
 
-    private Boolean status;
+    private Integer status;
     /**
      * 记录所属公司ID
      */
@@ -66,11 +68,11 @@ public abstract class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -133,7 +135,7 @@ public abstract class BaseEntity implements Serializable {
     public BaseEntity() {
     }
 
-    public BaseEntity(Long id, Boolean status, Long companyId, Long organizationId, Date createdTime, Long createdBy, Date updatedTime, Long updatedBy, Long version) {
+    public BaseEntity(Long id, Integer status, Long companyId, Long organizationId, Date createdTime, Long createdBy, Date updatedTime, Long updatedBy, Long version) {
         this.id = id;
         this.status = status;
         this.companyId = companyId;
