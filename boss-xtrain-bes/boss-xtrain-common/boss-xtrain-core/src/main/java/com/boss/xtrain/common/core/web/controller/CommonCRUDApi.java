@@ -3,9 +3,12 @@ package com.boss.xtrain.common.core.web.controller;
 
 <<<<<<< HEAD
 import com.boss.xtrain.common.core.http.CommonRequest;
+<<<<<<< HEAD
 =======
 >>>>>>> ec196c19161b6052da7b188091925d8c86834f85
 import com.boss.xtrain.common.core.http.CommonResponse;
+=======
+>>>>>>> dev-ct
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -27,14 +30,19 @@ import java.util.List;
 public interface CommonCRUDApi<D,Q,V>  {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     CommonResponse<Integer> create(@RequestBody @Valid CommonRequest<D> request);
+=======
+    CommonResponseOld<Integer> create(@RequestBody @Valid CommonRequest<D> request);
+>>>>>>> dev-ct
 
-    CommonResponse<List<V>> selectList(@RequestBody @Valid CommonRequest<Q> request);
+    CommonResponseOld<List<V>> selectList(@RequestBody @Valid CommonRequest<Q> request);
 
     CommonRequest<V> select(@RequestBody @Valid CommonRequest<Q> request);
 
-    CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
+    CommonResponseOld<Integer> update(@RequestBody @Valid CommonRequest<D> request);
 
+<<<<<<< HEAD
     CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
 =======
     CommonResponse<Integer> create(@RequestBody @Valid D dtoParam);
@@ -45,4 +53,7 @@ public interface CommonCRUDApi<D,Q,V>  {
 
     CommonResponse<Integer> delete(@NotNull Long id);
 >>>>>>> ec196c19161b6052da7b188091925d8c86834f85
+=======
+    CommonResponseOld<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
+>>>>>>> dev-ct
 }
