@@ -26,15 +26,6 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
      */
     List<V> selectByCondition(Q query);
 
-    /**
-     * 分页查询
-     * @author ChenTong
-     * @param query
-     * @return com.boss.xtrain.common.core.http.CommonPage<V>
-     * @date 2020/7/6 10:20
-     */
-    CommonPage<V> findPage(CommonRequest<Q> query);
-
 
     /**
      * 通过主键删除数据
@@ -48,7 +39,6 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
     /**
      * 批量删除数据
      * @author ChenTong
-<<<<<<< HEAD
      * @param dtoList id列表
      * @return int
      * @date 2020/7/4 9:09

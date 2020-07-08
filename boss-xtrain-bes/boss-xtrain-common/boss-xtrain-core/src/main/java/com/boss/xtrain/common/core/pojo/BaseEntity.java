@@ -6,9 +6,10 @@
  */  
 package com.boss.xtrain.common.core.pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @class BaseEntity
@@ -26,36 +27,55 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 主键id
      */
+    @Id
     private Long id;
 
-    private Boolean status;
+    /**
+     * 状态
+     */
+    @Column(name = "status")
+    private Integer status;
+
     /**
      * 记录所属公司ID
      */
+    @Column(name = "company_id")
     private Long companyId;
+
     /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
+    @Column(name = "org_id")
     private Long organizationId;
+
     /**
      * 创建时间
      */
+    @Column(name = "created_time")
     private Date createdTime;
+
     /**
      *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
      */
+    @Column(name = "created_by")
     private Long createdBy;
+
     /**
      *  更新时间记录便于追踪
      */
+    @Column(name = "updated_time")
     private Date updatedTime;
+
     /**
      *  更新人ID 后续的update更新此字典
      */
+    @Column(name = "updated_by")
     private Long updatedBy;
+
     /**
      *  当前行的版初始为0 每次数据变动则加1
      */
+    @Column(name = "version")
     private Long version;
 
     public Long getId() {
@@ -66,11 +86,11 @@ public abstract class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -131,44 +151,5 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public BaseEntity() {
-    }
-
-    public BaseEntity(Long id, Boolean status, Long companyId, Long organizationId, Date createdTime, Long createdBy, Date updatedTime, Long updatedBy, Long version) {
-        this.id = id;
-        this.status = status;
-        this.companyId = companyId;
-        this.organizationId = organizationId;
-        this.createdTime = createdTime;
-        this.createdBy = createdBy;
-        this.updatedTime = updatedTime;
-        this.updatedBy = updatedBy;
-        this.version = version;
-    }
-
-    @Override
-    public boolean equals(Object o) {        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "BaseEntity{" +
-                "id=" + id +
-                ", status=" + status +
-                ", companyId=" + companyId +
-                ", organizationId=" + organizationId +
-                ", createdTime=" + createdTime +
-                ", createdBy=" + createdBy +
-                ", updatedTime=" + updatedTime +
-                ", updatedBy=" + updatedBy +
-                ", version=" + version +
-                '}';
     }
 }
