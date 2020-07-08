@@ -1,7 +1,5 @@
 package com.boss.xtrain.common.core.web.service;
 
-import com.boss.xtrain.common.core.http.CommonPage;
-import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.boss.xtrain.common.core.pojo.BaseVO;
@@ -15,7 +13,7 @@ import java.util.List;
  * @date 2020/6/21 17:28
  * @modified
  **/
-public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends BaseQuery> {
+public interface CommonCurdService<T extends BaseDTO, Q extends BaseQuery> {
 
     /**
      * 通过query查找列表
@@ -24,7 +22,7 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
      * @return java.util.List<V>
      * @date 2020/6/22 7:05
      */
-    List<V> selectByCondition(Q query);
+    List<T> selectByCondition(Q query);
 
 
     /**

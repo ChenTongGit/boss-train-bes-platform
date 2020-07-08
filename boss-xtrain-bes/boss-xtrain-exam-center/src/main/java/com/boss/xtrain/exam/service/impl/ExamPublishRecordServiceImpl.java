@@ -2,8 +2,6 @@ package com.boss.xtrain.exam.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
-import com.boss.xtrain.common.core.http.CommonPage;
-import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamPublishRecordMapper;
@@ -54,19 +52,19 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
      * @date 2020/6/22 7:05
      */
     @Override
-    public List<ExamPublishRecordVO> selectByCondition(ExamPublishRecordQuery query) {
+    public List<ExamPublishRecordDTO> selectByCondition(ExamPublishRecordQuery query) {
         try {
             ExamPublishRecord examPublishRecord = new ExamPublishRecord();
             PojoUtils.copyProperties(query, examPublishRecord);
             examPublishRecord.setId(idWorker.nextId());
-            List<ExamPublishRecordVO> examPublishRecordVOS = new ArrayList<>();
+            List<ExamPublishRecordDTO> examPublishRecordDTOS = new ArrayList<>();
             List<ExamPublishRecord> examPublishRecords = examPublishRecordMapper.select(examPublishRecord);
             for (ExamPublishRecord item:examPublishRecords) {
-                ExamPublishRecordVO examPublishRecordVO = new ExamPublishRecordVO();
-                PojoUtils.copyProperties(examPublishRecordVO, item);
-                examPublishRecordVOS.add(examPublishRecordVO);
+                ExamPublishRecordDTO examPublishRecordDTO = new ExamPublishRecordDTO();
+                PojoUtils.copyProperties(examPublishRecordDTO, item);
+                examPublishRecordDTOS.add(examPublishRecordDTO);
             }
-            return examPublishRecordVOS;
+            return examPublishRecordDTOS;
         }catch (Exception e){
             log.error(BusinessError.EXAM_RECORD_INSERT_RECORD_ERROR.getMessage(), e);
             throw new BusinessException(BusinessError.EXAM_RECORD_INSERT_RECORD_ERROR, e);

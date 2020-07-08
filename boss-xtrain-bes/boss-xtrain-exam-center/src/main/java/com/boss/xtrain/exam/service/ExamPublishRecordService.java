@@ -19,6 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since
  **/
 @Transactional
-public interface ExamPublishRecordService extends CommonCurdService<ExamPublishRecordDTO, ExamPublishRecordVO, ExamPublishRecordQuery> {
+public interface ExamPublishRecordService extends CommonCurdService<ExamPublishRecordDTO, ExamPublishRecordQuery> {
     Integer publishExam(ExamPublishRecordDTO dto);
 }
