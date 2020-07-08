@@ -35,6 +35,9 @@ public class ExamPublishRecordController extends BaseController implements ExamP
 
     @Resource
     private ExamPublishRecordService examPublishRecordService;
+
+
+
     /**
      * 添加新的数据
      * @param request 请求报文对象，传递dto
@@ -69,9 +72,10 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @date 2020/7/7 22:09
      */
     @Override
-    public CommonRequest<ExamPublishRecordVO> select(@Valid CommonRequest<ExamPublishRecordQuery> request) {
+    public CommonResponse<ExamPublishRecordVO> select(@Valid CommonRequest<ExamPublishRecordQuery> request) {
         return null;
     }
+
 
     /**
      * 指定删除某个数据数据

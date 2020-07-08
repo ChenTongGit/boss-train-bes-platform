@@ -4,10 +4,8 @@ package com.boss.xtrain.common.core.web.controller;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.annotation.PostMapping;
->>>>>>> dev-ct
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -24,10 +22,6 @@ import java.util.List;
  */
 public interface CommonCRUDApi<D,Q,V>  {
 
-<<<<<<< HEAD
-    CommonResponse<Integer> create(@RequestBody @Valid CommonRequest<D> request);
-
-=======
     /**
      * 添加新的数据
      * @author ChenTong
@@ -46,7 +40,6 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @date 2020/7/7 22:09
      */
     @PostMapping("/selectList")
->>>>>>> dev-ct
     CommonResponse<List<V>> selectList(@RequestBody @Valid CommonRequest<Q> request);
 
     /**
@@ -57,13 +50,8 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @date 2020/7/7 22:09
      */
     @PostMapping("/select")
-    CommonRequest<V> select(@RequestBody @Valid CommonRequest<Q> request);
+    CommonResponse<V> select(@RequestBody @Valid CommonRequest<Q> request);
 
-<<<<<<< HEAD
-    CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
-
-    CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
-=======
     /**
      * 指定删除某个数据数据
      * @author ChenTong
@@ -93,6 +81,4 @@ public interface CommonCRUDApi<D,Q,V>  {
      */
     @PostMapping("update")
     CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
->>>>>>> dev-ct
-
 }
