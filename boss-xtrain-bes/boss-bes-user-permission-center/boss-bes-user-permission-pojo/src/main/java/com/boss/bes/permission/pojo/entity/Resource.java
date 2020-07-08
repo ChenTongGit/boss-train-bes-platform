@@ -12,11 +12,11 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "t_resource")
 public class Resource extends BaseEntity {
-    private long moduleDetailId;
-    private  long tenantName;
+    private Long moduleDetailId;
+    private  Long tenantName;
     private String code;
     private int orderIndex;
-    private long parentId;
+    private Long parentId;
     private String url;
     private String openImg;
     private String closeImg;

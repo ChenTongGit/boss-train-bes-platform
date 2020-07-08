@@ -1,6 +1,6 @@
 package com.boss.xtrain.util;
 
-import com.boss.xtrain.pojo.UserExcelVo;
+import com.boss.xtrain.common.util.pojo.UserExcelVo;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

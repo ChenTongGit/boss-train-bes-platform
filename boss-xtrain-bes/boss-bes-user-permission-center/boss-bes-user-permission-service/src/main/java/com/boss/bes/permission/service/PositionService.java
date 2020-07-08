@@ -2,6 +2,7 @@ package com.boss.bes.permission.service;
 
 import com.boss.bes.permission.pojo.dto.position.PositionDTO;
 import com.boss.bes.permission.pojo.dto.position.PositionQueryDTO;
+import com.boss.bes.permission.pojo.entity.Position;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface PositionService {
     * @description 根据id批量删除职位
     */
     int deleteByIds(List<Long> ids);
+
+    /**
+     * @param
+     * @return  list<position>
+     * @description 测试方法
+     */
+    List<Position> selectAll();
 }

@@ -7,7 +7,7 @@ import com.boss.bes.permission.pojo.dto.position.PositionQueryDTO;
 import com.boss.bes.permission.pojo.entity.Position;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -18,11 +18,12 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Repository
+@Component
 public class PositionDaoImpl implements PositionDao {
 
     @Autowired
     private PositionMapper positionMapper;
+
 
     @Override
     public List<Position> queryByCondition(PositionQueryDTO dto) {
@@ -47,4 +48,10 @@ public class PositionDaoImpl implements PositionDao {
         BeanUtils.copyProperties(dto,position);
         return positionMapper.updateByPrimaryKeySelective(position);
     }
+
+    @Override
+    public List<Position> selectAll() {
+        return positionMapper.selectAll();
+    }
+
 }

@@ -6,10 +6,9 @@ import com.boss.bes.permission.pojo.dto.position.PositionQueryDTO;
 import com.boss.bes.permission.pojo.entity.Position;
 import com.boss.bes.permission.service.PositionService;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -18,6 +17,8 @@ import java.util.List;
  * @Description :positionService的实现类
  * @Version: 1.0
  */
+
+@Service
 public class PositionServiceImpl implements PositionService {
 
     @Autowired
@@ -36,13 +37,16 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public List<PositionDTO> queryByCondition(PositionQueryDTO dto) {
         List<Position> positions = positionDao.queryByCondition(dto);
-        List<PositionDTO> positionDTOS = new ArrayList<>();
-        PojoUtils.copyList(positions,positionDTOS,PositionDTO.class);
-        return null;
+        return PojoUtils.copyListProperties(positions,PositionDTO::new);
     }
 
     @Override
     public int deleteByIds(List<Long> ids) {
        return positionDao.deleteByIds(ids);
+    }
+
+    @Override
+    public List<Position> selectAll() {
+        return positionDao.selectAll();
     }
 }

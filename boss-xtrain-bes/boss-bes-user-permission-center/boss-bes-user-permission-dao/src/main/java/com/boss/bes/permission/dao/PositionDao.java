@@ -42,4 +42,11 @@ public interface PositionDao {
      * @description 修改职位信息
      */
     int update(PositionDTO dto);
+
+    /**
+     * @param
+     * @return  list<position>
+     * @description 测试方法
+     */
+    List<Position> selectAll();
 }

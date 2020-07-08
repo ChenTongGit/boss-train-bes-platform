@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "t_user")
 public class User extends BaseEntity {
     private List<Role> roles;
-    private long departmentId;
+    private Long departmentId;
     private String code;
     private String password;
     private String name;

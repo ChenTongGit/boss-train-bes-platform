@@ -15,7 +15,7 @@ import java.util.List;
 public class Role extends BaseEntity {
     private List<User> users;
     private List<Resource> resources;
-    private long organizationId;
+    private Long organizationId;
     private String name;
     private String code;
     private String remark;

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "position")
 @EqualsAndHashCode(callSuper = false)
 public class Position extends BaseEntity {
-    private long userId;
+    private Long userId;
     private String name;
     private String code;
     private String remark;

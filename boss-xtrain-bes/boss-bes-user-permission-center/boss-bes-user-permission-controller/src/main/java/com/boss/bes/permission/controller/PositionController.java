@@ -1,6 +1,7 @@
 package com.boss.bes.permission.controller;
 
 import com.boss.bes.permission.pojo.dto.position.PositionDTO;
+import com.boss.bes.permission.pojo.entity.Position;
 import com.boss.bes.permission.pojo.vo.position.PositionListVO;
 import com.boss.bes.permission.service.PositionService;
 import com.boss.xtrain.common.core.exception.BusinessException;
@@ -10,6 +11,7 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.ResponseHeader;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.common.log.annotation.GlobalExceptionLog;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +38,7 @@ public class PositionController{
 
     @Autowired
     private PositionService positionService;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -67,4 +71,14 @@ public class PositionController{
         return response;
 
     }
+
+    @GetMapping("/all")
+    public void selectAll(){
+        List<Position> positions = positionService.selectAll();
+        for(int i=0;i<positions.size();i++) {
+            log.info(positions.get(i).getId() + " " + positions.get(i).getName());
+        }
+    }
+
+
 }
