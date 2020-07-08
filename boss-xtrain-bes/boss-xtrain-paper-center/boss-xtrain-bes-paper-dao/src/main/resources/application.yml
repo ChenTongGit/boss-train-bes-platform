@@ -1,0 +1,19 @@
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  notEmpty: true
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml # mapper.xml文件所在位置
+  #    config-location: classpath:config/mybatis_config.xml
+  type-aliases-package: com.boss.bes.paper.entity*         #对应实体类的包名
+  configuration:
+    map-underscore-to-camel-case: true  #配置驼峰命名转换 在进行sql查询和初始化实体时mybatis会为我们自动转化
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #mybatis 控制台打印sql
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://39.101.178.139:3306/db_paper_center?serverTimezone=Asia/Shanghai&useSSL=true&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: zzy873190934
+    username: root
