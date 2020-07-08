@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: basedata-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.57.156.184:8848
+server:
+  port: 8181
