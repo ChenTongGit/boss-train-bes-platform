@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+    gateway:
+      routes:
+        - id: demo
+          uri: lb://demo
+          order: 0
+          predicates:
+            - Path=/demo/**
+          filters:
+            - StripPrefix=1
+        - id: BND-MESSAGE
+          uri: http://192.168.13.183:8080
+          order: 0
+          predicates:
+            - Path=/bnd-message/**
+          filters:
+            - StripPrefix=1
+  # 组内使用统一的nacos和seata服务 这部分信息可以不用修改
+  nacos-url:
+    nacos-host: 123.57.156.184
+    nacos-port: 8848
+  seata-url:
+    seata-host: 123.57.156.184
+    seata-port: 8091

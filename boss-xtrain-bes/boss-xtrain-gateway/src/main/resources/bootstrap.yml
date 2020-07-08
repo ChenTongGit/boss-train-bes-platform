@@ -1,0 +1,16 @@
+spring:
+  application:
+    # 自己定义一个
+    name: gateway-service
+
+  cloud:
+    nacos:
+      config:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+        file-extension: yaml
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  # 自己定义一个
+  port: 3333
