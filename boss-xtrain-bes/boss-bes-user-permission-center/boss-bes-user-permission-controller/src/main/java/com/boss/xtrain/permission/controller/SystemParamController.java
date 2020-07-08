@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.SystemParamApi;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
@@ -23,7 +24,6 @@ import java.util.Map;
  * @date 2020.07.07
  */
 @RestController
-@RequestMapping("/education/bes/v1/systemParam")
 public class SystemParamController implements SystemParamApi {
 
     @Resource
@@ -36,9 +36,8 @@ public class SystemParamController implements SystemParamApi {
      * @return 删除个数
      */
     @Override
-    @DeleteMapping("/deleteList")
     @ApiLog(msg = "批量删除系统参数")
-    public CommonResponse<Integer> deleteList(@Valid CommonRequest<List<SystemParamDTO>> request) {
+    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<SystemParamDTO>> request) {
         Map<String,List<SystemParamDTO>> body = request.getBody();
         List<SystemParamDTO> dtoList = body.get("dto");
         Integer count;
@@ -53,9 +52,8 @@ public class SystemParamController implements SystemParamApi {
     }
 
     @Override
-    @PostMapping("/insert")
     @ApiLog(msg = "添加系统参数信息")
-    public CommonResponse<Integer> create(@Valid CommonRequest<SystemParamDTO> request) {
+    public CommonResponse<Integer> insert(@Valid CommonRequest<SystemParamDTO> request) {
         Map<String,SystemParamDTO> body = request.getBody();
         SystemParamDTO dto = body.get("dto");
         Integer res;
@@ -72,13 +70,13 @@ public class SystemParamController implements SystemParamApi {
     }
 
     @Override
-    @PostMapping("/query")
     @ApiLog(msg = "获取系统参数目录")
     public CommonResponse<List<SystemParamVO>> selectList(@Valid CommonRequest<SystemParamQuery> request) {
         Map<String,SystemParamQuery> body = request.getBody();
         SystemParamQuery query = body.get("dto");
         try{
-            List<SystemParamVO> systemParamVOList = service.selectByCondition(query);
+            List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
+            List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
             return CommonResponseUtil.ok(systemParamVOList);
         }catch (ServiceException e){
             e.printStackTrace();
@@ -87,12 +85,22 @@ public class SystemParamController implements SystemParamApi {
     }
 
     @Override
-    public CommonRequest<SystemParamVO> select(@Valid CommonRequest<SystemParamQuery> request) {
-        return null;
+    @ApiLog(msg = "搜索一个系统参数")
+    public CommonResponse<SystemParamVO> select(@Valid CommonRequest<SystemParamQuery> request) {
+        Map<String,SystemParamQuery> body = request.getBody();
+        SystemParamQuery query = body.get("dto");
+        try{
+            SystemParamDTO systemParamDTO = service.selectOne(query);
+            SystemParamVO systemParamVO = new SystemParamVO();
+            PojoUtils.copyProperties(systemParamDTO,systemParamVO);
+            return CommonResponseUtil.ok(systemParamVO);
+        }catch (ServiceException e){
+            e.printStackTrace();
+            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
+        }
     }
 
     @Override
-    @PutMapping
     @ApiLog(msg = "更新系统参数信息")
     public CommonResponse<Integer> update(@Valid CommonRequest<SystemParamDTO> request) {
         Map<String,SystemParamDTO> body = request.getBody();
@@ -112,7 +120,6 @@ public class SystemParamController implements SystemParamApi {
     }
 
     @Override
-    @DeleteMapping
     @ApiLog(msg = "删除一条系统参数信息")
     public CommonResponse<Integer> delete(@Valid CommonRequest<SystemParamDTO> request) {
         Map<String,SystemParamDTO> body = request.getBody();

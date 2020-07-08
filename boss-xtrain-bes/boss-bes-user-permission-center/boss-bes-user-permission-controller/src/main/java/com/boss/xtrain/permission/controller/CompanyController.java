@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
@@ -23,7 +24,6 @@ import java.util.Map;
  * @date 2020.07.07
  */
 @RestController
-@RequestMapping("/education/bes/v1/company")
 public class CompanyController implements CompanyApi {
 
     @Resource
@@ -38,7 +38,7 @@ public class CompanyController implements CompanyApi {
     @Override
     @DeleteMapping("/deleteList")
     @ApiLog(msg = "批量删除公司信息")
-    public CommonResponse<Integer> deleteList(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
+    public CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
         Map<String,List<CompanyDTO>> body = request.getBody();
         List<CompanyDTO> dtoList = body.get("dto");
         Integer count;
@@ -61,7 +61,8 @@ public class CompanyController implements CompanyApi {
     @ApiLog(msg = "获取所有的的公司")
     public CommonResponse<List<CompanyVO>> selectAllCompany() {
         try{
-            List<CompanyVO> companyVOList = service.selectAll();
+            List<CompanyDTO> companyDTOList = service.selectAll();
+            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
             return CommonResponseUtil.ok(companyVOList);
         }catch (ServiceException e){
             e.printStackTrace();
@@ -70,9 +71,8 @@ public class CompanyController implements CompanyApi {
     }
 
     @Override
-    @PostMapping("/insert")
     @ApiLog(msg = "添加公司信息")
-    public CommonResponse<Integer> create(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
+    public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();
         CompanyDTO dto = body.get("dto");
         Integer res;
@@ -89,13 +89,13 @@ public class CompanyController implements CompanyApi {
     }
 
     @Override
-    @PostMapping("/query")
     @ApiLog(msg = "获取公司目录")
     public CommonResponse<List<CompanyVO>> selectList(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         Map<String,CompanyQuery> body = request.getBody();
         CompanyQuery query = body.get("dto");
         try{
-            List<CompanyVO> companyVOList = service.selectByCondition(query);
+            List<CompanyDTO> companyDTOList = service.selectByCondition(query);
+            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
             return CommonResponseUtil.ok(companyVOList);
         }catch (ServiceException e){
             e.printStackTrace();
@@ -104,12 +104,21 @@ public class CompanyController implements CompanyApi {
     }
 
     @Override
-    public CommonRequest<CompanyVO> select(@Valid CommonRequest<CompanyQuery> request) {
-        return null;
+    public CommonResponse<CompanyVO> select(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
+        Map<String,CompanyQuery> body = request.getBody();
+        CompanyQuery query = body.get("dto");
+        try{
+            CompanyDTO companyDTO = service.selectOne(query);
+            CompanyVO companyVO = new CompanyVO();
+            PojoUtils.copyProperties(companyDTO,companyVO);
+            return CommonResponseUtil.ok(companyVO);
+        }catch (ServiceException e){
+            e.printStackTrace();
+            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
+        }
     }
 
     @Override
-    @PutMapping
     @ApiLog(msg = "更新公司信息")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();
@@ -129,7 +138,6 @@ public class CompanyController implements CompanyApi {
     }
 
     @Override
-    @DeleteMapping
     @ApiLog(msg = "删除一条公司信息")
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();

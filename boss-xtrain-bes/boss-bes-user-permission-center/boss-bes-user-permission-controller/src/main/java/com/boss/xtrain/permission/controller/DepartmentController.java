@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.DepartmentApi;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
@@ -23,7 +24,6 @@ import java.util.Map;
  * @date 2020.07.07
  */
 @RestController
-@RequestMapping("/education/bes/v1/department")
 public class DepartmentController implements DepartmentApi {
 
     @Resource
@@ -35,9 +35,8 @@ public class DepartmentController implements DepartmentApi {
      * @return 删除个数
      */
     @Override
-    @DeleteMapping("/deleteList")
     @ApiLog(msg = "批量删除部门信息")
-    public CommonResponse<Integer> deleteList(@Valid CommonRequest<List<DepartmentDTO>> request) {
+    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<DepartmentDTO>> request) {
         Map<String,List<DepartmentDTO>> body = request.getBody();
         List<DepartmentDTO> dtoList = body.get("dto");
         Integer count;
@@ -58,14 +57,14 @@ public class DepartmentController implements DepartmentApi {
      * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @Override
-    @PostMapping("/tree")
     @ApiLog(msg = "查找该组织机构下的公司及部门")
     public CommonResponse<List<DepartmentVO>> selectTree(@Valid CommonRequest<DepartmentQuery> request) {
         Map<String,DepartmentQuery> body = request.getBody();
         DepartmentQuery query = body.get("dto");
         try{
             //至少组织机构信息不为空
-            List<DepartmentVO> departmentVOList = service.selectTree(query);
+            List<DepartmentDTO> departmentDTOList = service.selectTree(query);
+            List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
             return CommonResponseUtil.ok(departmentVOList);
         }catch (ServiceException e){
             e.printStackTrace();
@@ -74,9 +73,8 @@ public class DepartmentController implements DepartmentApi {
     }
 
     @Override
-    @PostMapping("/insert")
     @ApiLog(msg = "添加部门信息")
-    public CommonResponse<Integer> create(@Valid CommonRequest<DepartmentDTO> request) {
+    public CommonResponse<Integer> insert(@Valid CommonRequest<DepartmentDTO> request) {
         Map<String,DepartmentDTO> body = request.getBody();
         DepartmentDTO dto = body.get("dto");
         Integer res;
@@ -93,13 +91,13 @@ public class DepartmentController implements DepartmentApi {
     }
 
     @Override
-    @PostMapping("/query")
     @ApiLog(msg = "获取部门目录")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
         Map<String,DepartmentQuery> body = request.getBody();
         DepartmentQuery query = body.get("dto");
         try{
-            List<DepartmentVO> departmentVOList = service.selectByCondition(query);
+            List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
+            List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
             return CommonResponseUtil.ok(departmentVOList);
         }catch (ServiceException e){
             e.printStackTrace();
@@ -108,12 +106,22 @@ public class DepartmentController implements DepartmentApi {
     }
 
     @Override
-    public CommonRequest<DepartmentVO> select(@Valid CommonRequest<DepartmentQuery> request) {
-        return null;
+    @ApiLog(msg = "获取一个部门信息")
+    public CommonResponse<DepartmentVO> select(@Valid CommonRequest<DepartmentQuery> request) {
+        Map<String,DepartmentQuery> body = request.getBody();
+        DepartmentQuery query = body.get("dto");
+        try{
+            DepartmentDTO organizationDTO = service.selectOne(query);
+            DepartmentVO departmentVO = new DepartmentVO();
+            PojoUtils.copyProperties(organizationDTO,departmentVO);
+            return CommonResponseUtil.ok(departmentVO);
+        }catch (ServiceException e){
+            e.printStackTrace();
+            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
+        }
     }
 
     @Override
-    @PutMapping
     @ApiLog(msg = "更新部门信息")
     public CommonResponse<Integer> update(@Valid CommonRequest<DepartmentDTO> request) {
         Map<String,DepartmentDTO> body = request.getBody();
@@ -133,7 +141,6 @@ public class DepartmentController implements DepartmentApi {
     }
 
     @Override
-    @DeleteMapping
     @ApiLog(msg = "删除一条部门信息")
     public CommonResponse<Integer> delete(@Valid CommonRequest<DepartmentDTO> request) {
         Map<String,DepartmentDTO> body = request.getBody();
