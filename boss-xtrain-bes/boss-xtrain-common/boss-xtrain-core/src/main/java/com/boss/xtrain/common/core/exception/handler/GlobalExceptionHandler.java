@@ -1,7 +1,6 @@
 package com.boss.xtrain.common.core.exception.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.boss.xtrain.common.core.aspect.EntityFields;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.SystemError;
 import com.boss.xtrain.common.core.http.CommonResponse;
