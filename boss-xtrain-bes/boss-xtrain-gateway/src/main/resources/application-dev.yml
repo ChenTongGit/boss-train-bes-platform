@@ -5,21 +5,16 @@ spring:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
     gateway:
       routes:
-        - id: demo
-          uri: lb://demo
+        - id: order-seata-service
+          uri: lb://order-seata-service
           order: 0
           predicates:
-            - Path=/demo/**
+            - Path=/order_seata/**
+          # 去除前缀
           filters:
             - StripPrefix=1
-        - id: BND-MESSAGE
-          uri: http://192.168.13.183:8080
-          order: 0
-          predicates:
-            - Path=/bnd-message/**
-          filters:
-            - StripPrefix=1
-  # 组内使用统一的nacos和seata服务 这部分信息可以不用修改
+
+  # 组nacos和seata服务地址
   nacos-url:
     nacos-host: 123.57.156.184
     nacos-port: 8848
