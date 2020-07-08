@@ -109,23 +109,25 @@ public class RoleServiceImpl implements RoleService {
         for(RoleResourceDTO roleResourceDTO:roleResourceDTOS){
             ids.add(roleResourceDTO.getRoleId());
             Role role = roleDao.getStatusById(roleResourceDTO.getRoleId());
-//            if(role.getStatus() == 1)
+            if(role.getStatus() == 1){
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_IN_USE);
+            }
         }
-        return 0;
+        return roleDao.deleteRoleResource(ids);
     }
 
     @Override
     public List<ResourceTreeNode> getResources() {
-        return null;
+        return roleDao.getResources();
     }
 
     @Override
     public List<String> getResourceIdsByRoleId(Long id) {
-        return null;
+        return roleDao.getResourceIdsByRoleId(id);
     }
 
     @Override
     public List<String> getUserIdsByRoleId(Long id) {
-        return null;
+        return roleDao.getUserIdsByRoleId(id);
     }
 }
