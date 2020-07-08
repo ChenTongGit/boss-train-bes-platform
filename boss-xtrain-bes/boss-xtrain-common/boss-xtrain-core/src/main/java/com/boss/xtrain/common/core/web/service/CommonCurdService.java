@@ -2,7 +2,6 @@ package com.boss.xtrain.common.core.web.service;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
-import com.boss.xtrain.common.core.pojo.BaseVO;
 
 import java.util.List;
 
