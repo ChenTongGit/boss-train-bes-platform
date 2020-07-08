@@ -22,7 +22,7 @@ public interface UserOnlineInfoDao {
      * 获取所有
      * @return 列表
      */
-    List<UserOnlineInfo> selectAll();
+    List<UserOnlineInfo> selectAll(List<Long> userIds);
 
     /**
      * 主键搜索
@@ -77,4 +77,11 @@ public interface UserOnlineInfoDao {
      * @return int
      */
     int insert(UserOnlineInfoDTO dto);
+
+    /**
+     * 是否存在
+     * @param id
+     * @return
+     */
+    boolean existsByKey(Long id);
 }

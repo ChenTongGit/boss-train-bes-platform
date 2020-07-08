@@ -27,4 +27,5 @@ public class CompanyDTO extends BaseDTO {
     private String email;
     private String website;
     private Integer status;
+    private Long version;
 }

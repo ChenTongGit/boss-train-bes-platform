@@ -3,6 +3,8 @@ package com.boss.xtrain.permission.pojo.entity;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -12,7 +14,13 @@ import java.util.Date;
  */
 @Data
 @Table(name = "t_user_online_info")
-public class UserOnlineInfo extends BaseEntity {
+public class UserOnlineInfo{
+
+    /**
+     * 主键id
+     */
+    @Id
+    private Long id;
 
     /**
      *
@@ -21,6 +29,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "t_u_id")
     private Long userId;
 
     /**
@@ -30,6 +39,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "code")
     private String code;
 
     /**
@@ -39,6 +49,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "name")
     private String name;
 
     /**
@@ -48,6 +59,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "ip")
     private String ip;
 
     /**
@@ -57,6 +69,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "online_time")
     private Date onlineTime;
 
     /**
@@ -66,6 +79,7 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "offline_time")
     private Date offlineTime;
 
     /**
@@ -75,6 +89,12 @@ public class UserOnlineInfo extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "stop_time")
     private Integer stopTime;
 
+    /**
+     * 状态
+     */
+    @Column(name = "status")
+    private Integer status;
 }

@@ -25,4 +25,5 @@ public class DepartmentVO extends BaseVO {
     private String master;
     private String description;
     private Integer status;
+    private Long version;
 }

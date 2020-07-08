@@ -2,6 +2,7 @@ package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
@@ -10,7 +11,10 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "t_system_param")
-public class SystemParam {
+public class SystemParam extends BaseSystemEntity {
+
+    @Column(name = "t_o_id")
+    private Long organizationId;
 
     /**
      *
@@ -19,6 +23,7 @@ public class SystemParam {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "param_type")
     private String paramType;
 
     /**
@@ -28,6 +33,7 @@ public class SystemParam {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "param")
     private String param;
 
     /**
@@ -37,6 +43,12 @@ public class SystemParam {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "value")
     private String value;
 
+    /**
+     *  当前行的版初始为0 每次数据变动则加1
+     */
+    @Column(name = "version")
+    private Long version;
 }

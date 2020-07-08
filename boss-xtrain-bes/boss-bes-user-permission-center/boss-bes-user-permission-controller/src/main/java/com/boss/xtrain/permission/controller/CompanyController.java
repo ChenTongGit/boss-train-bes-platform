@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
@@ -8,13 +10,12 @@ import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,11 @@ import java.util.Map;
  * @author 53534秦昀清
  * @date 2020.07.07
  */
+@Slf4j
 @RestController
-public class CompanyController implements CompanyApi {
+public class CompanyController extends BaseController implements CompanyApi {
 
-    @Resource
+    @Autowired
     private CompanyService service;
 
     /**
@@ -41,13 +43,12 @@ public class CompanyController implements CompanyApi {
     public CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
         Map<String,List<CompanyDTO>> body = request.getBody();
         List<CompanyDTO> dtoList = body.get("dto");
-        Integer count;
         try{
-            count = service.delete(dtoList);
+            Integer count = service.delete(dtoList);
             String msg = "成功删除了"+count+"个数据";
             return CommonResponseUtil.ok(msg,count.toString());
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
         }
     }
@@ -65,7 +66,29 @@ public class CompanyController implements CompanyApi {
             List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
             return CommonResponseUtil.ok(companyVOList);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
+            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
+        }
+    }
+
+    /**
+     * 分页条件搜索
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiLog(msg = "分页条件搜索公司信息")
+    public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
+        Map<String,CommonPageRequest<CompanyQuery>> body = request.getBody();
+        CommonPageRequest<CompanyQuery> pageRequest = body.get("page");
+        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
+        try{
+            List<CompanyDTO> companyDTOList = service.selectByCondition(pageRequest.getQuery());
+            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
+            return buildPageResponse(new PageInfo<>(companyVOList));
+        }catch (ServiceException e){
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
         }
     }
@@ -75,15 +98,14 @@ public class CompanyController implements CompanyApi {
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();
         CompanyDTO dto = body.get("dto");
-        Integer res;
         try{
-            res = service.insert(dto);
+            Integer res = service.insert(dto);
             if(res==-1){
                 return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_REPEAT_ERROR);
             }
             return CommonResponseUtil.ok(res);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR);
         }
     }
@@ -98,7 +120,7 @@ public class CompanyController implements CompanyApi {
             List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
             return CommonResponseUtil.ok(companyVOList);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
         }
     }
@@ -113,7 +135,7 @@ public class CompanyController implements CompanyApi {
             PojoUtils.copyProperties(companyDTO,companyVO);
             return CommonResponseUtil.ok(companyVO);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
         }
     }
@@ -123,16 +145,15 @@ public class CompanyController implements CompanyApi {
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();
         CompanyDTO dto = body.get("dto");
-        Integer res;
         try{
-            res = service.update(dto);
+            Integer res = service.update(dto);
             if(res==-1){
                 //数据不存在无法更改
                 return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR);
             }
             return CommonResponseUtil.ok(res);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR);
         }
     }
@@ -142,15 +163,14 @@ public class CompanyController implements CompanyApi {
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         Map<String,CompanyDTO> body = request.getBody();
         CompanyDTO dto = body.get("dto");
-        Integer res;
         try{
-            res = service.delete(dto);
+            Integer res = service.delete(dto);
             if(res==-1){
                 return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
             }
             return CommonResponseUtil.ok(res);
         }catch (ServiceException e){
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
             return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
         }
     }

@@ -24,4 +24,5 @@ public class UserOnlineInfoDTO extends BaseDTO {
     private Date offlineTime;
     private Integer stopTime;
     private Integer status;
+    private Long version;
 }

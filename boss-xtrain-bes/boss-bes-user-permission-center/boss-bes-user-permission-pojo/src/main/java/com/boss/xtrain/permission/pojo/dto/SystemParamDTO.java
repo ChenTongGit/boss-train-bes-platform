@@ -18,4 +18,5 @@ public class SystemParamDTO extends BaseDTO {
     private String param;
     private String value;
     private Integer status;
+    private Long version;
 }

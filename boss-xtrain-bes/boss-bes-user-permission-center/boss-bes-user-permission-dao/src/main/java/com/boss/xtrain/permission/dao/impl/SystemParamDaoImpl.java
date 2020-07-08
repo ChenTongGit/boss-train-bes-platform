@@ -6,19 +6,19 @@ import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.entity.SystemParam;
 import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Repository
+@Component
 public class SystemParamDaoImpl implements SystemParamDao {
 
-    @Resource
+    @Autowired
     private SystemParamMapper mapper;
 
     /**

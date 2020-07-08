@@ -6,19 +6,20 @@ import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Repository
+@Component
 public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
 
-    @Resource
+    @Autowired
     private UserOnlineInfoMapper mapper;
 
     /**
@@ -40,8 +41,15 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
      * @return 列表
      */
     @Override
-    public List<UserOnlineInfo> selectAll() {
-        return mapper.selectAll();
+    public List<UserOnlineInfo> selectAll(List<Long> userIds) {
+        UserOnlineInfo info = new UserOnlineInfo();
+        List<UserOnlineInfo> infoList = new ArrayList<>();
+        for(Long userId:userIds){
+            info.setUserId(userId);
+            info = mapper.selectOne(info);
+            infoList.add(info);
+        }
+        return infoList;
     }
 
     /**
@@ -138,5 +146,16 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         UserOnlineInfo info = new UserOnlineInfo();
         PojoUtils.copyProperties(dto,info);
         return mapper.insert(info);
+    }
+
+    /**
+     * 是否存在
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean existsByKey(Long id) {
+        return mapper.existsWithPrimaryKey(id);
     }
 }

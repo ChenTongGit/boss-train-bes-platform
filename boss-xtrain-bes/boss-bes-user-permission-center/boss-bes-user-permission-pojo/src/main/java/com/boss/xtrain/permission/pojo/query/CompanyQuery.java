@@ -18,4 +18,6 @@ public class CompanyQuery extends BaseQuery {
 
     private Long organizationId;
     private String orgName;
+
+    private Long version;
 }

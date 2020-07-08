@@ -10,9 +10,9 @@ import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,40 +23,33 @@ import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    @Resource
+    @Autowired
     private DepartmentDao departmentDao;
 
-    @Resource
+    @Autowired
     private CompanyDao companyDao;
 
-    @Resource
-    private IdWorker worker;
+    private IdWorker worker = new IdWorker();
 
     /**
-     * 查询所有
+     * 查询所有树节点
+     *
+     * @param query
+     * @return
+     */
+    @Override
+    public List<DepartmentQuery> selectTree(DepartmentQuery query) {
+        return PojoUtils.copyListProperties(departmentDao.selectAll(query),DepartmentQuery::new);
+    }
+
+    /**
+     * 查询所有部门信息
      *
      * @return
      */
     @Override
-    public List<DepartmentDTO> selectTree(DepartmentQuery query) {
-        CompanyQuery companyQuery = new CompanyQuery();
-        Long orgId = query.getOrganizationId();
-        String orgName = query.getOrgName();
-        List<Department> all = new ArrayList<>();
-        if(orgId!=null||orgName!=null){
-            companyQuery.setOrganizationId(orgId);
-            companyQuery.setOrgName(orgName);
-            List<Company> companyList = companyDao.selectByCondition(companyQuery);
-            if(!companyList.isEmpty()){
-                for(Company company:companyList){
-                    query.setCompanyId(company.getId());
-                    List<Department> temp = departmentDao.selectByCondition(query);
-                    //去看一下addAll方法！！！
-                    all.addAll(temp);
-                }
-            }
-        }
-        return PojoUtils.copyListProperties(all,DepartmentDTO::new);
+    public List<DepartmentDTO> selectAll(DepartmentQuery query) {
+        return PojoUtils.copyListProperties(departmentDao.selectAll(query),DepartmentDTO::new);
     }
 
     /**

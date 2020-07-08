@@ -1,25 +1,31 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.permission.dao.DepartmentDao;
+import com.boss.xtrain.permission.dao.mapper.CompanyMapper;
 import com.boss.xtrain.permission.dao.mapper.DepartmentMapper;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
+import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.Department;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Repository
+@Component
 public class DepartmentDaoImpl implements DepartmentDao {
 
-    @Resource
+    @Autowired
     private DepartmentMapper mapper;
+
+    @Autowired
+    private CompanyMapper companyMapper;
 
     /**
      * 条件查询
@@ -35,13 +41,29 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     /**
-     * 查所有
+     * 查组织机构下所有
      *
      * @return 结果
      */
     @Override
-    public List<Department> selectAll() {
-        return mapper.selectAll();
+    public List<Department> selectAll(DepartmentQuery query) {
+        Long orgId = query.getId();
+        String orgName = query.getOrgName();
+        List<Department> all = new ArrayList<>();
+        Company company = new Company();
+        Department department = new Department();
+        if(orgId!=null||orgName!=null){
+            company.setOrganizationId(orgId);
+            company.setOrgName(orgName);
+            List<Company> companyList = companyMapper.select(company);
+            if(!companyList.isEmpty()){
+                for(Company temp:companyList){
+                    department.setCompanyId(temp.getId());
+                    all.addAll(mapper.select(department));
+                }
+            }
+        }
+        return all;
     }
 
     /**

@@ -9,10 +9,10 @@ import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.service.OrganizationService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,14 +22,13 @@ import java.util.List;
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
 
-    @Resource
+    @Autowired
     private OrganizationDao organizationDao;
 
-    @Resource
+    @Autowired
     private CompanyDao companyDao;
 
-    @Resource
-    private IdWorker worker;
+    private IdWorker worker = new IdWorker();
 
     /**
      * 通过query查找列表

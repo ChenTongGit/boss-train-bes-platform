@@ -20,4 +20,5 @@ public class OrganizationVO extends BaseVO {
     private String tel;
     private String address;
     private Integer status;
+    private Long version;
 }

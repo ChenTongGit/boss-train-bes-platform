@@ -23,11 +23,11 @@ import java.util.Date;
 public abstract class BaseEntity implements Serializable {
  
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键id
      */
     @Id
+
     private Long id;
 
     /**

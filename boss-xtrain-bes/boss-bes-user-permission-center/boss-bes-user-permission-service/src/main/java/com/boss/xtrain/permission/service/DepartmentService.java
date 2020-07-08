@@ -12,10 +12,16 @@ import java.util.List;
  */
 public interface DepartmentService extends CommonCurdService<DepartmentDTO, DepartmentQuery> {
     /**
+     * 查询所有树节点
+     * @return
+     */
+    List<DepartmentQuery> selectTree(DepartmentQuery query);
+
+    /**
      * 查询所有
      * @return
      */
-    List<DepartmentDTO> selectTree(DepartmentQuery query);
+    List<DepartmentDTO> selectAll(DepartmentQuery query);
 
     /**
      * 搜索一个

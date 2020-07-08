@@ -7,9 +7,9 @@ import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
 import com.boss.xtrain.permission.service.SystemParamService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 /**
  * @author 53534秦昀清
@@ -18,11 +18,10 @@ import java.util.List;
 @Service
 public class SystemParamServiceImpl implements SystemParamService {
 
-    @Resource
+    @Autowired
     private SystemParamDao systemParamDao;
 
-    @Resource
-    private IdWorker worker;
+    private IdWorker worker = new IdWorker();
 
     /**
      * 查询所有

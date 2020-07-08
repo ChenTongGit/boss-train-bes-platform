@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.api;
 
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
@@ -26,5 +28,23 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @PostMapping("/tree")
-    CommonResponse<List<DepartmentVO>> selectTree(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+    CommonResponse<List<DepartmentQuery>> selectTree(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+
+    /**
+     * 初始化所有
+     * @param request request
+     * @return
+     * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
+    @PostMapping("/originAll")
+    CommonResponse<List<DepartmentVO>> selectAll(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+
+    /**
+     * 分页条件搜索
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectByPage")
+    CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request);
+
 }

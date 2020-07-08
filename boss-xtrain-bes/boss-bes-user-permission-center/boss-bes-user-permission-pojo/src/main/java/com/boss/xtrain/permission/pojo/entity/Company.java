@@ -1,8 +1,8 @@
 package com.boss.xtrain.permission.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -12,9 +12,15 @@ import javax.persistence.Transient;
  */
 @Data
 @Table(name = "t_company")
-public class Company extends BaseEntity {
+public class Company extends BaseSystemEntity {
     @Transient
     private String orgName;
+
+    /**
+     * 组织机构ID ，一个组织机构包含多个公司
+     */
+    @Column(name = "t_o_id")
+    private Long organizationId;
 
     /**
      *
@@ -23,6 +29,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "name")
     private String name;
 
     /**
@@ -32,6 +39,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "code")
     private String code;
 
     /**
@@ -41,6 +49,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "mnemonic_code")
     private String mnemonicCode;
 
     /**
@@ -50,6 +59,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "master")
     private String master;
 
     /**
@@ -59,6 +69,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "tax")
     private String tax;
 
     /**
@@ -68,6 +79,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "fax")
     private String fax;
 
     /**
@@ -77,6 +89,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "tel")
     private String tel;
 
     /**
@@ -86,6 +99,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "address")
     private String address;
 
     /**
@@ -95,6 +109,7 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "email")
     private String email;
 
     /**
@@ -104,6 +119,13 @@ public class Company extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "website")
     private String website;
+
+    /**
+     *  当前行的版初始为0 每次数据变动则加1
+     */
+    @Column(name = "version")
+    private Long version;
 
 }

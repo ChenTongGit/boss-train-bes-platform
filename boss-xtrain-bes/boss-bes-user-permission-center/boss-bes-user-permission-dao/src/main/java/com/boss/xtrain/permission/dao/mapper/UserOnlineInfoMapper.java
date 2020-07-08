@@ -2,12 +2,12 @@ package com.boss.xtrain.permission.dao.mapper;
 
 import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
 import com.boss.xtrain.common.core.web.dao.CommonMapper;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Mapper
+@Repository
 public interface UserOnlineInfoMapper extends CommonMapper<UserOnlineInfo> {
 }

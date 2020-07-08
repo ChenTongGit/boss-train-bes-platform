@@ -3,6 +3,7 @@ package com.boss.xtrain.permission.pojo.entity;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class Dictionary extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "name")
     private String name;
 
     /**
@@ -30,6 +32,7 @@ public class Dictionary extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "category")
     private String category;
 
     /**
@@ -39,6 +42,7 @@ public class Dictionary extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "value")
     private String value;
 
     /**
@@ -48,6 +52,7 @@ public class Dictionary extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "remark")
     private String remark;
 
 }

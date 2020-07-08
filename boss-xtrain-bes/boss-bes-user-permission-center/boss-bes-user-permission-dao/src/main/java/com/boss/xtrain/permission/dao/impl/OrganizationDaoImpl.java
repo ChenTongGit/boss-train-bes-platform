@@ -6,18 +6,21 @@ import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
 import com.boss.xtrain.permission.pojo.entity.Organization;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author 53534qyq
  * @date 2020.07.06
  */
-@Repository
+@Slf4j
+@Component
 public class OrganizationDaoImpl implements OrganizationDao {
-    @Resource
+
+    @Autowired
     private OrganizationMapper mapper;
 
     /**
@@ -118,6 +121,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
     public int insert(OrganizationDTO dto) {
         Organization organization = new Organization();
         PojoUtils.copyProperties(dto,organization);
+        log.info(organization.getName());
         return mapper.insert(organization);
     }
 

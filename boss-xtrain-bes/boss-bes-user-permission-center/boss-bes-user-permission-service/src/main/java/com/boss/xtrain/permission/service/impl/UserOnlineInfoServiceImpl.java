@@ -1,20 +1,44 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.util.IdWorker;
+import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
+import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 53534秦昀清
+ * @date 2020.07.08
+ */
+@Service
 public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
+
+    @Autowired
+    private UserOnlineInfoDao infoDao;
+
+    private IdWorker worker = new IdWorker();
+
+    //使用UserDao查所有的
+
     /**
      * 查询所有
      *
      * @return
      */
     @Override
-    public List<UserOnlineInfoDTO> selectAll() {
-        return null;
+    public List<UserOnlineInfoDTO> selectAll(Long orgId) {
+
+        //使用userDao搜索组织机构下所有的userID
+        List<Long> userIds = new ArrayList<>();
+        List<UserOnlineInfo> infoList = infoDao.selectAll(userIds);
+        return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
     }
 
     /**
@@ -25,7 +49,27 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public UserOnlineInfoDTO selectOne(UserOnlineInfoQuery query) {
-        return null;
+        UserOnlineInfoDTO infoDTO = new UserOnlineInfoDTO();
+        UserOnlineInfo info = infoDao.selectOne(query);
+        PojoUtils.copyProperties(info,infoDTO);
+        return infoDTO;
+    }
+
+    /**
+     * 批量更新
+     * --》批量 强制下线
+     *
+     * @param dtoList
+     * @return
+     * @date 2020.07.08
+     */
+    @Override
+    public int updateList(List<UserOnlineInfoDTO> dtoList) {
+        int count = 0;
+        for(UserOnlineInfoDTO dto:dtoList){
+            count +=update(dto);
+        }
+        return count;
     }
 
     /**
@@ -38,7 +82,8 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public List<UserOnlineInfoDTO> selectByCondition(UserOnlineInfoQuery query) {
-        return null;
+        List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
+        return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
     }
 
     /**
@@ -51,7 +96,11 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int delete(UserOnlineInfoDTO dto) {
-        return 0;
+        //已经下线
+        if(dto.getStopTime()!=null){
+            return infoDao.delete(dto);
+        }
+        return -1;
     }
 
     /**
@@ -64,12 +113,16 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int delete(List<UserOnlineInfoDTO> dtoList) {
-        return 0;
+        int count = 0;
+        for(UserOnlineInfoDTO infoDTO:dtoList){
+            count+=delete(infoDTO);
+        }
+        return count;
     }
 
     /**
      * 更新用户数据
-     *
+     * --》下线
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      * @author ChenTong
@@ -77,12 +130,17 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int update(UserOnlineInfoDTO dto) {
-        return 0;
+        Long id = dto.getId();
+        //存在数据并正在线上
+        if(infoDao.existsByKey(id)&&dto.getOfflineTime()==null&&dto.getOnlineTime()!=null){
+            infoDao.update(dto);
+        }
+        return -1;
     }
 
     /**
      * 插入数据
-     *
+     * --》登录
      * @param dto
      * @return int
      * @author ChenTong
@@ -90,6 +148,21 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int insert(UserOnlineInfoDTO dto) {
-        return 0;
+        /**
+         * int res = -1;
+         *         UserOnlineInfoQuery query = new UserOnlineInfoQuery();
+         *         PojoUtils.copyProperties(dto,query);
+         *         List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
+         *         for(UserOnlineInfo info:infoList){
+         *             if(info.getOnlineTime()!=null){
+         *                 break;
+         *             }
+         *             dto.setId(worker.nextId());
+         *             res = infoDao.insert(dto);
+         *         }
+         *         return res;
+         */
+        dto.setId(worker.nextId());
+        return infoDao.insert(dto);
     }
 }

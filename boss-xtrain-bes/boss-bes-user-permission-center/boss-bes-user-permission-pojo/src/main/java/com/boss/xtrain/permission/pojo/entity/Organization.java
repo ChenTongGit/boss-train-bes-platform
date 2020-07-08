@@ -1,11 +1,9 @@
 package com.boss.xtrain.permission.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * @author 53534秦昀清
@@ -13,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @Table(name = "t_organization")
-public class Organization extends BaseEntity {
+public class Organization extends BaseSystemEntity {
 
     @Column(name = "name")
     private String name;
@@ -30,4 +28,9 @@ public class Organization extends BaseEntity {
     @Column(name = "address")
     private String address;
 
+    /**
+     *  当前行的版初始为0 每次数据变动则加1
+     */
+    @Column(name = "version")
+    private Long version;
 }

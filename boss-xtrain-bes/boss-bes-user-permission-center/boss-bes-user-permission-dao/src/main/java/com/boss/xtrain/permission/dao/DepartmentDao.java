@@ -22,7 +22,7 @@ public interface DepartmentDao {
      *  查所有
      * @return 结果
      */
-    List<Department> selectAll();
+    List<Department> selectAll(DepartmentQuery query);
 
     /**
      * 用主键找
@@ -76,4 +76,5 @@ public interface DepartmentDao {
      * @return
      */
     boolean existsByKey(Long departmentId);
+
 }

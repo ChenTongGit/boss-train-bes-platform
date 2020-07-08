@@ -19,4 +19,6 @@ public class SystemParamQuery extends BaseQuery {
     private String paramType;
     private String param;
     private Integer status;
+
+    private Long version;
 }

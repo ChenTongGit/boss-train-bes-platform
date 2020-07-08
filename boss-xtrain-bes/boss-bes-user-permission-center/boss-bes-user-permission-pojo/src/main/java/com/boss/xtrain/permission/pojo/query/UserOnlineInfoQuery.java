@@ -17,6 +17,6 @@ import java.util.Date;
 public class UserOnlineInfoQuery extends BaseQuery {
     private String code;
     private String name;
-    private Date onlinTime;
+    private Date onlineTime;
     private Date offlineTime;
 }

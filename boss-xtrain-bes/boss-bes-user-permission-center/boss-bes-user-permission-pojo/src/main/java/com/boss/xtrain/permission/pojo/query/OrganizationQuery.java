@@ -11,4 +11,6 @@ import lombok.Data;
 public class OrganizationQuery extends BaseQuery {
     private Long id;
     private String name;
+
+    private Long version;
 }

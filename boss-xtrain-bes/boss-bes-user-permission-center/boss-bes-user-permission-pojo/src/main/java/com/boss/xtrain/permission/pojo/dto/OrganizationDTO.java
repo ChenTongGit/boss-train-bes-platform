@@ -20,4 +20,5 @@ public class OrganizationDTO extends BaseDTO {
     private String tel;
     private String address;
     private Integer status;
+    private Long version;
 }

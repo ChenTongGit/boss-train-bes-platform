@@ -27,4 +27,5 @@ public class CompanyVO extends BaseVO {
     private String email;
     private String website;
     private Integer status;
+    private Long version;
 }

@@ -9,10 +9,10 @@ import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,14 +22,13 @@ import java.util.List;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    @Resource
+    @Autowired
     private CompanyDao companyDao;
 
-    @Resource
+    @Autowired
     private DepartmentDao departmentDao;
 
-    @Resource
-    private IdWorker worker;
+    private IdWorker worker = new IdWorker();
 
     /**
      * 查询所有

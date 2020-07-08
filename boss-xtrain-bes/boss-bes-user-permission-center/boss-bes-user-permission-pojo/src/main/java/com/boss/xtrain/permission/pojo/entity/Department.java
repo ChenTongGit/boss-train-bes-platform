@@ -1,11 +1,10 @@
 package com.boss.xtrain.permission.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Date;
 
 /**
  * @author 53534秦昀清
@@ -13,7 +12,10 @@ import java.util.Date;
  */
 @Data
 @Table(name = "t_department")
-public class Department extends BaseEntity {
+public class Department extends BaseSystemEntity {
+
+    @Column(name = "t_c_id")
+    private Long companyId;
 
     @Transient
     private String companyName;
@@ -24,6 +26,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "name")
     private String name;
 
     /**
@@ -33,6 +36,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "mnemonic_code")
     private String mnemonicCode;
 
     /**
@@ -42,6 +46,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "code")
     private String code;
 
     /**
@@ -51,6 +56,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "level")
     private String level;
 
     /**
@@ -60,6 +66,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "parent_id")
     private Long parentId;
 
     @Transient
@@ -71,6 +78,7 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "master")
     private String master;
 
     /**
@@ -80,6 +88,12 @@ public class Department extends BaseEntity {
      *
      * @mbg.generated Mon Jul 06 12:22:48 CST 2020
      */
+    @Column(name = "descript")
     private String description;
 
+    /**
+     *  当前行的版初始为0 每次数据变动则加1
+     */
+    @Column(name = "version")
+    private Long version;
 }
