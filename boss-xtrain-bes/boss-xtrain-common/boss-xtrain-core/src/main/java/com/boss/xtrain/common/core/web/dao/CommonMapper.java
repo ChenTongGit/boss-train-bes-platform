@@ -1,5 +1,6 @@
 package com.boss.xtrain.common.core.web.dao;
 
+import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -14,6 +15,6 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @see
  * @since
  **/
-public interface CommonMapper<T> extends MySqlMapper<T>, Mapper<T> {
+public interface CommonMapper<T> extends MySqlMapper<T>, Mapper<T> ,IdsMapper<T> {
 
 }

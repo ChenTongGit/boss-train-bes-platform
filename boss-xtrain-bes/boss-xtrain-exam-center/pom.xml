@@ -10,6 +10,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>boss-xtrain-exam-center</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>boss-xtrain-exam-api</module>
+        <module>boss-xtrain-exam-controller</module>
+        <module>boss-xtrain-exam-pojo</module>
+        <module>boss-xtrain-exam-dao</module>
+        <module>boss-xtrain-exam-utils</module>
+        <module>boss-xtrain-exam-service</module>
+    </modules>
 
     <dependencies>
         <!-- 引入 SpringMVC 相关依赖，并实现对其的自动配置 -->
@@ -62,6 +71,41 @@
             <artifactId>boss-xtrain-util</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-log</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-config</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-cache-redis</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
