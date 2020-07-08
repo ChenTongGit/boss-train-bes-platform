@@ -13,7 +13,7 @@
     <result column="publisher" property="publisher" jdbcType="BIGINT" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="plan_pepole_num" property="planPeopleNum" jdbcType="INTEGER" />
+    <result column="plan_people_num" property="planPeopleNum" jdbcType="INTEGER" />
     <result column="limit_time" property="limitTime" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="marking_mode" property="markingMode" jdbcType="TINYINT" />
@@ -21,7 +21,7 @@
     <result column="qrcode_url" property="qrcodeUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
-    <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="org_id" property="organizationId" jdbcType="BIGINT" />
     <result column="created_by" property="createdBy" jdbcType="BIGINT" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_by" property="updatedBy" jdbcType="BIGINT" />

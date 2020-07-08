@@ -1,11 +1,13 @@
 package com.boss.xtrain.common.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
+@Component
 @Slf4j
 public class IdWorker {
     // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
@@ -62,9 +64,10 @@ public class IdWorker {
      *
      * @return
      */
-    public synchronized long nextId() {
+    public  synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
+            log.error("Clock moved backwards.  Refusing to generate id for {} milliseconds", lastTimestamp - timestamp);
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
 
@@ -80,11 +83,9 @@ public class IdWorker {
         }
         lastTimestamp = timestamp;
         // ID偏移组合生成最终的ID，并返回ID
-        long nextId = ((timestamp - TWEPOCH) << TIMESTAMP_LEFT_SHIFT)
+        return ((timestamp - TWEPOCH) << TIMESTAMP_LEFT_SHIFT)
                 | (datacenterId << DATACENTER_ID_SHIFT)
                 | (workerId << WORKER_ID_SHIFT) | sequence;
-
-        return nextId;
     }
 
     private long tilNextMillis(final long lastTimestamp) {

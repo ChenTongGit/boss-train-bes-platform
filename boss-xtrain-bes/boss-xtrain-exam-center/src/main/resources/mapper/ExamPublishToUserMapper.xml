@@ -12,7 +12,7 @@
     <result column="t_u_id" property="tUId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
-    <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="org_id" property="organizationId" jdbcType="BIGINT" />
     <result column="created_by" property="createdBy" jdbcType="BIGINT" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_by" property="updatedBy" jdbcType="BIGINT" />

@@ -25,7 +25,7 @@
 
 
         <sqlMapGenerator targetPackage="mapper"
-                         targetProject="./src/main/resources/mapper"/>
+                         targetProject="./src/main/resources"/>
 
         <javaClientGenerator targetPackage="com.boss.xtrain.exam.dao"
                              targetProject="./src/main/java"

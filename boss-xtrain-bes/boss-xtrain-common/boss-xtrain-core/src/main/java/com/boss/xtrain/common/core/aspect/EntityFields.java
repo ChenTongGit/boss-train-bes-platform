@@ -1,7 +1,6 @@
 package com.boss.xtrain.common.core.aspect;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * entity共有属性实体类，存放共有属性实体类
@@ -23,7 +22,7 @@ public class EntityFields implements Serializable {
     /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
-    private Long organizationId;
+    private Long orgId;
 
     /**
      *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
@@ -36,9 +35,9 @@ public class EntityFields implements Serializable {
     private Long updatedBy;
 
 
-    public EntityFields(Long companyId, Long organizationId, Long createdBy, Long updatedBy) {
+    public EntityFields(Long companyId, Long orgId, Long createdBy, Long updatedBy) {
         this.companyId = companyId;
-        this.organizationId = organizationId;
+        this.orgId = orgId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
     }
@@ -54,12 +53,12 @@ public class EntityFields implements Serializable {
         this.companyId = companyId;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public Long getOrgId() {
+        return orgId;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 
     public Long getCreatedBy() {
@@ -83,7 +82,7 @@ public class EntityFields implements Serializable {
     public String toString() {
         return "EntityFields{" +
                 "companyId=" + companyId +
-                ", organizationId=" + organizationId +
+                ", orgId=" + orgId +
                 ", createdBy=" + createdBy +
                 ", updatedBy=" + updatedBy +
                 '}';

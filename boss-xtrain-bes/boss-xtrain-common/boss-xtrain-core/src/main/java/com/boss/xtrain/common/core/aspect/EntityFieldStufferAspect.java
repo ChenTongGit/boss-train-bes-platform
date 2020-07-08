@@ -1,20 +1,20 @@
 package com.boss.xtrain.common.core.aspect;
 
 import com.boss.xtrain.common.redis.api.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 /**
@@ -30,6 +30,7 @@ import javax.annotation.Resource;
 @Aspect
 @Component
 @Configuration
+@Slf4j
 public class EntityFieldStufferAspect {
 
 	@Resource
@@ -38,19 +39,24 @@ public class EntityFieldStufferAspect {
 	/**
 	 * 创建人属性
 	 */
-	private static final String CREATE_BY = "createBy";
+	private static final String CREATE_BY = "createdBy";
 	/**
 	 * 更新人属性
 	 */
-	private static final String UPDATE_BY = "updateBy";
+	private static final String UPDATE_BY = "updatedBy";
 	/**
 	 * 组织ID属性
 	 */
-	private static final String ORG_ID = "organizationId";
+	private static final String ORG_ID = "orgId";
 	/**
 	 * 公司ID属性
 	 */
 	private static final String COMPANY = "companyId";
+
+	/**
+	 * 创建时间
+	 */
+	private static final String CREATE_TIME = "createdTime";
 
 	@Pointcut("execution(* com.boss.xtrain.*.dao.*.update*(..))")
 	public void daoUpdate() {
@@ -64,7 +70,7 @@ public class EntityFieldStufferAspect {
 
 	@Around("daoUpdate()")
 	public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
-
+		log.info("update");
 		EntityFields entityFields = getEntityFields();
 		if (entityFields == null) return pjp.proceed();
 
@@ -73,7 +79,7 @@ public class EntityFieldStufferAspect {
 			for (Object arg : objects) {
 				BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
 				BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
-				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrganizationId());
+				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrgId());
 			}
 		}
 
@@ -83,6 +89,7 @@ public class EntityFieldStufferAspect {
 
 	@Around("daoCreate()")
 	public Object doAroundCreate(ProceedingJoinPoint pjp) throws Throwable {
+		log.info("create");
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if (attributes == null) {
 			return pjp.proceed();
@@ -94,11 +101,13 @@ public class EntityFieldStufferAspect {
 				if (entityFields == null) {
 					continue;
 				}
-				if (StringUtils.isBlank(BeanUtils.getProperty(arg, CREATE_BY))) {
-					BeanUtils.setProperty(arg, CREATE_BY, entityFields.getUpdatedBy());
-				}
+				BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
+				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrgId());
+				BeanUtils.setProperty(arg, CREATE_BY, entityFields.getCreatedBy());
+				BeanUtils.setProperty(arg, CREATE_TIME, new Date());
 			}
 		}
+		log.info(getEntityFields().toString());
 		return pjp.proceed();
 	}
 
@@ -109,7 +118,7 @@ public class EntityFieldStufferAspect {
 		entityFields.setCompanyId(11L);
 		entityFields.setCreatedBy(1L);
 		entityFields.setUpdatedBy(2L);
-		entityFields.setOrganizationId(1L);
+		entityFields.setOrgId(1L);
 		return entityFields;
 	}
 }
