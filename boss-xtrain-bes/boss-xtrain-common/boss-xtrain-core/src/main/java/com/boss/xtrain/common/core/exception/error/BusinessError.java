@@ -90,6 +90,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_ROLE_DELETE_ERROR("220503","删除角色失败"),
     SYSTEM_MANAGER_ROLE_UPDATE_ERROR("220504","更新角色失败"),
     SYSTEM_MANAGER_ROLE_QUERY_ERROR("220505","查询角色失败"),
+    SYSTEM_MANAGER_ROLE_IN_USE("220506","该角色正在使用，无法编辑"),
+
 
     /**
      * 系统管理 职位模块异常码

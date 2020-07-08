@@ -1,4 +1,4 @@
-package com.boss.bes.permission.mapper;
+package com.boss.bes.permission.dao;
 
 import com.boss.bes.permission.pojo.dto.RoleResourceDTO;
 import com.boss.bes.permission.pojo.dto.UserRoleDTO;
@@ -8,19 +8,40 @@ import com.boss.bes.permission.pojo.dto.user.UserQueryDTO;
 import com.boss.bes.permission.pojo.entity.ResourceTreeNode;
 import com.boss.bes.permission.pojo.entity.Role;
 import com.boss.bes.permission.pojo.entity.User;
-import com.boss.xtrain.common.core.web.dao.CommonMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface RoleMapper extends CommonMapper<Role> {
+/*
+ * @Author  :yushiqian
+ * @Date    :20:49 2020/07/08
+ * @Description :role dao层接口
+ * @Version: 1.0
+ */
+public interface RoleDao {
     /**
-    * @param dto
-    * @return List<Role>
-    * @description 通过查询条件查询
+     * 添加角色
+     *
+     * @param dto
+     * @return int
+     *
     */
+    int add(RoleDTO dto);
+
+    /**
+     *修改角色
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int update(RoleDTO dto);
+
+    /**
+     * @param dto
+     * @return List<Role>
+     * @description 通过查询条件查询
+     */
     List<Role> query(RoleQueryDTO dto);
     /**
      * 根据id删除多条记录
@@ -29,16 +50,6 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return int
      */
     int deleteByIds(@Param("ids") List<Long> ids);
-
-    /**
-     * 条件查询用户
-     *
-     * @param dto
-     * @return  List<User>
-     */
-
-    List<User> getUsers(UserQueryDTO dto);
-
 
     /**
      * 获取资源
@@ -134,6 +145,4 @@ public interface RoleMapper extends CommonMapper<Role> {
      */
 
     List<RoleDTO> queryName (RoleDTO dto);
-
-
 }

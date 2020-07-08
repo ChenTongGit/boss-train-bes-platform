@@ -4,9 +4,11 @@ import com.boss.bes.permission.pojo.dto.resource.ResourceQueryDTO;
 import com.boss.bes.permission.pojo.entity.Resource;
 import com.boss.xtrain.common.core.web.dao.CommonMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ResourceMapper extends CommonMapper<Resource> {
     /**
      * @param dto
