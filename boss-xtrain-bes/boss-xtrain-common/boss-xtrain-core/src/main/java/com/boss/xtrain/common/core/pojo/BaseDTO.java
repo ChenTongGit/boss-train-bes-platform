@@ -13,6 +13,7 @@ import java.io.Serializable;
  * @since
  */
 public abstract class BaseDTO implements Serializable {
-    public static final long serialVersionUID = 455424324322L;
+    private static final long serialVersionUID = 455424324322L;
+
 
 }

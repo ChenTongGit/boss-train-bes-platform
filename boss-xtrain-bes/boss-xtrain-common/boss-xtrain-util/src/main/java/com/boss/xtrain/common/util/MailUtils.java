@@ -14,12 +14,12 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 @Slf4j
-@Component
+//@Component
 public class MailUtils {
 //    @Value("873190934@qq.com")
     @Value("${spring.mail.username}")
     private String mailSender;
-    @Autowired
+//    @Autowired
     private JavaMailSender javaMailSender;
     /**
      * 发送文本邮件

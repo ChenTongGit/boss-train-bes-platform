@@ -10,17 +10,14 @@ spring:
 # mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.178.139:3306/db-exam-center?serverTimezone=Asia/Shanghai&useSSL=true&useUnicode=true&characterEncoding=utf-8
-    name: root
+    url: jdbc:mysql://39.101.178.139:3306/db_exam_center?serverTimezone=Asia/Shanghai
     password: zzy873190934
+    username: root
 
 # mybatis
 mybatis:
   mapper-locations: mapper/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
-    log-prefix: debug
-  type-aliases-package: com.boss.xtrain.exam.pojo.model
+  type-aliases-package: com.boss.xtrain.exam.pojo.entity
 
 # pagehelper
 pagehelper:
