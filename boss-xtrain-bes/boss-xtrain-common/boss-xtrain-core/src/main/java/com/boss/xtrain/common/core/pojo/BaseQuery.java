@@ -18,5 +18,5 @@ import java.io.Serializable;
  * @since
  */
 public abstract class BaseQuery implements Serializable {
-    public static final long serialVersionUID = 42432423432432L;
+    private static final long serialVersionUID = 42432423432432L;
 }

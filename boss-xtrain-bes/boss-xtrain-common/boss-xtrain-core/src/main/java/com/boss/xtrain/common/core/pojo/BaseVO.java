@@ -25,7 +25,7 @@ public abstract class BaseVO implements Serializable {
     /**
      * 状态
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 创建时间
@@ -46,11 +46,11 @@ public abstract class BaseVO implements Serializable {
         this.createBy = createBy;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -69,13 +69,7 @@ public abstract class BaseVO implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public BaseVO(String createBy, Boolean status, Date createTime, String remark) {
-        this.createBy = createBy;
-        this.status = status;
-        this.createTime = createTime;
-        this.remark = remark;
-    }
+    
 
     public BaseVO() {
     }

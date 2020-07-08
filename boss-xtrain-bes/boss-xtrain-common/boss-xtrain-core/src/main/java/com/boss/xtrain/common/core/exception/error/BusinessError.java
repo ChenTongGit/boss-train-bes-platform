@@ -134,10 +134,14 @@ public enum BusinessError {
     PAPER_TEMPLATE_REPEAT_ERROR("230205","模板名已存在"),
 
     /**
-     * 考试服务 答题记录异常
+     * 考试服务
      */
-    EXAM_RECORD_INSERT_RECORD_ERROR("240301","新增考试记录失败"),
-    EXAM_RECORD_UPDATE_RECORD_ERROR("240302","交卷更新考试记录失败");
+
+    EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR("240301","交卷添加考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR("240302","交卷查询考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_UPDATE_RECORD_ERROR("240303","交卷更新考试发布失败"),
+    EXAM_RECORD_INSERT_RECORD_ERROR("240304","新增考试记录失败"),
+    EXAM_RECORD_UPDATE_RECORD_ERROR("240305","交卷更新考试记录失败");
 
     /**
      * 异常码
