@@ -24,6 +24,14 @@ public interface CommonCurdService<T extends BaseDTO, Q extends BaseQuery> {
      */
     List<T> selectByCondition(Q query);
 
+    /**
+     * 查询所有
+     * @author ChenTong
+     * @return
+     * @date 2020/7/8 9:50
+     */
+    List<T> selectAll();
+
 
     /**
      * 通过主键删除数据

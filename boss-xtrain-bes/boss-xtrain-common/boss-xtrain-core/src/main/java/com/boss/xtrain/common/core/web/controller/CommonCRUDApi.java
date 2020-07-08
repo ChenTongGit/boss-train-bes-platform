@@ -69,7 +69,7 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @date 2020/7/7 22:09
      */
-    @PostMapping("/deletePatch")
+    @PostMapping("/deleteBatch")
     CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<D>> request);
 
     /**
