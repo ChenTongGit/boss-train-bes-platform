@@ -74,10 +74,12 @@ public class ExamPublishRecordVO extends BaseVO {
     public ExamPublishRecordVO() {
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -154,10 +156,12 @@ public class ExamPublishRecordVO extends BaseVO {
         this.qrCodeUrl = qrCodeUrl;
     }
 
+    @Override
     public Integer getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(Integer status) {
         this.status = status;
     }

@@ -121,6 +121,7 @@ public class ExamRecord extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -133,6 +134,7 @@ public class ExamRecord extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

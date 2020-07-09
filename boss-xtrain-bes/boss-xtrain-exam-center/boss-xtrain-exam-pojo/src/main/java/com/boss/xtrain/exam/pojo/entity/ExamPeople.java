@@ -175,6 +175,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -187,6 +188,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -463,6 +465,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Integer getStatus() {
         return status;
     }
@@ -475,6 +478,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setStatus(Integer status) {
         this.status = status;
     }
@@ -487,6 +491,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getCompanyId() {
         return companyId;
     }
@@ -499,6 +504,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
@@ -535,6 +541,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -547,6 +554,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
@@ -559,6 +567,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -571,6 +580,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
@@ -583,6 +593,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -595,6 +606,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setUpdatedBy(Long updatedBy) {
         this.updatedBy = updatedBy;
     }
@@ -607,6 +619,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Date getUpdatedTime() {
         return updatedTime;
     }
@@ -619,6 +632,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
@@ -631,6 +645,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public Long getVersion() {
         return version;
     }
@@ -643,6 +658,7 @@ public class ExamPeople extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
+    @Override
     public void setVersion(Long version) {
         this.version = version;
     }
