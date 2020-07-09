@@ -1,6 +1,5 @@
 package com.boss.xtrain.exam.dao.impl;
 
-import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamPublishRecordDao;
 import com.boss.xtrain.exam.dao.mapper.ExamPublishRecordMapper;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
@@ -9,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,11 +66,16 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     }
 
 
+    /**
+     * 按条件查找
+     * @author ChenTong
+     * @param query
+     * @return java.util.List<com.boss.xtrain.exam.pojo.entity.ExamPublishRecord>
+     * @date 2020/7/8 22:39
+     */
     @Override
     public List<ExamPublishRecord> queryByCondition(ExamPublishRecordQuery query) {
-        ExamPublishRecord entity = new ExamPublishRecord();
-        PojoUtils.copyProperties(query, entity);
-        return mapper.select(entity);
+        return mapper.queryListByCondition(query);
     }
 
     /**
@@ -95,5 +100,18 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     @Override
     public List<ExamPublishRecord> selectAll() {
         return mapper.selectAll();
+    }
+
+
+
+    /**
+     * 通过id获取该数据的版本号
+     * @author ChenTong
+     * @return java.lang.Long
+     * @date 2020/7/8 23:20
+     */
+    @Override
+    public Long getVersion(Long id) {
+        return mapper.getVersionById(id);
     }
 }

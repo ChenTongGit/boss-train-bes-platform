@@ -2,8 +2,7 @@ package com.boss.xtrain.common.core.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -57,6 +56,21 @@ public abstract class BaseDTO implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
+
+
+    /**
+     * 版本
+     */
+    private Long version;
+
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     /**
      *  更新人ID 后续的update更新此字典

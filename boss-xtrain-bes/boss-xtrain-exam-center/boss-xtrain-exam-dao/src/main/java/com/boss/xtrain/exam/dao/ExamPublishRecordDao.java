@@ -34,5 +34,13 @@ public interface ExamPublishRecordDao extends IBaseDao<ExamPublishRecord, ExamPu
      * @return java.util.List<com.boss.xtrain.exam.pojo.entity.ExamPublishRecord>
      * @date 2020/7/8 16:05
      */
-    List<ExamPublishRecord> selectAll(); 
+    List<ExamPublishRecord> selectAll();
+
+    /**
+     * 通过id获取该数据的版本号
+     * @author ChenTong
+     * @return java.lang.Long
+     * @date 2020/7/8 23:20
+     */
+    Long getVersion(Long id);
 }
