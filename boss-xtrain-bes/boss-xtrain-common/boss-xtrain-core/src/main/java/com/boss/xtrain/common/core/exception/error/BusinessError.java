@@ -115,10 +115,18 @@ public enum BusinessError {
     PAPER_TEMPLATE_REPEAT_ERROR("230205","模板名已存在"),
 
     /**
-     * 考试服务 答题记录异常
+     * 考试服务
      */
-    EXAM_RECORD_INSERT_RECORD_ERROR("240301","新增考试记录失败"),
-    EXAM_RECORD_UPDATE_RECORD_ERROR("240302","交卷更新考试记录失败");
+    EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR("240301","添加考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR("240302","查询考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_UPDATE_RECORD_ERROR("240303","更新考试发布失败"),
+    EXAM_PUBLISH_RECORD_DELETE_RECORD_ERROR("240304","删除考试发布记录失败"),
+    EXAM_RECORD_INSERT_RECORD_ERROR("240305","新增考试记录失败"),
+    EXAM_RECORD_UPDATE_RECORD_ERROR("240306","交卷更新考试记录失败"),
+    PUBLISH_DELETE_IS_PUBLISHED("240307", "该场考试已经发布"),
+    EXAM_PUBLISH_RECORD_GET_VERSION_FAIL("240308", "获取考试发布记录版本号错误"),
+    VERSION_NOT_THE_SAME("240309", "数据版本号不一致")
+    ;
 
     /**
      * 异常码

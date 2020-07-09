@@ -1,10 +1,7 @@
 package com.boss.xtrain.common.core.web.service;
 
-import com.boss.xtrain.common.core.http.CommonPage;
-import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseQuery;
-import com.boss.xtrain.common.core.pojo.BaseVO;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ import java.util.List;
  * @date 2020/6/21 17:28
  * @modified
  **/
-public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends BaseQuery> {
+public interface CommonCurdService<T extends BaseDTO, Q extends BaseQuery> {
 
     /**
      * 通过query查找列表
@@ -24,16 +21,15 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
      * @return java.util.List<V>
      * @date 2020/6/22 7:05
      */
-    List<V> selectByCondition(Q query);
+    List<T> selectByCondition(Q query);
 
     /**
-     * 分页查询
+     * 查询所有
      * @author ChenTong
-     * @param query
-     * @return com.boss.xtrain.common.core.http.CommonPage<V>
-     * @date 2020/7/6 10:20
+     * @return
+     * @date 2020/7/8 9:50
      */
-    CommonPage<V> findPage(CommonRequest<Q> query);
+    List<T> selectAll();
 
 
     /**
@@ -48,7 +44,6 @@ public interface CommonCurdService<T extends BaseDTO,V extends BaseVO, Q extends
     /**
      * 批量删除数据
      * @author ChenTong
-<<<<<<< HEAD
      * @param dtoList id列表
      * @return int
      * @date 2020/7/4 9:09

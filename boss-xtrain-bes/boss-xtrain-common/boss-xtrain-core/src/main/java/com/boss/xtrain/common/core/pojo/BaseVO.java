@@ -18,49 +18,129 @@ public abstract class BaseVO implements Serializable {
     public static final long serialVersionUID = 443243264652L;
 
     /**
-     * 创建人
+     * 主键id
      */
-    private String createBy;
+    private Long id;
 
     /**
      * 状态
      */
-    private Boolean status;
+    private Integer status;
+
+    /**
+     * 记录所属公司ID
+     */
+    private Long companyId;
+
+    /**
+     * 组织机构ID ，一个组织机构包含多个公司
+     */
+    private Long organizationId;
 
     /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+
+    private Date createdTime;
+
+    /**
+     *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
+     */
+    private Long createdBy;
+
+    /**
+     *  更新时间记录便于追踪
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatedTime;
+
+    /**
+     * 更新人id
+     */
+    private Long updatedBy;
+    /**
+     * 版本
+     */
+    private Long version;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public Long getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(Long updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     /**
      * 备注
      */
     private String remark;
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
     public String getRemark() {
         return remark;
@@ -69,24 +149,10 @@ public abstract class BaseVO implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public BaseVO(String createBy, Boolean status, Date createTime, String remark) {
-        this.createBy = createBy;
-        this.status = status;
-        this.createTime = createTime;
-        this.remark = remark;
-    }
+    
 
     public BaseVO() {
     }
 
-    @Override
-    public String toString() {
-        return "BaseVO{" +
-                "createBy='" + createBy + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", remark='" + remark + '\'' +
-                '}';
-    }
+
 }

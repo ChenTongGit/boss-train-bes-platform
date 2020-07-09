@@ -29,25 +29,7 @@ public class MyApiLogAspect {
 
     @Around("apiPointcut()")
     public Object doAround(ProceedingJoinPoint joinPoint){
-        /**
-        try{
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = attributes.getRequest();
 
-            startTime.set(new Date(System.currentTimeMillis()));
-
-            log.info("日志开始打印......");
-            log.info("IP : {}", request.getRemoteAddr());
-            log.info("TIME \uff1a{}", startTime.get());
-            log.info("URL:{}", request.getRequestURL());
-            log.info("HTTP_METHOD : {}", request.getMethod());
-            log.info("CLASS_METHOD : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-            log.info("ARGS : {}", joinPoint.getArgs());
-            log.info("日志结束打印......");
-        } catch (Exception e){
-            throw new BusinessException(SystemError.LOG_NOT_EXIST_ERROR,e.getCause());
-        }
-         **/
         long startTime = System.currentTimeMillis();
         //获取请求信息
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
@@ -68,12 +50,12 @@ public class MyApiLogAspect {
         } catch (Throwable throwable) {
             log.error(throwable.getMessage(),throwable);
             //抛出异常
-            throw new BusinessException(SystemError.LOG_NOT_EXIST_ERROR,throwable);
+//            throw new BusinessException(SystemError.LOG_NOT_EXIST_ERROR,throwable);
         }
         //计算运行时间
         long execTime = System.currentTimeMillis()-startTime;
         //保存日志
-        log.info("regMsg:{}, logMsg:{}, args:{}, execTime:{}ms, resp:{}",reqMsg,logMsg, Arrays.toString(args),execTime,result.toString());
+        log.info("regMsg:{}, logMsg:{}, args:{}, execTime:{}ms",reqMsg,logMsg, Arrays.toString(args),execTime);
         return result;
 
     }
