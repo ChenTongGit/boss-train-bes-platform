@@ -1,6 +1,7 @@
 package com.boss.xtrain.common.core.exception;
 
 import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.common.core.exception.error.DaoError;
 import com.boss.xtrain.common.core.exception.error.SystemError;
 
 import java.io.Serializable;
@@ -19,6 +20,14 @@ public class DaoException extends AppException implements Serializable {
      */
     public DaoException(BusinessError businessError){
         super(businessError);
+    }
+
+    public DaoException(DaoError daoError){
+        super(daoError);
+    }
+
+    public DaoException(DaoError daoError , Throwable cause){
+        super(daoError, cause);
     }
 
     /**

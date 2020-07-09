@@ -4,6 +4,7 @@ import com.boss.xtrain.common.core.pojo.BaseDTO;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 考试发布记录添加dto
@@ -26,6 +27,15 @@ public class ExamPublishRecordDTO extends BaseDTO {
      * 发布用户id
      */
     private Long publisher;
+    /**
+     * 发布人员名称
+     */
+    private String publisherName;
+
+    /**
+     * 发布用户姓名
+     */
+    private String name;
 
     /**
      * 考试开始时间
@@ -48,13 +58,65 @@ public class ExamPublishRecordDTO extends BaseDTO {
     private String description;
 
     /**
-     * 阅卷方式
+     * 阅卷结束时间
      */
     private Integer markStopTime;
 
     /**
+     * 阅卷方式
+     */
+    private Integer markingMode;
+
+    /**
+     * 阅卷官ids
+     */
+    private List<Long> markUserIds;
+
+    public List<Long> getMarkerIds() {
+        return markUserIds;
+    }
+
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
+    public List<Long> getMarkUserIds() {
+        return markUserIds;
+    }
+
+    public void setMarkUserIds(List<Long> markUserIds) {
+        this.markUserIds = markUserIds;
+    }
+
+    public void setMarkerIds(List<Long> markerIds) {
+        this.markUserIds = markerIds;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getMarkingMode() {
+        return markingMode;
+    }
+
+    public void setMarkingMode(Integer markingMode) {
+        this.markingMode = markingMode;
+    }
+
+    /**
      * 所分配阅卷人id
      */
+
+
     private Long[] markPeople;
 
     public String getTitle() {

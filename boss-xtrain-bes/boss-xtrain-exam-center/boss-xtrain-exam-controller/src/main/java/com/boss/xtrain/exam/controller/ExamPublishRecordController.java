@@ -3,14 +3,18 @@ package com.boss.xtrain.exam.controller;
 import com.boss.xtrain.common.core.constant.CommonConstant;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.redis.api.RedisUtil;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamPublishRecordApi;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,15 +38,12 @@ import java.util.List;
  * @since
  **/
 @RestController
-@RequestMapping(CommonConstant.BASIC_URL+"/exampublishrecord")
+@RequestMapping(CommonConstant.BASIC_URL+"/examPublishRecord")
+@Api(value = "考试发布记录Controller" , tags = {"考试发布记录操作接口"})
 public class ExamPublishRecordController extends BaseController implements ExamPublishRecordApi {
 
     @Autowired
     private ExamPublishRecordService examPublishRecordService;
-
-    @Resource
-    private RedisUtil redisUtil;
-
 
     /**
      * 添加新的数据
@@ -56,10 +57,26 @@ public class ExamPublishRecordController extends BaseController implements ExamP
         return CommonResponseUtil.ok(examPublishRecordService.insert(request.getBody()));
     }
 
-    @PostMapping("/test")
+    /**
+     * 查询考试发布记录
+     * @param request
+     * @return
+     */
+    @ApiLog(msg = "查询考试发布记录")
+    @PostMapping("/records")
+    @ApiOperation(value = "查询考试发布记录")
     public CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request){
-        doBeforePagination(1, 3);
-        List<ExamPublishRecordDTO> examPublishRecordDTOS = examPublishRecordService.selectAll();
+        List<ExamPublishRecordDTO> examPublishRecordDTOS ;
+        ExamPublishRecordQuery query = request.getBody().getQuery();
+        // 设置分页区间
+        doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize());
+        // 读取数据
+        if (query == null){
+            examPublishRecordDTOS  = examPublishRecordService.selectAll();
+        }else {
+            examPublishRecordDTOS = examPublishRecordService.selectByCondition(query);
+        }
+        // 转换为vo
         List<ExamPublishRecordVO> examPublishRecordVOS = new ArrayList<>();
         for (ExamPublishRecordDTO item: examPublishRecordDTOS
              ) {
@@ -67,12 +84,13 @@ public class ExamPublishRecordController extends BaseController implements ExamP
             PojoUtils.copyProperties(item, examPublishRecordVO);
             examPublishRecordVOS.add(examPublishRecordVO);
         }
+        // 返回分页信息
         return buildPageResponse(new PageInfo<>(examPublishRecordVOS));
     }
 
+
     /**
      * 查询数据 返回数据vo列表
-     *
      * @param request 请求报文对象，传递query（本质也为dto）
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.util.List < V>>
      * @author ChenTong
@@ -83,9 +101,10 @@ public class ExamPublishRecordController extends BaseController implements ExamP
         return null;
     }
 
+
+
     /**
      * 查找指定查询条件的数据
-     *
      * @param request 请求报文对象，传递query（本质也为dto）
      * @return com.boss.xtrain.common.core.http.CommonRequest<V>
      * @author ChenTong
@@ -112,27 +131,28 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     /**
      * 批量删除数据
      *
-     * @param examPublishRecordDTOs 请求报文对象，传递query（本质也为dto）
+     * @param request 请求报文对象，body为dto
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
      * @date 2020/7/7 22:09
      */
+    @ApiOperation(value = "删除考试发布记录")
     @Override
-    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<ExamPublishRecordDTO>> examPublishRecordDTOs) {
-        return null;
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<ExamPublishRecordDTO>> request) {
+        return CommonResponseUtil.ok(this.examPublishRecordService.delete(request.getBody()));
     }
 
     /**
-     * 更新数据
-     *
-     * @param examPublishRecordDTO
+     * 更新考试发布记录
+     * @param request
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
      * @date 2020/7/7 22:10
      */
+    @ApiOperation(value = "更新考试发布记录")
     @Override
-    public CommonResponse<Integer> update(@Valid CommonRequest<ExamPublishRecordDTO> examPublishRecordDTO) {
-        return null;
+    public CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordDTO> request) {
+        return CommonResponseUtil.ok(this.examPublishRecordService.update(request.getBody()));
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.boss.xtrain.exam.pojo.dto.query;
 
 import com.boss.xtrain.common.core.pojo.BaseQuery;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -22,6 +23,11 @@ public class ExamPublishRecordQuery extends BaseQuery {
     private String publisherName;
 
     /**
+     * title
+     */
+    private String title;
+
+    /**
      * 发布人员ID
      */
     private Long publisher;
@@ -29,27 +35,52 @@ public class ExamPublishRecordQuery extends BaseQuery {
     /**
      * 考试开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
      * 发布时间段-左
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date leftPublishTime;
 
     /**
      * 发布时间段-右
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date rightPublishTime;
 
     /**
      * 批量删除时使用的ids
      */
     private String ids;
+
+    /**
+     * 公司id
+     */
+    private Long companyId;
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getIds() {
         return ids;
@@ -106,6 +137,7 @@ public class ExamPublishRecordQuery extends BaseQuery {
     public void setRightPublishTime(Date rightPublishTime) {
         this.rightPublishTime = rightPublishTime;
     }
+
 
     public ExamPublishRecordQuery() {
     }

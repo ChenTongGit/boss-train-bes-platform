@@ -30,4 +30,53 @@
     <result column="field1" property="field1" jdbcType="VARCHAR" />
     <result column="field2" property="field2" jdbcType="VARCHAR" />
   </resultMap>
+
+  <select id="queryListByCondition" resultMap="BaseResultMap" parameterType="com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery">
+    <choose>
+      <when test="title">
+        <bind name="title" value="'%' + _parameter.title + '%'"/>
+      </when>
+      <otherwise>
+        <bind name="title" value="'%%'"/>
+      </otherwise>
+    </choose>
+    SELECT * FROM t_exam_publish_record
+    <where>
+      <if test="title != null and title != '' ">
+        AND title LIKE #{title}
+      </if>
+      <if test="publisher != null">
+        AND publisher = #{publisher}
+      </if>
+      <if test="leftPublishTime != null">
+        AND created_time &gt;= #{leftPublishTime}
+      </if>
+      <if test="rightPublishTime != null">
+        AND created_time &lt;= #{rightPublishTime}
+      </if>
+      <if test="startTime != null">
+        AND start_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null">
+        AND end_time &lt;= #{endTime}
+      </if>
+      <if test="companyId != null">
+        AND company_id = #{companyId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getVersionById" parameterType="long" resultType="long">
+    select t.version from t_exam_publish_record t where t.id = #{id}
+  </select>
+
+
+  <update id="updateStatus">
+    UPDATE db_exam_center.t_exam_publish_record
+    SET status = 1
+    WHERE status = 0 AND id IN
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
 </mapper>
