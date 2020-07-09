@@ -9,7 +9,9 @@ import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,10 +19,10 @@ import java.util.List;
  * @date 2020.07.06
  */
 @Slf4j
-@Component
+@Repository
 public class OrganizationDaoImpl implements OrganizationDao {
 
-    @Autowired
+    @Resource
     private OrganizationMapper mapper;
 
     /**

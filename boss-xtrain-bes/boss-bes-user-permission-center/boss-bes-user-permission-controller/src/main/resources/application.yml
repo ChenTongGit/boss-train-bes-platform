@@ -10,7 +10,11 @@ spring:
 
   application:
     name: system-center
-  #cloud:
+  redis:
+    host: 39.97.106.243
+    password: 991018
+
+      #cloud:
     #nacos:
       # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
       #discovery:
@@ -42,6 +46,8 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.boss.xtrain.permission.pojo.entity
   configuration.map-underscore-to-camel-case: true
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
 
 pagehelper:
   reasonable: true

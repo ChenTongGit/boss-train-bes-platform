@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Mapper
-@Repository
+
 public interface UserOnlineInfoMapper extends CommonMapper<UserOnlineInfo> {
 }

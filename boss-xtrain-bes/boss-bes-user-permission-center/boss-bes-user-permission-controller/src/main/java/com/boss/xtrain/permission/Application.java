@@ -12,7 +12,6 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication(scanBasePackages = {CommonConstant.BASE_PACKAGE})
 @MapperScan(basePackages = "com.boss.xtrain.permission.mapper")
-@ComponentScan(basePackages = "com.boss.xtrain.permission.*")
 public class Application {
 
     /**

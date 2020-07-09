@@ -12,6 +12,7 @@ import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -109,6 +110,7 @@ public class CompanyController extends BaseController implements CompanyApi {
 
     @Override
     @ApiLog(msg = "获取公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<List<CompanyVO>> selectList(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
         try{

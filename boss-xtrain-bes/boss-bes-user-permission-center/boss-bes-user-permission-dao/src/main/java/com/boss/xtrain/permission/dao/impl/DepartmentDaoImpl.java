@@ -10,7 +10,9 @@ import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +20,13 @@ import java.util.List;
  * @author 53534秦昀清
  * @date 2020.07.06
  */
-@Component
+@Repository
 public class DepartmentDaoImpl implements DepartmentDao {
 
-    @Autowired
+    @Resource
     private DepartmentMapper mapper;
 
-    @Autowired
+    @Resource
     private CompanyMapper companyMapper;
 
     /**

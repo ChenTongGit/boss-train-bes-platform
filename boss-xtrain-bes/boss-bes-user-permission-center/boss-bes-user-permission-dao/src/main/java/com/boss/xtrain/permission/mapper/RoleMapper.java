@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface RoleMapper extends CommonMapper<Role> {
     /**
     * @param dto

@@ -11,7 +11,9 @@ import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /*
@@ -21,10 +23,10 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Component
+@Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
+    @Resource
     UserMapper userMapper;
 
     @Override

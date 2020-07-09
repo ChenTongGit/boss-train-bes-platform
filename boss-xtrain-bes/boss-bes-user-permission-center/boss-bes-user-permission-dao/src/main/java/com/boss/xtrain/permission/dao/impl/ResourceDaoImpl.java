@@ -8,6 +8,7 @@ import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Component
+@Repository
 public class ResourceDaoImpl implements ResourceDao {
 
-    @Autowired
+    @javax.annotation.Resource
     ResourceMapper resourceMapper;
 
     @Override
