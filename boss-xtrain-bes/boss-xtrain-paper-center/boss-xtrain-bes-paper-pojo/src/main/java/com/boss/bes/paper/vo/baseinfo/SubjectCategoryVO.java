@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class SubjectCategoryVO extends BaseVO {
-    private String id;
+    private String subjectId;
     private String name;
 
 }

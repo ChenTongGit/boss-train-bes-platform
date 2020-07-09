@@ -16,12 +16,5 @@
         <module>boss-xtrain-bes-paper-pojo</module>
         <module>boss-xtrain-paper-util</module>
     </modules>
-    <dependencies>
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 
 </project>

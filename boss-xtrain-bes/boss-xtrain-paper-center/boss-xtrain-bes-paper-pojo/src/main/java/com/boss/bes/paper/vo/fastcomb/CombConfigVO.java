@@ -11,7 +11,7 @@ public class CombConfigVO extends BaseVO {
     /**
      * 组卷配置ID
      */
-    private String id;
+    private String combConfigId;
     /**
      * 组卷配置名
      */
@@ -20,10 +20,6 @@ public class CombConfigVO extends BaseVO {
      * 难度ID
      */
     private String difficulty;
-    /**
-     * 状态
-     */
-    private Byte status;
     /**
      * 备注
      */

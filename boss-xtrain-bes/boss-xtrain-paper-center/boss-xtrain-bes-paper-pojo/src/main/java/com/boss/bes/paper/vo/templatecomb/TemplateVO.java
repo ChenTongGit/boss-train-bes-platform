@@ -43,9 +43,6 @@ public class TemplateVO extends BaseVO {
      * 试卷描述
      */
     private String discript;
-    /**
-     * 状态
-     */
-    private Byte status;
+
 }
 

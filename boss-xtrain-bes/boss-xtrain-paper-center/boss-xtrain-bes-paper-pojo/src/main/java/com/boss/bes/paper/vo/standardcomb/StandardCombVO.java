@@ -20,7 +20,7 @@ public class StandardCombVO extends BaseVO {
      * Description: 状态
      */
     @NotBlank(message = "状态不能为空")
-    private Byte status;
+    private Boolean paperStatus;
     /**
      * Description: 试卷名
      */

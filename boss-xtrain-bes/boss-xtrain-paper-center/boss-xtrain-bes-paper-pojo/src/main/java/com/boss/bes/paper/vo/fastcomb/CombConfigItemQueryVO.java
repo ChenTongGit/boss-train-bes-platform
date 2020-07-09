@@ -15,7 +15,7 @@ public class CombConfigItemQueryVO extends BaseVO {
      * 组卷配置ID
      */
     @NotBlank(message = "组卷配置ID不能为空")
-    private String id;
+    private String combPaperId;
     /**
      * 试卷名
      */
