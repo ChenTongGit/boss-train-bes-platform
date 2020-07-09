@@ -5,10 +5,12 @@ import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamPublishRecordDao;
-import com.boss.xtrain.exam.dao.mapper.ExamPublishRecordMapper;
+import com.boss.xtrain.exam.dao.ExamPublishToUserDao;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishToUserDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
+import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
 
     @Autowired
     private ExamPublishRecordDao examPublishRecordDao;
+
+    @Autowired
+    private ExamPublishToUserDao examPublishToUserDao;
 
     @Override
     public Integer publishExam(ExamPublishRecordDTO dto) {
@@ -77,11 +82,33 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
             publisherMap.put(12L, "李四");
             // --------假数据 end
 
+            // TODO List<UserVO> markPeople = systemService.geMarkPeople();
+            Map<Long, String> markPeople = new HashMap<>();
+            // --------假数据 -start
+            markPeople.put(1L, "阅卷人1");
+            markPeople.put(2L, "阅卷人2");
+            markPeople.put(3L, "阅卷人3");
+            // --------假数据 end
+
+            // 相关人名以及id的关系查询
             for (ExamPublishRecord item:examPublishRecords) {
                 ExamPublishRecordDTO examPublishRecordDTO = new ExamPublishRecordDTO();
                 PojoUtils.copyProperties(item, examPublishRecordDTO);
                 // 发布人名以及id转换
                 examPublishRecordDTO.setPublisherName(publisherMap.get(examPublishRecordDTO.getPublisher()));
+                // 阅卷官人民以及id
+                ExamPublishToUser examPublishToUserQuery  = new ExamPublishToUser();
+                // 获取当前考试的阅卷人列表
+                examPublishToUserQuery.setPublishId(item.getId());
+                List<ExamPublishToUser> examPublishToUsers = examPublishToUserDao.query(examPublishToUserQuery);
+                // 添加到dto中
+                examPublishRecordDTO.setMarkPeople(new ArrayList<>());
+                for (ExamPublishToUser examPublishToUser: examPublishToUsers) {
+                    ExamPublishToUserDTO examPublishToUserDTO = new ExamPublishToUserDTO();
+                    examPublishToUserDTO.setMarkPeople(examPublishToUser.getMarkPeople());
+                    examPublishToUserDTO.setName(markPeople.get(examPublishToUser.getMarkPeople()));
+                    examPublishRecordDTO.getMarkPeople().add(examPublishToUserDTO);
+                }
                 examPublishRecordDTOS.add(examPublishRecordDTO);
             }
             return examPublishRecordDTOS;
@@ -201,6 +228,8 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
             PojoUtils.copyProperties(dto, examPublishRecord);
             // 雪花算法获取id
             examPublishRecord.setId(idWorker.nextId());
+            // 二维码链接
+
             return examPublishRecordDao.insert(examPublishRecord);
         }catch (Exception e){
             log.error(BusinessError.EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR.getMessage(), e);

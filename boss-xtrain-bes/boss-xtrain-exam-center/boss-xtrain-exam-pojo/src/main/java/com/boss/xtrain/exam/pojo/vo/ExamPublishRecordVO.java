@@ -32,6 +32,11 @@ public class ExamPublishRecordVO extends BaseVO {
     private Long publisherID;
 
     /**
+     * 发布人姓名
+     */
+    private String publisherName;
+
+    /**
      * 考试开始时间
      */
     private Date startTime;
@@ -70,6 +75,15 @@ public class ExamPublishRecordVO extends BaseVO {
      * 是否发布
      */
     private Integer status;
+
+
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
 
     public ExamPublishRecordVO() {
     }

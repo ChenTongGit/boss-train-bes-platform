@@ -25,7 +25,6 @@ import java.util.Date;
 public abstract class BaseEntity implements Serializable {
  
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键id
      */
@@ -112,11 +111,11 @@ public abstract class BaseEntity implements Serializable {
         this.companyId = companyId;
     }
 
-    public Long getOrganizationId() {
+    public Long getOrgId() {
         return organizationId;
     }
 
-    public void setOrganizationId(Long organizationId) {
+    public void setOrgId(Long organizationId) {
         this.organizationId = organizationId;
     }
 

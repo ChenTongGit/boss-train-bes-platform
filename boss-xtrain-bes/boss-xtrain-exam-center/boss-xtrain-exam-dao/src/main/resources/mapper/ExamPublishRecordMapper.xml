@@ -19,7 +19,7 @@
     <result column="marking_mode" property="markingMode" jdbcType="TINYINT" />
     <result column="marking_stop_time" property="markingStopTime" jdbcType="TIMESTAMP" />
     <result column="qrcode_url" property="qrcodeUrl" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT"/>
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
     <result column="org_id" property="organizationId" jdbcType="BIGINT" />
     <result column="created_by" property="createdBy" jdbcType="BIGINT" />
@@ -74,8 +74,8 @@
   <update id="updateStatus">
     UPDATE db_exam_center.t_exam_publish_record
     SET status = 1
-    WHERE status = 0 AND id IN
-    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+    WHERE status = 0 AND markPeople IN
+    <foreach collection="ids" item="markPeople" index="index" open="(" close=")" separator=",">
       #{id}
     </foreach>
   </update>

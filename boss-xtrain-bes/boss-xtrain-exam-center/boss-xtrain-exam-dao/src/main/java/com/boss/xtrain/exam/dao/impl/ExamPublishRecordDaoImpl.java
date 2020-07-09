@@ -37,6 +37,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
      */
     @Override
     public int insert(ExamPublishRecord entity) {
+
         return mapper.insert(entity);
     }
 

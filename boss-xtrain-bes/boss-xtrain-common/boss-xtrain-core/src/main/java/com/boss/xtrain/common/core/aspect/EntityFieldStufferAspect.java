@@ -47,7 +47,7 @@ public class EntityFieldStufferAspect {
 	/**
 	 * 组织ID属性
 	 */
-	private static final String ORG_ID = "orgId";
+	private static final String ORG_ID = "organizationId";
 	/**
 	 * 公司ID属性
 	 */
@@ -90,7 +90,6 @@ public class EntityFieldStufferAspect {
 	@Around("daoCreate()")
 	public Object doAroundCreate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("create");
-		redisUtil.set("test","hhhhchentong");
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if (attributes == null) {
 			return pjp.proceed();
