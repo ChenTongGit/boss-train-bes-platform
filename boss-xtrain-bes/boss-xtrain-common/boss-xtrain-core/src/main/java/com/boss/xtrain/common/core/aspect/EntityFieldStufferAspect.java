@@ -90,6 +90,7 @@ public class EntityFieldStufferAspect {
 	@Around("daoCreate()")
 	public Object doAroundCreate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("create");
+		redisUtil.set("test","hhhhchentong");
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if (attributes == null) {
 			return pjp.proceed();
