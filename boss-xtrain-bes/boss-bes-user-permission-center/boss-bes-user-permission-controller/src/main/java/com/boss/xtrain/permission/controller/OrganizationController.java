@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 53534秦昀清
@@ -34,9 +33,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "添加新的组织机构")
     @Override
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
-        Map<String,OrganizationDTO> body = request.getBody();
-        //body.get 的参数是 Object key
-        OrganizationDTO dto = body.get("dto");
+        OrganizationDTO dto = request.getBody();
         Integer res;
         try{
             res = service.insert(dto);
@@ -53,8 +50,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "模糊查询组织机构")
     @Override
     public CommonResponse<List<OrganizationVO>> selectList(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
-        Map<String,OrganizationQuery> body = request.getBody();
-        OrganizationQuery query = body.get("dto");
+        OrganizationQuery query = request.getBody();
         try{
             List<OrganizationDTO> organizationDTOList = service.selectByCondition(query);
             List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
@@ -68,8 +64,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiLog(msg = "搜索一个组织机构")
     public CommonResponse<OrganizationVO> select(@Valid CommonRequest<OrganizationQuery> request) {
-        Map<String,OrganizationQuery> body = request.getBody();
-        OrganizationQuery query = body.get("dto");
+        OrganizationQuery query = request.getBody();
         try{
             OrganizationDTO organizationDTO = service.selectOne(query);
             OrganizationVO organizationVO = new OrganizationVO();
@@ -84,8 +79,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "更新组织机构信息")
     @Override
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
-        Map<String,OrganizationDTO> body = request.getBody();
-        OrganizationDTO dto = body.get("dto");
+        OrganizationDTO dto = request.getBody();
         try{
             Integer res = service.update(dto);
             if(res==-1){
@@ -107,8 +101,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "删除一个组织机构")
     @Override
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
-        Map<String,OrganizationDTO> body = request.getBody();
-        OrganizationDTO dto = body.get("dto");
+        OrganizationDTO dto = request.getBody();
         try{
             Integer count = service.delete(dto);
             if(count==-1){
@@ -128,9 +121,8 @@ public class OrganizationController extends BaseController implements Organizati
      */
     @ApiLog(msg = "批量删除组织机构")
     @Override
-    public CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<OrganizationDTO>> request) {
-        Map<String,List<OrganizationDTO>> body = request.getBody();
-        List<OrganizationDTO> dtoList = body.get("dto");
+    public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<OrganizationDTO>> request) {
+        List<OrganizationDTO> dtoList = request.getBody();
         try{
             Integer count = service.delete(dtoList);
             String msg = "成功删除了"+count+"个数据";
@@ -162,8 +154,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiLog(msg = "分页全搜索组织机构")
     public CommonResponse<CommonPage<OrganizationVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
-        Map<String,CommonPageRequest<OrganizationQuery>> body = request.getBody();
-        CommonPageRequest<OrganizationQuery> pageRequest = body.get("page");
+        CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
         try{
             List<OrganizationDTO> organizationDTOList = service.selectAll();
@@ -178,8 +169,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiLog(msg = "分页条件搜索组织机构")
     public CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
-        Map<String,CommonPageRequest<OrganizationQuery>> body = request.getBody();
-        CommonPageRequest<OrganizationQuery> pageRequest = body.get("page");
+        CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
         try{
             List<OrganizationDTO> organizationDTOList = service.selectByCondition(pageRequest.getQuery());

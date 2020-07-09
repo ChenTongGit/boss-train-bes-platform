@@ -11,11 +11,6 @@ import java.util.List;
  * @date 2020.07.06
  */
 public interface OrganizationService extends CommonCurdService<OrganizationDTO, OrganizationQuery> {
-    /**
-     * 查询所有
-     * @return
-     */
-    List<OrganizationDTO> selectAll();
 
     /**
      * 只查一个

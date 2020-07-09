@@ -16,7 +16,7 @@ public interface UserOnlineInfoService extends CommonCurdService<UserOnlineInfoD
      * 查询所有
      * @return
      */
-    List<UserOnlineInfoDTO> selectAll(Long orgId);
+    List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query);
 
     /**
      * 搜索一个

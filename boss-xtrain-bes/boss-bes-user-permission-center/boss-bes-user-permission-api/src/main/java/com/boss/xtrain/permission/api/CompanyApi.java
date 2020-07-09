@@ -27,7 +27,7 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
      * @return
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
-    CommonResponse<List<CompanyVO>> selectAllCompany();
+    CommonResponse<List<CompanyVO>> selectAllCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
     /**
      * 分页条件搜索

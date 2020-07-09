@@ -22,7 +22,13 @@ public interface UserOnlineInfoDao {
      * 获取所有
      * @return 列表
      */
-    List<UserOnlineInfo> selectAll(List<Long> userIds);
+    List<UserOnlineInfo> selectAllOrigin(List<Long> userIds);
+
+    /**
+     * 无条件获取所有
+     * @return 列表
+     */
+    List<UserOnlineInfo> selectAll();
 
     /**
      * 主键搜索

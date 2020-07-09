@@ -11,11 +11,6 @@ import java.util.List;
  * @date 2020.07.07
  */
 public interface CompanyService extends CommonCurdService<CompanyDTO, CompanyQuery> {
-    /**
-     * 查询所有
-     * @return
-     */
-    List<CompanyDTO> selectAll();
 
     /**
      * 搜索一个
@@ -23,4 +18,11 @@ public interface CompanyService extends CommonCurdService<CompanyDTO, CompanyQue
      * @return
      */
     CompanyDTO selectOne(CompanyQuery query);
+
+    /**
+     * 组织机构下所有
+     * @param query q
+     * @return
+     */
+    List<CompanyDTO> selectOrgCompanyAll(CompanyQuery query);
 }

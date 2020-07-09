@@ -1,0 +1,110 @@
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="useMapperCommentGenerator" value="false"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+            <property name="forceAnnotation" value="true"/>
+            <property name="beginningDelimiter" value=""/>
+            <property name="endingDelimiter" value=""/>
+        </plugin>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://39.101.178.139:3306/db_system_center"
+                        userId="root"
+                        password="zzy873190934">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.boss.bes.permission.pojo.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.boss.bes.permission.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="position" domainObjectName="Position">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_company" domainObjectName="Company">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_department" domainObjectName="Department">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_dictionary" domainObjectName="Dictionary">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_organization" domainObjectName="Organization">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_resource" domainObjectName="Resource">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_role" domainObjectName="Role">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_role_resource" domainObjectName="RoleResource">
+            <property name="useActualColumnNames" value="true"></property>
+        </table>
+
+        <table tableName="t_system_param" domainObjectName="SystemParam">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_user" domainObjectName="User">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_user_online_info" domainObjectName="UserOnlineInfo">
+            <property name="useActualColumnNames" value="true"></property>
+            <property name="rootClass" value="com.boss.xtrain.common.core.pojo.BaseEntity"></property>
+            <generatedKey column="id" sqlStatement="JDBC"></generatedKey>
+        </table>
+
+        <table tableName="t_user_role" domainObjectName="UserRole">
+            <property name="useActualColumnNames" value="true"></property>
+        </table>
+    </context>
+</generatorConfiguration>

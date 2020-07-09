@@ -95,7 +95,6 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return int
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public int insert(OrganizationDTO dto) {
         OrganizationQuery query = new OrganizationQuery();
         PojoUtils.copyProperties(dto,query);
@@ -119,6 +118,11 @@ public class OrganizationServiceImpl implements OrganizationService {
         return PojoUtils.copyListProperties(organizationList,OrganizationDTO::new);
     }
 
+    /**
+     * 只查一个
+     * @param query query
+     * @return
+     */
     @Override
     public OrganizationDTO selectOne(OrganizationQuery query) {
         OrganizationDTO organization = new OrganizationDTO();

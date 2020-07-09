@@ -27,4 +27,6 @@ public class DepartmentQuery extends BaseQuery {
     private String orgName;
 
     private Long version;
+
+    private Long userId;
 }

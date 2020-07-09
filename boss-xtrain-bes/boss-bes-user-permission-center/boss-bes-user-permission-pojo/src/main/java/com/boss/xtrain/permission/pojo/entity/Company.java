@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -11,12 +12,10 @@ import javax.persistence.Transient;
  * @date 2020.07.06
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "t_company")
 public class Company extends BaseSystemEntity {
-    @Transient
-    private String orgName;
-
-    /**
+   /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
     @Column(name = "t_o_id")

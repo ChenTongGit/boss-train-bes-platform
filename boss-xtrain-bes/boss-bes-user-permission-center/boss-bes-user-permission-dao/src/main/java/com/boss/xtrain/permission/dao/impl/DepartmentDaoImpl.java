@@ -1,8 +1,8 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.permission.dao.DepartmentDao;
-import com.boss.xtrain.permission.dao.mapper.CompanyMapper;
-import com.boss.xtrain.permission.dao.mapper.DepartmentMapper;
+import com.boss.xtrain.permission.mapper.CompanyMapper;
+import com.boss.xtrain.permission.mapper.DepartmentMapper;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.Department;
@@ -47,14 +47,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public List<Department> selectAll(DepartmentQuery query) {
-        Long orgId = query.getId();
-        String orgName = query.getOrgName();
+        Long orgId = query.getOrganizationId();
         List<Department> all = new ArrayList<>();
         Company company = new Company();
         Department department = new Department();
-        if(orgId!=null||orgName!=null){
+        if(orgId!=null){
             company.setOrganizationId(orgId);
-            company.setOrgName(orgName);
             List<Company> companyList = companyMapper.select(company);
             if(!companyList.isEmpty()){
                 for(Company temp:companyList){

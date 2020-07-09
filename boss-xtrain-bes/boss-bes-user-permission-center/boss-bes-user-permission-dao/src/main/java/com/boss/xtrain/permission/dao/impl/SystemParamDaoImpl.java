@@ -1,7 +1,7 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.permission.dao.SystemParamDao;
-import com.boss.xtrain.permission.dao.mapper.SystemParamMapper;
+import com.boss.xtrain.permission.mapper.SystemParamMapper;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.entity.SystemParam;
 import com.boss.xtrain.permission.pojo.query.SystemParamQuery;

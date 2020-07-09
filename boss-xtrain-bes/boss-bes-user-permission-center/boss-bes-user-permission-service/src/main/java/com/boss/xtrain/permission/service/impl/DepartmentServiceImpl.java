@@ -1,11 +1,9 @@
 package com.boss.xtrain.permission.service.impl;
 
-import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.DepartmentDao;
+import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
-import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.Department;
-import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.util.IdWorker;
@@ -13,7 +11,6 @@ import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,18 +24,19 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDao departmentDao;
 
     @Autowired
-    private CompanyDao companyDao;
+    private UserDao userDao;
 
     private IdWorker worker = new IdWorker();
 
     /**
      * 查询所有树节点
-     *
-     * @param query
+     * 用户Id获取到org，然后向下获取到所有的
+     * @param
      * @return
      */
     @Override
     public List<DepartmentQuery> selectTree(DepartmentQuery query) {
+        query.setOrganizationId(getOrg(query.getUserId()));
         return PojoUtils.copyListProperties(departmentDao.selectAll(query),DepartmentQuery::new);
     }
 
@@ -49,6 +47,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public List<DepartmentDTO> selectAll(DepartmentQuery query) {
+        query.setOrganizationId(getOrg(query.getUserId()));
         return PojoUtils.copyListProperties(departmentDao.selectAll(query),DepartmentDTO::new);
     }
 
@@ -75,6 +74,19 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public List<DepartmentDTO> selectByCondition(DepartmentQuery query) {
+        return PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
+    }
+
+    /**
+     * 查询所有
+     *
+     * @return
+     * @author ChenTong
+     * @date 2020/7/8 9:50
+     */
+    @Override
+    public List<DepartmentDTO> selectAll() {
+        DepartmentQuery query = new DepartmentQuery();
         return PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
     }
 
@@ -139,5 +151,14 @@ public class DepartmentServiceImpl implements DepartmentService {
             return departmentDao.insert(dto);
         }
         return -1;
+    }
+
+    /**
+     * 获取登录用户所属的org
+     * @param userId
+     * @return
+     */
+    private Long getOrg(Long userId){
+        return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }

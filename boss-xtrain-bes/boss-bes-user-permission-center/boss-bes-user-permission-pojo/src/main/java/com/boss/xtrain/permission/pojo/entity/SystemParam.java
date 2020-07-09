@@ -1,15 +1,18 @@
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "t_system_param")
 public class SystemParam extends BaseSystemEntity {
 

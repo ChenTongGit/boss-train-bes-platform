@@ -39,9 +39,8 @@ public class SystemParamController extends BaseController implements SystemParam
      */
     @Override
     @ApiLog(msg = "批量删除系统参数")
-    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<SystemParamDTO>> request) {
-        Map<String,List<SystemParamDTO>> body = request.getBody();
-        List<SystemParamDTO> dtoList = body.get("dto");
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<SystemParamDTO>> request) {
+        List<SystemParamDTO> dtoList = request.getBody();
         try{
             Integer count = service.delete(dtoList);
             String msg = "成功删除了"+count+"个数据";
@@ -55,8 +54,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "添加系统参数信息")
     public CommonResponse<Integer> insert(@Valid CommonRequest<SystemParamDTO> request) {
-        Map<String,SystemParamDTO> body = request.getBody();
-        SystemParamDTO dto = body.get("dto");
+        SystemParamDTO dto = request.getBody();
         try{
             Integer res = service.insert(dto);
             if(res==-1){
@@ -72,8 +70,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "获取系统参数目录")
     public CommonResponse<List<SystemParamVO>> selectList(@Valid CommonRequest<SystemParamQuery> request) {
-        Map<String,SystemParamQuery> body = request.getBody();
-        SystemParamQuery query = body.get("dto");
+        SystemParamQuery query = request.getBody();
         try{
             List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
             List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
@@ -87,8 +84,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "搜索一个系统参数")
     public CommonResponse<SystemParamVO> select(@Valid CommonRequest<SystemParamQuery> request) {
-        Map<String,SystemParamQuery> body = request.getBody();
-        SystemParamQuery query = body.get("dto");
+        SystemParamQuery query = request.getBody();
         try{
             SystemParamDTO systemParamDTO = service.selectOne(query);
             SystemParamVO systemParamVO = new SystemParamVO();
@@ -103,8 +99,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "更新系统参数信息")
     public CommonResponse<Integer> update(@Valid CommonRequest<SystemParamDTO> request) {
-        Map<String,SystemParamDTO> body = request.getBody();
-        SystemParamDTO dto = body.get("dto");
+        SystemParamDTO dto = request.getBody();
         try{
             Integer res = service.update(dto);
             if(res==-1){
@@ -121,8 +116,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "删除一条系统参数信息")
     public CommonResponse<Integer> delete(@Valid CommonRequest<SystemParamDTO> request) {
-        Map<String,SystemParamDTO> body = request.getBody();
-        SystemParamDTO dto = body.get("dto");
+        SystemParamDTO dto = request.getBody();
         Integer res;
         try{
             res = service.delete(dto);
@@ -142,8 +136,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiLog(msg = "分页条件搜索系统参数信息")
     public CommonResponse<CommonPage<SystemParamVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
-        Map<String,CommonPageRequest<SystemParamQuery>> body = request.getBody();
-        CommonPageRequest<SystemParamQuery> pageRequest = body.get("page");
+        CommonPageRequest<SystemParamQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
         try{
             List<SystemParamDTO> systemParamDTOList = service.selectByCondition(pageRequest.getQuery());

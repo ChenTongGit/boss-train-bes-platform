@@ -13,7 +13,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class DepartmentDTO extends BaseDTO {
-    private Long id;
     private Long companyId;
     private String companyName;
     private String name;
@@ -24,6 +23,5 @@ public class DepartmentDTO extends BaseDTO {
     private String parentName;
     private String master;
     private String description;
-    private Integer status;
     private Long version;
 }

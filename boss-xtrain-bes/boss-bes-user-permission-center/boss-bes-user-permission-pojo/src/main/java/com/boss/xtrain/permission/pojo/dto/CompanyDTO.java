@@ -3,6 +3,8 @@ package com.boss.xtrain.permission.pojo.dto;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * @author 53534秦昀清
  * @date 2020.07.06
@@ -13,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CompanyDTO extends BaseDTO {
-    private Long id;
+
     private Long organizationId;
     private String orgName;
     private String name;
@@ -26,6 +28,6 @@ public class CompanyDTO extends BaseDTO {
     private String address;
     private String email;
     private String website;
-    private Integer status;
     private Long version;
+
 }

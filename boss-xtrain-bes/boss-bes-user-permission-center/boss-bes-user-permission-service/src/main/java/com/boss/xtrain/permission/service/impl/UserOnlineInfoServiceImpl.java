@@ -2,10 +2,16 @@ package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.permission.dao.CompanyDao;
+import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
+import com.boss.xtrain.permission.pojo.entity.Company;
+import com.boss.xtrain.permission.pojo.entity.User;
 import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
+import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
+import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +29,12 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
     @Autowired
     private UserOnlineInfoDao infoDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private CompanyDao companyDao;
+
     private IdWorker worker = new IdWorker();
 
     //使用UserDao查所有的
@@ -33,11 +45,23 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      * @return
      */
     @Override
-    public List<UserOnlineInfoDTO> selectAll(Long orgId) {
-
-        //使用userDao搜索组织机构下所有的userID
+    public List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query) {
+        Long orgId = getOrg(query.getUserId());
+        CompanyQuery companyQuery = new CompanyQuery();
+        companyQuery.setOrganizationId(orgId);
+        List<Company> companyList = companyDao.selectByCondition(companyQuery);
         List<Long> userIds = new ArrayList<>();
-        List<UserOnlineInfo> infoList = infoDao.selectAll(userIds);
+        UserQueryDTO queryDTO = new UserQueryDTO();
+
+        for(Company company:companyList){
+            queryDTO.setCompanyId(company.getId());
+            List<User> temp = userDao.query(queryDTO);
+            for(User user:temp){
+                userIds.add(user.getId());
+            }
+        }
+
+        List<UserOnlineInfo> infoList = infoDao.selectAllOrigin(userIds);
         return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
     }
 
@@ -84,6 +108,18 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
     public List<UserOnlineInfoDTO> selectByCondition(UserOnlineInfoQuery query) {
         List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
         return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
+    }
+
+    /**
+     * 查询所有
+     *
+     * @return
+     * @author ChenTong
+     * @date 2020/7/8 9:50
+     */
+    @Override
+    public List<UserOnlineInfoDTO> selectAll() {
+        return PojoUtils.copyListProperties(infoDao.selectAll(),UserOnlineInfoDTO::new);
     }
 
     /**
@@ -164,5 +200,14 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
          */
         dto.setId(worker.nextId());
         return infoDao.insert(dto);
+    }
+
+    /**
+     * 获取登录用户所属的org
+     * @param userId
+     * @return
+     */
+    private Long getOrg(Long userId){
+        return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }

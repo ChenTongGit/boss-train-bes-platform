@@ -1,7 +1,7 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
-import com.boss.xtrain.permission.dao.mapper.UserOnlineInfoMapper;
+import com.boss.xtrain.permission.mapper.UserOnlineInfoMapper;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
@@ -41,7 +41,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
      * @return 列表
      */
     @Override
-    public List<UserOnlineInfo> selectAll(List<Long> userIds) {
+    public List<UserOnlineInfo> selectAllOrigin(List<Long> userIds) {
         UserOnlineInfo info = new UserOnlineInfo();
         List<UserOnlineInfo> infoList = new ArrayList<>();
         for(Long userId:userIds){
@@ -50,6 +50,16 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
             infoList.add(info);
         }
         return infoList;
+    }
+
+    /**
+     * 无条件获取所有
+     *
+     * @return 列表
+     */
+    @Override
+    public List<UserOnlineInfo> selectAll() {
+        return mapper.selectAll();
     }
 
     /**

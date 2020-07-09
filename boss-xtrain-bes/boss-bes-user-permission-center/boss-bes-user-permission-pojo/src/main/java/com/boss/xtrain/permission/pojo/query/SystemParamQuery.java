@@ -16,6 +16,8 @@ public class SystemParamQuery extends BaseQuery {
     private Long id;
     private Long organizationId;
 
+    private Long userId;
+
     private String paramType;
     private String param;
     private Integer status;

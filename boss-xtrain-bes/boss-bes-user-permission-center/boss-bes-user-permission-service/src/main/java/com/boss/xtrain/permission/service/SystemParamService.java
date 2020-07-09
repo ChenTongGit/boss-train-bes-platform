@@ -11,11 +11,6 @@ import java.util.List;
  * @date 2020.07.07
  */
 public interface SystemParamService extends CommonCurdService<SystemParamDTO, SystemParamQuery> {
-    /**
-     * 查询所有
-     * @return
-     */
-    List<SystemParamDTO> selectAll();
 
     /**
      * 搜索一个

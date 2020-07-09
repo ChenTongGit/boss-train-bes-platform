@@ -102,7 +102,7 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:09
      */
     @Override
-    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
         return null;
     }
 

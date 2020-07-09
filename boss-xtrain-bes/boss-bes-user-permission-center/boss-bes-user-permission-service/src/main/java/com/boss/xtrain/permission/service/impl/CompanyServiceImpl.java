@@ -2,6 +2,7 @@ package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.DepartmentDao;
+import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
@@ -28,6 +29,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private DepartmentDao departmentDao;
 
+    @Autowired
+    private UserDao userDao;
+
     private IdWorker worker = new IdWorker();
 
     /**
@@ -43,7 +47,7 @@ public class CompanyServiceImpl implements CompanyService {
     /**
      * 搜索一个
      *
-     * @param query query
+     * @param query
      * @return
      */
     @Override
@@ -51,6 +55,19 @@ public class CompanyServiceImpl implements CompanyService {
         CompanyDTO companyDTO = new CompanyDTO();
         PojoUtils.copyProperties(companyDao.selectOne(query),companyDTO);
         return  companyDTO;
+    }
+
+    /**
+     * 组织机构下所有
+     * userId-->roleId-->orgId
+     * @param
+     * @return
+     */
+    @Override
+    public List<CompanyDTO> selectOrgCompanyAll(CompanyQuery query) {
+        Long orgId = getOrg(query.getUserId());
+        query.setOrganizationId(orgId);
+        return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
     }
 
     /**
@@ -144,5 +161,14 @@ public class CompanyServiceImpl implements CompanyService {
         DepartmentQuery query = new DepartmentQuery();
         query.setCompanyId(companyId);
         return departmentDao.selectByCondition(query).isEmpty();
+    }
+
+    /**
+     * 获取登录用户所属的org
+     * @param userId
+     * @return
+     */
+    private Long getOrg(Long userId){
+        return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }

@@ -38,11 +38,9 @@ public class CompanyController extends BaseController implements CompanyApi {
      * @return 删除个数
      */
     @Override
-    @DeleteMapping("/deleteList")
     @ApiLog(msg = "批量删除公司信息")
-    public CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
-        Map<String,List<CompanyDTO>> body = request.getBody();
-        List<CompanyDTO> dtoList = body.get("dto");
+    public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
+        List<CompanyDTO> dtoList = request.getBody();
         try{
             Integer count = service.delete(dtoList);
             String msg = "成功删除了"+count+"个数据";
@@ -59,10 +57,11 @@ public class CompanyController extends BaseController implements CompanyApi {
      * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @Override
-    @ApiLog(msg = "获取所有的的公司")
-    public CommonResponse<List<CompanyVO>> selectAllCompany() {
+    @ApiLog(msg = "初始化组织机构下所有的公司")
+    public CommonResponse<List<CompanyVO>> selectAllCompany(@Valid CommonRequest<CompanyQuery> request) {
+        CompanyQuery query = request.getBody();
         try{
-            List<CompanyDTO> companyDTOList = service.selectAll();
+            List<CompanyDTO> companyDTOList = service.selectOrgCompanyAll(query);
             List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
             return CommonResponseUtil.ok(companyVOList);
         }catch (ServiceException e){
@@ -80,8 +79,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "分页条件搜索公司信息")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
-        Map<String,CommonPageRequest<CompanyQuery>> body = request.getBody();
-        CommonPageRequest<CompanyQuery> pageRequest = body.get("page");
+        CommonPageRequest<CompanyQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
         try{
             List<CompanyDTO> companyDTOList = service.selectByCondition(pageRequest.getQuery());
@@ -96,8 +94,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "添加公司信息")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
-        Map<String,CompanyDTO> body = request.getBody();
-        CompanyDTO dto = body.get("dto");
+        CompanyDTO dto = request.getBody();
         try{
             Integer res = service.insert(dto);
             if(res==-1){
@@ -111,10 +108,9 @@ public class CompanyController extends BaseController implements CompanyApi {
     }
 
     @Override
-    @ApiLog(msg = "获取公司目录")
+    @ApiLog(msg = "获取公司信息")
     public CommonResponse<List<CompanyVO>> selectList(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
-        Map<String,CompanyQuery> body = request.getBody();
-        CompanyQuery query = body.get("dto");
+        CompanyQuery query = request.getBody();
         try{
             List<CompanyDTO> companyDTOList = service.selectByCondition(query);
             List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
@@ -127,8 +123,7 @@ public class CompanyController extends BaseController implements CompanyApi {
 
     @Override
     public CommonResponse<CompanyVO> select(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
-        Map<String,CompanyQuery> body = request.getBody();
-        CompanyQuery query = body.get("dto");
+        CompanyQuery query = request.getBody();
         try{
             CompanyDTO companyDTO = service.selectOne(query);
             CompanyVO companyVO = new CompanyVO();
@@ -143,8 +138,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "更新公司信息")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
-        Map<String,CompanyDTO> body = request.getBody();
-        CompanyDTO dto = body.get("dto");
+        CompanyDTO dto = request.getBody();
         try{
             Integer res = service.update(dto);
             if(res==-1){
@@ -161,8 +155,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "删除一条公司信息")
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
-        Map<String,CompanyDTO> body = request.getBody();
-        CompanyDTO dto = body.get("dto");
+        CompanyDTO dto = request.getBody();
         try{
             Integer res = service.delete(dto);
             if(res==-1){

@@ -38,9 +38,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
      */
     @Override
     @ApiLog(msg = "批量删除部门信息")
-    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<DepartmentDTO>> request) {
-        Map<String,List<DepartmentDTO>> body = request.getBody();
-        List<DepartmentDTO> dtoList = body.get("dto");
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<DepartmentDTO>> request) {
+        List<DepartmentDTO> dtoList = request.getBody();
         try{
             Integer count = service.delete(dtoList);
             String msg = "成功删除了"+count+"个数据";
@@ -60,8 +59,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "查找该组织机构下的公司及部门树节点")
     public CommonResponse<List<DepartmentQuery>> selectTree(@Valid CommonRequest<DepartmentQuery> request) {
-        Map<String,DepartmentQuery> body = request.getBody();
-        DepartmentQuery query = body.get("dto");
+        DepartmentQuery query = request.getBody();
         try{
             //至少组织机构信息不为空
             List<DepartmentQuery> departmentQueryList = service.selectTree(query);
@@ -81,10 +79,9 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "查找该组织机构下的公司及部门")
     public CommonResponse<List<DepartmentVO>> selectAll(@Valid CommonRequest<DepartmentQuery> request) {
-        Map<String,DepartmentQuery> body = request.getBody();
-        DepartmentQuery query = body.get("dto");
+        DepartmentQuery query = request.getBody();
         try{
-            //至少组织机构信息不为空
+            //至少userId信息不为空
             List<DepartmentDTO> departmentDTOList = service.selectAll(query);
             List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
             return CommonResponseUtil.ok(departmentVOList);
@@ -103,8 +100,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "分页条件搜索部门信息")
     public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
-        Map<String,CommonPageRequest<DepartmentQuery>> body = request.getBody();
-        CommonPageRequest<DepartmentQuery> pageRequest = body.get("page");
+        CommonPageRequest<DepartmentQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
         try{
             List<DepartmentDTO> departmentDTOList = service.selectByCondition(pageRequest.getQuery());
@@ -119,8 +115,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "添加部门信息")
     public CommonResponse<Integer> insert(@Valid CommonRequest<DepartmentDTO> request) {
-        Map<String,DepartmentDTO> body = request.getBody();
-        DepartmentDTO dto = body.get("dto");
+        DepartmentDTO dto = request.getBody();
         try{
             Integer res = service.insert(dto);
             if(res==-1){
@@ -136,8 +131,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "获取部门目录")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
-        Map<String,DepartmentQuery> body = request.getBody();
-        DepartmentQuery query = body.get("dto");
+        DepartmentQuery query = request.getBody();
         try{
             List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
             List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
@@ -151,8 +145,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "获取一个部门信息")
     public CommonResponse<DepartmentVO> select(@Valid CommonRequest<DepartmentQuery> request) {
-        Map<String,DepartmentQuery> body = request.getBody();
-        DepartmentQuery query = body.get("dto");
+        DepartmentQuery query = request.getBody();
         try{
             DepartmentDTO organizationDTO = service.selectOne(query);
             DepartmentVO departmentVO = new DepartmentVO();
@@ -167,8 +160,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "更新部门信息")
     public CommonResponse<Integer> update(@Valid CommonRequest<DepartmentDTO> request) {
-        Map<String,DepartmentDTO> body = request.getBody();
-        DepartmentDTO dto = body.get("dto");
+        DepartmentDTO dto = request.getBody();
         try{
             Integer res = service.update(dto);
             if(res==-1){
@@ -185,8 +177,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "删除一条部门信息")
     public CommonResponse<Integer> delete(@Valid CommonRequest<DepartmentDTO> request) {
-        Map<String,DepartmentDTO> body = request.getBody();
-        DepartmentDTO dto = body.get("dto");
+        DepartmentDTO dto = request.getBody();
         Integer res;
         try{
             res = service.delete(dto);

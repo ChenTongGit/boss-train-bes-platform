@@ -1,7 +1,7 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.permission.dao.CompanyDao;
-import com.boss.xtrain.permission.dao.mapper.CompanyMapper;
+import com.boss.xtrain.permission.mapper.CompanyMapper;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;

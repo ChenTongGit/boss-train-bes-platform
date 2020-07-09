@@ -13,12 +13,12 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class OrganizationDTO extends BaseDTO {
-    private Long id;
+
     private String name;
     private String code;
     private String master;
     private String tel;
     private String address;
-    private Integer status;
     private Long version;
+
 }
