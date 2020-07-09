@@ -7,7 +7,7 @@ spring:
 
 #mybatis
 mybatis:
-  type-aliases-package: com.boss.bes.permission.pojo.dto
+  type-aliases-package: com.boss.xtrain.permission.pojo.dto
   mapper-locations: classpath:/mapper/*.xml
 
 mapper:
