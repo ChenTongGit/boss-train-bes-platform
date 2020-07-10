@@ -37,6 +37,15 @@ public interface PositionDao {
     int create(PositionDTO dto);
 
     /**
+     * 通过主键删除一条数据
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int delete(PositionDTO dto);
+
+    /**
      * @param dto
      * @return int 影响行数
      * @description 修改职位信息
@@ -49,4 +58,13 @@ public interface PositionDao {
      * @description 测试方法
      */
     List<Position> selectAll();
+
+    /**
+     * 该id是否存在
+     *
+     * @param id
+     * @return boolean
+     *
+    */
+    boolean isExist(Long id);
 }

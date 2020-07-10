@@ -33,16 +33,25 @@ public interface PositionService {
     */
     List<PositionDTO> queryByCondition(PositionQueryDTO dto);
     /**
-    * @param ids
+    * @param positionDTOList
     * @return int
     * @description 根据id批量删除职位
     */
-    int deleteByIds(List<Long> ids);
+    int deleteByIds(List<PositionDTO> positionDTOList);
+
+    /**
+     * 删除一条数据
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int delete(PositionDTO dto);
 
     /**
      * @param
      * @return  list<position>
      * @description 测试方法
      */
-    List<Position> selectAll();
+    List<PositionDTO> selectAll();
 }

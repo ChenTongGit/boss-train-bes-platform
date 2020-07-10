@@ -43,6 +43,11 @@ public class PositionDaoImpl implements PositionDao {
     }
 
     @Override
+    public int delete(PositionDTO dto) {
+        return positionMapper.deleteByPrimaryKey(dto.getId());
+    }
+
+    @Override
     public int update(PositionDTO dto) {
         Position position = new Position();
         BeanUtils.copyProperties(dto,position);
@@ -52,6 +57,11 @@ public class PositionDaoImpl implements PositionDao {
     @Override
     public List<Position> selectAll() {
         return positionMapper.selectAll();
+    }
+
+    @Override
+    public boolean isExist(Long id) {
+        return positionMapper.existsWithPrimaryKey(id);
     }
 
 }

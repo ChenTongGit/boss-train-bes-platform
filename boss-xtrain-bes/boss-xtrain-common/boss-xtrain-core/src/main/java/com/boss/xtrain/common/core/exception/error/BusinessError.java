@@ -82,6 +82,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_RESOURCE_DELETE_ERROR("220403","删除资源失败"),
     SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR("220404","更新资源失败"),
     SYSTEM_MANAGER_RESOURCE_QUERY_ERROR("220405","查询资源失败"),
+    SYSTEM_MANAGER_RESOURCE_IN_USE("220406","该资源正在使用，无法编辑"),
+    SYSTEM_MANAGER_RESOURCE_NOT_EXIST_ERROR("220407","该资源不存在"),
     /**
      * 系统管理 角色模块异常码
      */
@@ -91,6 +93,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_ROLE_UPDATE_ERROR("220504","更新角色失败"),
     SYSTEM_MANAGER_ROLE_QUERY_ERROR("220505","查询角色失败"),
     SYSTEM_MANAGER_ROLE_IN_USE("220506","该角色正在使用，无法编辑"),
+    SYSTEM_MANAGER_ROLE_NOT_EXIST_ERROR("220507","该角色不存在"),
 
 
     /**
@@ -101,6 +104,9 @@ public enum BusinessError {
     SYSTEM_MANAGER_POSITION_DELETE_ERROR("220603","删除职位失败"),
     SYSTEM_MANAGER_POSITION_UPDATE_ERROR("220604","更新职位失败"),
     SYSTEM_MANAGER_POSITION_QUERY_ERROR("220605","查询职位失败"),
+    SYSTEM_MANAGER_POSITION_IN_USE("220606","该职位正在使用，无法编辑"),
+    SYSTEM_MANAGER_POSITION_NOT_EXIST_ERROR("220607","该职位不存在"),
+
     /**
      * 系统管理 用户模块异常码
      */
@@ -109,6 +115,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_USER_DELETE_ERROR("220703","删除用户失败"),
     SYSTEM_MANAGER_USER_UPDATE_ERROR("220704","更新用户失败"),
     SYSTEM_MANAGER_USER_QUERY_ERROR("220705","查询用户失败"),
+    SYSTEM_MANAGER_USER_IN_USE("220706","该用户正在使用，无法编辑"),
+    SYSTEM_MANAGER_USER_NOT_EXIST_ERROR("220707","该用户不存在"),
 
 
     /**

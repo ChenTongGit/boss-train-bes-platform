@@ -3,16 +3,17 @@ package com.boss.xtrain.permission.controller;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.http.ResponseHeader;
-import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
+import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.PositionListVO;
 import com.boss.xtrain.permission.service.PositionService;
+import com.boss.xtrain.permission.api.PositionApi;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @Author  :yushiqian
@@ -29,9 +31,9 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/position")
 @Slf4j
-public class PositionController{
+@Api(tags = {"职位管理"})
+public class PositionController implements PositionApi {
 
     @Autowired
     private PositionService positionService;
@@ -39,42 +41,60 @@ public class PositionController{
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @PostMapping
-    @ResponseBody
-    @CrossOrigin
-    @ApiLog
-    public CommonResponse<Integer> addPosition(@RequestBody@Valid CommonRequest<PositionListVO> request){
-        PositionListVO body = request.getBody();
-        PositionDTO dto = new PositionDTO();
-        PojoUtils.copyProperties(body,dto);
-        IdWorker idWorker = new IdWorker();
-        dto.setId(idWorker.nextId());
-        int affectRow;
-        try {
-            affectRow = positionService.create(dto);
-        }catch (ServiceException e){
-            throw  new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_INSERT_ERROR);
-        }
-        CommonResponse<Integer> response = new CommonResponse<>();
-        // 设置head
-        ResponseHeader head = new ResponseHeader();
-        // 成功情况下默认为0
-        head.setCode("0");
-        head.setVersion("v1.0.0");
-        response.setHeader(head);
-        // 设置body
-        response.setData(affectRow);
-        return response;
+
+
+    @Override
+    @ApiOperation("新增职位")
+    public CommonResponse<Integer> insert(@Valid CommonRequest<PositionDTO> request) {
+        PositionDTO body = request.getBody();
+        return CommonResponseUtil.ok(positionService.create(body));
+    }
+
+    @Override
+    public CommonResponse<Integer> delete(@Valid CommonRequest<PositionDTO> request) {
+        PositionDTO body = request.getBody();
+        return CommonResponseUtil.ok(positionService.delete(body));
+    }
+
+    @Override
+    public CommonResponse<List<PositionListVO>> selectList(@Valid CommonRequest<PositionQueryDTO> request) {
+        PositionQueryDTO query = request.getBody();
+        List<PositionDTO> positionDTOS = positionService.queryByCondition(query);
+        List<PositionListVO> listVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
+        return CommonResponseUtil.ok(listVOS);
+    }
+
+    @Override
+    public CommonResponse<PositionListVO> select(@Valid CommonRequest<PositionQueryDTO> request) {
+        return null;
+    }
+
+    @Override
+    public CommonResponse<Integer> update(@Valid CommonRequest<PositionDTO> request) {
+        PositionDTO dto = request.getBody();
+        return CommonResponseUtil.ok(positionService.update(dto));
+    }
+
+    @Override
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<PositionDTO>> request) {
+        List<PositionDTO> body = request.getBody();
+        return CommonResponseUtil.ok(positionService.deleteByIds(body));
 
     }
 
-    @GetMapping("/all")
-    public void selectAll(){
-        List<Position> positions = positionService.selectAll();
-        for(int i=0;i<positions.size();i++) {
-            log.info(positions.get(i).getId() + " " + positions.get(i).getName());
-        }
+    @Override
+    public CommonResponse<List<PositionListVO>> selectAllPosition(@Valid CommonRequest<PositionQueryDTO> request) {
+//       PositionQueryDTO query = request.getBody();
+//       List<PositionDTO> positionDTOS = positionService.selectAll(query);
+//       List<PositionListVO> positionListVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
+//       return CommonResponseUtil.ok(positionListVOS);
+        return null;
     }
 
+    @Override
+    public CommonResponse<CommonPage<PositionListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<PositionQueryDTO>> request) {
+        CommonPageRequest<PositionQueryDTO> pageRequest = request.getBody();
 
+        return null;
+    }
 }

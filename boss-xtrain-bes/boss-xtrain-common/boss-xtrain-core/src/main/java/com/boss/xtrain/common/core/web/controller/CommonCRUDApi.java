@@ -70,7 +70,7 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @date 2020/7/7 22:09
      */
     @PostMapping("/deleteBatch")
-    CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<D>> request);
+    CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<D>> request);
 
     /**
      * 更新数据
