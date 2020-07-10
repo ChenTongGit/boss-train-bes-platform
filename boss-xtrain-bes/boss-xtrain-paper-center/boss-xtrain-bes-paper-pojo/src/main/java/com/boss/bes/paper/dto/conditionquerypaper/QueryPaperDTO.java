@@ -25,7 +25,7 @@ public class QueryPaperDTO extends BaseDTO {
     /**
      * 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 日期开始时间
      */

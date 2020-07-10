@@ -10,5 +10,5 @@ import lombok.Data;
 @Data
 public class PaperNameVO extends BaseVO {
 
-    private String name;
+    private String paperName;
 }

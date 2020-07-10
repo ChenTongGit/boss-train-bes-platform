@@ -27,7 +27,7 @@ public class PaperVO extends BaseVO {
     /**
      * 试卷难度
      */
-    private String difficulty;
+    private String difficuty;
     /**
      * 组卷时间
      */

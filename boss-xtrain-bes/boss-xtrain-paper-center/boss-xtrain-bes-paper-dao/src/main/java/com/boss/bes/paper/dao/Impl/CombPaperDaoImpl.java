@@ -8,6 +8,9 @@ import com.boss.bes.paper.entity.PaperSubject;
 import com.boss.bes.paper.entity.PaperSubjectAnswer;
 import com.boss.bes.paper.vo.paperdetail.PaperVO;
 import com.boss.bes.paper.vo.templatecomb.TemplateVO;
+import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.List;
 /**上传试卷DAO实现类
  * @author lenovo
  */
-public class CombPaperDaoImpl implements CombPaperDao {
+@Component
+public class CombPaperDaoImpl extends PaperBaseDaoImpl implements CombPaperDao {
     /**
      * @param paperQueryDTO
      * @methodsName: queryPaperList
@@ -26,7 +30,9 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public List<PaperVO> queryPaperList(PaperQueryDTO paperQueryDTO) {
-        return null;
+        List<Paper> paperList = getPaperList(paperQueryDTO);
+        List<PaperVO> paperVOList = PojoUtils.copyListProperties(paperList,PaperVO::new);
+        return paperVOList;
     }
 
     /**
@@ -39,8 +45,10 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public List<TemplateVO> queryTemplateList(TemplateQueryDTO templateQueryDto) {
+        List<Paper> paperList = getTemplateList(templateQueryDto);
+        List<TemplateVO> templateVOList = PojoUtils.copyListProperties(paperList,TemplateVO::new);
 
-        return null;
+        return templateVOList;
     }
 
     /**
@@ -53,7 +61,7 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Paper queryTemplateById(Long templateId) {
-        return null;
+        return paperMapper.selectByPrimaryKey(templateId);
     }
 
     /**
@@ -66,7 +74,7 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Integer downLoadTemplate(Paper tPaper) {
-        return null;
+        return paperMapper.insert(tPaper);
     }
 
     /**
@@ -79,7 +87,14 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Integer downLoadTemplateTimes(Paper paper) {
-        return null;
+        Integer downloadTimes = paper.getDownloadTimes();
+        if (downloadTimes == null) {
+            downloadTimes = 0;
+        }
+        paper.setDownloadTimes(downloadTimes + 1);
+
+        return paperMapper.updateByPrimaryKeySelective(paper);
+
     }
 
     /**
@@ -92,7 +107,11 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public List<PaperSubject> querySubjectById(Long paperId) {
-        return null;
+        Example example = new Example(PaperSubject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(PAPER_ID, paperId);
+        return paperSubjectMapper.selectByExample(example);
+
     }
 
     /**
@@ -105,7 +124,7 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Integer insertSubjectList(List<PaperSubject> list) {
-        return null;
+        return paperSubjectMapper.insertList(list);
     }
 
     /**
@@ -118,21 +137,11 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Integer insertAnswerList(List<PaperSubjectAnswer> list) {
-        return null;
+        return paperSubjectAnswerMapper.insertList(list);
     }
 
-    /**
-     * @param paperId
-     * @methodsName: querySubjectAnswerList
-     * @description: 获取试卷的题目和答案集合
-     * @param: paperId
-     * @return: java.util.List<com.boss.bes.paper.entity.SubjectAnswer>
-     * @throws:
-     */
-    @Override
-    public List<PaperSubjectAnswer> querySubjectAnswerList(Long paperId) {
-        return null;
-    }
+
+
 
     /**
      * @param paper
@@ -144,7 +153,7 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public Integer insertPaper(Paper paper) {
-        return null;
+        return paperMapper.insert(paper);
     }
 
     /**
@@ -158,6 +167,13 @@ public class CombPaperDaoImpl implements CombPaperDao {
      */
     @Override
     public boolean paperNameIsExist(String paperName, Long companyId) {
-        return false;
+        Example example = new Example(Paper.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("paperName",paperName)
+                .andEqualTo(TEMPLATE,PAPER_SIGN)
+                .andEqualTo("companyId",companyId);
+        List<Paper> paperList = paperMapper.selectByExample(example);
+        return !paperList.isEmpty();
+
     }
 }

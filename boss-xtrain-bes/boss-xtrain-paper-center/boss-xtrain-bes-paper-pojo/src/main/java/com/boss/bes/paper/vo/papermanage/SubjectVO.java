@@ -21,7 +21,7 @@ public class SubjectVO extends BaseVO {
     /**
      * 题目ID
      */
-    private String subjectId;
+    private String paperSubjectId;
     /**
      * 题型Id
      */
@@ -47,19 +47,7 @@ public class SubjectVO extends BaseVO {
      * 题目难度
      */
     @NotBlank(message = "题目难度不能为空")
-    private String difficulty;
-    /**
-     * 题型名
-     */
-    private String typeName;
-    /**
-     * 客观题或主观题
-     */
-    private String attribute;
-    /**
-     * 题目类别Id
-     */
-    @NotBlank(message = "题目类别不能为空")
-    private String typeId;
+    private String difficult;
+
 }
 

@@ -90,15 +90,7 @@ public interface CombPaperDao {
      * @throws:
      */
     Integer insertAnswerList(List<PaperSubjectAnswer> list);
-    /**
-     *
-     * @methodsName: querySubjectAnswerList
-     * @description: 获取试卷的题目和答案集合
-     * @param:  paperId
-     * @return: java.util.List<com.boss.bes.paper.entity.SubjectAnswer>
-     * @throws:
-     */
-    List<PaperSubjectAnswer> querySubjectAnswerList(Long paperId);
+
     /**
      *
      * @methodsName: insertPaper
