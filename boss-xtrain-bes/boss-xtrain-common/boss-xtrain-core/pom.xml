@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-config</artifactId>
+            <artifactId>boss-xtrain-cache-redis</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

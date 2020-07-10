@@ -166,6 +166,24 @@ public enum BusinessError {
     SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
     SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
 
+     * 系统管理 用户模块异常码
+     */
+    SYSTEM_MANAGER_USER_REPEAT_ERROR("220501","用户已存在"),
+    SYSTEM_MANAGER_USER_INSERT_ERROR("220502","新增用户失败"),
+    SYSTEM_MANAGER_USER_DELETE_ERROR("220503","删除用户失败"),
+    SYSTEM_MANAGER_USER_UPDATE_ERROR("220504","更新用户失败"),
+    SYSTEM_MANAGER_USER_QUERY_ERROR("220505","查询用户失败"),
+
+    /**
+     * 系统管理 角色模块异常码
+     */
+    SYSTEM_MANAGER_ROLE_REPEAT_ERROR("220601","角色已存在"),
+    SYSTEM_MANAGER_ROLE_INSERT_ERROR("220602","新增角色失败"),
+    SYSTEM_MANAGER_ROLE_DELETE_ERROR("220603","删除角色失败"),
+    SYSTEM_MANAGER_ROLE_UPDATE_ERROR("220604","更新角色失败"),
+    SYSTEM_MANAGER_ROLE_QUERY_ERROR("220605","查询角色失败"),
+
+
     /**
      * 试卷 试卷服务错误
      */
@@ -193,6 +211,23 @@ public enum BusinessError {
      */
     EXAM_RECORD_INSERT_RECORD_ERROR("240301","新增考试记录失败"),
     EXAM_RECORD_UPDATE_RECORD_ERROR("240302","交卷更新考试记录失败");
+     
+    /**
+     * 考试服务
+     */
+    EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR("240301","添加考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR("240302","查询考试发布记录失败"),
+    EXAM_PUBLISH_RECORD_UPDATE_RECORD_ERROR("240303","更新考试发布失败"),
+    EXAM_PUBLISH_RECORD_DELETE_RECORD_ERROR("240304","删除考试发布记录失败"),
+    EXAM_RECORD_INSERT_RECORD_ERROR("240305","新增考试记录失败"),
+    EXAM_RECORD_UPDATE_RECORD_ERROR("240306","交卷更新考试记录失败"),
+    PUBLISH_DELETE_IS_PUBLISHED("240307", "该场考试已经发布"),
+    EXAM_PUBLISH_RECORD_GET_VERSION_FAIL("240308", "获取考试发布记录版本号错误"),
+    VERSION_NOT_THE_SAME("240309", "数据版本号不一致"),
+    EXAM_PUBLISH_FAIL("240310", "考试发布失败"),
+    EXAM_PUBLISHED("240310", "重复发布"),
+
+    EXAM_PEOPLE_REG_FAIL("250301","考生注册失败");
 
     /**
      * 异常码
