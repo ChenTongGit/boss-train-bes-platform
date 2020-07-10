@@ -1,9 +1,13 @@
 package com.boss.xtrain.exam.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
+import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 考试发布记录添加dto
@@ -26,15 +30,26 @@ public class ExamPublishRecordDTO extends BaseDTO {
      * 发布用户id
      */
     private Long publisher;
+    /**
+     * 发布人员名称
+     */
+    private String publisherName;
+
+    /**
+     * 发布用户姓名
+     */
+    private String name;
 
     /**
      * 考试开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
@@ -48,14 +63,53 @@ public class ExamPublishRecordDTO extends BaseDTO {
     private String description;
 
     /**
-     * 阅卷方式
+     * 阅卷结束时间
      */
-    private Integer markStopTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date markStopTime;
 
     /**
-     * 所分配阅卷人id
+     * 阅卷方式
      */
-    private Long[] markPeople;
+    private Integer markingMode;
+
+    /**
+     * 阅卷官ids name
+     */
+    private List<ExamPublishToUserDTO>  markPeople;
+
+    public List<ExamPublishToUserDTO> getMarkPeople() {
+        return markPeople;
+    }
+
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
+
+    public void setMarkPeople(List<ExamPublishToUserDTO> markPeople) {
+        this.markPeople = markPeople;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getMarkingMode() {
+        return markingMode;
+    }
+
+    public void setMarkingMode(Integer markingMode) {
+        this.markingMode = markingMode;
+    }
 
     public String getTitle() {
         return title;
@@ -105,21 +159,15 @@ public class ExamPublishRecordDTO extends BaseDTO {
         this.description = description;
     }
 
-    public Integer getMarkStopTime() {
+    public Date getMarkStopTime() {
         return markStopTime;
     }
 
-    public void setMarkStopTime(Integer markStopTime) {
+    public void setMarkStopTime(Date markStopTime) {
         this.markStopTime = markStopTime;
     }
 
-    public Long[] getMarkPeople() {
-        return markPeople;
-    }
 
-    public void setMarkPeople(Long[] markPeople) {
-        this.markPeople = markPeople;
-    }
 
     public ExamPublishRecordDTO() {
     }
@@ -129,12 +177,15 @@ public class ExamPublishRecordDTO extends BaseDTO {
         return "ExamPublishRecordDTO{" +
                 "title='" + title + '\'' +
                 ", publisher=" + publisher +
+                ", publisherName='" + publisherName + '\'' +
+                ", name='" + name + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", planPeopleNum=" + planPeopleNum +
                 ", description='" + description + '\'' +
                 ", markStopTime=" + markStopTime +
-                ", markPeople=" + Arrays.toString(markPeople) +
-                '}';
+                ", markingMode=" + markingMode +
+                ", markPeople=" + markPeople +
+                "} ";
     }
 }

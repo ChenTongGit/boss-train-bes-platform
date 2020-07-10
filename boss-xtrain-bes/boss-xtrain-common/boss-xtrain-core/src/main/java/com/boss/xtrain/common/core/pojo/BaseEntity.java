@@ -6,6 +6,8 @@
  */  
 package com.boss.xtrain.common.core.pojo;
 
+import tk.mybatis.mapper.annotation.Version;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -23,7 +25,6 @@ import java.util.Date;
 public abstract class BaseEntity implements Serializable {
  
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键id
      */
@@ -74,7 +75,15 @@ public abstract class BaseEntity implements Serializable {
 
     /**
      *  当前行的版初始为0 每次数据变动则加1
+     *  标识乐观锁字段，所支持的通用mapper的方法
+     *   delete
+     *   deleteByPrimaryKeyWithVersion
+     *   updateByPrimaryKey
+     *   updateByPrimaryKeySelective
+     *   updateByExample
+     *   updateByExampleSelective
      */
+    @Version
     @Column(name = "version")
     private Long version;
 

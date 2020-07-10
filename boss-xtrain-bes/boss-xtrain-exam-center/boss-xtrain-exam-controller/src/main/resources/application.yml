@@ -10,9 +10,11 @@ spring:
 # mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.178.139:3306/db_exam_center?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://39.101.178.139:3306/db_exam_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
     password: zzy873190934
     username: root
+#    url: jdbc:mysql://39.97.106.243:3306/db_exam_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+#    password: 991018
   redis:
     host: 39.97.106.243
     password: 991018
@@ -21,6 +23,9 @@ spring:
 mybatis:
   mapper-locations: mapper/*.xml
   type-aliases-package: com.boss.xtrain.exam.pojo.entity
+
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
 
 # pagehelper
 pagehelper:
