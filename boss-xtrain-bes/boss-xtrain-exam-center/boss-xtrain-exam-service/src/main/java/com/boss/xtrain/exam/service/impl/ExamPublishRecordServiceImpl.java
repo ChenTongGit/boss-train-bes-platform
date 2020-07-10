@@ -6,6 +6,8 @@ import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamPublishRecordDao;
 import com.boss.xtrain.exam.dao.ExamPublishToUserDao;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishToUserDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
@@ -15,7 +17,6 @@ import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -47,9 +48,51 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
     @Autowired
     private ExamPublishToUserDao examPublishToUserDao;
 
+    /**
+     * 发布考试
+     * @author ChenTong
+     * @param dto 
+     * @return java.lang.Boolean
+     * @date 2020/7/9 17:35
+     */
     @Override
-    public Integer publishExam(ExamPublishRecordDTO dto) {
-        return null;
+    public Boolean publishExam(ExamPublishDTO dto) {
+
+        if (dto.getStatus()==1){
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_FAIL);
+        }
+        try {
+            ExamPublishRecord record = new ExamPublishRecord();
+            PojoUtils.copyProperties(dto, record);
+            return this.examPublishRecordDao.updateStatus(record) == 1;
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_FAIL);
+        }
+
+    }
+
+
+    @Override
+    public Boolean publishExamBatch(List<ExamPublishDTO> dtos){
+        if (null ==  dtos)
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_FAIL);
+        // 判断发布状态
+        for (ExamPublishDTO item: dtos) {
+            if (item.getStatus() == 1){
+                throw new BusinessException(BusinessError.EXAM_PUBLISHED);
+            }
+        }
+        List<ExamPublishRecord> records = PojoUtils.copyListProperties(dtos, ExamPublishRecord::new);
+        // 更改状态
+
+        // 批量更新发布
+        int result = this.examPublishRecordDao.updateStatusBatch(records);
+        // TODO 调用接口修改试卷发布次数 状态
+        // 批量删除失败
+        if (result != records.size())
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_FAIL);
+        return true;
+
     }
 
 
@@ -119,80 +162,35 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
     }
 
     /**
-     * 查询所有
-     *
-     * @return
-     * @author ChenTong
-     * @date 2020/7/8 9:50
-     */
-    @Override
-    public List<ExamPublishRecordDTO> selectAll() {
-        try {
-            List<ExamPublishRecordDTO> examPublishRecordDTOS = new ArrayList<>();
-            List<ExamPublishRecord> examPublishRecords = examPublishRecordDao.selectAll();
-            for (ExamPublishRecord item:examPublishRecords) {
-                ExamPublishRecordDTO examPublishRecordDTO = new ExamPublishRecordDTO();
-                PojoUtils.copyProperties(item, examPublishRecordDTO);
-                examPublishRecordDTOS.add(examPublishRecordDTO);
-            }
-            return examPublishRecordDTOS;
-        }catch (Exception e){
-            log.error(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR.getMessage(), e);
-            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR, e);
-        }
-    }
-
-    /**
-     * 通过主键删除数据
-     *
-     * @param dto Object数据库主键
-     * @return int
-     * @author ChenTong
-     * @date 2020/6/22 7:18
-     */
-    @Override
-    public int delete(ExamPublishRecordDTO dto) {
-        return 0;
-    }
-
-    /**
      * 批量删除数据 事务控制
      * @param dtoList dto列表
      * @return int 返回所删除的行数
      * @author ChenTong
      * @date 2020/7/4 9:09
      */
-    @Transactional
     @Override
-    public int delete(List<ExamPublishRecordDTO> dtoList) {
+    public Integer delete(List<ExamPublishDeleteDTO> dtoList) {
         if (null==dtoList || dtoList.isEmpty())
             throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_DELETE_RECORD_ERROR);
         // 处理ids 与此同时判断是否发布
-        StringBuilder ids = new StringBuilder();
-        // ids =" 111, 222, 2323, 3232"
-        for (int i = 0; i < dtoList.size(); i++) {
-            if (isPublish(dtoList.get(i)))
+        List<Long> ids = new ArrayList<>();
+        for (ExamPublishDeleteDTO examPublishDeleteDTO : dtoList) {
+            if (examPublishDeleteDTO.getStatus() == 1)
                 throw new BusinessException(BusinessError.PUBLISH_DELETE_IS_PUBLISHED);
-
-            // 乐观锁相关 判断是否已经被修改
-            Long version = getVersionById(dtoList.get(i));
-            // 判断数据版本号
-            if (version.equals(dtoList.get(i).getVersion()))
-                throw new BusinessException(BusinessError.VERSION_NOT_THE_SAME);
-            ids.append(dtoList.get(i).getId());
-            // 构造ids
-            if (i != dtoList.size()-1)
-                ids.append(",");
+            ids.add(examPublishDeleteDTO.getId());
         }
-        try {
-            // TODO 删除考试发布记录阅卷关系表
-            // 删除考试发布记录
-            return examPublishRecordDao.batchDelete(ids.toString());
+        // 删除阅卷关系
+         examPublishToUserDao.deleteBatchByPublishId(ids);
+        // 删除考试发布记录
+        int deletePublish =  examPublishRecordDao.deleteBatch(ids);
 
-        }catch (Exception e){
-            log.error(e.getMessage(), e);
-            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_DELETE_RECORD_ERROR, e);
+        if (deletePublish != ids.size()){
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_DELETE_RECORD_ERROR);
         }
+
+        return ids.size();
+
+
     }
 
     /**
@@ -203,8 +201,7 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
      * @date 2020/6/22 7:18
      */
     @Override
-    @Transactional
-    public int update(ExamPublishRecordDTO dto) {
+    public Integer update(ExamPublishRecordDTO dto) {
         // 不能为空或者已经发布
         if (null == dto || isPublish(dto))
             throw new BusinessException(BusinessError.PUBLISH_DELETE_IS_PUBLISHED);
@@ -221,20 +218,34 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
      * @throws BusinessException 考试发布记录创建异常
      */
     @Override
-    public int insert(ExamPublishRecordDTO dto) {
-        try {
-            ExamPublishRecord examPublishRecord = new ExamPublishRecord();
-            // 数据转换
-            PojoUtils.copyProperties(dto, examPublishRecord);
-            // 雪花算法获取id
-            examPublishRecord.setId(idWorker.nextId());
-            // 二维码链接
+    public Integer insert(ExamPublishRecordDTO dto) {
 
-            return examPublishRecordDao.insert(examPublishRecord);
-        }catch (Exception e){
-            log.error(BusinessError.EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR.getMessage(), e);
-            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR, e);
+        ExamPublishRecord examPublishRecord = new ExamPublishRecord();
+        // 数据转换
+        PojoUtils.copyProperties(dto, examPublishRecord);
+        // 雪花算法获取id
+        examPublishRecord.setId(idWorker.nextId());
+        // 二维码链接 前端生成二维码
+        String qrCodeUrl = String.format("http://localhost:8080/#/exam/{%d}",dto.getId());
+        examPublishRecord.setQrcodeUrl(qrCodeUrl);
+        // 添加阅卷人
+        List<ExamPublishToUser> examPublishToUsers = PojoUtils.copyListProperties(dto.getMarkPeople(), ExamPublishToUser::new);
+        for (ExamPublishToUser item: examPublishToUsers
+             ) {
+            item.setPublishId(examPublishRecord.getId());
+            item.setId(idWorker.nextId());
         }
+
+        int insertExamPublishRecordResult =  examPublishRecordDao.insert(examPublishRecord);
+        // 数据库添加阅卷人
+        int insertMarkResult = examPublishToUserDao.insertBatch(examPublishToUsers);
+        if (insertExamPublishRecordResult != 1 || insertMarkResult != examPublishToUsers.size()){
+            log.error(BusinessError.EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR.getMessage());
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_INSERT_RECORD_ERROR);
+        }
+
+        return insertExamPublishRecordResult;
+
 
     }
     

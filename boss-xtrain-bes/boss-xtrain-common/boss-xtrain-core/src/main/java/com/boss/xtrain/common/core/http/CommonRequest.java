@@ -1,5 +1,6 @@
 package com.boss.xtrain.common.core.http;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class CommonRequest<T> implements Serializable {
     /**
      * 请求题内容，用来放置DTO
      * */
+    @Valid
     private T body;
 
     /**

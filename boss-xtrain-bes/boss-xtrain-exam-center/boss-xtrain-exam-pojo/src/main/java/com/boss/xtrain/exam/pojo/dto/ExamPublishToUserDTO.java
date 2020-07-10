@@ -1,5 +1,7 @@
 package com.boss.xtrain.exam.pojo.dto;
 
+import java.io.Serializable;
+
 /**
  * 阅卷关系dto
  *
@@ -11,7 +13,8 @@ package com.boss.xtrain.exam.pojo.dto;
  * @see
  * @since
  **/
-public class ExamPublishToUserDTO {
+public class ExamPublishToUserDTO implements Serializable {
+    private static final long serialVersionUID = 455424324322L;
     /**
      * 阅卷官的姓名
      */

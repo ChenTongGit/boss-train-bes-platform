@@ -18,15 +18,7 @@ import java.util.List;
  * @since
  **/
 public interface ExamPublishRecordDao extends IBaseDao<ExamPublishRecord, ExamPublishRecordQuery> {
-    /**
-     * 批量删除
-     * @author ChenTong
-     * @param ids
-     * @return int
-     * @date 2020/7/8 15:50
-     */
-    int batchDelete(String ids);
-    
+
     /**
      * 查询所有数据
      * @author ChenTong
@@ -43,4 +35,27 @@ public interface ExamPublishRecordDao extends IBaseDao<ExamPublishRecord, ExamPu
      * @date 2020/7/8 23:20
      */
     Long getVersion(Long id);
+
+    /**
+     * 批量删除
+     * @author ChenTong
+     * @param ids
+     * @return int
+     * @date 2020/7/9 19:07
+     */
+    int deleteBatch(List<Long> ids);
+
+    /**
+     * 批量发布 - 更新发布状态
+     * @param records
+     * @return
+     */
+    int updateStatusBatch(List<ExamPublishRecord> records);
+
+    /**
+     * 更新发布状态
+     * @param record
+     * @return
+     */
+    int updateStatus(ExamPublishRecord record);
 }

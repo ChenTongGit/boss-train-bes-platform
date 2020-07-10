@@ -1,5 +1,7 @@
 package com.boss.xtrain.exam.pojo.vo;
 
+import java.io.Serializable;
+
 /**
  * 阅卷关系dto
  *
@@ -11,7 +13,7 @@ package com.boss.xtrain.exam.pojo.vo;
  * @see
  * @since
  **/
-public class ExamPublishToUserVO {
+public class ExamPublishToUserVO implements Serializable {
     /**
      * 阅卷官的姓名
      */

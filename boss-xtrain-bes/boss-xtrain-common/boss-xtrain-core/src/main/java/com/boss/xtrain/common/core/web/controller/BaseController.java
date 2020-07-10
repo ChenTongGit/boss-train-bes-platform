@@ -22,8 +22,8 @@ public abstract class BaseController {
     /**
      *  分页前调用
      */
-    protected void doBeforePagination(int pageIndex,int pageSize){
-        PageMethod.startPage(pageIndex, pageSize);
+    protected void doBeforePagination(int pageIndex,int pageSize, String orderBy){
+        PageMethod.startPage(pageIndex, pageSize, orderBy);
     }
     /**
      * 构造分页响应

@@ -37,20 +37,20 @@ public class ExamPublishToUserDaoImpl implements ExamPublishToUserDao {
      */
     @Override
     public int insertBatch(List<ExamPublishToUser> examPublishToUsers) {
-        return examPublishToUserMapper.insertList(examPublishToUsers);
+        return examPublishToUserMapper.insertBatch(examPublishToUsers);
     }
 
     /**
      * 批量删除关系
-     * @param publishIDs 考试发布id
+     * @param ids 考试发布id
      * @return int
      * @author ChenTong
      * @date 2020/7/9 10:30
      */
     @Override
-    public int deleteBatchByPublishId(List<Long> publishIDs) {
+    public int deleteBatchByPublishId(List<Long> ids) {
 
-        return examPublishToUserMapper.deleteBatchByPublishId(publishIDs);
+        return examPublishToUserMapper.deleteBatchByPublishId(ids);
     }
 
     /**

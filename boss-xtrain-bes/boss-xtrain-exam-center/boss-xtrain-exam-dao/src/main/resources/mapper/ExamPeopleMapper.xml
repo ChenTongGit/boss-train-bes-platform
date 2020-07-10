@@ -17,7 +17,7 @@
     <result column="major" property="major" jdbcType="VARCHAR" />
     <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
     <result column="graduate_time" property="graduateTime" jdbcType="DATE" />
-    <result column="prizie_info" property="prizieInfo" jdbcType="VARCHAR" />
+    <result column="award_info" property="awardInfo" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />

@@ -111,11 +111,11 @@ public abstract class BaseEntity implements Serializable {
         this.companyId = companyId;
     }
 
-    public Long getOrgId() {
+    public Long getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrgId(Long organizationId) {
+    public void setOrganizationId(Long organizationId) {
         this.organizationId = organizationId;
     }
 

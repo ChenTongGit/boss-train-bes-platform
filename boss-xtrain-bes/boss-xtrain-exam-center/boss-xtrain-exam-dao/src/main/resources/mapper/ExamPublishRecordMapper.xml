@@ -71,12 +71,21 @@
   </select>
 
 
-  <update id="updateStatus">
-    UPDATE db_exam_center.t_exam_publish_record
-    SET status = 1
-    WHERE status = 0 AND markPeople IN
-    <foreach collection="ids" item="markPeople" index="index" open="(" close=")" separator=",">
-      #{id}
+  <update id="updateStatus" parameterType="list">
+    update t_exam_publish_record r
+    set r.status = 1, r.version = r.version+1, r.created_by = rc.rc
+    where r.status = 0 and r.version = r.version and r.id in
+    <foreach collection="records" item="rc" index="index" open="(" close=")" separator=",">
+      #{rc.id}
     </foreach>
   </update>
+
+  <delete id="deleteBatch" parameterType="list">
+    delete from t_exam_publish_record
+    where id in 
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
 </mapper>

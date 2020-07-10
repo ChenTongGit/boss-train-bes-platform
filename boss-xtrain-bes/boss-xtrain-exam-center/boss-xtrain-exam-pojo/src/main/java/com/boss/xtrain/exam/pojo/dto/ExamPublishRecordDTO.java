@@ -2,6 +2,7 @@ package com.boss.xtrain.exam.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -42,11 +43,13 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 考试开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
@@ -62,7 +65,8 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 阅卷结束时间
      */
-    private Integer markStopTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date markStopTime;
 
     /**
      * 阅卷方式
@@ -72,7 +76,7 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 阅卷官ids name
      */
-    private List<ExamPublishToUserDTO> markPeople;
+    private List<ExamPublishToUserDTO>  markPeople;
 
     public List<ExamPublishToUserDTO> getMarkPeople() {
         return markPeople;
@@ -155,11 +159,11 @@ public class ExamPublishRecordDTO extends BaseDTO {
         this.description = description;
     }
 
-    public Integer getMarkStopTime() {
+    public Date getMarkStopTime() {
         return markStopTime;
     }
 
-    public void setMarkStopTime(Integer markStopTime) {
+    public void setMarkStopTime(Date markStopTime) {
         this.markStopTime = markStopTime;
     }
 
@@ -173,11 +177,15 @@ public class ExamPublishRecordDTO extends BaseDTO {
         return "ExamPublishRecordDTO{" +
                 "title='" + title + '\'' +
                 ", publisher=" + publisher +
+                ", publisherName='" + publisherName + '\'' +
+                ", name='" + name + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", planPeopleNum=" + planPeopleNum +
                 ", description='" + description + '\'' +
                 ", markStopTime=" + markStopTime +
-                '}';
+                ", markingMode=" + markingMode +
+                ", markPeople=" + markPeople +
+                "} ";
     }
 }

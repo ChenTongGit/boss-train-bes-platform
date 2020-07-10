@@ -1,8 +1,10 @@
 package com.boss.xtrain.exam.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,11 +41,14 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 考试开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date startTime;
 
     /**
      * 考试结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
@@ -54,12 +59,13 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 阅卷结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date markStopTime;
 
     /**
      * 分配的阅卷官列表 name,id
      */
-    private Map<String, Long> markPeople;
+    private List<ExamPublishToUserVO> markPeople;
 
     /**
      * 考试说明
@@ -75,6 +81,8 @@ public class ExamPublishRecordVO extends BaseVO {
      * 是否发布
      */
     private Integer status;
+
+
 
 
     public String getPublisherName() {
@@ -144,11 +152,11 @@ public class ExamPublishRecordVO extends BaseVO {
         this.markStopTime = markStopTime;
     }
 
-    public Map<String, Long> getMarkPeople() {
+    public List<ExamPublishToUserVO> getMarkPeople() {
         return markPeople;
     }
 
-    public void setMarkPeople(Map<String, Long> markPeople) {
+    public void setMarkPeople(List<ExamPublishToUserVO> markPeople) {
         this.markPeople = markPeople;
     }
 

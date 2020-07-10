@@ -28,7 +28,7 @@ public class MyApiLogAspect {
     }
 
     @Around("apiPointcut()")
-    public Object doAround(ProceedingJoinPoint joinPoint){
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
         long startTime = System.currentTimeMillis();
         //获取请求信息
@@ -45,13 +45,8 @@ public class MyApiLogAspect {
         //method调用并产生结果
         Object result = null;
 
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable throwable) {
-            log.error(throwable.getMessage(),throwable);
-            //抛出异常
-//            throw new BusinessException(SystemError.LOG_NOT_EXIST_ERROR,throwable);
-        }
+        result = joinPoint.proceed();
+
         //计算运行时间
         long execTime = System.currentTimeMillis()-startTime;
         //保存日志
@@ -59,6 +54,8 @@ public class MyApiLogAspect {
         return result;
 
     }
+
+
 
     /**
      * 获取请求方法的详细信息
