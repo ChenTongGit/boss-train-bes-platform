@@ -44,7 +44,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 查组织机构下所有
-     *
+     * 只需orgId
      * @return 结果
      */
     @Override
@@ -59,6 +59,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
             if(!companyList.isEmpty()){
                 for(Company temp:companyList){
                     department.setCompanyId(temp.getId());
+                    department.setCompanyName(temp.getName());
                     all.addAll(mapper.select(department));
                 }
             }

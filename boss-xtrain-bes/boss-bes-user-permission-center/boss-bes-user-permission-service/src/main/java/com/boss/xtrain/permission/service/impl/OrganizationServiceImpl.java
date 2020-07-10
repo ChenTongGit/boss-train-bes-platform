@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.OrganizationDao;
 import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
@@ -9,6 +11,7 @@ import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.service.OrganizationService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import java.util.List;
  * @author 53534秦昀清
  * @date 2020.07.06
  */
+@Slf4j
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
 
@@ -38,7 +42,12 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     public List<OrganizationDTO> selectByCondition(OrganizationQuery query) {
-        return PojoUtils.copyListProperties(organizationDao.selectByCondition(query),OrganizationDTO::new);
+        try{
+            return PojoUtils.copyListProperties(organizationDao.selectByCondition(query),OrganizationDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -50,10 +59,15 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public int delete(OrganizationDTO dto) {
         if(isNotUsedInCompany(dto)){
-            return organizationDao.delete(dto);
+            try {
+                return organizationDao.delete(dto);
+            }catch (Exception e){
+                log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR.getMessage(),e);
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR,e);
+            }
         }
         //已被使用，不可被删除
-        return -1;
+        throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_USED_ERROR);
     }
 
     /**
@@ -64,13 +78,17 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     public int delete(List<OrganizationDTO> dtoList) {
-        int count = 0;
         for(OrganizationDTO dto:dtoList){
-            if(isNotUsedInCompany(dto)){
-                count+=organizationDao.delete(dto);
+            //已被使用，不可被删除
+            if(!isNotUsedInCompany(dto)){
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_USED_ERROR);
             }
+        }try{
+            return organizationDao.delete(dtoList);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR,e);
         }
-        return count;
     }
 
     /**
@@ -82,10 +100,16 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public int update(OrganizationDTO dto) {
         Long id = dto.getId();
-        if (organizationDao.existsByKey(id)){
-            return organizationDao.update(dto);
+        if (!organizationDao.existsByKey(id)){
+            //该条数据不存在
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_NOTIN_ERROR);
         }
-        return -1;
+        try{
+            return organizationDao.update(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR,e);
+        }
     }
 
     /**
@@ -99,12 +123,17 @@ public class OrganizationServiceImpl implements OrganizationService {
         OrganizationQuery query = new OrganizationQuery();
         PojoUtils.copyProperties(dto,query);
         List<Organization> list = organizationDao.selectByCondition(query);
-        if(list.isEmpty()){
+        if(!list.isEmpty()){
+            //数据库中已有这个名字的纪录不能再添加
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_REPEAT_ERROR);
+        }
+        try {
             dto.setId(worker.nextId());
             return organizationDao.insert(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR,e);
         }
-        //数据库中已有这个名字的纪录不能再添加
-        return -1;
     }
 
     /**
@@ -114,20 +143,30 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     public List<OrganizationDTO> selectAll() {
-        List<Organization> organizationList =  organizationDao.selectAll();
-        return PojoUtils.copyListProperties(organizationList,OrganizationDTO::new);
+        try {
+            List<Organization> organizationList = organizationDao.selectAll();
+            return PojoUtils.copyListProperties(organizationList, OrganizationDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 只查一个
      * @param query query
-     * @return
+     * @return org
      */
     @Override
     public OrganizationDTO selectOne(OrganizationQuery query) {
-        OrganizationDTO organization = new OrganizationDTO();
-        PojoUtils.copyProperties(organizationDao.selectOne(query),organization);
-        return organization;
+        try {
+            OrganizationDTO organization = new OrganizationDTO();
+            PojoUtils.copyProperties(organizationDao.selectOne(query), organization);
+            return organization;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR,e);
+        }
     }
 
     private boolean isNotUsedInCompany(OrganizationDTO dto){

@@ -1,13 +1,17 @@
 package com.boss.xtrain.permission.controller;
 
-import com.boss.xtrain.common.core.http.CommonPage;
-import com.boss.xtrain.common.core.http.CommonPageRequest;
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.UserOnlineInfoApi;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.vo.UserOnlineInfoVO;
+import com.boss.xtrain.permission.service.UserOnlineInfoService;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -18,7 +22,11 @@ import java.util.List;
  * @date 2020.07.09
  */
 @RestController
-public class UserOnlineInfoController implements UserOnlineInfoApi {
+public class UserOnlineInfoController extends BaseController implements UserOnlineInfoApi {
+
+    @Autowired
+    private UserOnlineInfoService service;
+
     /**
      * 分页条件搜索
      *
@@ -26,8 +34,14 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @return
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "分页条件查找在线用户信息")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
-        return null;
+        CommonPageRequest<UserOnlineInfoQuery> pageRequest = request.getBody();
+        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(pageRequest.getQuery());
+        List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
+        return buildPageResponse(new PageInfo<>(userOnlineInfoVOList));
     }
 
     /**
@@ -37,21 +51,26 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @return
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "批量强制下线")
     public CommonResponse<Integer> updateList(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
         return null;
     }
 
     /**
      * 添加新的数据
-     *
+     * --->>>>>login登录
      * @param request 请求报文对象，传递dto
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
      * @date 2020/7/7 22:09
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "登录，添加用户在线信息")
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserOnlineInfoDTO> request) {
-        return null;
+        UserOnlineInfoDTO infoDTO = request.getBody();
+        return CommonResponseUtil.ok(service.insert(infoDTO));
     }
 
     /**
@@ -63,8 +82,13 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:09
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "模糊查询指定条件信息")
     public CommonResponse<List<UserOnlineInfoVO>> selectList(@Valid CommonRequest<UserOnlineInfoQuery> request) {
-        return null;
+        UserOnlineInfoQuery infoQuery = request.getBody();
+        List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(infoQuery);
+        List<UserOnlineInfoVO> infoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
+        return CommonResponseUtil.ok(infoVOList);
     }
 
     /**
@@ -76,8 +100,14 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:09
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "查找一个指定条件的数据")
     public CommonResponse<UserOnlineInfoVO> select(@Valid CommonRequest<UserOnlineInfoQuery> request) {
-        return null;
+        UserOnlineInfoQuery infoQuery = request.getBody();
+        UserOnlineInfoDTO infoDTO = service.selectOne(infoQuery);
+        UserOnlineInfoVO infoVO = new UserOnlineInfoVO();
+        PojoUtils.copyProperties(infoDTO,infoVO);
+        return CommonResponseUtil.ok(infoVO);
     }
 
     /**
@@ -89,8 +119,11 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:09
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "删除一个已经下线的不需要的多余数据")
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserOnlineInfoDTO> request) {
-        return null;
+        UserOnlineInfoDTO infoDTO = request.getBody();
+        return CommonResponseUtil.ok(service.delete(infoDTO));
     }
 
     /**
@@ -102,8 +135,11 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:09
      */
     @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "批量删除已经下线的不需要的多余数据")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
-        return null;
+        List<UserOnlineInfoDTO> infoDTOList = request.getBody();
+        return CommonResponseUtil.ok(service.delete(infoDTOList));
     }
 
     /**
@@ -115,6 +151,8 @@ public class UserOnlineInfoController implements UserOnlineInfoApi {
      * @date 2020/7/7 22:10
      */
     @Override
+    @ApiLog(msg = "强制下线")
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@Valid CommonRequest<UserOnlineInfoDTO> request) {
         return null;
     }

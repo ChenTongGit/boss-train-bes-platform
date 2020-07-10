@@ -1,10 +1,13 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
+import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.User;
@@ -13,16 +16,19 @@ import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author 53534秦昀清
  * @date 2020.07.08
  */
+@Slf4j
 @Service
 public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
 
@@ -42,7 +48,7 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
     /**
      * 查询所有
      *
-     * @return
+     * @return origin初始化
      */
     @Override
     public List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query) {
@@ -61,30 +67,40 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
             }
         }
 
-        List<UserOnlineInfo> infoList = infoDao.selectAllOrigin(userIds);
-        return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
+        try{
+            List<UserOnlineInfo> infoList = infoDao.selectAllOrigin(userIds);
+            return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 搜索一个
      *
      * @param query query
-     * @return
+     * @return one
      */
     @Override
     public UserOnlineInfoDTO selectOne(UserOnlineInfoQuery query) {
-        UserOnlineInfoDTO infoDTO = new UserOnlineInfoDTO();
-        UserOnlineInfo info = infoDao.selectOne(query);
-        PojoUtils.copyProperties(info,infoDTO);
-        return infoDTO;
+        try{
+            UserOnlineInfoDTO infoDTO = new UserOnlineInfoDTO();
+            UserOnlineInfo info = infoDao.selectOne(query);
+            PojoUtils.copyProperties(info,infoDTO);
+            return infoDTO;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 批量更新
      * --》批量 强制下线
      *
-     * @param dtoList
-     * @return
+     * @param dtoList info
+     * @return success offline num
      * @date 2020.07.08
      */
     @Override
@@ -106,8 +122,13 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public List<UserOnlineInfoDTO> selectByCondition(UserOnlineInfoQuery query) {
-        List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
-        return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
+        try{
+            List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
+            return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -119,7 +140,12 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public List<UserOnlineInfoDTO> selectAll() {
-        return PojoUtils.copyListProperties(infoDao.selectAll(),UserOnlineInfoDTO::new);
+        try {
+            return PojoUtils.copyListProperties(infoDao.selectAll(), UserOnlineInfoDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -132,11 +158,16 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int delete(UserOnlineInfoDTO dto) {
-        //已经下线
-        if(dto.getStopTime()!=null){
-            return infoDao.delete(dto);
+        //尚在线上
+        if(dto.getStatus()!=0){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR);
         }
-        return -1;
+        try{
+            return infoDao.delete(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_DELETE_ERROR,e);
+        }
     }
 
     /**
@@ -169,9 +200,18 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         Long id = dto.getId();
         //存在数据并正在线上
         if(infoDao.existsByKey(id)&&dto.getOfflineTime()==null&&dto.getOnlineTime()!=null){
-            infoDao.update(dto);
+            try{
+                dto.setOfflineTime(new Date());
+                Long stop = dto.getOfflineTime().getTime()-dto.getOnlineTime().getTime();
+                dto.setStopTime(stop.intValue());
+                dto.setStatus(0);
+                infoDao.update(dto);
+            }catch (Exception e){
+                log.error(BusinessError.SYSTEM_MANAGER_ONLINE_UPDATE_ERROR.getMessage(),e);
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_UPDATE_ERROR,e);
+            }
         }
-        return -1;
+        throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR);
     }
 
     /**
@@ -184,22 +224,19 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      */
     @Override
     public int insert(UserOnlineInfoDTO dto) {
-        /**
-         * int res = -1;
-         *         UserOnlineInfoQuery query = new UserOnlineInfoQuery();
-         *         PojoUtils.copyProperties(dto,query);
-         *         List<UserOnlineInfo> infoList = infoDao.selectByCondition(query);
-         *         for(UserOnlineInfo info:infoList){
-         *             if(info.getOnlineTime()!=null){
-         *                 break;
-         *             }
-         *             dto.setId(worker.nextId());
-         *             res = infoDao.insert(dto);
-         *         }
-         *         return res;
-         */
-        dto.setId(worker.nextId());
-        return infoDao.insert(dto);
+        try{
+            Long userId = dto.getUserId();
+            User user = userDao.getStatusById(userId);
+            dto.setStatus(1);
+            dto.setOnlineTime(new Date());
+            dto.setCode(user.getCode());
+            dto.setName(user.getName());
+            dto.setId(worker.nextId());
+            return infoDao.insert(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ONLINE_INSERT_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ONLINE_INSERT_ERROR,e);
+        }
     }
 
     /**

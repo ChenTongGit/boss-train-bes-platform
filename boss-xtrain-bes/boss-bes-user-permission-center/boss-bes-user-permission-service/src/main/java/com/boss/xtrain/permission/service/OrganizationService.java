@@ -4,7 +4,6 @@ import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
 
-import java.util.List;
 
 /**
  * @author 53534秦昀清

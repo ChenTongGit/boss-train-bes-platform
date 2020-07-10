@@ -8,8 +8,6 @@ import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.service.CompanyService;
-import com.boss.xtrain.common.core.exception.ServiceException;
-import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 53534秦昀清
@@ -40,16 +37,10 @@ public class CompanyController extends BaseController implements CompanyApi {
      */
     @Override
     @ApiLog(msg = "批量删除公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
         List<CompanyDTO> dtoList = request.getBody();
-        try{
-            Integer count = service.delete(dtoList);
-            String msg = "成功删除了"+count+"个数据";
-            return CommonResponseUtil.ok(msg,count.toString());
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.delete(dtoList));
     }
 
     /**
@@ -59,53 +50,37 @@ public class CompanyController extends BaseController implements CompanyApi {
      */
     @Override
     @ApiLog(msg = "初始化组织机构下所有的公司")
+    @ApiOperation(value = "test")
     public CommonResponse<List<CompanyVO>> selectAllCompany(@Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
-        try{
-            List<CompanyDTO> companyDTOList = service.selectOrgCompanyAll(query);
-            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
-            return CommonResponseUtil.ok(companyVOList);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
-        }
+        List<CompanyDTO> companyDTOList = service.selectOrgCompanyAll(query);
+        List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
+        return CommonResponseUtil.ok(companyVOList);
     }
 
     /**
      * 分页条件搜索
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 分页搜索结果
      */
     @Override
     @ApiLog(msg = "分页条件搜索公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
         CommonPageRequest<CompanyQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        try{
-            List<CompanyDTO> companyDTOList = service.selectByCondition(pageRequest.getQuery());
-            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
-            return buildPageResponse(new PageInfo<>(companyVOList));
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
-        }
+        List<CompanyDTO> companyDTOList = service.selectByCondition(pageRequest.getQuery());
+        List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
+        return buildPageResponse(new PageInfo<>(companyVOList));
     }
 
     @Override
     @ApiLog(msg = "添加公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
-        try{
-            Integer res = service.insert(dto);
-            if(res==-1){
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_REPEAT_ERROR);
-            }
-            return CommonResponseUtil.ok(res);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR);
-        }
+        return CommonResponseUtil.ok(service.insert(dto));
     }
 
     @Override
@@ -113,60 +88,35 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<List<CompanyVO>> selectList(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
-        try{
-            List<CompanyDTO> companyDTOList = service.selectByCondition(query);
-            List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
-            return CommonResponseUtil.ok(companyVOList);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR);
-        }
+        List<CompanyDTO> companyDTOList = service.selectByCondition(query);
+        List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
+        return CommonResponseUtil.ok(companyVOList);
     }
 
     @Override
+    @ApiLog(msg = "搜索一条公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<CompanyVO> select(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
-        try{
-            CompanyDTO companyDTO = service.selectOne(query);
-            CompanyVO companyVO = new CompanyVO();
-            PojoUtils.copyProperties(companyDTO,companyVO);
-            return CommonResponseUtil.ok(companyVO);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        CompanyDTO companyDTO = service.selectOne(query);
+        CompanyVO companyVO = new CompanyVO();
+        PojoUtils.copyProperties(companyDTO,companyVO);
+        return CommonResponseUtil.ok(companyVO);
     }
 
     @Override
     @ApiLog(msg = "更新公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
-        try{
-            Integer res = service.update(dto);
-            if(res==-1){
-                //数据不存在无法更改
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR);
-            }
-            return CommonResponseUtil.ok(res);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.update(dto));
     }
 
     @Override
     @ApiLog(msg = "删除一条公司信息")
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
-        try{
-            Integer res = service.delete(dto);
-            if(res==-1){
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
-            }
-            return CommonResponseUtil.ok(res);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.delete(dto));
     }
 }

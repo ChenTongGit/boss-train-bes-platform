@@ -6,12 +6,11 @@ import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.pojo.vo.OrganizationVO;
 import com.boss.xtrain.permission.service.OrganizationService;
-import com.boss.xtrain.common.core.exception.ServiceException;
-import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,65 +31,39 @@ public class OrganizationController extends BaseController implements Organizati
 
     @ApiLog(msg = "添加新的组织机构")
     @Override
+    @ApiOperation(value = "test")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-        Integer res;
-        try{
-            res = service.insert(dto);
-            if(res==-1){
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_REPEAT_ERROR);
-            }
-            return CommonResponseUtil.ok(res);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR);
-        }
+        return CommonResponseUtil.ok(service.insert(dto));
     }
 
     @ApiLog(msg = "模糊查询组织机构")
     @Override
+    @ApiOperation(value = "test")
     public CommonResponse<List<OrganizationVO>> selectList(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
         OrganizationQuery query = request.getBody();
-        try{
-            List<OrganizationDTO> organizationDTOList = service.selectByCondition(query);
-            List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-            return CommonResponseUtil.ok(organizationVOList);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        List<OrganizationDTO> organizationDTOList = service.selectByCondition(query);
+        List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
+        return CommonResponseUtil.ok(organizationVOList);
     }
 
     @Override
     @ApiLog(msg = "搜索一个组织机构")
+    @ApiOperation(value = "test")
     public CommonResponse<OrganizationVO> select(@Valid CommonRequest<OrganizationQuery> request) {
         OrganizationQuery query = request.getBody();
-        try{
-            OrganizationDTO organizationDTO = service.selectOne(query);
-            OrganizationVO organizationVO = new OrganizationVO();
-            PojoUtils.copyProperties(organizationDTO,organizationVO);
-            return CommonResponseUtil.ok(organizationVO);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        OrganizationDTO organizationDTO = service.selectOne(query);
+        OrganizationVO organizationVO = new OrganizationVO();
+        PojoUtils.copyProperties(organizationDTO, organizationVO);
+        return CommonResponseUtil.ok(organizationVO);
     }
 
+    @ApiOperation(value = "test")
     @ApiLog(msg = "更新组织机构信息")
     @Override
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-        try{
-            Integer res = service.update(dto);
-            if(res==-1){
-                //数据不存在无法更改
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR);
-            }
-            return CommonResponseUtil.ok(res);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.update(dto));
     }
 
     /**
@@ -98,20 +71,12 @@ public class OrganizationController extends BaseController implements Organizati
      * @param request
      * @return
      */
+    @ApiOperation(value = "test")
     @ApiLog(msg = "删除一个组织机构")
     @Override
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-        try{
-            Integer count = service.delete(dto);
-            if(count==-1){
-                return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_USED_ERROR);
-            }
-            return CommonResponseUtil.ok(count);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.delete(dto));
     }
 
     /**
@@ -120,64 +85,46 @@ public class OrganizationController extends BaseController implements Organizati
      * @return 删除个数
      */
     @ApiLog(msg = "批量删除组织机构")
+    @ApiOperation(value = "test")
     @Override
     public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<OrganizationDTO>> request) {
         List<OrganizationDTO> dtoList = request.getBody();
-        try{
-            Integer count = service.delete(dtoList);
-            String msg = "成功删除了"+count+"个数据";
-            return CommonResponseUtil.ok(msg,count.toString());
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_DELETE_ERROR);
-        }
+        return CommonResponseUtil.ok(service.delete(dtoList));
     }
 
     /**
      * 查所有
      *
-     * @return
+     * @return list all
      */
     @ApiLog(msg = "搜索所有的组织机构")
     @Override
+    @ApiOperation(value = "test")
     public CommonResponse<List<OrganizationVO>> selectAllOrg() {
-        try{
-            List<OrganizationDTO> organizationDTOList = service.selectAll();
-            List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-            return CommonResponseUtil.ok(organizationVOList);
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        List<OrganizationDTO> organizationDTOList = service.selectAll();
+        List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
+        return CommonResponseUtil.ok(organizationVOList);
     }
 
     @Override
+    @ApiOperation(value = "test")
     @ApiLog(msg = "分页全搜索组织机构")
     public CommonResponse<CommonPage<OrganizationVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
         CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        try{
-            List<OrganizationDTO> organizationDTOList = service.selectAll();
-            List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-            return buildPageResponse(new PageInfo<>(organizationVOList));
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        List<OrganizationDTO> organizationDTOList = service.selectAll();
+        List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
+        return buildPageResponse(new PageInfo<>(organizationVOList));
     }
 
     @Override
-    @ApiLog(msg = "分页条件搜索组织机构")
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "分页条件(模糊)搜索组织机构")
     public CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
         CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
         doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        try{
-            List<OrganizationDTO> organizationDTOList = service.selectByCondition(pageRequest.getQuery());
-            List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-            return buildPageResponse(new PageInfo<>(organizationVOList));
-        }catch (ServiceException e){
-            log.info(e.getMessage(),e);
-            return CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR);
-        }
+        List<OrganizationDTO> organizationDTOList = service.selectByCondition(pageRequest.getQuery());
+        List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
+        return buildPageResponse(new PageInfo<>(organizationVOList));
     }
 }

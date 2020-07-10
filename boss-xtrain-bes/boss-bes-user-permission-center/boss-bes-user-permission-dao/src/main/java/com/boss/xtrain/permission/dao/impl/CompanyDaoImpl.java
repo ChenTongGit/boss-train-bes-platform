@@ -6,8 +6,6 @@ import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;

@@ -19,6 +19,8 @@ public class UserOnlineInfoQuery extends BaseQuery {
     private String name;
     private Date onlineTime;
     private Date offlineTime;
-    //组织机构管理员的id
+    /**
+     * 组织机构管理员的id
+     */
     private Long userId;
 }

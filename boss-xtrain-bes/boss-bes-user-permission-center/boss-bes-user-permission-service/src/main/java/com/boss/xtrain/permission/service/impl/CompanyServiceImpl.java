@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.DepartmentDao;
 import com.boss.xtrain.permission.dao.UserDao;
@@ -10,6 +12,7 @@ import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ import java.util.List;
  * @author 53534秦昀清
  * @date 2020.07.07
  */
+@Slf4j
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
@@ -37,37 +41,53 @@ public class CompanyServiceImpl implements CompanyService {
     /**
      * 查询所有
      *
-     * @return
+     * @return all company
      */
     @Override
     public List<CompanyDTO> selectAll() {
-        return PojoUtils.copyListProperties(companyDao.selectAll(),CompanyDTO::new);
+        try{
+            return PojoUtils.copyListProperties(companyDao.selectAll(),CompanyDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 搜索一个
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return one company
      */
     @Override
     public CompanyDTO selectOne(CompanyQuery query) {
-        CompanyDTO companyDTO = new CompanyDTO();
-        PojoUtils.copyProperties(companyDao.selectOne(query),companyDTO);
-        return  companyDTO;
+        try{
+            CompanyDTO companyDTO = new CompanyDTO();
+            PojoUtils.copyProperties(companyDao.selectOne(query),companyDTO);
+            return  companyDTO;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 组织机构下所有
      * userId-->roleId-->orgId
-     * @param
-     * @return
+     * @param query query
+     * @return company
      */
     @Override
     public List<CompanyDTO> selectOrgCompanyAll(CompanyQuery query) {
-        Long orgId = getOrg(query.getUserId());
-        query.setOrganizationId(orgId);
-        return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+        try{
+            //得到user所负责的组织机构
+            Long orgId = getOrg(query.getUserId());
+            query.setOrganizationId(orgId);
+            return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -80,7 +100,12 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public List<CompanyDTO> selectByCondition(CompanyQuery query) {
-        return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+        try{
+            return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -88,15 +113,21 @@ public class CompanyServiceImpl implements CompanyService {
      *
      * @param dto Object数据库主键
      * @return int
-     * @author ChenTong
-     * @date 2020/6/22 7:18
+     * @author qyq
+     * @date 2020/7/9 16:02
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(CompanyDTO dto) {
         if(isNotUsed(dto)){
-            return companyDao.delete(dto);
+            try{
+                return companyDao.delete(dto);
+            }catch (Exception e){
+                log.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR.getMessage(),e);
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR,e);
+            }
         }
-        return -1;
+        throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_USED_ERROR);
     }
 
     /**
@@ -109,14 +140,18 @@ public class CompanyServiceImpl implements CompanyService {
      * @date 2020/7/4 9:09
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(List<CompanyDTO> dtoList) {
-        int count = 0;
         for(CompanyDTO dto:dtoList){
-            if(isNotUsed(dto)){
-                count+=companyDao.delete(dto);
+            if(!isNotUsed(dto)){
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_USED_ERROR);
             }
+        }try{
+            return companyDao.delete(dtoList);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_DELETE_ERROR,e);
         }
-        return count;
     }
 
     /**
@@ -128,17 +163,24 @@ public class CompanyServiceImpl implements CompanyService {
      * @date 2020/6/22 7:18
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int update(CompanyDTO dto) {
-        if(companyDao.existsByKey(dto.getId())){
-            return companyDao.update(dto);
+        if(!companyDao.existsByKey(dto.getId())){
+            //该条数据不存在
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_NOTIN_ERROR);
         }
-        return -1;
+        try{
+            return companyDao.update(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR,e);
+        }
     }
 
     /**
      * 插入数据
      *
-     * @param dto
+     * @param dto companyDto
      * @return int
      * @author ChenTong
      * @date 2020/6/22 8:18
@@ -149,11 +191,16 @@ public class CompanyServiceImpl implements CompanyService {
         CompanyQuery query = new CompanyQuery();
         PojoUtils.copyProperties(dto,query);
         List<Company> list = companyDao.selectByCondition(query);
-        if(list.isEmpty()){
+        if(!list.isEmpty()){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_REPEAT_ERROR);
+        }
+        try{
             dto.setId(worker.nextId());
             return companyDao.insert(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR,e);
         }
-        return -1;
     }
 
     private boolean isNotUsed(CompanyDTO dto){
@@ -165,8 +212,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 获取登录用户所属的org
-     * @param userId
-     * @return
+     * @param userId userId
+     * @return id
      */
     private Long getOrg(Long userId){
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();

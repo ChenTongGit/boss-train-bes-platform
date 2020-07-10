@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /*
@@ -25,7 +26,7 @@ import java.util.List;
 @Repository
 public class RoleDaoImpl implements RoleDao {
 
-    @Autowired
+    @Resource
     RoleMapper roleMapper;
 
     @Override

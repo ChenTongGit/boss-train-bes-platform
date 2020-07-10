@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.permission.dao.SystemParamDao;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.entity.SystemParam;
@@ -7,14 +9,17 @@ import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
 import com.boss.xtrain.permission.service.SystemParamService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 /**
  * @author 53534秦昀清
  * @date 2020.07.07
  */
+@Slf4j
 @Service
 public class SystemParamServiceImpl implements SystemParamService {
 
@@ -26,24 +31,34 @@ public class SystemParamServiceImpl implements SystemParamService {
     /**
      * 查询所有
      *
-     * @return
+     * @return LIST
      */
     @Override
     public List<SystemParamDTO> selectAll() {
-        return PojoUtils.copyListProperties(systemParamDao.selectAll(),SystemParamDTO::new);
+        try {
+            return PojoUtils.copyListProperties(systemParamDao.selectAll(), SystemParamDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR,e);
+        }
     }
 
     /**
      * 搜索一个
      *
      * @param query query
-     * @return
+     * @return ONE
      */
     @Override
     public SystemParamDTO selectOne(SystemParamQuery query) {
-        SystemParamDTO dto = new SystemParamDTO();
-        PojoUtils.copyProperties(systemParamDao.selectOne(query),dto);
-        return dto;
+        try {
+            SystemParamDTO dto = new SystemParamDTO();
+            PojoUtils.copyProperties(systemParamDao.selectOne(query), dto);
+            return dto;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -56,7 +71,12 @@ public class SystemParamServiceImpl implements SystemParamService {
      */
     @Override
     public List<SystemParamDTO> selectByCondition(SystemParamQuery query) {
-        return PojoUtils.copyListProperties(systemParamDao.selectByCondition(query),SystemParamDTO::new);
+        try{
+            return PojoUtils.copyListProperties(systemParamDao.selectByCondition(query),SystemParamDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -68,8 +88,18 @@ public class SystemParamServiceImpl implements SystemParamService {
      * @date 2020/6/22 7:18
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(SystemParamDTO dto) {
-        return systemParamDao.delete(dto);
+        //启用状态
+        if(dto.getStatus()!=0){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_USED_ERROR);
+        }
+        try{
+            return systemParamDao.delete(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR,e);
+        }
     }
 
     /**
@@ -82,8 +112,20 @@ public class SystemParamServiceImpl implements SystemParamService {
      * @date 2020/7/4 9:09
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(List<SystemParamDTO> dtoList) {
-        return systemParamDao.delete(dtoList);
+        for(SystemParamDTO dto:dtoList){
+            //启用状态
+            if(dto.getStatus()!=0){
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_USED_ERROR);
+            }
+        }
+        try{
+            return systemParamDao.delete(dtoList);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR,e);
+        }
     }
 
     /**
@@ -95,32 +137,44 @@ public class SystemParamServiceImpl implements SystemParamService {
      * @date 2020/6/22 7:18
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int update(SystemParamDTO dto) {
-        Long id = dto.getId();
-        if (systemParamDao.existsByKey(id)){
-            return systemParamDao.update(dto);
+        if (!systemParamDao.existsByKey(dto.getId())){
+            //该条数据不存在
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_NOTIN_ERROR);
         }
-        return -1;
+        try{
+            return systemParamDao.update(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_UPDATE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_UPDATE_ERROR,e);
+        }
     }
 
     /**
      * 插入数据
      *
-     * @param dto
+     * @param dto dto
      * @return int
      * @author ChenTong
      * @date 2020/6/22 8:18
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insert(SystemParamDTO dto) {
         SystemParamQuery query = new SystemParamQuery();
         PojoUtils.copyProperties(dto,query);
         List<SystemParam> list = systemParamDao.selectByCondition(query);
-        if(list.isEmpty()){
+        if(!list.isEmpty()){
+            //数据库中已有这个名字的纪录不能再添加
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_REPEAT_ERROR);
+        }
+        try {
             dto.setId(worker.nextId());
             return systemParamDao.insert(dto);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR,e);
         }
-        //数据库中已有这个名字的纪录不能再添加
-        return -1;
     }
 }

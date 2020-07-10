@@ -83,6 +83,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR("220104","更新组织机构失败"),
     SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR("220105","查询组织机构失败"),
     SYSTEM_MANAGER_ORGANIZATION_USED_ERROR("220106","组织机构已被使用"),
+    SYSTEM_MANAGER_ORGANIZATION_NOTIN_ERROR("220107","组织机构不存在"),
 
     /**
      * 系统管理 公司 异常码
@@ -93,6 +94,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_COMPANY_UPDATE_ERROR("220204","更新公司失败"),
     SYSTEM_MANAGER_COMPANY_QUERY_ERROR("220205","查询公司失败"),
     SYSTEM_MANAGER_COMPANY_USED_ERROR("220206","公司已被使用"),
+    SYSTEM_MANAGER_COMPANY_NOTIN_ERROR("220207","公司不存在"),
 
     /**
      * 系统管理 部门 异常码
@@ -103,6 +105,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR("220304","更新部门失败"),
     SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR("220305","查询部门失败"),
     SYSTEM_MANAGER_DEPARTMENT_USED_ERROR("220306","部门已被使用"),
+    SYSTEM_MANAGER_DEPARTMENT_NOTIN_ERROR("220307","部门不存在用"),
 
     /**
      * 系统管理 资源模块异常码
@@ -149,6 +152,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_PARAM_DELETE_ERROR("220803","删除系统参数失败"),
     SYSTEM_MANAGER_PARAM_UPDATE_ERROR("220804","更新系统参数失败"),
     SYSTEM_MANAGER_PARAM_QUERY_ERROR("220805","查询系统参数失败"),
+    SYSTEM_MANAGER_PARAM_NOTIN_ERROR("220806","系统参数不存在"),
+    SYSTEM_MANAGER_PARAM_USED_ERROR("220807","系统参数是启用状态，不可删除"),
 
     /**
      * 系统管理 在线用户管理模块异常码
@@ -158,6 +163,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_ONLINE_DELETE_ERROR("220903","删除在线用户信息失败"),
     SYSTEM_MANAGER_ONLINE_UPDATE_ERROR("220904","更新在线用户信息失败"),
     SYSTEM_MANAGER_ONLINE_QUERY_ERROR("220905","查询在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
+    SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
 
     /**
      * 试卷 试卷服务错误

@@ -18,4 +18,5 @@ public interface SystemParamService extends CommonCurdService<SystemParamDTO, Sy
      * @return
      */
     SystemParamDTO selectOne(SystemParamQuery query);
+
 }

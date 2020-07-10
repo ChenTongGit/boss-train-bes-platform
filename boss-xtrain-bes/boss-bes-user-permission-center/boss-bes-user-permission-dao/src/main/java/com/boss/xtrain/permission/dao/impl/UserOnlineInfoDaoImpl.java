@@ -78,8 +78,8 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     /**
      * 找一个
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return one
      */
     @Override
     public UserOnlineInfo selectOne(UserOnlineInfoQuery query) {
@@ -163,8 +163,8 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     /**
      * 是否存在
      *
-     * @param id
-     * @return
+     * @param id id
+     * @return if exist
      */
     @Override
     public boolean existsByKey(Long id) {

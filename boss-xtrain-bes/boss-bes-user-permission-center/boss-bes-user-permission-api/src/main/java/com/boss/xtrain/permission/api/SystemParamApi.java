@@ -27,4 +27,13 @@ public interface SystemParamApi extends CommonCRUDApi<SystemParamDTO, SystemPara
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<SystemParamVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request);
+
+    /**
+     * 禁用/启用 更改status
+     * @param request
+     * @return
+     */
+    @PostMapping("/changeStatus")
+    CommonResponse<Integer> changeUse(@RequestBody @Valid CommonRequest<SystemParamDTO> request);
+
 }
