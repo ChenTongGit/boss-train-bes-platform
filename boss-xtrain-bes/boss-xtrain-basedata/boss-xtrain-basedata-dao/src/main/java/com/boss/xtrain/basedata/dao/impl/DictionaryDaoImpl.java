@@ -2,7 +2,7 @@ package com.boss.xtrain.basedata.dao.impl;
 
 import com.boss.xtrain.basedata.dao.DictionaryDao;
 import com.boss.xtrain.basedata.mapper.DictionaryMapper;
-import com.boss.xtrain.basedata.pojo.dto.DictionaryDTO;
+import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +58,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
         List<DictionaryDTO> dictionaryDTOS = new ArrayList<>();
         PojoUtils.copyProperties(dictionaries,dictionaryDTOS);
         return dictionaryDTOS;
+    }
+
+    @Override
+    public boolean existId(Long id) {
+        return dictionaryMapper.existsWithPrimaryKey(id);
     }
 }

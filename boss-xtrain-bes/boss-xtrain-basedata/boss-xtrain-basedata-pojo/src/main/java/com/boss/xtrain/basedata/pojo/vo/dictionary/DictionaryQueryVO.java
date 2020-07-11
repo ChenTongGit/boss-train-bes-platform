@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DictionaryQuery extends BaseVO {
+public class DictionaryQueryVO extends BaseVO {
     private String name;
     private String categoryName;
 }

@@ -1,55 +1,35 @@
 package com.boss.xtrain.basedata.mapper;
 
+import com.boss.xtrain.basedata.base.BaseMapper;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryListConditionDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryListDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
-public interface CategoryMapper {
-    /**
-     * delete by primary key
-     *
-     * @param id primaryKey
-     * @return deleteCount
-     */
-    int deleteByPrimaryKey(Long id);
+public interface CategoryMapper extends BaseMapper<Category> {
 
     /**
-     * insert record to table
-     *
-     * @param record the record
-     * @return insert count
+     * 查询全部题目类别信息
+     * @return
      */
-    int insert(Category record);
+    List<CategoryDTO> queryCategory();
 
     /**
-     * insert record to table selective
      *
-     * @param record the record
-     * @return insert count
+     * @param categoryQueryDTO
+     * @return
      */
-    int insertSelective(Category record);
-
+    List<CategoryDTO> queryCategoryByName(CategoryQueryDTO categoryQueryDTO);
     /**
-     * select by primary key
-     *
-     * @param id primary key
-     * @return object by primary key
+     * 返回题类别列表(分页)
+     * 使用org_id查询出category_id和name
+     * @param categoryListConditionDTO
+     * @return
      */
-    Category selectByPrimaryKey(Long id);
-
-    /**
-     * update record selective
-     *
-     * @param record the updated record
-     * @return update count
-     */
-    int updateByPrimaryKeySelective(Category record);
-
-    /**
-     * update record
-     *
-     * @param record the updated record
-     * @return update count
-     */
-    int updateByPrimaryKey(Category record);
+    List<CategoryListDTO> getCategories(CategoryListConditionDTO categoryListConditionDTO);
 }

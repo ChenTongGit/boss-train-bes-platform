@@ -1,49 +1,15 @@
 package com.boss.xtrain.basedata.mapper;
 
+import com.boss.xtrain.basedata.base.BaseMapper;
+import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
-public interface CombExamItemMapper {
-    /**
-     * delete by primary key
-     * @param id primaryKey
-     * @return deleteCount
-     */
-    int deleteByPrimaryKey(Long id);
+public interface CombExamItemMapper extends BaseMapper<CombExamItem> {
 
-    /**
-     * insert record to table
-     * @param record the record
-     * @return insert count
-     */
-    int insert(CombExamItem record);
-
-    /**
-     * insert record to table selective
-     * @param record the record
-     * @return insert count
-     */
-    int insertSelective(CombExamItem record);
-
-    /**
-     * select by primary key
-     * @param id primary key
-     * @return object by primary key
-     */
-    CombExamItem selectByPrimaryKey(Long id);
-
-    /**
-     * update record selective
-     * @param record the updated record
-     * @return update count
-     */
-    int updateByPrimaryKeySelective(CombExamItem record);
-
-    /**
-     * update record
-     * @param record the updated record
-     * @return update count
-     */
-    int updateByPrimaryKey(CombExamItem record);
 }

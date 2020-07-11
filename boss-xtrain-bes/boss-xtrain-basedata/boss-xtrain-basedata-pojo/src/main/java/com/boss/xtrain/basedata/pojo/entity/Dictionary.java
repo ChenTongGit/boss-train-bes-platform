@@ -19,9 +19,8 @@ public class Dictionary extends BaseEntity{
     /**
      * 数据字典ID
      */
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
+   /* @Column(name = "id")
+    private Long id;*/
 
     /**
      * 字典名称
@@ -49,16 +48,7 @@ public class Dictionary extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 
-    public Dictionary(Long id, Boolean status, Long companyId, String name, String category,String value,String remark,Long organizationId, Date createdTime, Long createdBy, Date updatedTime, Long updatedBy, Long version) {
-        super(id, status, companyId, organizationId, createdTime, createdBy, updatedTime, updatedBy, version);
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.value = value;
-        this.remark = remark;
-    }
-
-    @Override
+   /* @Override
     public Long getId() {
         return id;
     }
@@ -66,7 +56,7 @@ public class Dictionary extends BaseEntity{
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
+    }*/
 
     public String getName() {
         return name;

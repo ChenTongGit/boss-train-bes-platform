@@ -1,4 +1,4 @@
-package com.boss.xtrain.basedata.pojo.dto;
+package com.boss.xtrain.basedata.pojo.dto.dictionary;
 
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -13,21 +13,11 @@ import javax.persistence.Id;
 @Builder
 public class DictionaryDTO extends BaseEntity {
 
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
     private String name;
     private String category;
     private String value;
     private String remark;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return this.name;
@@ -64,7 +54,6 @@ public class DictionaryDTO extends BaseEntity {
     @Override
     public String toString() {
         return "DictionaryDTO{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
                 ", value='" + value + '\'' +

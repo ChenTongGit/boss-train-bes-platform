@@ -10,12 +10,6 @@ import java.io.Serializable;
 
 @Table(name = "t_subject_answer")
 public class SubjectAnswer extends BaseEntity implements Serializable {
-    /**
-     * 答案ID
-     */
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
 
     /**
      * 题目ID
@@ -60,14 +54,6 @@ public class SubjectAnswer extends BaseEntity implements Serializable {
     private String field3;
 
     private static final long serialVersionUID = 1L;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getSubjectId() {
         return subjectId;

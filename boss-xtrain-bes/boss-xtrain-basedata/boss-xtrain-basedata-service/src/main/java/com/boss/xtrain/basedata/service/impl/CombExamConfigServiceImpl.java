@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
 import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
-@Service
+
 public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Resource

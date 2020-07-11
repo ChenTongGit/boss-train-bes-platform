@@ -5,10 +5,10 @@ import javax.annotation.Resource;
 import com.boss.xtrain.basedata.mapper.CombExamItemMapper;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
 import com.boss.xtrain.basedata.service.CombExamItemService;
-@Service
-public class CombExamItemServiceImpl implements CombExamItemService{
 
-    @Resource
+public class CombExamItemServiceImpl /*implements CombExamItemService*/{
+
+   /* @Resource
     private CombExamItemMapper combExamItemMapper;
 
     @Override
@@ -39,6 +39,6 @@ public class CombExamItemServiceImpl implements CombExamItemService{
     @Override
     public int updateByPrimaryKey(CombExamItem record) {
         return combExamItemMapper.updateByPrimaryKey(record);
-    }
+    }*/
 
 }

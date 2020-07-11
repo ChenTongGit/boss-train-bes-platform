@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boss.xtrain.basedata.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.boss.xtrain.basedata.pojo.entity.Category">
+    <!--@mbg.generated-->
+    <!--@Table t_category-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="org_id" jdbcType="BIGINT" property="organizationId" />
+    <result column="company_id" jdbcType="BIGINT" property="companyId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, parent_id, remark, `status`, org_id, company_id, created_by, created_time,
+    updated_by, updated_time, version
+  </sql>
+    <select id="queryCategory" resultType="com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO">
+        SELECT  t.id as id,
+        t.name as name,
+        t.parent_id as parentId,
+        t.remark as remark,
+        t.status as status,
+        t.org_id as organizationId,
+        t.company_id as companyId,
+        t.created_by as createdBy,
+        t.created_time as createdTime,
+        t.updated_by as updatedBy,
+        t.updated_time as updatedTime,
+        t.version as version
+        FROM t_category t
+    </select>
+    <select id="queryCategoryByName" resultType="com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO">
+       SELECT  t.id as id,
+        t.name as name,
+        t.parent_id as parentId,
+        t.remark as remark,
+        t.status as status,
+        t.org_id as organizationId,
+        t.company_id as companyId,
+        t.created_by as createdBy,
+        t.created_time as createdTime,
+        t.updated_by as updatedBy,
+        t.updated_time as updatedTime,
+        t.version as version
+        FROM t_category t
+        <where>
+            <if test=" name != ''  and name != null">
+                AND t.name = #{name}
+            </if>
+        </where>
+        order by updated_time desc
+    </select>
+    <select id="getCategories" resultType="com.boss.xtrain.basedata.pojo.dto.category.CategoryListDTO">
+        select t.id as id,
+        t.name as name
+        FROM t_category t
+        where t.org_id = #{orgId}
+    </select>
+</mapper>

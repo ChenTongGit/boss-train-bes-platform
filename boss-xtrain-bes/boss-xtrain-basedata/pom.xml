@@ -14,6 +14,10 @@
     <modules>
         <module>boss-xtrain-basedata-dao</module>
         <module>boss-xtrain-basedata-pojo</module>
+        <module>boss-xtrain-basedata-utils</module>
+        <module>boss-xtrain-basedata-service</module>
+        <module>boss-xtrain-basedata-api</module>
+        <module>boss-xtrain-basedata-controller</module>
     </modules>
     <dependencies>
         <dependency>

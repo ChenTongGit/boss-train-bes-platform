@@ -22,13 +22,9 @@ public class CombExamItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 组卷配置明细项ID
-     */
     @Id
     @KeySql(useGeneratedKeys = true)
     private Long id;
-
     /**
      * 题目类别ID
      */
@@ -115,7 +111,6 @@ public class CombExamItem implements Serializable {
     @Override
     public String toString() {
         return "CombExamItem{" +
-                "id=" + id +
                 ", subjectTypeId=" + subjectTypeId +
                 ", categoryId=" + categoryId +
                 ", combExamConfigId=" + combExamConfigId +

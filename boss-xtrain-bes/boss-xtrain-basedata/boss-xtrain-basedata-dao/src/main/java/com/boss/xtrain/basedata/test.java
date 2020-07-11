@@ -1,8 +1,10 @@
 package com.boss.xtrain.basedata;
 
+import com.boss.xtrain.basedata.dao.CategoryDao;
 import com.boss.xtrain.basedata.dao.DictionaryDao;
 import com.boss.xtrain.basedata.dao.impl.DictionaryDaoImpl;
 import com.boss.xtrain.basedata.mapper.DictionaryMapper;
+import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,28 +23,38 @@ public class test {
 
 
     @Autowired
-    private DictionaryDao dictionaryDao;
+    private CategoryDao categoryDao;
 
     @Test
-    public void testInsertList() {
+    public void testInsert() {
         String d = "2020-04-05";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = sdf.parse(d);
 
-        Dictionary dictionary = new Dictionary(4l,true,5L,"lisi","123","456","456",8L,date,4L,date,4L,4L);
+            Category category = new Category();
+            category.setId(5L);
+            category.setName("wanger");
+            category.setParentId(8L);
+            category.setRemark("123");
+            category.setCompanyId(5L);
+            category.setOrganizationId(7L);
+            category.setCreatedBy(7L);
+            category.setUpdatedTime(date);
+            category.setCreatedBy(5L);
+            category.setCreatedTime(date);
+            category.setStatus(1);
 
-        List<Dictionary> list = new ArrayList<Dictionary>();
+            List<Category> list = new ArrayList<>();
 
-        list.add(dictionary);
+            list.add(category);
 
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        dictionaryDao.deleteDictionaryByIds(ids);
-      //  dictionaryDao.updateDictionary(dictionary);
-           // dictionaryMapper.updateByPrimaryKey(dictionary);
-    }catch (ParseException e) {
+            List<Long> ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+
+            categoryDao.insertCategory(category);
+        }catch (ParseException e) {
             e.printStackTrace();
         }
     }

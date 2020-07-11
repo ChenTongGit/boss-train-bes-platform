@@ -18,12 +18,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "t_comb_exam_config")
 public class CombExamConfig extends BaseEntity implements Serializable {
-    /**
-     * 组卷配置ID
-     */
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
 
     /**
      * 配置名
@@ -39,16 +33,6 @@ public class CombExamConfig extends BaseEntity implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -68,7 +52,6 @@ public class CombExamConfig extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "CombExamConfig{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';

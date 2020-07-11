@@ -1,19 +1,22 @@
 package com.boss.xtrain.basedata.service;
 
-import com.boss.xtrain.basedata.pojo.entity.Subject;
+import com.boss.xtrain.basedata.pojo.dto.subject.*;
+import com.boss.xtrain.basedata.pojo.vo.subject.*;
+
+import java.util.List;
+
 public interface SubjectService{
 
+    List<SubjectDTO> querySubjectByCondition(SubjectQueryDTO subjectQueryDTO);
 
-    int deleteByPrimaryKey(Long id);
+    int insertSubject(SubjectInsertDTO subjectInsertDTO);
 
-    int insert(Subject record);
+    int deleteSubject(SubjectDeleteDTO subjectDeleteDTO);
 
-    int insertSelective(Subject record);
+    int deleteSubjectByIds(SubjectDeleteDTO subjectDeleteDTO);
 
-    Subject selectByPrimaryKey(Long id);
+    void updateSubject(SubjectUpdateDTO subjectUpdateDTO);
 
-    int updateByPrimaryKeySelective(Subject record);
-
-    int updateByPrimaryKey(Subject record);
+    List<SubjectVO> getSubjectBydIds(SubjectVO subjectVO);
 
 }

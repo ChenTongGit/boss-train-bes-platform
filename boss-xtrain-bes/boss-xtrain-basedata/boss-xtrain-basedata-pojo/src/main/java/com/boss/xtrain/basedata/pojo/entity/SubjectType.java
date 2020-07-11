@@ -11,12 +11,6 @@ import java.util.Date;
 
 @Table(name = "t_subject_type")
 public class SubjectType extends BaseEntity implements Serializable {
-    /**
-     * 题型ID
-     */
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
 
     /**
      * 题型名称
@@ -31,14 +25,6 @@ public class SubjectType extends BaseEntity implements Serializable {
     private String attribute;
 
     private static final long serialVersionUID = 1L;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -1,4 +1,4 @@
-package com.boss.xtrain.basedata.pojo.dto;
+package com.boss.xtrain.basedata.pojo.dto.combexamconfig;
 
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;

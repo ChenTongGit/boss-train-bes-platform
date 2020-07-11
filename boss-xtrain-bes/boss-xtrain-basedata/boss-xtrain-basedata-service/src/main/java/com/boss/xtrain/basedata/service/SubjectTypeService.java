@@ -1,19 +1,24 @@
 package com.boss.xtrain.basedata.service;
 
-import com.boss.xtrain.basedata.pojo.entity.SubjectType;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDeleteDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeInsertDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeQueryDTO;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
+
 public interface SubjectTypeService{
 
+    int insertSubjectType(SubjectTypeInsertDTO subjectTypeInsertDTO);
 
-    int deleteByPrimaryKey(Long id);
+    boolean deleteSubjectType(SubjectTypeDeleteDTO subjectTypeDeleteDTO);
 
-    int insert(SubjectType record);
+    void updateSubjectType(SubjectTypeDTO subjectTypeDTO);
 
-    int insertSelective(SubjectType record);
+    List<SubjectTypeDTO> querySubjectType(SubjectTypeQueryDTO subjectTypeQueryDTO);
 
-    SubjectType selectByPrimaryKey(Long id);
+    List<SubjectTypeDTO> querySubjectTypeById(Long orgId);
 
-    int updateByPrimaryKeySelective(SubjectType record);
-
-    int updateByPrimaryKey(SubjectType record);
-
+    int checkRepeatName(Example example);
 }

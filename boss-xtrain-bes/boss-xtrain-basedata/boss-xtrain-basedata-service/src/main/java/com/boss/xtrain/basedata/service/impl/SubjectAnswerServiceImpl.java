@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.basedata.mapper.SubjectAnswerMapper;
 import com.boss.xtrain.basedata.service.SubjectAnswerService;
-@Service
+
 public class SubjectAnswerServiceImpl implements SubjectAnswerService{
 
     @Resource

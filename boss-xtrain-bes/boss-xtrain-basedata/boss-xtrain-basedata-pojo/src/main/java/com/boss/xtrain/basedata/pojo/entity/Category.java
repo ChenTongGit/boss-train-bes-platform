@@ -16,12 +16,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "t_category")
 public class Category extends BaseEntity implements Serializable {
-    /**
-     * 题目类别ID
-     */
-    @Id
-    @KeySql(useGeneratedKeys = true)
-    private Long id;
+
     /**
      * 类别名称
      */
@@ -69,19 +64,8 @@ public class Category extends BaseEntity implements Serializable {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
     public String toString() {
         return "Category{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", parentId=" + parentId +
                 ", remark='" + remark + '\'' +

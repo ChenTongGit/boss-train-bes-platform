@@ -1,19 +1,23 @@
 package com.boss.xtrain.basedata.service;
 
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryDeleteDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryDeleteIds;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
+
+import java.util.List;
+
 public interface CategoryService{
 
+    int insertCategory(CategoryDTO categoryDTO);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteCategory(CategoryDeleteIds categoryDeleteIds);
 
-    int insert(Category record);
+    void updateCategory(CategoryDTO categoryDTO);
 
-    int insertSelective(Category record);
+    List<CategoryDTO> queryCategory(CategoryQueryDTO categoryQueryDTO);
 
-    Category selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Category record);
-
-    int updateByPrimaryKey(Category record);
+    int checkRepeatName(CategoryDTO categoryDTO);
 
 }

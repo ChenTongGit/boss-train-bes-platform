@@ -1,44 +1,73 @@
 package com.boss.xtrain.basedata.service.impl;
 
+import com.boss.xtrain.basedata.dao.SubjectDao;
+import com.boss.xtrain.basedata.pojo.dto.subject.*;
+import com.boss.xtrain.basedata.pojo.vo.subject.*;
+import com.boss.xtrain.common.core.exception.ServiceException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.util.IdWorker;
+import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.boss.xtrain.basedata.mapper.SubjectMapper;
 import com.boss.xtrain.basedata.pojo.entity.Subject;
 import com.boss.xtrain.basedata.service.SubjectService;
-@Service
+
+import java.util.List;
+
+
 public class SubjectServiceImpl implements SubjectService{
 
-    @Resource
-    private SubjectMapper subjectMapper;
+    @Autowired
+    private SubjectDao subjectDao;
+
+    @Autowired
+    private IdWorker idWorker;
+
 
     @Override
-    public int deleteByPrimaryKey(Long id) {
-        return subjectMapper.deleteByPrimaryKey(id);
+    public List<SubjectDTO> querySubjectByCondition(SubjectQueryDTO subjectQueryDTO) {
+        Long orgId = subjectQueryDTO.getOrgId();
+        if (orgId != null){
+            return subjectDao.queryByCondition(subjectQueryDTO);
+        }else {
+            throw new ServiceException(BusinessError.BASE_DATA_SUBJECT_QUERY_ERROR);
+        }
     }
 
     @Override
-    public int insert(Subject record) {
-        return subjectMapper.insert(record);
+    public int insertSubject(SubjectInsertDTO subjectInsertDTO) {
+        Subject subject =  new Subject();
+        PojoUtils.copyProperties(subjectInsertDTO, subject);
+        subject.setId(idWorker.nextId());
+        subjectDao.insertSubject(subjectInsertDTO);
+
+        if (!subjectInsertDTO.getSubjectAnswers().isEmpty()){
+
+        }
+        return 0;
     }
 
     @Override
-    public int insertSelective(Subject record) {
-        return subjectMapper.insertSelective(record);
+    public int deleteSubject(SubjectDeleteDTO subjectDeleteDTO) {
+
+        return 0;
     }
 
     @Override
-    public Subject selectByPrimaryKey(Long id) {
-        return subjectMapper.selectByPrimaryKey(id);
+    public int deleteSubjectByIds(SubjectDeleteDTO subjectDeleteDTO) {
+        return 0;
     }
 
     @Override
-    public int updateByPrimaryKeySelective(Subject record) {
-        return subjectMapper.updateByPrimaryKeySelective(record);
+    public void updateSubject(SubjectUpdateDTO subjectUpdateDTO) {
+
     }
 
     @Override
-    public int updateByPrimaryKey(Subject record) {
-        return subjectMapper.updateByPrimaryKey(record);
+    public List<SubjectVO> getSubjectBydIds(SubjectVO subjectVO) {
+        return null;
     }
-
 }
