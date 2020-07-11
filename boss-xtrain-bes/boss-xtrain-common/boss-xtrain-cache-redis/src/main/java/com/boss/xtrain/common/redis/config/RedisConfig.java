@@ -1,4 +1,4 @@
-package com.boss.xtrain.common.config;
+package com.boss.xtrain.common.redis.config;
 
 import com.boss.xtrain.common.redis.api.RedisUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

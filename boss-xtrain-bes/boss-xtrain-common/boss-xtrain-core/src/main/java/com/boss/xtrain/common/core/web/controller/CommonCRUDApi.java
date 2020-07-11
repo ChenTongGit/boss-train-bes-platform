@@ -7,8 +7,10 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 
 import com.boss.xtrain.common.core.http.CommonResponse;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -69,7 +71,7 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @date 2020/7/7 22:09
      */
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
 
     CommonResponse<Integer> create(@RequestBody @Valid D dtoParam);
@@ -83,8 +85,8 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @date 2020/7/7 22:09
      */
-    @PostMapping("/deletePatch")
-    CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<D>> request);
+    @DeleteMapping("/deleteBatch")
+    CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<D>> request);
 
     CommonResponse<Integer> delete(@NotNull Long id);
 
@@ -95,7 +97,7 @@ public interface CommonCRUDApi<D,Q,V>  {
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @date 2020/7/7 22:10
      */
-    @PostMapping("update")
+    @PutMapping("update")
     CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
 
 }

@@ -1,5 +1,6 @@
 package com.boss.xtrain.common.core.http;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -18,7 +19,8 @@ public class CommonRequest<T> implements Serializable {
     /**
      * 请求题内容，用来放置DTO
      * */
-    private Map<String,T> body;
+    @Valid
+    private T body;
 
     /**
      * getter setter方法
@@ -31,18 +33,18 @@ public class CommonRequest<T> implements Serializable {
         this.header = header;
     }
 
-    public Map<String, T> getBody() {
+    public T getBody() {
         return body;
     }
 
-    public void setBody(Map<String, T> body) {
+    public void setBody(T body) {
         this.body = body;
     }
 
     /**
      * 全参和无参构造方法
      * */
-    public CommonRequest(RequestHeader header, Map<String, T> body) {
+    public CommonRequest(RequestHeader header, T body) {
         this.header = header;
         this.body = body;
     }

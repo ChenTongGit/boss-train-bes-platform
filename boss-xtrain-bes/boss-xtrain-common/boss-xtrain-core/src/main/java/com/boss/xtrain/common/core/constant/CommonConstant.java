@@ -25,5 +25,5 @@ public class CommonConstant {
     /**
      * 基础api url
      */
-    public static final String BASIC_URL = "/education/bes"+VERSION;
+    public static final String BASIC_URL = "/education/bes/"+VERSION;
 }

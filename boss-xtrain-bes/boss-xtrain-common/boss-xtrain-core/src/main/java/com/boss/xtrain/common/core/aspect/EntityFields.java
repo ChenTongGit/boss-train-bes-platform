@@ -22,7 +22,7 @@ public class EntityFields implements Serializable {
     /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
-    private Long orgId;
+    private Long organizationId;
 
     /**
      *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
@@ -37,7 +37,7 @@ public class EntityFields implements Serializable {
 
     public EntityFields(Long companyId, Long orgId, Long createdBy, Long updatedBy) {
         this.companyId = companyId;
-        this.orgId = orgId;
+        this.organizationId = orgId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
     }
@@ -54,11 +54,11 @@ public class EntityFields implements Serializable {
     }
 
     public Long getOrgId() {
-        return orgId;
+        return organizationId;
     }
 
     public void setOrgId(Long orgId) {
-        this.orgId = orgId;
+        this.organizationId = orgId;
     }
 
     public Long getCreatedBy() {
@@ -82,7 +82,7 @@ public class EntityFields implements Serializable {
     public String toString() {
         return "EntityFields{" +
                 "companyId=" + companyId +
-                ", orgId=" + orgId +
+                ", orgId=" + organizationId +
                 ", createdBy=" + createdBy +
                 ", updatedBy=" + updatedBy +
                 '}';

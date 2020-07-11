@@ -7,14 +7,15 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -44,19 +45,30 @@ public class EntityFieldStufferAspect {
 	 * 更新人属性
 	 */
 	private static final String UPDATE_BY = "updatedBy";
+
 	/**
 	 * 组织ID属性
 	 */
-	private static final String ORG_ID = "orgId";
+	private static final String ORG_ID = "organizationId";
 	/**
 	 * 公司ID属性
 	 */
 	private static final String COMPANY = "companyId";
 
 	/**
+	 * 数据版本号version
+	 */
+	private static final String VERSION = "version";
+
+	/**
 	 * 创建时间
 	 */
 	private static final String CREATE_TIME = "createdTime";
+
+	/**
+	 * 状态创建时默认为0
+	 */
+	private static final String STATUS = "status";
 
 	@Pointcut("execution(* com.boss.xtrain.*.dao.*.update*(..))")
 	public void daoUpdate() {
@@ -77,9 +89,18 @@ public class EntityFieldStufferAspect {
 		Object[] objects = pjp.getArgs();
 		if (objects != null && objects.length > 0) {
 			for (Object arg : objects) {
-				BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
-				BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
-				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrgId());
+				if (arg instanceof List){
+					for ( Object item:(List)arg) {
+						BeanUtils.setProperty(item, UPDATE_BY , entityFields.getUpdatedBy());
+						BeanUtils.setProperty(item, COMPANY, entityFields.getCompanyId());
+						BeanUtils.setProperty(item, ORG_ID, entityFields.getOrgId());
+					}
+				}else {
+					BeanUtils.setProperty(arg, UPDATE_BY , entityFields.getUpdatedBy());
+					BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
+					BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrgId());
+				}
+
 			}
 		}
 
@@ -97,18 +118,33 @@ public class EntityFieldStufferAspect {
 		Object[] objects = pjp.getArgs();
 		if (objects != null && objects.length > 0) {
 			for (Object arg : objects) {
+
 				EntityFields entityFields = getEntityFields();
 				if (entityFields == null) {
 					continue;
 				}
-				BeanUtils.setProperty(arg, COMPANY, entityFields.getCompanyId());
-				BeanUtils.setProperty(arg, ORG_ID, entityFields.getOrgId());
-				BeanUtils.setProperty(arg, CREATE_BY, entityFields.getCreatedBy());
-				BeanUtils.setProperty(arg, CREATE_TIME, new Date());
+				if (arg instanceof List){
+					for ( Object item:(List)arg) {
+						setCommonProperty(item,entityFields);
+					}
+				}else {
+					setCommonProperty(arg, entityFields);
+				}
+
+
 			}
 		}
 		log.info(getEntityFields().toString());
 		return pjp.proceed();
+	}
+
+	private void setCommonProperty(Object item, EntityFields fields) throws InvocationTargetException, IllegalAccessException {
+		BeanUtils.setProperty(item, COMPANY, fields.getCompanyId());
+		BeanUtils.setProperty(item, ORG_ID, fields.getOrgId());
+		BeanUtils.setProperty(item, CREATE_BY, fields.getCreatedBy());
+		BeanUtils.setProperty(item, CREATE_TIME, new Date());
+		BeanUtils.setProperty(item, VERSION, 0);
+		BeanUtils.setProperty(item, STATUS, 0);
 	}
 
 	private EntityFields getEntityFields() {
