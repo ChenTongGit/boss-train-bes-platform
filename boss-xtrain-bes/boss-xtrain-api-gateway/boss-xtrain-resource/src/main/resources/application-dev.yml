@@ -1,0 +1,48 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+    # druid 数据源配置 根据自己的微服务数据库信息配置
+
+  redis:
+    database: 0
+    # Redis服务器地址
+    host: 123.57.156.184
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: bosstrain@14
+    # 连接池最大连接数（使用负值表示没有限制）
+    jedis:
+      pool:
+        max-active: 1024
+    # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 10000
+    # 连接池中的最大空闲连接
+        max-idle: 200
+    # 连接池中的最小空闲连接
+        min-idle: 0
+    # 连接超时时间（毫秒）
+    timeout: 10000
+
+  # 组nacos和seata服务地址
+  nacos-url:
+    nacos-host: 123.57.156.184
+    nacos-port: 8848
+  seata-url:
+    seata-host: 123.57.156.184
+    seata-port: 8091
+  security-url:
+    authorization-uri: 4444
+    resource-uri: 4445
+
+#---------------------OAuth2---------------------
+security:
+  oauth2:
+    client:
+      client-id: bes
+      client-secret: 12345
+    resource:
+      id: test
+      token-info-uri: http://localhost:4444/oauth/check_token
