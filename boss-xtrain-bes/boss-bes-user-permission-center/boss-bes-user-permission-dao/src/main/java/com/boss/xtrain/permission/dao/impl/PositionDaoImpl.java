@@ -1,10 +1,12 @@
 package com.boss.xtrain.permission.dao.impl;
 
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.PositionDao;
 import com.boss.xtrain.permission.mapper.PositionMapper;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
+import javafx.geometry.Pos;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,20 +28,26 @@ public class PositionDaoImpl implements PositionDao {
 
 
     @Override
-    public List<Position> queryByCondition(PositionQueryDTO dto) {
-        return positionMapper.queryByCondition(dto);
+    public List<PositionDTO> queryByCondition(PositionQueryDTO dto) {
+        Position position = new Position();
+        return PojoUtils.copyListProperties(positionMapper.select(position),PositionDTO::new);
     }
 
     @Override
     public int deleteByIds(List<Long> ids) {
-        return positionMapper.deleteByIds(ids);
+        int count = 0;
+        for(Long id:ids){
+            positionMapper.deleteByPrimaryKey(id);
+            count++;
+        }
+        return count;
     }
 
     @Override
-    public int create(PositionDTO dto) {
+    public int insert(PositionDTO dto) {
         Position position = new Position();
         BeanUtils.copyProperties(dto,position);
-        return positionMapper.insertSelective(position);
+        return positionMapper.insert(position);
     }
 
     @Override
@@ -62,6 +70,13 @@ public class PositionDaoImpl implements PositionDao {
     @Override
     public boolean isExist(Long id) {
         return positionMapper.existsWithPrimaryKey(id);
+    }
+
+    @Override
+    public Position selectOne(PositionQueryDTO dto) {
+        Position position = new Position();
+        PojoUtils.copyProperties(dto,position);
+        return positionMapper.selectOne(position);
     }
 
 }

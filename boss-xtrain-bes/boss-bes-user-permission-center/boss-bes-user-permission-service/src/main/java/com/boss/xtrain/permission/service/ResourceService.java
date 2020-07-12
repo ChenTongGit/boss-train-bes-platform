@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.service;
 
+import com.boss.xtrain.common.core.web.service.CommonCurdService;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import org.apache.ibatis.annotations.Param;
@@ -12,34 +13,7 @@ import java.util.List;
  * @Description :resource Service层
  * @Version: 1.0
  */
-public interface ResourceService {
-    /**
-     * @param dto
-     * @return int
-     * @description 添加资源
-     */
-    int add(ResourceDTO dto);
-
-    /**
-     * @param resourceDTOS
-     * @return int
-     * @description 根据id删除多条记录
-     */
-    int deleteByIds(@Param("ids")List<ResourceDTO> resourceDTOS);
-    /**
-     * @param dto
-     * @return int
-     * @description 修改数据
-     */
-    int update(ResourceDTO dto);
-
-    /**
-     * @param dto
-     * @return List<Resource>
-     * @description 根据查询条件
-     */
-    List<ResourceDTO> query(ResourceQueryDTO dto);
-
+public interface ResourceService extends CommonCurdService<ResourceDTO,ResourceQueryDTO> {
     /**
      * @param roleId
      * @return List<String>

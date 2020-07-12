@@ -16,7 +16,7 @@ import lombok.*;
 @ToString
 public class ResourceListVO extends BaseVO {
     private String parentName;
-    private String id;
+    private Long id;
     private String code;
     private String name;
     private Integer orderIndex;

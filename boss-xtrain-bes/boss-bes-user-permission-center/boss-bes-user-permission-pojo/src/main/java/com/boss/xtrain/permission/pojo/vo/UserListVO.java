@@ -19,10 +19,10 @@ import java.util.List;
 @ToString
 public class UserListVO extends BaseVO {
     private List<RoleListVO> roleList;
-    private String id;
-    private String companyId;
-    private String positionId;
-    private String departmentId;
+    private Long id;
+    private Long companyId;
+    private Long positionId;
+    private Long departmentId;
     private String companyName;
     private String positionName;
     private String departmentName;

@@ -84,6 +84,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_RESOURCE_QUERY_ERROR("220405","查询资源失败"),
     SYSTEM_MANAGER_RESOURCE_IN_USE("220406","该资源正在使用，无法编辑"),
     SYSTEM_MANAGER_RESOURCE_NOT_EXIST_ERROR("220407","该资源不存在"),
+    SYSTEM_MANAGER_RESOURCE_LOAD_RESOURCE_ERROR("220408","获取角色资源表失败"),
     /**
      * 系统管理 角色模块异常码
      */
@@ -94,7 +95,8 @@ public enum BusinessError {
     SYSTEM_MANAGER_ROLE_QUERY_ERROR("220505","查询角色失败"),
     SYSTEM_MANAGER_ROLE_IN_USE("220506","该角色正在使用，无法编辑"),
     SYSTEM_MANAGER_ROLE_NOT_EXIST_ERROR("220507","该角色不存在"),
-
+    SYSTEM_MANAGER_ROLE_ALLOCATE_RESOURCE_ERROR("220508","角色分配资源失败"),
+    SYSTEM_MANAGER_ROLE_ALLOCATE_USER_ERROR("220507","角色分配用户失败"),
 
     /**
      * 系统管理 职位模块异常码

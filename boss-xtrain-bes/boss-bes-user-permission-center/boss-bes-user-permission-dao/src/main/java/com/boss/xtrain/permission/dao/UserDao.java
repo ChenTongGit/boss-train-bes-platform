@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.dao;
 
+import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
@@ -16,31 +17,7 @@ import java.util.List;
  * @Description :user Dao
  * @Version: 1.0
  */
-public interface UserDao {
-    /**
-     * 添加用户
-     *
-     * @param dto
-     * @return int
-     *
-     */
-    int add(UserDTO dto);
-
-    /**
-     *修改user
-     *
-     * @param dto
-     * @return int
-     *
-     */
-    int update(UserDTO dto);
-
-    /**
-     * @param dto
-     * @return List<User>
-     * @description 查询条件查询
-     */
-    List<User> query(UserQueryDTO dto);
+public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
 
     /**
      * @param id
@@ -54,7 +31,7 @@ public interface UserDao {
      * @return List<Role>
      * @description 所有角色
      */
-    List<Role> getAllRoles(RoleQueryDTO queryDTO);
+    List<Role> getAllRoles(UserQueryDTO queryDTO);
 
     /**
      * @param ids
@@ -68,6 +45,14 @@ public interface UserDao {
      * @description 删除用户的某一角色
      */
     int deleteUserRole(UserRoleDTO userRoleDTO);
+    /**
+     * 为用户分配角色
+     *
+     * @param userRoleDTO
+     * @return int
+     */
+
+    int allocateRole(UserRoleDTO userRoleDTO);
 
     /**
      * 根据Id获取Status
@@ -76,5 +61,22 @@ public interface UserDao {
      * @return User
      */
     User getStatusById(Long id);
+    /**
+     *
+     * 是否存在
+     * @param id
+     * @return boolean
+     *
+     */
+    boolean isExist(Long id);
+
+    /**
+     * 查找全部
+     *
+     * @param
+     * @return list
+     *
+    */
+    List<User> selectAll();
 
 }

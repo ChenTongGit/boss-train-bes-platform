@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.service;
 
+import com.boss.xtrain.common.core.web.service.CommonCurdService;
+import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -16,52 +18,27 @@ import java.util.List;
  * @Description :user service层
  * @Version: 1.0
  */
-public interface UserSerivce {
-    /**
-     * 添加用户
-     *
-     * @param dto
-     * @return int
-     *
-     */
-    int add(UserDTO dto);
-
-    /**
-     *修改user
-     *
-     * @param dto
-     * @return int
-     *
-     */
-    int update(UserDTO dto);
-
-    /**
-     * @param dto
-     * @return List<User>
-     * @description 查询条件查询
-     */
-    List<User> query(UserQueryDTO dto);
-
+public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
     /**
      * @param id
-     * @return List<Role>
+     * @return List<RoleDTO>
      * @description 通过userid查找用户的角色
      */
-    List<Role> getRoleByUserId(Long id);
+    List<RoleDTO> getRoleByUserId(Long id);
+    /**
+     * @param query
+     * @return List<RoleDTO>
+     * @description 唯一查找
+     */
+   UserDTO select(UserQueryDTO query);
 
     /**
      * @param queryDTO
      * @return List<Role>
      * @description 所有角色
      */
-    List<Role> getAllRoles(RoleQueryDTO queryDTO);
+    List<RoleDTO> getAllRoles(UserQueryDTO queryDTO);
 
-    /**
-     * @param ids
-     * @return int
-     * @description 通过id批量删除
-     */
-    int deleteByIds(@Param("ids")List<Long> ids);
     /**
      * @param userRoleDTO
      * @return int

@@ -1,10 +1,15 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.ResourceDao;
+import com.boss.xtrain.permission.dao.RoleDao;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,46 +24,106 @@ import java.util.List;
  * @Version: 1.0
  */
 @Service
-public class ResourceServiceImpl implements ResourceService {
+public class ResourceServiceImpl implements ResourceService{
 
     @Autowired
     private ResourceDao resourceDao;
 
+    @Autowired
+    private RoleDao roleDao;
+
+    private IdWorker worker = new IdWorker();
+
     @Override
-    public int add(ResourceDTO dto) {
-        return resourceDao.add(dto);
+    public int insert(ResourceDTO dto) {
+        if(resourceDao.isExist(dto.getId())){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_REPEAT_ERROR);
+        }
+        try {
+            dto.setId(worker.nextId());
+            return resourceDao.insert(dto);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_INSERT_ERROR,e);
+        }
     }
 
     @Override
-    public int deleteByIds(List<ResourceDTO> resourceDTOS) {
-        List<Long> ids = new ArrayList<>();
+    public int delete(List<ResourceDTO> resourceDTOS) {
+
         for(ResourceDTO dto : resourceDTOS){
-            ids.add(dto.getId());
+            if(isInUse(dto))
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
         }
 
-        return resourceDao.deleteByIds(ids);
+        try {
+            return resourceDao.deleteByIds(resourceDTOS);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
+        }
     }
 
     @Override
     public int update(ResourceDTO dto) {
-        return resourceDao.update(dto);
+        if(!resourceDao.isExist(dto.getId())){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_NOT_EXIST_ERROR);
+        }
+        try {
+            return resourceDao.update(dto);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR);
+        }
     }
 
     @Override
-    public List<ResourceDTO> query(ResourceQueryDTO dto) {
-        List<Resource> resources = resourceDao.query(dto);
-        return PojoUtils.copyListProperties(resources,ResourceDTO::new);
+    public List<ResourceDTO> selectByCondition(ResourceQueryDTO dto) {
+
+        try {
+            List<ResourceDTO> resources = resourceDao.queryByCondition(dto);
+            return PojoUtils.copyListProperties(resources,ResourceDTO::new);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
+        }
+    }
+
+    @Override
+    public List<ResourceDTO> selectAll() {
+        try {
+            List<Resource> resources = resourceDao.selectAll();
+            return PojoUtils.copyListProperties(resources,ResourceDTO::new);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
+        }
+    }
+
+    @Override
+    public int delete(ResourceDTO dto) {
+        if(isInUse(dto))
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
+        try {
+            return resourceDao.delete(dto);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
+        }
     }
 
     @Override
     public List<String> loadResourceByRoleId(String roleId) {
-        return resourceDao.loadResourceByRoleId(roleId);
+        try {
+            return resourceDao.loadResourceByRoleId(roleId);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_LOAD_RESOURCE_ERROR);
+        }
     }
 
     @Override
     public List<ResourceDTO> queryParent() {
-        List<Resource> resources = resourceDao.queryParent();
-        return PojoUtils.copyListProperties(resources,ResourceDTO::new);
+        try {
+            List<Resource> resources = resourceDao.queryParent();
+            return PojoUtils.copyListProperties(resources,ResourceDTO::new);
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR,e);
+        }
+
     }
 
     @Override
@@ -67,5 +132,9 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceDTO dto = new ResourceDTO();
         PojoUtils.copyProperties(resource,dto);
         return dto;
+    }
+
+    private boolean isInUse(ResourceDTO dto){
+        return roleDao.getResourcesByRoleId(dto.getId()).isEmpty();
     }
 }

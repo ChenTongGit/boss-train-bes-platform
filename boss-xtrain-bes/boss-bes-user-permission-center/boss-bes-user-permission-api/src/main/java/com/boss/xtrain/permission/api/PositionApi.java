@@ -28,12 +28,12 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
     /**
      * 列出所有
      *
-     * @param request
+     * @param
      * @return CommonResponse<List<PositionListVO>>
      *
     */
     @RequestMapping("/selectAll")
-    CommonResponse<List<PositionListVO>> selectAllPosition(@RequestBody @Valid CommonRequest<PositionQueryDTO> request);
+    CommonResponse<List<PositionListVO>> selectAllPosition();
 
     /**
      *

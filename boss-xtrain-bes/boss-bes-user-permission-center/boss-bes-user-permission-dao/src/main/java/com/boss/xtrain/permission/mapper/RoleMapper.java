@@ -17,20 +17,6 @@ import java.util.List;
 @Repository
 public interface RoleMapper extends CommonMapper<Role> {
     /**
-    * @param dto
-    * @return List<Role>
-    * @description 通过查询条件查询
-    */
-    List<Role> query(RoleQueryDTO dto);
-    /**
-     * 根据id删除多条记录
-     *
-     * @param ids
-     * @return int
-     */
-    int deleteByIds(@Param("ids") List<Long> ids);
-
-    /**
      * 条件查询用户
      *
      * @param dto

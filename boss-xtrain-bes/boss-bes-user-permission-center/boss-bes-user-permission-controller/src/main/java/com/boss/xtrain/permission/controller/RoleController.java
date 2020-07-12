@@ -2,8 +2,11 @@ package com.boss.xtrain.permission.controller;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.service.RoleService;
 import com.boss.xtrain.permission.api.RoleApi;
@@ -28,31 +31,45 @@ public class RoleController implements RoleApi {
 
     @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<RoleDTO> request) {
-        return null;
+        RoleDTO roleDTO = request.getBody();
+        return CommonResponseUtil.ok(roleService.insert(roleDTO));
     }
 
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<RoleDTO> request) {
-        return null;
+        RoleDTO roleDTO = new RoleDTO();
+        return CommonResponseUtil.ok(roleService.delete(roleDTO));
     }
 
     @Override
-    public CommonResponse<List<RoleListVO>> selectList(@Valid CommonRequest<ResourceQueryDTO> request) {
-        return null;
+    public CommonResponse<List<RoleListVO>> selectList(@Valid CommonRequest<RoleQueryDTO> request) {
+        RoleQueryDTO queryDTO = request.getBody();
+        List<RoleDTO> roleDTOS = roleService.selectByCondition(queryDTO);
+        return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
 
     @Override
-    public CommonResponse<RoleListVO> select(@Valid CommonRequest<ResourceQueryDTO> request) {
-        return null;
+    public CommonResponse<RoleListVO> select(@Valid CommonRequest<RoleQueryDTO> request) {
+        RoleQueryDTO queryDTO = request.getBody();
+        RoleDTO result = roleService.selectByCondition(queryDTO).get(0);
+        RoleListVO vo = new RoleListVO();
+        PojoUtils.copyProperties(result,vo);
+        return CommonResponseUtil.ok(vo);
     }
 
     @Override
     public CommonResponse<Integer> update(@Valid CommonRequest<RoleDTO> request) {
-        return null;
+        return CommonResponseUtil.ok(roleService.update(request.getBody()));
     }
 
     @Override
-    public CommonResponse<Integer> deletePatch(@Valid CommonRequest<List<RoleDTO>> request) {
-        return null;
+    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<RoleDTO>> request) {
+        return CommonResponseUtil.ok(roleService.delete(request.getBody()));
+    }
+
+    @Override
+    public CommonResponse<List<RoleListVO>> selectAllRole(){
+        List<RoleDTO> roleDTOS = roleService.selectAll();
+        return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
 }

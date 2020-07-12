@@ -7,6 +7,7 @@ package com.boss.xtrain.permission.pojo.query;
  * @Version: 1.0
  */
 
+import com.boss.xtrain.common.core.pojo.BaseQuery;
 import lombok.*;
 
 @EqualsAndHashCode
@@ -14,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserQueryDTO {
+public class UserQueryDTO extends BaseQuery {
     private String name;
     private String code;
     private String tel;

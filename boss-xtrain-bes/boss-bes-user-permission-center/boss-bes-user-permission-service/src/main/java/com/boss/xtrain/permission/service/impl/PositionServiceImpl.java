@@ -33,17 +33,18 @@ public class PositionServiceImpl implements PositionService {
     private IdWorker worker = new IdWorker();
 
     @Override
-    public int create(PositionDTO dto) {
+    public int insert(PositionDTO dto) {
         PositionQueryDTO query = new PositionQueryDTO();
+
         PojoUtils.copyProperties(dto,query);
         if(!positionDao.queryByCondition(query).isEmpty()){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_REPEAT_ERROR);
         }
         try {
             dto.setId(worker.nextId());
-            return positionDao.create(dto);
+            return positionDao.insert(dto);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_INSERT_ERROR);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_INSERT_ERROR,e);
         }
     }
 
@@ -55,22 +56,21 @@ public class PositionServiceImpl implements PositionService {
         try {
             return positionDao.update(dto);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR,e);
         }
     }
 
     @Override
-    public List<PositionDTO> queryByCondition(PositionQueryDTO dto) {
+    public List<PositionDTO> selectByCondition(PositionQueryDTO dto) {
         try {
-            List<Position> positions = positionDao.queryByCondition(dto);
-            return PojoUtils.copyListProperties(positions,PositionDTO::new);
+            return positionDao.queryByCondition(dto);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR,e);
         }
     }
 
     @Override
-    public int deleteByIds(List<PositionDTO> positionDTOList) {
+    public int delete(List<PositionDTO> positionDTOList) {
         List<Long> ids = new ArrayList<>();
         for(PositionDTO positionDTO : positionDTOList){
             if(isInUse(positionDTO)){
@@ -81,7 +81,7 @@ public class PositionServiceImpl implements PositionService {
         try {
             return positionDao.deleteByIds(ids);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_DELETE_ERROR);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_DELETE_ERROR,e);
         }
     }
 
@@ -91,7 +91,7 @@ public class PositionServiceImpl implements PositionService {
             try {
                 return positionDao.delete(dto);
             }catch (Exception e){
-                throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_DELETE_ERROR);
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_DELETE_ERROR,e);
             }
         }
         throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_IN_USE);
@@ -103,11 +103,22 @@ public class PositionServiceImpl implements PositionService {
             List<Position> positions = positionDao.selectAll();
             return PojoUtils.copyListProperties(positions,PositionDTO::new);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR,e);
         }
     }
 
     private boolean isInUse(PositionDTO dto){
         return dto.getStatus()==1;
+    }
+
+    @Override
+    public PositionDTO selectOne(PositionQueryDTO dto) {
+        try {
+            PositionDTO positionDTO = new PositionDTO();
+            PojoUtils.copyProperties(positionDao.selectOne(dto),positionDTO);
+            return positionDTO;
+        }catch (Exception e){
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR,e);
+        }
     }
 }

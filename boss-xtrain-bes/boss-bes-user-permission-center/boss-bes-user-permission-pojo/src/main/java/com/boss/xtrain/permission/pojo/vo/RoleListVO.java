@@ -22,8 +22,8 @@ public class RoleListVO extends BaseVO {
     private List<ResourceListVO> resourceList;
     private List<UserListVO> userList;
     private String orgId;
-    private String companyId;
-    private String id;
+    private Long companyId;
+    private Long id;
     private String name;
     private String code;
     private String companyName;

@@ -10,19 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ResourceMapper extends CommonMapper<Resource> {
-    /**
-     * @param dto
-     * @return List<Resource>
-     * @description 根据查询条件
-     */
-    List<Resource> query(ResourceQueryDTO dto);
 
-    /**
-     * @param ids
-     * @return int
-     * @description 根据id删除多条记录
-     */
-    int deleteByIds(@Param("ids")List<Long> ids);
     /**
      * @param roleId
      * @return List<String>

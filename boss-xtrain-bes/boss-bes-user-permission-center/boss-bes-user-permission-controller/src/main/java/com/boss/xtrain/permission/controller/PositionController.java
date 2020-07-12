@@ -47,7 +47,7 @@ public class PositionController implements PositionApi {
     @ApiOperation("新增职位")
     public CommonResponse<Integer> insert(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO body = request.getBody();
-        return CommonResponseUtil.ok(positionService.create(body));
+        return CommonResponseUtil.ok(positionService.insert(body));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class PositionController implements PositionApi {
     @Override
     public CommonResponse<List<PositionListVO>> selectList(@Valid CommonRequest<PositionQueryDTO> request) {
         PositionQueryDTO query = request.getBody();
-        List<PositionDTO> positionDTOS = positionService.queryByCondition(query);
+        List<PositionDTO> positionDTOS = positionService.selectByCondition(query);
         List<PositionListVO> listVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
         return CommonResponseUtil.ok(listVOS);
     }
@@ -78,17 +78,17 @@ public class PositionController implements PositionApi {
     @Override
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<PositionDTO>> request) {
         List<PositionDTO> body = request.getBody();
-        return CommonResponseUtil.ok(positionService.deleteByIds(body));
+        return CommonResponseUtil.ok(positionService.delete(body));
 
     }
 
     @Override
-    public CommonResponse<List<PositionListVO>> selectAllPosition(@Valid CommonRequest<PositionQueryDTO> request) {
+    public CommonResponse<List<PositionListVO>> selectAllPosition() {
 //       PositionQueryDTO query = request.getBody();
 //       List<PositionDTO> positionDTOS = positionService.selectAll(query);
 //       List<PositionListVO> positionListVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
 //       return CommonResponseUtil.ok(positionListVOS);
-        return null;
+        return CommonResponseUtil.ok(PojoUtils.copyListProperties(positionService.selectAll(),PositionListVO::new));
     }
 
     @Override

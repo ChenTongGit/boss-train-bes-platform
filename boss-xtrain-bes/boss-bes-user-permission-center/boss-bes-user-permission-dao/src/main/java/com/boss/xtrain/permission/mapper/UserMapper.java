@@ -14,13 +14,6 @@ import java.util.List;
 @Repository
 public interface UserMapper extends CommonMapper<User> {
     /**
-    * @param dto
-    * @return List<User>
-    * @description 查询条件查询
-    */
-    List<User> query(UserQueryDTO dto);
-
-    /**
     * @param id
     * @return List<Role>
     * @description 通过userid查找用户的角色
@@ -32,7 +25,7 @@ public interface UserMapper extends CommonMapper<User> {
     * @return List<Role>
     * @description 所有角色
     */
-    List<Role> getAllRoles(RoleQueryDTO queryDTO);
+    List<Role> getAllRoles(UserQueryDTO queryDTO);
 
     /**
     * @param ids
@@ -46,6 +39,15 @@ public interface UserMapper extends CommonMapper<User> {
     * @description 删除用户的某一角色
     */
     int deleteUserRole(UserRoleDTO userRoleDTO);
+
+    /**
+     *
+     *
+     * @param userRoleDTO
+     * @return int
+     *
+    */
+    int allocateRole(UserRoleDTO userRoleDTO);
 
     /**
      * 根据Id获取Status

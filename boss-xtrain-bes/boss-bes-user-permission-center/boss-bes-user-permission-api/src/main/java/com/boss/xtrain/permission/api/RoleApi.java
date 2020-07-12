@@ -5,6 +5,7 @@ import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,39 +20,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @RequestMapping("/education/bes/v1/role")
-public interface RoleApi extends CommonCRUDApi<RoleDTO,ResourceQueryDTO,RoleListVO> {
-    /**
-     * 添加角色
-     *
-     * @param request
-     * @return CommonResponse<Integer>
-     *
-     */
-    @RequestMapping("/add")
-    @Override
-    CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<RoleDTO> request);
-    /**
-     *删除角色
-     *
-     * @param request
-     * @return CommonResponse<Integer>
-     *
-     */
-    @RequestMapping("/delete")
-    @Override
-    CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<RoleDTO> request);
-
-    /**
-     * 查询角色信息
-     *
-     * @param request
-     * @return CommonResponse<List<ResourceListVO>>
-     *
-     */
-    @RequestMapping("/selectList")
-    @Override
-    CommonResponse<List<RoleListVO>> selectList(@RequestBody @Valid CommonRequest<ResourceQueryDTO> request);
-
+public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> {
     /**
      * 唯一查询
      *
@@ -61,28 +30,16 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,ResourceQueryDTO,RoleList
      */
     @RequestMapping("/selectOne")
     @Override
-    CommonResponse<RoleListVO> select(@RequestBody @Valid CommonRequest<ResourceQueryDTO> request);
-
-
-    /**
-     * 修改角色
-     *
-     * @param request
-     * @return CommonResponse<Integer>
-     *
-     */
-    @RequestMapping("/update")
-    @Override
-    CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<RoleDTO> request);
+    CommonResponse<RoleListVO> select(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
 
     /**
-     * 批量删除
+     * 列出所有
      *
-     * @param request
-     * @return CommonResponse<Integer>
+     * @param
+     * @return CommonResponse<List<PositionListVO>>
      *
      */
-    @Override
-    @RequestMapping("/deletePath")
-    CommonResponse<Integer> deletePatch(@RequestBody @Valid CommonRequest<List<RoleDTO>> request);
+    @RequestMapping("/selectAll")
+    CommonResponse<List<RoleListVO>> selectAllRole();
+
 }

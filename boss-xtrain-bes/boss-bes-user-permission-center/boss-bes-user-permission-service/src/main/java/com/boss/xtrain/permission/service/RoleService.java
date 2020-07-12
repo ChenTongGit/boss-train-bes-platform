@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.service;
 
+import com.boss.xtrain.common.core.web.service.CommonCurdService;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
@@ -14,39 +15,9 @@ import java.util.List;
  * @Description :role service层
  * @Version: 1.0
  */
-public interface RoleService {
-    /**
-     * 添加角色
-     *
-     * @param dto
-     * @return int
-     */
-    int add(RoleDTO dto) ;
+public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
 
-    /**
-     * 修改角色
-     *
-     * @param dto
-     * @return int
-     */
-    int update(RoleDTO dto) ;
 
-    /**
-     * 通过查询条件查询
-     *
-     * @param dto
-     * @return List<RoleDTO>
-     */
-    List<RoleDTO> queryByCondition(RoleQueryDTO dto);
-
-    /**
-     * 根据id删除多个职位
-     *
-     * @param roleDTOS
-     * @return int
-     * @exception
-     */
-    int deleteByIds(List<RoleDTO> roleDTOS) ;
 
     /**
      * 角色下分配用户

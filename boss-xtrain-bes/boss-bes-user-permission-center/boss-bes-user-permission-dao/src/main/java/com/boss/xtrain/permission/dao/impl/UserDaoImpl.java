@@ -12,6 +12,7 @@ import com.boss.xtrain.permission.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -28,10 +29,15 @@ public class UserDaoImpl implements UserDao {
     UserMapper userMapper;
 
     @Override
-    public int add(UserDTO dto) {
+    public int insert(UserDTO dto) {
         User user = new User();
         PojoUtils.copyProperties(dto,user);
         return userMapper.insert(user);
+    }
+
+    @Override
+    public int delete(UserDTO dto) {
+        return userMapper.deleteByPrimaryKey(dto.getId());
     }
 
     @Override
@@ -42,8 +48,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> query(UserQueryDTO dto) {
-        return userMapper.query(dto);
+    public List<UserDTO> queryByCondition(UserQueryDTO dto) {
+        User user = new User();
+        PojoUtils.copyProperties(dto,user);
+        return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
     }
 
     @Override
@@ -52,13 +60,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<Role> getAllRoles(RoleQueryDTO queryDTO) {
+    public List<Role> getAllRoles(UserQueryDTO queryDTO) {
         return userMapper.getAllRoles(queryDTO);
     }
 
     @Override
     public int deleteByIds(List<Long> ids) {
-        return userMapper.deleteByIds(ids);
+        int count = 0;
+        for(long id:ids){
+            userMapper.deleteByPrimaryKey(id);
+            count++;
+        }
+       return count;
     }
 
     @Override
@@ -67,7 +80,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public int allocateRole(UserRoleDTO userRoleDTO) {
+        return userMapper.allocateRole(userRoleDTO);
+    }
+
+    @Override
     public User getStatusById(Long id) {
         return userMapper.getStatusById(id);
+    }
+
+    @Override
+    public boolean isExist(Long id) {
+        return userMapper.existsWithPrimaryKey(id);
+    }
+
+    @Override
+    public List<User> selectAll(){
+        return userMapper.selectAll();
     }
 }

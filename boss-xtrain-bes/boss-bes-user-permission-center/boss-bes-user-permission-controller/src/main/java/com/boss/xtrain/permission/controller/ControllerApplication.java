@@ -13,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.boss.xtrain.permission")
-@MapperScan("com.boss.bes.permission.mapper")
+@MapperScan("com.boss.xtrain.permission.mapper")
 public class ControllerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ControllerApplication.class, args);

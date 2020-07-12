@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,15 +26,25 @@ public class ResourceDaoImpl implements ResourceDao {
     ResourceMapper resourceMapper;
 
     @Override
-    public int add(ResourceDTO dto) {
+    public int insert(ResourceDTO dto) {
         Resource resource = new Resource();
         PojoUtils.copyProperties(dto,resource);
-        return resourceMapper.insertSelective(resource);
+        return resourceMapper.insert(resource);
     }
 
     @Override
-    public int deleteByIds(List<Long> ids) {
-        return resourceMapper.deleteByIds(ids);
+    public int deleteByIds(List<ResourceDTO> resourceDTOS) {
+        int count = 0;
+        for(ResourceDTO resourceDTO : resourceDTOS){
+            resourceMapper.deleteByPrimaryKey(resourceDTO.getId());
+            count++;
+        }
+        return count;
+    }
+
+    @Override
+    public int delete(ResourceDTO dto) {
+        return resourceMapper.deleteByPrimaryKey(dto.getId());
     }
 
     @Override
@@ -44,8 +55,15 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
     @Override
-    public List<Resource> query(ResourceQueryDTO dto) {
-        return resourceMapper.query(dto);
+    public List<ResourceDTO> queryByCondition(ResourceQueryDTO dto) {
+        Resource resource = new Resource();
+        PojoUtils.copyProperties(dto,resource);
+        return PojoUtils.copyListProperties(resourceMapper.select(resource),ResourceDTO::new);
+    }
+
+    @Override
+    public List<Resource> selectAll() {
+        return resourceMapper.selectAll();
     }
 
     @Override
@@ -61,5 +79,10 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource getStatusById(Long id) {
         return resourceMapper.getStatusById(id);
+    }
+
+    @Override
+    public boolean isExist(Long id) {
+        return resourceMapper.existsWithPrimaryKey(id);
     }
 }

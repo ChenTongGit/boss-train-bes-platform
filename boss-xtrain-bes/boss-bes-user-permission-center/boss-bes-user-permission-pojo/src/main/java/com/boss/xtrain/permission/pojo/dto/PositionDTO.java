@@ -16,8 +16,8 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class PositionDTO extends BaseDTO {
-    private long id;
-    private long comanyId;
+    private Long id;
+    private Long comanyId;
     private String companyName;
     private String code;
     private String name;

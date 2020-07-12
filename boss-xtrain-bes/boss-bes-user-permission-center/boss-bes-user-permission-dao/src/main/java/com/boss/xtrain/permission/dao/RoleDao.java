@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.dao;
 
+import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
@@ -16,31 +17,25 @@ import java.util.List;
  * @Description :role dao层接口
  * @Version: 1.0
  */
-public interface RoleDao {
+public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
     /**
-     * 添加角色
      *
-     * @param dto
-     * @return int
+     * 查询全部
+     * @param
+     * @return list
      *
     */
-    int add(RoleDTO dto);
+    List<Role> selectAll();
 
     /**
-     *修改角色
      *
-     * @param dto
-     * @return int
+     * 是否存在
+     * @param id
+     * @return boolean
      *
-    */
-    int update(RoleDTO dto);
-
-    /**
-     * @param dto
-     * @return List<Role>
-     * @description 通过查询条件查询
      */
-    List<Role> query(RoleQueryDTO dto);
+    boolean isExist(Long id);
+
     /**
      * 根据id删除多条记录
      *
@@ -57,13 +52,13 @@ public interface RoleDao {
      */
 
     List<ResourceTreeNode> getResources();
+
     /**
      * 角色下分配用户
      *
      * @param userRoleDTO
      * @return  int
      */
-
     int allocateUser(UserRoleDTO userRoleDTO);
 
     /**

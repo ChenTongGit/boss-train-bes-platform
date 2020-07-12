@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.dao;
 
+import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
@@ -13,33 +14,15 @@ import java.util.List;
  * @Description :resource Dao层接口设计
  * @Version: 1.0
  */
-public interface ResourceDao {
+public interface ResourceDao extends IBaseDao<ResourceDTO,ResourceQueryDTO> {
     /**
-    * @param dto
-    * @return int
-    * @description 添加资源
-    */
-    int add(ResourceDTO dto);
-
-    /**
-    * @param ids
+    * @param resourceDTOS
     * @return int
     * @description 根据id删除多条记录
     */
-    int deleteByIds(@Param("ids")List<Long> ids);
-    /**
-    * @param dto
-    * @return int
-    * @description 修改数据
-    */
-    int update(ResourceDTO dto);
+    int deleteByIds(@Param("ids")List<ResourceDTO> resourceDTOS);
 
-    /**
-    * @param dto
-    * @return List<Resource>
-    * @description 根据查询条件
-    */
-    List<Resource> query(ResourceQueryDTO dto);
+    List<Resource> selectAll();
 
     /**
     * @param roleId
@@ -62,5 +45,14 @@ public interface ResourceDao {
      * @return Resource
      */
     Resource getStatusById(Long id);
+
+    /**
+     *
+     * 是否存在
+     * @param id
+     * @return boolean
+     *
+    */
+    boolean isExist(Long id);
 
 }

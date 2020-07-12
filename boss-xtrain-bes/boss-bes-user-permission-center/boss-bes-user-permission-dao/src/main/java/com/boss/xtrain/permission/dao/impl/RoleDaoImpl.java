@@ -28,10 +28,15 @@ public class RoleDaoImpl implements RoleDao {
     RoleMapper roleMapper;
 
     @Override
-    public int add(RoleDTO dto) {
+    public int insert(RoleDTO dto) {
         Role role = new Role();
         PojoUtils.copyProperties(dto,role);
         return roleMapper.insert(role);
+    }
+
+    @Override
+    public int delete(RoleDTO dto) {
+        return roleMapper.deleteByPrimaryKey(dto);
     }
 
     @Override
@@ -42,13 +47,30 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<Role> query(RoleQueryDTO dto) {
-        return roleMapper.query(dto);
+    public List<RoleDTO> queryByCondition(RoleQueryDTO dto) {
+        Role role = new Role();
+        PojoUtils.copyProperties(dto,role);
+        return PojoUtils.copyListProperties(roleMapper.select(role),RoleDTO::new);
+    }
+
+    @Override
+    public List<Role> selectAll() {
+        return roleMapper.selectAll();
+    }
+
+    @Override
+    public boolean isExist(Long id) {
+        return roleMapper.existsWithPrimaryKey(id);
     }
 
     @Override
     public int deleteByIds(List<Long> ids) {
-        return roleMapper.deleteByIds(ids);
+        int count = 0;
+        for(Long id:ids){
+            roleMapper.deleteByPrimaryKey(id);
+            count++;
+        }
+        return count;
     }
 
     @Override

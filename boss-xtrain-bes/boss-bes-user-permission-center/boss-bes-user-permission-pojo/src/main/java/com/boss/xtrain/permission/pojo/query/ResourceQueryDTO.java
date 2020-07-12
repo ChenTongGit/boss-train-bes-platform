@@ -7,6 +7,7 @@ package com.boss.xtrain.permission.pojo.query;
  * @Version: 1.0
  */
 
+import com.boss.xtrain.common.core.pojo.BaseQuery;
 import lombok.*;
 
 @Data
@@ -14,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResourceQueryDTO {
+public class ResourceQueryDTO extends BaseQuery {
     private String name;
     private Long parentId;
     private String parentName;
