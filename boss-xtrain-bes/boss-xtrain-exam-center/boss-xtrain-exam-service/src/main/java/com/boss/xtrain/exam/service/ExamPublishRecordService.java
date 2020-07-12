@@ -1,13 +1,13 @@
 package com.boss.xtrain.exam.service;
 
-import com.boss.xtrain.common.core.web.service.CommonCurdService;
-import com.boss.xtrain.common.core.web.service.CurdService;
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
-import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
-import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
-import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 考试发布记录业务层接口
@@ -20,7 +20,68 @@ import org.springframework.transaction.annotation.Transactional;
  * @see
  * @since
  **/
-public interface ExamPublishRecordService extends CommonCurdService<ExamPublishRecordDTO, ExamPublishRecordQuery> {
-    Integer publishExam(ExamPublishRecordDTO dto);
+public interface ExamPublishRecordService{
+
+
+    /**
+     * 发布考试
+     * @author ChenTong
+     * @param dto 
+     * @return java.lang.Boolean
+     * @date 2020/7/9 18:49
+     */
+    Boolean publishExam(ExamPublishDTO dto);
+
+    /**
+     * 批量发布
+     * @author ChenTong
+     * @param dtos
+     * @return java.lang.Boolean
+     * @date 2020/7/9 18:57
+     */
+    @Transactional
+    Boolean publishExamBatch(List<ExamPublishDTO> dtos);
+
+    /**
+     * 通过query查找列表 title
+     * @param query Q extends BaseQuery查询条件
+     * @return java.util.List<V>
+     * @author ChenTong
+     * @date 2020/6/22 7:05
+     */
+    List<ExamPublishRecordDTO> selectByCondition(ExamPublishRecordQuery query);
+
+    /**
+     * 批量删除数据 事务控制
+     * @param dtoList dto列表
+     * @return int 返回所删除的行数
+     * @author ChenTong
+     * @date 2020/7/4 9:09
+     */
+    @Transactional
+    Integer delete(List<ExamPublishDeleteDTO> dtoList) ;
+
+    /**
+     * 更新考试发布记录数据
+     * @param dto T extends BaseDTO 数据传输对象
+     * @return int
+     * @author ChenTong
+     * @date 2020/6/22 7:18
+     */
+    @Transactional
+    Integer update(ExamPublishRecordDTO dto);
+
+    /**
+     * 插入数据
+     * @param dto 考试发布记录dto
+     * @return int
+     * @author ChenTong
+     * @date 2020/6/22 8:18
+     * @throws BusinessException 考试发布记录创建异常
+     */
+    Integer insert(ExamPublishRecordDTO dto);
+
+
+
 
 }

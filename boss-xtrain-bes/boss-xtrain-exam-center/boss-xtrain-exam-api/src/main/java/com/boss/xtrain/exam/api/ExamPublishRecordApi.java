@@ -5,12 +5,16 @@ import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
+import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
-import org.springframework.web.bind.annotation.RequestBody;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 考试发布记录相关API
@@ -23,7 +27,17 @@ import javax.validation.Valid;
  * @see
  * @since
  **/
-public interface ExamPublishRecordApi extends CommonCRUDApi<ExamPublishRecordDTO, ExamPublishRecordQuery, ExamPublishRecordVO> {
+public interface ExamPublishRecordApi {
+
+    /**
+     * 更新考试发布记录
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
+     * @author ChenTong
+     * @date 2020/7/7 22:10
+     */
+    @PutMapping("/publishRecordChange")
+    CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordDTO> request);
     
     /**
      * 发布考试
@@ -32,7 +46,40 @@ public interface ExamPublishRecordApi extends CommonCRUDApi<ExamPublishRecordDTO
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Boolean>
      * @date 2020/7/7 22:22
      */
-    CommonResponse<Boolean> publishExam(CommonRequest<ExamPublishRecordDTO> request);
+    @PutMapping("/publishStatus")
+    CommonResponse<Boolean> publishExam(@RequestBody @Valid CommonRequest<ExamPublishDTO> request);
+
+
+    /**
+     * 发布考试
+     * @author ChenTong
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Boolean>
+     * @date 2020/7/7 22:22
+     */
+    @PutMapping("/publishBatchStatus")
+    CommonResponse<Boolean> publishExamBatch(@RequestBody @Valid CommonRequest<List<ExamPublishDTO>> request);
+
+    /**
+     * 批量删除数据
+     *
+     * @param request 请求报文对象，body为dto
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
+     * @author ChenTong
+     * @date 2020/7/7 22:09
+     */
+    @DeleteMapping("/publishRecordDeletion")
+    CommonResponse<Integer> deleteBatch(@RequestBody @Valid  CommonRequest<List<ExamPublishDeleteDTO>> request);
+
+    /**
+     * 添加新的数据
+     * @param request 请求报文对象，传递dto
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
+     * @author ChenTong
+     * @date 2020/7/7 22:09
+     */
+    @PostMapping("/newPublishRecord")
+    CommonResponse<Integer> insert(@RequestBody @Valid  CommonRequest<ExamPublishRecordDTO> request);
 
     /**
      * 条件查询并分页
@@ -41,5 +88,6 @@ public interface ExamPublishRecordApi extends CommonCRUDApi<ExamPublishRecordDTO
      * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.common.core.http.CommonPage<com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO>>
      * @date 2020/7/8 21:34
      */
+    @PostMapping("/publishRecordList")
     CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request);
 }

@@ -78,17 +78,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
         return mapper.queryListByCondition(query);
     }
 
-    /**
-     * 批量删除
-     * @param ids
-     * @return int
-     * @author ChenTong
-     * @date 2020/7/8 15:49
-     */
-    @Override
-    public int batchDelete(String ids) {
-        return mapper.deleteByIds(ids);
-    }
+
 
     /**
      * 查询所有数据
@@ -113,5 +103,35 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     @Override
     public Long getVersion(Long id) {
         return mapper.getVersionById(id);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public int deleteBatch(List<Long> ids) {
+        return mapper.deleteBatch(ids);
+    }
+
+    /**
+     * 批量发布 - 更新发布状态
+     *
+     * @param records
+     * @return
+     */
+    @Override
+    public int updateStatusBatch(List<ExamPublishRecord> records) {
+        for (ExamPublishRecord record: records
+             ) {
+            mapper.updateByPrimaryKeySelectiveWithVersion(record);
+        }
+        return records.size();
+    }
+
+    @Override
+    public int updateStatus(ExamPublishRecord record) {
+        return mapper.updateByPrimaryKeySelectiveWithVersion(record);
     }
 }

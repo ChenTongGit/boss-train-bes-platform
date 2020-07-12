@@ -17,10 +17,23 @@ public class CommonPageRequest<T> {
     @NotNull
     private int pageSize;
 
+    /**
+     * 排序方式 “排序字段 dec” 按字段降序 升序同理
+     */
+    private String orderBy;
+
     private T query;
 
     public T getQuery() {
         return query;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 
     public void setQuery(T query) {

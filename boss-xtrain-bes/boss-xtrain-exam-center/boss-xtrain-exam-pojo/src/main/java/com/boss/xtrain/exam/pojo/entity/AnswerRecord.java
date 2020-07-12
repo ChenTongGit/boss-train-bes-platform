@@ -320,7 +320,7 @@ public class AnswerRecord extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
-    public Long getOrgId() {
+    public Long getOrganizationId() {
         return orgId;
     }
 
@@ -332,7 +332,7 @@ public class AnswerRecord extends BaseEntity {
      *
      * @mbggenerated Tue Jul 07 17:49:29 CST 2020
      */
-    public void setOrgId(Long orgId) {
+    public void setOrganizationId(Long orgId) {
         this.orgId = orgId;
     }
 

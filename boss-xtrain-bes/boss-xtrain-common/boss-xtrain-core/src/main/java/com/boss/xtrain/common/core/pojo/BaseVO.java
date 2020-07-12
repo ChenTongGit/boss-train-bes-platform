@@ -60,7 +60,7 @@ public abstract class BaseVO implements Serializable {
      */
     private Long updatedBy;
     /**
-     * 版本
+     * 数据版本号
      */
     private Long version;
 
