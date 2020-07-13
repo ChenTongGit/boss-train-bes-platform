@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=UTC&useSSL=true
+    username: root
+    password: zzy873190934
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#mybatis
+mybatis:
+  type-aliases-package: com.boss.xtrain.permission.pojo.dto
+  mapper-locations: classpath:/mapper/*.xml
+
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  not-empty: true
