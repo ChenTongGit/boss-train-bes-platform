@@ -1,35 +1,44 @@
 package com.boss.xtrain.exam.pojo.vo;
 
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import java.io.Serializable;
-
 /**
- * 阅卷关系dto
+ * 考试人员VO
  *
  * @author ChenTong
  * @version 1.0
- * @date 2020/7/9 11:28
+ * @date 2020/7/9 22:27
  * @copyright
  * @modified
  * @see
  * @since
  **/
-public class ExamPublishToUserVO implements Serializable {
+public class ExamPeopleInfoVO {
+
     /**
-     * 阅卷官的姓名
+     * 姓名
      */
     private String name;
 
     /**
-     * 阅卷官id
+     * 人员id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long markPeople;
+    private Long id;
 
-    public ExamPublishToUserVO() {
-        // 构造函数
+    /**
+     * 验证码
+     */
+    private String verificationCode;
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public String getName() {
@@ -40,11 +49,11 @@ public class ExamPublishToUserVO implements Serializable {
         this.name = name;
     }
 
-    public Long getMarkPeople() {
-        return markPeople;
+    public Long getId() {
+        return id;
     }
 
-    public void setMarkPeople(Long markPeople) {
-        this.markPeople = markPeople;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

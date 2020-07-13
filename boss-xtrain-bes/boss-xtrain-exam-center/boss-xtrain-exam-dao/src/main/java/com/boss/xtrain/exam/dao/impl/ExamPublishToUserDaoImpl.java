@@ -65,4 +65,19 @@ public class ExamPublishToUserDaoImpl implements ExamPublishToUserDao {
     public List<ExamPublishToUser> query(ExamPublishToUser examPublishToUser) {
         return examPublishToUserMapper.select(examPublishToUser);
     }
+
+    /**
+     * 通过发布试卷记录id获取该场考试的阅卷官
+     *
+     * @param publishId
+     * @return java.util.List<java.lang.Long>
+     * @author ChenTong
+     * @date 2020/7/10 18:12
+     */
+    @Override
+    public List<Long> queryMarkUserByPublishId(Long publishId) {
+        return examPublishToUserMapper.queryMarkUsersByPublishId(publishId);
+    }
+
+
 }

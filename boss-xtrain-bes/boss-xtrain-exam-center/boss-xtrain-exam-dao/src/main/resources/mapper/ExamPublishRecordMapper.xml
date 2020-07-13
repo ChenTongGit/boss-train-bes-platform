@@ -14,7 +14,7 @@
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="plan_people_num" property="planPeopleNum" jdbcType="INTEGER" />
-    <result column="limit_time" property="limitTime" jdbcType="INTEGER" />
+    <result column="limit_time" property="limitTime" jdbcType="BIGINT" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="marking_mode" property="markingMode" jdbcType="TINYINT" />
     <result column="marking_stop_time" property="markingStopTime" jdbcType="TIMESTAMP" />

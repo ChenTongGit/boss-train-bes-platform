@@ -130,7 +130,18 @@ public enum BusinessError {
     EXAM_PUBLISHED("240310", "重复发布"),
 
 
-    EXAM_PEOPLE_REG_FAIL("250301","考生注册失败");
+    EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),
+    EXAM_PEOPLE_NOT_EXIT("250302","登录失败，考生不存在"),
+    EXAM_PEOPLE_LOGIN_WITH_PASSWORD_FAIL("250302","考生通过账号密码登录失败"),
+    EXAM_PEOPLE_LOGIN_WITH_MSG_SEND_SSM_FAIL("250303", "发送验证码失败"),
+    EXAM_RECORD_INSERT_FAIL("250304","考试记录插入失败"),
+    EXAM_MARK_PEOPLE_NOT_EXIT("240304", "该场考试没有阅卷官"),
+    EXAM_ANSWER_SAVE_FAIL("240305", "考生作答题目记录保存失败"),
+    EXAM_SUBMIT_FAIL("240306", "考试提交异常"),
+    GET_TMP_ANSWER_FAIL("240307", "获取临时回答保存异常"),
+    GET_EXAM_LIMIT_TIME_FAIL("240308","获取考试剩余时间失败"),
+    SET_EXAM_LIMIT_TIME_FAIL("240309", "设置考试剩余时间失败"),
+    EXAM_RECORD_QUERY_FAIL("240310", "获取考试记录失败");
 
     /**
      * 异常码

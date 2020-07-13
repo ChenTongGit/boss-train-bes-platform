@@ -58,4 +58,11 @@ public interface ExamPublishRecordDao extends IBaseDao<ExamPublishRecord, ExamPu
      * @return
      */
     int updateStatus(ExamPublishRecord record);
+
+    /**
+     * 查询单个
+     * @param record
+     * @return
+     */
+    ExamPublishRecord selectOne(ExamPublishRecord record);
 }

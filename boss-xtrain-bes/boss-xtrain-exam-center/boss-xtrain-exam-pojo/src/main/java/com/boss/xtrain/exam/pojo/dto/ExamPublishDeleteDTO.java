@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 /**
  * 发布记录删除使用
- *
  * @author ChenTong
  * @version 1.0
  * @date 2020/7/9 17:43

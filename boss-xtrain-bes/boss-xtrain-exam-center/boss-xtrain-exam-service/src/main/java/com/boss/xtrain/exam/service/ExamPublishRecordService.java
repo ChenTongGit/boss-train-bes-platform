@@ -5,6 +5,7 @@ import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -50,6 +51,17 @@ public interface ExamPublishRecordService{
      * @date 2020/6/22 7:05
      */
     List<ExamPublishRecordDTO> selectByCondition(ExamPublishRecordQuery query);
+
+    List<ExamPublishRecordDTO> selectByPage(ExamPublishRecordQuery query);
+    
+    /**
+     * 通过query查询单个考试发布记录
+     * @author ChenTong
+     * @param query 
+     * @return com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO
+     * @date 2020/7/10 12:00
+     */
+    ExamPublishRecordDTO selectOne(Long query);
 
     /**
      * 批量删除数据 事务控制

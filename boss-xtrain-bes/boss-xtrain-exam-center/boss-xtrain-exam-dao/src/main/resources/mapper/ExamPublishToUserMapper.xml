@@ -47,6 +47,10 @@
     </foreach>
   </insert>
 
+  <select id="queryMarkUsersByPublishId" parameterType="long" resultType="long">
+    select t_u_id from t_exam_publish_record_user where t_p_id = #{publishId}
+  </select>
+
 
 
 </mapper>

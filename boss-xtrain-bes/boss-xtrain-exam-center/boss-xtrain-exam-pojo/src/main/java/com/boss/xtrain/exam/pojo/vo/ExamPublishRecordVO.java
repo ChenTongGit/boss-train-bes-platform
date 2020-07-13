@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 考试发布记录vo
@@ -18,10 +17,6 @@ import java.util.Map;
  * @since
  **/
 public class ExamPublishRecordVO extends BaseVO {
-    /**
-     * 考试发布记录id
-     */
-    private Long id;
 
     /**
      * 考试标题
@@ -41,14 +36,14 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -59,7 +54,7 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 阅卷结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date markStopTime;
 
     /**
@@ -75,15 +70,20 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 二维码链接
      */
-    private String qrCodeUrl;
+    private String qrcodeUrl;
 
     /**
-     * 是否发布
+     * 考试时间限制
      */
-    private Integer status;
+    private Long limitTime;
 
+    public Long getLimitTime() {
+        return limitTime;
+    }
 
-
+    public void setLimitTime(Long limitTime) {
+        this.limitTime = limitTime;
+    }
 
     public String getPublisherName() {
         return publisherName;
@@ -96,13 +96,6 @@ public class ExamPublishRecordVO extends BaseVO {
     public ExamPublishRecordVO() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -168,19 +161,13 @@ public class ExamPublishRecordVO extends BaseVO {
         this.description = description;
     }
 
-    public String getQrCodeUrl() {
-        return qrCodeUrl;
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
     }
 
-    public void setQrCodeUrl(String qrCodeUrl) {
-        this.qrCodeUrl = qrCodeUrl;
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }

@@ -62,7 +62,7 @@ public class ExamPeopleDaoImpl implements ExamPeopleDao {
      */
     @Override
     public int update(ExamPeople entity) {
-        return examPeopleMapper.updateByPrimaryKeySelectiveWithVersion(entity);
+        return examPeopleMapper.updateByPrimaryKeySelective(entity);
     }
 
     /**
@@ -78,5 +78,14 @@ public class ExamPeopleDaoImpl implements ExamPeopleDao {
         ExamPeople entity = new ExamPeople();
         PojoUtils.copyProperties(query, entity);
         return examPeopleMapper.select(entity);
+    }
+
+    /**
+     * 查询一个考生
+     * @param entity
+     * @return
+     */
+    public ExamPeople queryForOne(ExamPeople entity){
+        return examPeopleMapper.selectOne(entity);
     }
 }

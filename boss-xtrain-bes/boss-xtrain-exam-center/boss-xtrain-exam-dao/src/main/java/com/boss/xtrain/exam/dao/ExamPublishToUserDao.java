@@ -42,4 +42,14 @@ public interface ExamPublishToUserDao {
      * @date 2020/7/9 10:31
      */
     List<ExamPublishToUser> query(ExamPublishToUser examPublishToUser);
+
+    /**
+     * 通过发布试卷记录id获取该场考试的阅卷官
+     * @author ChenTong
+     * @param publishId
+     * @return java.util.List<java.lang.Long>
+     * @date 2020/7/10 18:12
+     */
+    List<Long> queryMarkUserByPublishId(Long publishId);
+
 }

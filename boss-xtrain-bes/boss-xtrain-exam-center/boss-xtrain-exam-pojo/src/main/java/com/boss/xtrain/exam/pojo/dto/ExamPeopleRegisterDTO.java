@@ -27,6 +27,7 @@ public class ExamPeopleRegisterDTO {
      * 手机号码
      */
     @NotBlank(message = "手机号不能为空")
+    @Pattern(regexp = "^1[3456789]\\d{9}$", message = "手机号格式错误")
     private String mobile;
 
     /**

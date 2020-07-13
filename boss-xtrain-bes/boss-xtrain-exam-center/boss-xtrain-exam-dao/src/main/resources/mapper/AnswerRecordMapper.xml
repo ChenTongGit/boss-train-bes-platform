@@ -11,6 +11,7 @@
     <result column="t_r_id" property="examRecordId" jdbcType="BIGINT" />
     <result column="my_answer" property="myAnswer" jdbcType="VARCHAR" />
     <result column="standard_answer" property="standardAnswer" jdbcType="VARCHAR" />
+    <result column="t_s_id" property="paperSubjectId" jdbcType="BIGINT"/>
     <result column="score" property="score" jdbcType="DECIMAL" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
@@ -22,4 +23,29 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
+
+
+  <insert id="insertBatch" parameterType="list">
+    INSERT INTO t_exam_answer_record(id, t_r_id, my_answer, standard_answer
+    ,score,t_s_id, evaluate, org_id, company_id, created_by, created_time, updated_by, updated_time, version)
+    VALUES
+    <foreach collection="ansList" item="entity" index="index" separator=",">
+      (
+      #{entity.id},
+      #{entity.examRecordId},
+      #{entity.myAnswer},
+      #{entity.standardAnswer},
+      #{entity.score},
+      #{entity.paperSubjectId},
+      #{entity.evaluate},
+      #{entity.organizationId},
+      #{entity.companyId},
+      #{entity.createdBy},
+      #{entity.createdTime},
+      #{entity.updatedBy},
+      #{entity.updatedTime},
+      #{entity.version}
+      )
+    </foreach>
+  </insert>
 </mapper>

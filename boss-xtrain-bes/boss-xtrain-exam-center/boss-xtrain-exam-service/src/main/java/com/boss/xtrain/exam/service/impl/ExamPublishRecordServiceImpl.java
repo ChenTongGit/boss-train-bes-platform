@@ -14,6 +14,8 @@ import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -159,6 +161,87 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
             log.error(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR.getMessage(), e);
             throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR, e);
         }
+    }
+
+    @Override
+    public List<ExamPublishRecordDTO> selectByPage(ExamPublishRecordQuery query) {
+        try {
+            List<ExamPublishRecordDTO> examPublishRecordDTOS = new ArrayList<>();
+            // 获取考试发布记录
+            List<ExamPublishRecord> examPublishRecords = examPublishRecordDao.queryByCondition(query);
+            PageInfo<ExamPublishRecord> examPublishRecordPageInfo = new PageInfo<>(examPublishRecords);
+            // 获取所有发布人及其id的map
+            /** uservo(name:string ,id:long)
+             // TODO　List<UserVO> publishUsers = systemService.getPublishUsers();
+             // 放到map中便于查询
+             for (UserVO item: publishUsers) {
+             map.put(String,Long)
+             }
+             **/
+            Map<Long, String> publisherMap= new HashMap<>();
+
+            // --------假数据 start
+            publisherMap.put(11L, "张三");
+            publisherMap.put(12L, "李四");
+            // --------假数据 end
+
+            // TODO List<UserVO> markPeople = systemService.geMarkPeople();
+            Map<Long, String> markPeople = new HashMap<>();
+            // --------假数据 -start
+            markPeople.put(1L, "阅卷人1");
+            markPeople.put(2L, "阅卷人2");
+            markPeople.put(3L, "阅卷人3");
+            // --------假数据 end
+
+            // 相关人名以及id的关系查询
+            for (ExamPublishRecord item:examPublishRecords) {
+                ExamPublishRecordDTO examPublishRecordDTO = new ExamPublishRecordDTO();
+                PojoUtils.copyProperties(item, examPublishRecordDTO);
+                // 发布人名以及id转换
+                examPublishRecordDTO.setPublisherName(publisherMap.get(examPublishRecordDTO.getPublisher()));
+                // 阅卷官人民以及id
+                ExamPublishToUser examPublishToUserQuery  = new ExamPublishToUser();
+                // 获取当前考试的阅卷人列表
+                examPublishToUserQuery.setPublishId(item.getId());
+                List<ExamPublishToUser> examPublishToUsers = examPublishToUserDao.query(examPublishToUserQuery);
+                // 添加到dto中
+                examPublishRecordDTO.setMarkPeople(new ArrayList<>());
+                for (ExamPublishToUser examPublishToUser: examPublishToUsers) {
+                    ExamPublishToUserDTO examPublishToUserDTO = new ExamPublishToUserDTO();
+                    examPublishToUserDTO.setMarkPeople(examPublishToUser.getMarkPeople());
+                    examPublishToUserDTO.setName(markPeople.get(examPublishToUser.getMarkPeople()));
+                    examPublishRecordDTO.getMarkPeople().add(examPublishToUserDTO);
+                }
+                examPublishRecordDTOS.add(examPublishRecordDTO);
+            }
+
+            return examPublishRecordDTOS;
+        }catch (Exception e){
+            log.error(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR.getMessage(), e);
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR, e);
+        }
+    }
+
+    /**
+     * 通过query查询单个考试发布记录
+     *
+     * @param id
+     * @return com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO
+     * @author ChenTong
+     * @date 2020/7/10 12:00
+     */
+    @Override
+    public ExamPublishRecordDTO selectOne(Long id) {
+        if (null == id)
+            throw new BusinessException(BusinessError.EXAM_PUBLISH_RECORD_QUERY_RECORD_ERROR);
+
+        ExamPublishRecord record = new ExamPublishRecord();
+        record.setId(id);
+        ExamPublishRecord examPublishRecord = this.examPublishRecordDao.selectOne(record);
+
+        ExamPublishRecordDTO dto = new ExamPublishRecordDTO();
+        PojoUtils.copyProperties(examPublishRecord, dto);
+        return dto;
     }
 
     /**

@@ -1,12 +1,10 @@
 package com.boss.xtrain.exam.pojo.dto;
 
-import com.boss.xtrain.common.core.pojo.BaseDTO;
 
 import java.math.BigDecimal;
 
 /**
- * 作答记录dto
- *
+ * 作答记录添加dto
  * @author ChenTong
  * @version 1.0
  * @date 2020/7/7 18:07
@@ -15,7 +13,7 @@ import java.math.BigDecimal;
  * @see
  * @since
  **/
-public class AnswerRecordDTO extends BaseDTO {
+public class AnswerRecordTempInsertDTO {
 
 
     /**
@@ -29,22 +27,7 @@ public class AnswerRecordDTO extends BaseDTO {
     private String myAnswer;
 
     /**
-     * 标准答案
-     */
-    private String standardAnswer;
-
-    /**
-     * 本题的分数
-     */
-    private BigDecimal score;
-
-    /**
-     * 评价
-     */
-    private String evaluate;
-
-    /**
-     * 试卷试题id
+     * 考试试题id
      */
     private Long paperSubjectId;
 
@@ -58,20 +41,20 @@ public class AnswerRecordDTO extends BaseDTO {
      */
     private BigDecimal standardScore;
 
-    public Long getSubjectTypeId() {
-        return subjectTypeId;
-    }
-
-    public void setSubjectTypeId(Long subjectTypeId) {
-        this.subjectTypeId = subjectTypeId;
-    }
-
     public BigDecimal getStandardScore() {
         return standardScore;
     }
 
     public void setStandardScore(BigDecimal standardScore) {
         this.standardScore = standardScore;
+    }
+
+    public Long getSubjectTypeId() {
+        return subjectTypeId;
+    }
+
+    public void setSubjectTypeId(Long subjectTypeId) {
+        this.subjectTypeId = subjectTypeId;
     }
 
     public Long getPaperSubjectId() {
@@ -81,6 +64,7 @@ public class AnswerRecordDTO extends BaseDTO {
     public void setPaperSubjectId(Long paperSubjectId) {
         this.paperSubjectId = paperSubjectId;
     }
+
 
     public Long getExamRecordId() {
         return examRecordId;
@@ -98,27 +82,5 @@ public class AnswerRecordDTO extends BaseDTO {
         this.myAnswer = myAnswer;
     }
 
-    public String getStandardAnswer() {
-        return standardAnswer;
-    }
 
-    public void setStandardAnswer(String standardAnswer) {
-        this.standardAnswer = standardAnswer;
-    }
-
-    public BigDecimal getScore() {
-        return score;
-    }
-
-    public void setScore(BigDecimal score) {
-        this.score = score;
-    }
-
-    public String getEvaluate() {
-        return evaluate;
-    }
-
-    public void setEvaluate(String evaluate) {
-        this.evaluate = evaluate;
-    }
 }

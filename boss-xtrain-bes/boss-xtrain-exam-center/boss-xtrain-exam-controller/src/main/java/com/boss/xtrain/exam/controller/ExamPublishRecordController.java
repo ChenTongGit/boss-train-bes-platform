@@ -12,6 +12,7 @@ import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,15 +66,13 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     @PostMapping("/records")
     @ApiOperation(value = "查询考试发布记录")
     public CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request){
-        List<ExamPublishRecordDTO> examPublishRecordDTOS ;
         // 设置分页区间 index size
-        doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
-        // 读取数据
-        examPublishRecordDTOS = examPublishRecordService.selectByCondition(request.getBody().getQuery());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
+        List<ExamPublishRecordDTO> recordDTOS = examPublishRecordService.selectByPage(request.getBody().getQuery());
         // 转换为vo
-        List<ExamPublishRecordVO> examPublishRecordVOS = PojoUtils.copyListProperties(examPublishRecordDTOS, ExamPublishRecordVO::new);
-        // 返回分页信息
-        return buildPageResponse(new PageInfo<>(examPublishRecordVOS));
+        List<ExamPublishRecordVO> examPublishRecordVOS = PojoUtils.copyListProperties(recordDTOS, ExamPublishRecordVO::new);
+
+        return buildPageResponse(page,examPublishRecordVOS);
     }
 
 

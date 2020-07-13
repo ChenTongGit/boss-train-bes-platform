@@ -2,8 +2,10 @@ package com.boss.xtrain.exam.api;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.exam.pojo.dto.ExamPeoplePasswordLoginDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPeoplePhotoDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPeopleRegisterDTO;
+import com.boss.xtrain.exam.pojo.vo.ExamPeopleInfoVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,4 +44,23 @@ public interface ExamPeopleApi {
     @PostMapping("/photo")
     CommonResponse<String> uploadPhoto(@RequestBody @Valid CommonRequest<ExamPeoplePhotoDTO> request);
 
+    /**
+     * 通过账号密码登录
+     * @author ChenTong
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.exam.pojo.vo.ExamPeopleInfoVO>
+     * @date 2020/7/10 10:49
+     */
+    @PostMapping("/pswLogin")
+    CommonResponse<ExamPeopleInfoVO> loginWithPsw(@RequestBody @Valid CommonRequest<ExamPeoplePasswordLoginDTO> request);
+
+    /**
+     * 通过手机号登录
+     * @author ChenTong
+     * @param mobile 
+     * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.exam.pojo.vo.ExamPeopleInfoVO>
+     * @date 2020/7/10 10:49
+     */
+    @PostMapping("/msgLogin")
+    CommonResponse<ExamPeopleInfoVO> loginWithMsg(@RequestBody @Valid CommonRequest<String> mobile);
 }

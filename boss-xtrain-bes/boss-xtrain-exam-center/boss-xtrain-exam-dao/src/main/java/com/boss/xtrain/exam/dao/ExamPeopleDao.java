@@ -16,5 +16,11 @@ import com.boss.xtrain.exam.pojo.entity.ExamPeople;
  * @since
  **/
 public interface ExamPeopleDao extends IBaseDao<ExamPeople, ExamPeopleQuery> {
+    /**
+     * 查询一个考生
+     * @param entity
+     * @return
+     */
+    ExamPeople queryForOne(ExamPeople entity);
 
 }

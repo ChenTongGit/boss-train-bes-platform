@@ -134,4 +134,15 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     public int updateStatus(ExamPublishRecord record) {
         return mapper.updateByPrimaryKeySelectiveWithVersion(record);
     }
+
+    /**
+     * 查询单个
+     *
+     * @param record
+     * @return
+     */
+    @Override
+    public ExamPublishRecord selectOne(ExamPublishRecord record) {
+        return mapper.selectOne(record);
+    }
 }

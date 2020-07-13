@@ -1,13 +1,10 @@
 package com.boss.xtrain.exam.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
-import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 考试发布记录添加dto
@@ -27,6 +24,16 @@ public class ExamPublishRecordDTO extends BaseDTO {
     private String title;
 
     /**
+     * qrcodeUrl
+     */
+    private String qrcodeUrl;
+
+    /**
+     * 试卷Id
+     */
+    private Long paperId;
+
+    /**
      * 发布用户id
      */
     private Long publisher;
@@ -35,21 +42,17 @@ public class ExamPublishRecordDTO extends BaseDTO {
      */
     private String publisherName;
 
-    /**
-     * 发布用户姓名
-     */
-    private String name;
 
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -65,7 +68,7 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 阅卷结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date markStopTime;
 
     /**
@@ -74,8 +77,35 @@ public class ExamPublishRecordDTO extends BaseDTO {
     private Integer markingMode;
 
     /**
-     * 阅卷官ids name
+     * 限制时间
      */
+    private Long limitTime;
+
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
+    }
+
+    public Long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
+    }
+
+    public Long getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(Long limitTime) {
+        this.limitTime = limitTime;
+    }
+
+
     private List<ExamPublishToUserDTO>  markPeople;
 
     public List<ExamPublishToUserDTO> getMarkPeople() {
@@ -95,13 +125,6 @@ public class ExamPublishRecordDTO extends BaseDTO {
         this.markPeople = markPeople;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Integer getMarkingMode() {
         return markingMode;
@@ -178,7 +201,6 @@ public class ExamPublishRecordDTO extends BaseDTO {
                 "title='" + title + '\'' +
                 ", publisher=" + publisher +
                 ", publisherName='" + publisherName + '\'' +
-                ", name='" + name + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", planPeopleNum=" + planPeopleNum +
