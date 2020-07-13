@@ -13,7 +13,7 @@
         <property name="useMapperCommentGenerator" value="false"/>
 
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="com.boss.bes.paper.CommonMapper"/>
+            <property name="mappers" value="com.boss.xtrain.paper.CommonMapper"/>
             <property name="caseSensitive" value="true"/>
             <property name="forceAnnotation" value="true"/>
             <property name="beginningDelimiter" value="`"/>
