@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 public class CombExamItemDTO {
     private Long id;
     private String subjectTypeName;
+    private Long subjectTypeId;
     private Long configId;
     private String categoryName;
+    private Long categoryId;
     private Long difficulty;
     private Integer num;
     private BigDecimal score;

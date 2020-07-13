@@ -4,7 +4,7 @@ import com.boss.xtrain.common.core.pojo.BaseVO;
 import lombok.Data;
 
 @Data
-public class CombExamConfigDeleteVO extends BaseVO {
+public class CombExamConfigDeleteVO {
     private Long id;
     private Long version;
 }

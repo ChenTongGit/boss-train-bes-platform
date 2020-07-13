@@ -1,19 +1,27 @@
 package com.boss.xtrain.basedata.service;
 
-import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
+import com.boss.xtrain.basedata.pojo.dto.combexamconfig.*;
+
+
+import java.util.List;
+
 public interface CombExamConfigService{
 
+    void insertConfig(CombExamConfigDTO combExamConfigDTO);
 
-    int deleteByPrimaryKey(Long id);
+    void deleteConfig(CombExamConfigDeleteDTO combExamConfigDeleteDTO);
 
-    int insert(CombExamConfig record);
+    void updateConfig(CombExamConfigUpdateDTO combExamConfigUpdateDTO);
 
-    int insertSelective(CombExamConfig record);
+    List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO);
 
-    CombExamConfig selectByPrimaryKey(Long id);
+    List<CombExamItemDTO> queryItem(CombExamItemQueryDTO combExamItemQueryDTO);
 
-    int updateByPrimaryKeySelective(CombExamConfig record);
+    boolean insertItem(List<CombExamItemDTO> itemList);
 
-    int updateByPrimaryKey(CombExamConfig record);
+    void deleteConfigs(CombExamConfigDeleteDTO object);
+
+    void checkRepeatName(CombExamConfigDTO combExamConfigDto);
+
 
 }

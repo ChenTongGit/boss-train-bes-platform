@@ -5,11 +5,13 @@ import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDTO;
 import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CombExamConfigDapImpl implements CombExamConfigDao {
 
     private CombExamConfigMapper combExamConfigMapper;

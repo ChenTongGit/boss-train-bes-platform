@@ -16,5 +16,49 @@
     <!--@mbg.generated-->
     id, t_s_id, t_c_id, t_c_id2, num, difficult, score
   </sql>
+ <select id="getItemInfo" resultMap="BaseResultMap">
+    select * from t_comb_exam_config_item where t_comb_exam_config_item.id = #{combExamConfigId}
+  </select>
+
+  <select id="getCategoryName" resultType="java.lang.String">
+    select name as categoryName from t_category where id = #{category_id}
+  </select>
+
+  <select id="getTypeName" resultType="java.lang.String">
+    select type_name as typeName from t_subject_type where id = #{subject_type_id}
+  </select>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into t_comb_exam_config_item
+    (id,comb_exam_config_id,category_id,subject_type_id,num,difficulty,score)
+    values
+    <foreach collection ="itemList" item="item" separator =",">
+      (#{item.id}, #{item.combExamConfigId}, #{item.categoryId}, #{item.subjectTypeId}, #{item.num}, #{item.difficult}, #{item.score})
+    </foreach >
+  </insert>
+
+  <update id="updateBatch" parameterType="java.util.List">
+    <foreach collection="itemList" item="item" index="index" open="" close="" separator=";">
+      update t_comb_exam_config_item
+      <set>
+        <if test="item.categoryId != null">
+          category_id = #{item.categoryId},
+        </if>
+        <if test="item.subjectTypeId != null">
+          subject_type_id = #{item.subjectTypeId},
+        </if>
+        <if test="item.num != null">
+          num = #{item.num},
+        </if>
+        <if test="item.difficult != null">
+          difficulty = #{item.difficult},
+        </if>
+        <if test="item.score != null">
+          score = #{item.score},
+        </if>
+      </set>
+      where id = #{item.id}
+    </foreach>
+  </update>
 
 </mapper>

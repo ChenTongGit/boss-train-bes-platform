@@ -15,7 +15,7 @@ public interface DictionaryApi {
     CommonResponse<DictionaryVO> insertDictionary(CommonRequest<DictionaryInsertVO> commonRequest);
 
     @PostMapping("/insertDictionaryList")
-    CommonResponse<DictionaryVO> insertDictionaryList(CommonRequest<List<DictionaryInsertVO>> commonRequest);
+    CommonResponse<List<DictionaryVO>> insertDictionaryList(CommonRequest<List<DictionaryInsertVO>> commonRequest);
 
     @PostMapping("/deleteDictionary")
     CommonResponse<Boolean> deleteDictionary(CommonRequest<DictionaryDeleteVO> commonRequest);
@@ -24,7 +24,7 @@ public interface DictionaryApi {
     CommonResponse<Boolean> deleteDictionaryByIds(CommonRequest<DictionaryVO> commonRequest);
 
     @PostMapping("/updateDictionary")
-    CommonRequest<DictionaryVO> updateDictionary(CommonRequest<DictionaryUpdateVO> commonRequest);
+    CommonResponse<DictionaryVO> updateDictionary(CommonRequest<DictionaryUpdateVO> commonRequest);
 
     @PostMapping("/queryDictionary")
     CommonResponse<List<DictionaryVO>> queryDictionary(CommonRequest<DictionaryQueryVO> commonRequest);

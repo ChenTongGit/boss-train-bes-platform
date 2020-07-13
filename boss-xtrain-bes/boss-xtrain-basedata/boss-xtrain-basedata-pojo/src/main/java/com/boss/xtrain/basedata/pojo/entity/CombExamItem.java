@@ -18,6 +18,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "t_comb_exam_config_item")
+@Data
 public class CombExamItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,62 +62,4 @@ public class CombExamItem implements Serializable {
     @Column(name = "score")
     private BigDecimal score;
 
-    public Long getSubjectTypeId() {
-        return subjectTypeId;
-    }
-
-    public void setSubjectTypeId(Long subjectTypeId) {
-        this.subjectTypeId = subjectTypeId;
-    }
-
-    public BigDecimal getScore() {
-        return score;
-    }
-
-    public void setScore(BigDecimal score) {
-        this.score = score;
-    }
-
-    public Long getDifficult() {
-        return difficult;
-    }
-
-    public void setDifficult(Long difficult) {
-        this.difficult = difficult;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
-    }
-
-    public Long getCombExamConfigId() {
-        return combExamConfigId;
-    }
-
-    public void setCombExamConfigId(Long combExamConfigId) {
-        this.combExamConfigId = combExamConfigId;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-    @Override
-    public String toString() {
-        return "CombExamItem{" +
-                ", subjectTypeId=" + subjectTypeId +
-                ", categoryId=" + categoryId +
-                ", combExamConfigId=" + combExamConfigId +
-                ", num=" + num +
-                ", difficult=" + difficult +
-                ", score=" + score +
-                '}';
-    }
 }

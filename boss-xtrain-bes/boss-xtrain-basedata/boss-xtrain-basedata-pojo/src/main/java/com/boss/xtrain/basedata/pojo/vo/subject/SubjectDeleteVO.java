@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubjectDeleteVO extends BaseVO {
+public class SubjectDeleteVO{
     private Long id;
     private String name;
     private Long version;

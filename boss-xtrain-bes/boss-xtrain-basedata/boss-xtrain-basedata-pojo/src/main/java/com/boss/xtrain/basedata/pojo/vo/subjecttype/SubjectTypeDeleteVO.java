@@ -4,7 +4,7 @@ import com.boss.xtrain.common.core.pojo.BaseVO;
 import lombok.Data;
 
 @Data
-public class SubjectTypeDeleteVO extends BaseVO {
+public class SubjectTypeDeleteVO{
     private Long id;
     private Long version;
 }

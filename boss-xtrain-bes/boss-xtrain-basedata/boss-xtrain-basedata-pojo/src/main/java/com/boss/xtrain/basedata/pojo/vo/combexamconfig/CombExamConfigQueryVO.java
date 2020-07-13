@@ -4,6 +4,10 @@ import com.boss.xtrain.common.core.pojo.BaseVO;
 import lombok.Data;
 
 @Data
-public class CombExamConfigQueryVO extends BaseVO {
+public class CombExamConfigQueryVO{
+    private Long orgId;
     private String name;
+    private int pageIndex;
+    private int pageSize;
+    private String orderBy;
 }

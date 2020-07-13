@@ -13,48 +13,62 @@ import java.util.List;
 
 @Mapper
 public interface SubjectMapper extends BaseMapper<Subject> {
+    /**
+     * 模糊查询
+     * @param orgId
+     * @param subjectName
+     * @param categoryName
+     * @param typeName
+     * @return
+     */
+    List<Subject> queryByCondition(@Param("orgId") Long orgId,@Param("subjectName") String subjectName,
+                                   @Param("categoryName") String categoryName,@Param("typeName") String typeName);
 
     /**
-     * 按条件模糊查询题目
-     * @param subjectQueryDTO
+     * 根据题目类别、题型、难度获取题目
+     * @param categoryId
+     * @param subjectTypeId
+     * @param difficulty
      * @return
      */
-    List<SubjectDTO> querySubjectByCondition(SubjectQueryDTO subjectQueryDTO);
+    List<Subject> querySubject(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") Long difficulty);
+
     /**
-     * 查询题目类别Id按题目类别名称
-     * @param categoryName
+     * 随机生成题目
+     * @param categoryId
+     * @param subjectTypeId
+     * @param difficulty
+     * @param num
      * @return
      */
-    Long queryCategoryIdByCategoryName(String categoryName);
+    List<Subject> queryByRandom(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") Long difficulty,@Param("num") Integer num);
+
     /**
-     * 查询题目类型Id按题目类型名称
-     * @param subjectTypeName
+     * 根据组织机构ID、题型获取题目
+     * @param orgId
+     * @param subjectTypeId
      * @return
      */
-    Long querySubjectTypeIdBySubjectTypeName(String subjectTypeName);
+    List<Subject> getExamSubject(@Param("orgId") Long orgId,@Param("subjectTypeId") Long subjectTypeId);
+
     /**
-     * 删除题目答案通过题目id
+     * 根据题目ID获取题目
      * @param id
      * @return
      */
-    int deleteSubjectAnswer(Long id);
+    Subject getSubjectById(@Param("id") Long id);
+
     /**
-     * 快速组卷
-     * @param combExamConfigItemDTO
+     * 根据题目ID获取题目类别名称
+     * @param subjectIds
      * @return
      */
-    List<SubjectDTO> quickMakePaper(CombExamItemDTO combExamConfigItemDTO);
+    List<String> queryCategoryById(@Param("subjectIds")List<Long> subjectIds);
+
     /**
-     * 获取题目通过Id
-     * @param id
+     * 获取所有的题目
      * @return
      */
-    SubjectDTO getSubjectById(Long id);
-    /**
-     * 按id查询题目
-     * @param subjectDeleteDTO
-     * @return
-     */
-    SubjectDTO queryById(SubjectDeleteDTO subjectDeleteDTO);
+    List<Subject> getSubjects();
 
 }

@@ -17,4 +17,13 @@
     <!--@mbg.generated-->
     id, t_s_id, answer, right_answer, image_url, field1, field2, field3
   </sql>
+   <insert id="insertBatch" parameterType="java.util.List">
+    insert into t_subject_answer
+    (id,subject_id,answer,right_answer,image_url)
+    values
+    <foreach collection ="itemList" item="item" separator =",">
+      (#{item.id}, #{item.subjectId}, #{item.answer}, #{item.rightAnswer}, #{item.imageUrl})
+    </foreach >
+  </insert>
+
 </mapper>

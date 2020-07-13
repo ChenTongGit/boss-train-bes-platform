@@ -58,10 +58,5 @@
         </where>
         order by updated_time desc
     </select>
-    <select id="getCategories" resultType="com.boss.xtrain.basedata.pojo.dto.category.CategoryListDTO">
-        select t.id as id,
-        t.name as name
-        FROM t_category t
-        where t.org_id = #{orgId}
-    </select>
+
 </mapper>

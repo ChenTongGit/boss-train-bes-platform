@@ -3,8 +3,11 @@ package com.boss.xtrain.basedata.dao.impl;
 import com.boss.xtrain.basedata.dao.CategoryDao;
 import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
+import com.boss.xtrain.basedata.pojo.dto.category.CategoryTreeDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class CategoryDaoImpl implements CategoryDao {
 
     @Autowired
@@ -40,25 +44,27 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public List<CategoryDTO> getCategory(Example example) {
-        List<CategoryDTO> categoryDTOS = new ArrayList<>();
-        List<Category> categories = categoryMapper.selectByExample(example);
-        PojoUtils.copyProperties(categories,categoryDTOS);
-        return categoryDTOS;
-    }
-
-    @Override
     public Category queryCategoryById(Long id) {
         return categoryMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public int queryRepeatName(Example example) {
+    public int checkRepeatName(Example example) {
+        log.info("dao：{}",categoryMapper.selectCountByExample(example));
         return categoryMapper.selectCountByExample(example);
     }
 
     @Override
-    public int checkRepeatName(Example example) {
-        return categoryMapper.selectCountByExample(example);
+    public List<CategoryTreeDTO> getCategoryTree(Example example) {
+        List<Category> categories = categoryMapper.selectByExample(example);
+        List<CategoryTreeDTO> categoryTreeDTOS = PojoUtils.copyListProperties(categories,CategoryTreeDTO::new);
+        return categoryTreeDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> queryByCondition(Example query) {
+        List<Category> categories = categoryMapper.selectByExample(query);
+        List<CategoryDTO> categoryDTOS = PojoUtils.copyListProperties(categories,CategoryDTO::new);
+        return categoryDTOS;
     }
 }

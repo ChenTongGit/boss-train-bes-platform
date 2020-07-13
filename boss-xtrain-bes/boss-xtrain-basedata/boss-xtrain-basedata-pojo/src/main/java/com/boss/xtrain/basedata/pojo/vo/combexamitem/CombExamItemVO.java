@@ -9,14 +9,14 @@ import java.math.BigDecimal;
 public class CombExamItemVO extends BaseVO {
     private Long id;
     private Integer num;
-    private Long difficult;
+    private Long difficulty;
     private BigDecimal score;
     private Long subjectTypeId;
     private Long categoryId;
     private Long combExamConfigId;
-    private Long version;
     private String subjectTypeName;
     private String categoryName;
     private String combExamConfigName;
+    private String difficultyName;
 
 }

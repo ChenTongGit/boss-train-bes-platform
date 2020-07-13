@@ -7,8 +7,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CombExamItemInsertVO extends BaseVO {
-    private String name;
-    private Long difficult;
-    private List<CombExamItem> combExamItems;
+public class CombExamItemDeleteIdsVO {
+    private List<CombExamItemDeleteVO> combExamItems;
 }

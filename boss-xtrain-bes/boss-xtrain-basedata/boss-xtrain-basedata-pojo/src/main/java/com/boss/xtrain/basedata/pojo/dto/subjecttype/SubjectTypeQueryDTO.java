@@ -5,5 +5,9 @@ import lombok.Data;
 @Data
 public class SubjectTypeQueryDTO {
     private Long orgId;
-    private String subjectTypeName;
+    private String name;
+    private int pageIndex;
+    private int pageSize;
+    private String orderBy;
+
 }

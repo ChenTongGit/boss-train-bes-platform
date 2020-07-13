@@ -6,11 +6,13 @@ import com.boss.xtrain.basedata.pojo.dto.subjecttype.*;
 import com.boss.xtrain.basedata.pojo.entity.SubjectType;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class SubjectTypeDaoImpl implements SubjectTypeDao{
 
     @Autowired
@@ -32,7 +34,7 @@ public class SubjectTypeDaoImpl implements SubjectTypeDao{
     }
 
     @Override
-    public List<SubjectTypeDTO> querySubjectTypeByCondition(Example example) {
+    public List<SubjectTypeDTO> queryByCondition(Example example) {
         List<SubjectType> subjectTypes = subjectTypeMapper.selectByExample(example);
         List<SubjectTypeDTO> subjectTypeDTOS = new ArrayList<>();
         PojoUtils.copyProperties(subjectTypes,subjectTypeDTOS);

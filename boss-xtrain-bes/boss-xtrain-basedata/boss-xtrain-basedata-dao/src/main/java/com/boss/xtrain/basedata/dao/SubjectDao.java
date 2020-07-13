@@ -2,50 +2,38 @@ package com.boss.xtrain.basedata.dao;
 
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
+import com.boss.xtrain.basedata.pojo.entity.Subject;
+import com.boss.xtrain.common.core.web.dao.CommonQuery;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
-public interface SubjectDao {
+public interface SubjectDao{
 
-    /**
-     * 新增题目
-     * @param subjectInsertDTO
-     * @return
-     */
-    int insertSubject(SubjectInsertDTO subjectInsertDTO);
+    int insertSubject(Subject subject);
 
-    /**
-     * 删除题目
-     * @param subjectDeleteDTO
-     * @return
-     */
-    int deleteSubject(SubjectDeleteDTO subjectDeleteDTO);
+    int deleteSubject(Example example);
 
-    /**
-     * 更新题目
-     * @param subjectUpdateDTO
-     * @return
-     */
-    SubjectDTO update(SubjectUpdateDTO subjectUpdateDTO);
+    int deleteSubject(List<Long> ids);
 
-    /**
-     * 按条件查询题目列表
-     * @param subjectQueryDTO
-     * @return
-     */
-    List<SubjectDTO> queryByCondition(SubjectQueryDTO subjectQueryDTO);
+    int update(Subject subject);
 
-    /**
-     * 试卷服务请求，按配置信息快速组卷
-     * @param combExamItemDTO
-     * @return
-     */
-    List<SubjectDTO> quickMakePaper(CombExamItemDTO combExamItemDTO);
-    /**
-     *考试服务 通过题目ID列表获取题目描述，标准答案，分值，类型
-     * @param id
-     * @return
-     */
-    SubjectDTO getSubjectById(Long id);
+    List<SubjectDTO> queryAll();
+
+    List<SubjectDTO> queryByCondition(Long orgId,String subjectName,String categoryName,String typeName);
+
+    List<Subject> querySubject(CombExamItemDTO combExamItemDTO);
+
+    List<Subject> querySubjectRandom(CombExamItemDTO combExamItemDTO,Integer num);
+
+    List<SubjectDTO> queryExamSubject(Long orgId,Long subjectTypeId);
+
+    SubjectDTO querySubjectById(Long id);
+
+    List<String> queryCategoryById(List<Long> subjectIds);
+
+    Integer countSubject(Example example);
+
+    int queryNameCount(Example example);
 
 }

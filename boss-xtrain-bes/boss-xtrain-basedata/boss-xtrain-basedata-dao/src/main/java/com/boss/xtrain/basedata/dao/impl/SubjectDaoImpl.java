@@ -9,13 +9,16 @@ import com.boss.xtrain.basedata.pojo.entity.Subject;
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import org.apache.poi.ss.formula.functions.PPMT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Repository
 public class SubjectDaoImpl implements SubjectDao {
 
     @Autowired
@@ -27,58 +30,100 @@ public class SubjectDaoImpl implements SubjectDao {
     @Autowired
     private SubjectAnswerMapper subjectAnswerMapper;
 
+
     @Override
-    public int insertSubject(SubjectInsertDTO subjectInsertDTO) {
-        Subject subject = new Subject();
-        subject.setCategoryId(subjectMapper.queryCategoryIdByCategoryName(subjectInsertDTO.getCategoryName()));
-        subject.setSubjectTypeId(subjectMapper.querySubjectTypeIdBySubjectTypeName(subjectInsertDTO.getSubjectTypeName()));
-        PojoUtils.copyProperties(subject,subjectInsertDTO);
-        int result = subjectMapper.insertSelective(subject);
-        List<SubjectAnswer> answers = subjectInsertDTO.getSubjectAnswers();
-        for(SubjectAnswer subjectAnswer : answers){
-            long nid= idWorker.nextId();
-            subjectAnswer.setId(nid);
-            subjectAnswer.setSubjectId(subjectInsertDTO.getId());
-            subjectAnswerMapper.insertSelective(subjectAnswer);
-        }
-        return result;
+    public int insertSubject(Subject subject) {
+        return subjectMapper.insert(subject);
     }
 
     @Override
-    public int deleteSubject(SubjectDeleteDTO subjectDeleteDTO) {
-        Subject subject = new Subject();
-        PojoUtils.copyProperties(subject,subjectDeleteDTO);
-        subjectMapper.deleteSubjectAnswer(subject.getId());
-        return subjectMapper.deleteByPrimaryKey(subject);
+    public int deleteSubject(Example example) {
+        return subjectMapper.deleteByExample(example);
     }
 
     @Override
-    public SubjectDTO update(SubjectUpdateDTO subjectUpdateDTO) {
-        subjectUpdateDTO.setVersion(subjectUpdateDTO.getVersion()+1L);
-        Subject subject = new Subject();
-        PojoUtils.copyProperties(subject,subjectUpdateDTO);
-        subject.setCategoryId(subjectMapper.queryCategoryIdByCategoryName(subjectUpdateDTO.getCategoryName()));
-        subject.setSubjectTypeId(subjectMapper.querySubjectTypeIdBySubjectTypeName(subjectUpdateDTO.getSubjectTypeName()));
+    public int deleteSubject(List<Long> ids) {
         Example example = new Example(Subject.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("id", subjectUpdateDTO.getId());
-        criteria.andEqualTo("version", subjectUpdateDTO.getVersion()-1L);
-        int update = subjectMapper.updateByExampleSelective(subject,example);
-        return null;
+        criteria.andIn("id",ids);
+        return subjectMapper.deleteByExample(example);
     }
 
     @Override
-    public List<SubjectDTO> queryByCondition(SubjectQueryDTO subjectQueryDTO) {
-        return subjectMapper.querySubjectByCondition(subjectQueryDTO);
+    public int update(Subject subject) {
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",subject.getId());
+        criteria.andEqualTo("version",subject.getVersion());
+        return subjectMapper.updateByExampleSelective(subject,example);
+
     }
 
     @Override
-    public List<SubjectDTO> quickMakePaper(CombExamItemDTO combExamItemDTO) {
-        return subjectMapper.quickMakePaper(combExamItemDTO);
+    public List<SubjectDTO> queryAll() {
+        List<Subject> subjects = subjectMapper.selectAll();
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+        PojoUtils.copyProperties(subjects,subjectDTOS);
+        return subjectDTOS;
+
     }
 
     @Override
-    public SubjectDTO getSubjectById(Long id) {
-        return subjectMapper.getSubjectById(id);
+    public List<SubjectDTO> queryByCondition(Long orgId, String subjectName, String categoryName, String typeName) {
+        List<Subject> subjects = subjectMapper.queryByCondition(orgId,subjectName,categoryName,typeName);
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+        PojoUtils.copyProperties(subjects,subjectDTOS);
+        return subjectDTOS;
+    }
+
+    @Override
+    public List<Subject> querySubject(CombExamItemDTO combExamItemDTO) {
+        Long categoryId = combExamItemDTO.getCategoryId();
+        Long subjectTypeId =combExamItemDTO.getSubjectTypeId();
+        Long difficulty = combExamItemDTO.getDifficulty();
+        return subjectMapper.querySubject(categoryId,subjectTypeId,difficulty);
+
+    }
+
+    @Override
+    public List<Subject> querySubjectRandom(CombExamItemDTO combExamItemDTO, Integer num) {
+        Long categoryId = combExamItemDTO.getCategoryId();
+        Long subjectTypeId = combExamItemDTO.getSubjectTypeId();
+        Long difficulty = combExamItemDTO.getDifficulty();
+        return subjectMapper.queryByRandom(categoryId,subjectTypeId,difficulty,num);
+
+    }
+
+    @Override
+    public List<SubjectDTO> queryExamSubject(Long orgId, Long subjectTypeId) {
+        List<Subject> subjects = subjectMapper.getExamSubject(orgId,subjectTypeId);
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+        PojoUtils.copyProperties(subjects,SubjectDTO.class);
+        return subjectDTOS;
+
+    }
+
+    @Override
+    public SubjectDTO querySubjectById(Long id) {
+        Subject subject = subjectMapper.getSubjectById(id);
+        SubjectDTO subjectDto = new SubjectDTO();
+        PojoUtils.copyProperties(subject,subjectDto);
+        return subjectDto;
+
+    }
+
+    @Override
+    public List<String> queryCategoryById(List<Long> subjectIds) {
+        return subjectMapper.queryCategoryById(subjectIds);
+    }
+
+    @Override
+    public Integer countSubject(Example example) {
+        return subjectMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int queryNameCount(Example example) {
+        return subjectMapper.selectCountByExample(example);
     }
 }

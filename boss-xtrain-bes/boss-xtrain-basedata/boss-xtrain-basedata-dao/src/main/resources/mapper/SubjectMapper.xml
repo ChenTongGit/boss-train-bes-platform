@@ -32,143 +32,48 @@
     <collection property="subjectAnswers" column="id" javaType="ArrayList" ofType="com.boss.xtrain.basedata.pojo.entity.SubjectAnswer" select="selectSubjectAnswer">
     </collection>
   </resultMap>
-  <select id="selectSubjectAnswer" resultType="com.boss.xtrain.basedata.pojo.entity.SubjectAnswer">
-    SELECT
-        sa.id as id,
-        sa.t_s_id as subjectId,
-        sa.answer,
-        sa.right_answer as rightAnswer,
-        sa.image_url as imageUrl
-    FROM t_subject_answer sa
-    WHERE sa.t_s_id = #{id}
+   <select id="getCategoryName" resultType="java.lang.String">
+    select name as categoryName from t_category where id = #{category_id}
   </select>
-  <select id="querySubjectByCondition" resultMap="queryResult">
-    SELECT
-    s.id as id,
-    s.t_s_id as subjectTypeId,
-    s.t_c_id as categoryId,
-    s.name as name,
-    s.image_url as imageUrl,
-    s.remark as remark,
-    ct.difficult as difficulty,
-    st.name as subjectTypeName,
-    sc.name as categoryName,
-    s.status as status,
-    s.updated_time as updatedTime,
-    s.org_id as orgId,
-    s.company_id as companyId,
-    s.version as version
-    FROM t_subject s
-         left outer join t_subject_type st on s.t_s_id = st.id
-         left outer join t_category sc on s.t_c_id = sc.id
-         left outer join t_comb_exam_config_item ct on ct.t_s_id = st.id
-    <where>
-      <if test=" name != ''  and name != null">
-        AND s.name = #{name}
-      </if>
-      <if test=" subjectTypeName != ''  and subjectTypeName != null">
-        AND st.name = #{subjectTypeName}
-      </if>
-      <if test=" categoryName != ''  and categoryName != null">
-        AND sc.name = #{categoryName}
-      </if>
-    </where>
+
+  <select id="getTypeName" resultType="java.lang.String">
+    select type_name as typeName from t_subject_type where id = #{subject_type_id}
   </select>
-  <select id="queryById" resultMap="queryResult">
-    SELECT
-    s.id as id,
-    s.t_s_id as subjectTypeId,
-    s.t_c_id as categoryId,
-    s.name as name,
-    s.image_url as imageUrl,
-    st.name as subjectTypeName,
-    sc.name as categoryName,
-    s.status as status,
-    s.created_by as createdBy,
-    s.created_time as createdTime,
-    s.updated_time as updatedTime,
-    s.org_id as orgId,
-    s.company_id as companyId,
-    s.version as version,
-    s.remark as remark
-    FROM t_subject s
-    left outer join t_subject_type st on s.t_s_id = st.id
-    left outer join t_category sc on s.t_c_id = sc.id
-    <where>
-      s.id = #{id}
-    </where>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select a.* from t_subject a,t_category b,t_subject_type c
+    where a.category_id = b.id and a.subject_type_id = c.id and a.org_id = #{orgId}
+    and a.subject_name like CONCAT('%',#{subjectName},'%') and b.name like CONCAT('%',#{categoryName},'%')
+    and c.type_name like CONCAT('%',#{typeName},'%') order by updated_time desc
   </select>
-  <select id="queryCategoryIdByCategoryName" resultType="Long">
-    SELECT c.id
-    from t_category c
-    <where>
-      c.name = #{categoryName}
-    </where>
+
+  <select id="querySubject" resultMap="BaseResultMap">
+    select a.* from t_subject a where a.category_id = #{categoryId} and
+           a.subject_type_id = #{subjectTypeId} and a.difficulty = #{difficulty}
   </select>
-  <select id="querySubjectTypeIdBySubjectTypeName" resultType="Long">
-    SELECT st.id
-    from t_subject_type st
-    <where>
-      st.name = #{SubjectTypeName}
-    </where>
+
+  <select id="queryByRandom" resultMap="BaseResultMap" >
+    select a.* from t_subject a where a.category_id = #{categoryId} and a.subject_type_id = #{subjectTypeId}
+    and a.difficulty = #{difficulty} ORDER BY rand() limit #{num}
   </select>
-  <delete id="deleteSubjectAnswer">
-    delete from t_subject_answer
-    <where>
-      t_s_id = #{id}
-    </where>
-  </delete>
-  <select id="quickMakePaper" resultMap="queryResult">
-    SELECT
-    s.id as id,
-    s.t_s_id as subjectTypeId,
-    s.t_c_id as categoryId,
-    s.name as name,
-    ct.difficult as difficulty,
-    st.name as subjectTypeName,
-    sc.name as categoryName,
-    s.status as status,
-    s.updated_time as updatedTime,
-    s.org_id as orgId,
-    s.company_id as companyId,
-    s.version as version
-    FROM t_subject s
-    left outer join t_subject_type st on s.t_s_id = st.id
-    left outer join t_category sc on s.t_c_id = sc.id
-    left outer join t_comb_exam_config_item ct on ct.t_s_id = st.id
-    <where>
-      <if test=" difficulty != ''  and difficulty != null">
-        AND ct.difficult = #{difficulty}
-      </if>
-      <if test=" subjectTypeName != ''  and subjectTypeName != null">
-        AND st.name = #{subjectTypeName}
-      </if>
-      <if test=" categoryName != ''  and categoryName != null">
-        AND sc.name = #{categoryName}
-      </if>
-    </where>
-    LIMIT #{num}
+
+  <select id="getExamSubject" resultMap="BaseResultMap">
+    select * from t_subject where t_subject.org_id = #{orgId} and t_subject.subject_type_id = #{subjectTypeId}
   </select>
-  <select id="getSubjectById" resultMap="queryResult">
-    SELECT
-    s.id as id,
-    s.t_s_id as subjectTypeId,
-    s.t_c_id as categoryId,
-    s.name as name,
-    st.name as subjectTypeName,
-    sc.name as categoryName,
-    s.status as status,
-    s.updated_time as updatedTime,
-    s.org_id as orgId,
-    s.company_id as companyId,
-    s.version as version
-    FROM t_subject s
-    left outer join t_subject_type st on s.t_s_id = st.id
-    left outer join t_category sc on s.t_c_id = sc.id
-    <where>
-      <if test=" id != ''  and id != null">
-        AND s.id = #{id}
-      </if>
-    </where>
+
+  <select id="getSubjectById" resultMap="BaseResultMap">
+    select * from t_subject where t_subject.id = #{id}
   </select>
+
+  <select id="queryCategoryById" resultType="java.lang.String">
+    select distinct b.name from t_subject a,t_category b where a.category_id = b.id and a.id in
+      <foreach collection="subjectIds" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+  </select>
+
+  <select id="getSubjects" resultMap="BaseResultMap">
+    select * from t_subject order by updated_time desc
+  </select>
+
 </mapper>
