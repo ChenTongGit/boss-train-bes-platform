@@ -15,11 +15,11 @@ import java.util.Map;
 /**
  * @author lzx
  */
-public class MyAccessDeniedHandler implements AccessDeniedHandler{
+public class BesAccessDeniedHandler implements AccessDeniedHandler{
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("errorauth", "400");
         map.put("message", accessDeniedException.getMessage());
         map.put("path", request.getServletPath());

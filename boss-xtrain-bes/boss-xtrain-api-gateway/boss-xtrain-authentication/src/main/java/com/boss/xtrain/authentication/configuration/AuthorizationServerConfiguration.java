@@ -1,6 +1,6 @@
 package com.boss.xtrain.authentication.configuration;
 
-import com.boss.xtrain.authentication.error.MssWebResponseExceptionTranslator;
+import com.boss.xtrain.authentication.error.BesWebResponseExceptionTranslator;
 import com.boss.xtrain.authentication.jwt.JwtTokenEnhancer;
 import com.boss.xtrain.authentication.service.BesUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
@@ -62,7 +61,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Bean
     public WebResponseExceptionTranslator webResponseExceptionTranslator(){
-        return new MssWebResponseExceptionTranslator();
+        return new BesWebResponseExceptionTranslator();
     }
 
     @Override

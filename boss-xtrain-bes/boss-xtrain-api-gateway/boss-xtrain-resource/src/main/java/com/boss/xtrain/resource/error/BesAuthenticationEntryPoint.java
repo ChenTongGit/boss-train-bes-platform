@@ -14,17 +14,18 @@ import java.util.Map;
 /**
  * @author lzx
  */
-public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class BesAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException)
         throws ServletException {
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap();
         map.put("errorentry", "401");
         map.put("message", authException.getMessage());
         map.put("path", request.getServletPath());
         map.put("timestamp", String.valueOf(new Date().getTime()));
+
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         try {
@@ -34,5 +35,4 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throw new ServletException();
         }
     }
-
 }

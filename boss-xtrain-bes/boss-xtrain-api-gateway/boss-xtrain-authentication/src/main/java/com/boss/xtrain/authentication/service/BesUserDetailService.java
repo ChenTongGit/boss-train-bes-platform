@@ -1,11 +1,5 @@
 package com.boss.xtrain.authentication.service;
 
-import com.boss.xtrain.authentication.dao.TRoleMapper;
-import com.boss.xtrain.authentication.dao.TUserMapper;
-import com.boss.xtrain.authentication.dao.TUserRoleMapper;
-import com.boss.xtrain.authentication.entity.TRole;
-import com.boss.xtrain.authentication.entity.TUser;
-import com.boss.xtrain.authentication.entity.TUserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,20 +14,15 @@ import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @Slf4j
 @Service("userDetailService")
 public class BesUserDetailService implements UserDetailsService {
-    @Resource
-    private TUserMapper tUserMapper;
-    @Resource
-    private TUserRoleMapper tUserRoleMapper;
-    @Resource
-    private TRoleMapper tRoleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         log.info("save user info name: " + userName);
-        Example userExample = new Example(TUser.class);
+        /*Example userExample = new Example(TUser.class);
         userExample.createCriteria().andEqualTo("name", userName);
         List<TUser> tUsers = tUserMapper.selectByExample(userExample);
 
@@ -41,7 +30,7 @@ public class BesUserDetailService implements UserDetailsService {
         if (tUsers == null || (tUsers != null && tUsers.isEmpty())) {
             log.info("not found user by name");
             throw new UsernameNotFoundException(userName);
-        }
+        }*/
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         // 可用性 :true:可用 false:不可用
         boolean enabled = true;
@@ -65,7 +54,7 @@ public class BesUserDetailService implements UserDetailsService {
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(tRole.getName());
                 grantedAuthorities.add(grantedAuthority);
             }*/
-        User user = new User(tUsers.get(0).getName(), tUsers.get(0).getPassword(),
+        User user = new User("liu", "12345",
             enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
         log.info("save user: name->" + user.getUsername() + " pass->" + user.getPassword());
         return user;
