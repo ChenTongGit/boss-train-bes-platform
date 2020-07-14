@@ -1,4 +1,4 @@
-package com.boss.xtrain.paper.pojo.query;
+package com.boss.xtrain.paper.dto.examservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaperQuery extends BaseQuery {
-    public String name;
+public class ExamServiceQueryPaperDTO {
+    Long paperId;
 }

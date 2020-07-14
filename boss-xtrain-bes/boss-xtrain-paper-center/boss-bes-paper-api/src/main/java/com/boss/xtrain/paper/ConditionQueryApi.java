@@ -2,6 +2,7 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.paper.dto.conditionquerypaper.QueryPaperDTO;
 import com.boss.xtrain.paper.vo.conditionquerypaper.QueryPaperNameListVO;
 import com.boss.xtrain.paper.vo.conditionquerypaper.QueryPaperVO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public interface ConditionQueryApi {
      * @throws:
      */
     @PostMapping(value = "/queryPaperByCondition")
-    public CommonResponse conditionQueryPaper(@Valid CommonRequest<QueryPaperVO> commonRequest);
+    CommonResponse conditionQueryPaper(@Valid CommonRequest<QueryPaperDTO> commonRequest);
     /**
      * @methodsName: queryPaperNameTip
      * @description: 查询试卷名或模板名提示信息
@@ -35,6 +36,9 @@ public interface ConditionQueryApi {
      * @throws:
      */
     @PostMapping(value = "/queryPaperNameTip")
-    public CommonResponse queryPaperNameTip(@Valid CommonRequest<QueryPaperNameListVO> commonRequest);
+    CommonResponse queryPaperNameTip(@Valid CommonRequest<QueryPaperNameListVO> commonRequest);
+
+    @PostMapping(value = "/test")
+    String testfirst();
 }
 

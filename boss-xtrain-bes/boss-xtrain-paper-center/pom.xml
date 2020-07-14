@@ -17,6 +17,8 @@
         <module>boss-xtrain-paper-util</module>
         <module>boss-xtrain-bes-paper-service</module>
         <module>boss-bes-paper-api</module>
+        <module>boss-xtrain-paper-controller</module>
+        <module>boss-xtrain-paper-config</module>
     </modules>
     <dependencies>
         <dependency>

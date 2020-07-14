@@ -3,6 +3,7 @@ package com.boss.xtrain.common.core.web.controller;
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 
@@ -22,8 +23,8 @@ public abstract class BaseController {
     /**
      *  分页前调用
      */
-    protected void doBeforePagination(int pageIndex,int pageSize){
-        PageMethod.startPage(pageIndex, pageSize);
+    protected Page<Object> doBeforePagination(int pageIndex, int pageSize){
+        return PageMethod.startPage(pageIndex, pageSize);
     }
     /**
      * 构造分页响应

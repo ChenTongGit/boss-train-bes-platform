@@ -73,7 +73,7 @@ public class MainTainTemplateDaoImpl extends PaperBaseDaoImpl implements MainTai
         Example example = new Example(Paper.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PAPER_ID,paperId)
-                .andEqualTo(TEMPLATE,TEMPLATE_SIGN);
+                .andEqualTo(TEMPLATE,0);
         return paperMapper.deleteByExample(example);
 
 
@@ -92,7 +92,7 @@ public class MainTainTemplateDaoImpl extends PaperBaseDaoImpl implements MainTai
         int count = 0;
         for (Paper paper:
              list) {
-            count +=paperMapper.deleteByPrimaryKey(paper.getPaperId());
+            count +=deleteTemplateById(paper.getPaperId());
         }
         return count;
     }

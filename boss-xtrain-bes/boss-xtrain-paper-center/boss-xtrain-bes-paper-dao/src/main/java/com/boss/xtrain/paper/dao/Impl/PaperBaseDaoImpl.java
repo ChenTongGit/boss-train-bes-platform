@@ -53,7 +53,7 @@ public class PaperBaseDaoImpl {
         Example example = new Example(Paper.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("orgId",templateQueryDto.getOrgId())
-                .andEqualTo(TEMPLATE,TEMPLATE_SIGN);
+                .andEqualTo(TEMPLATE,false);
         example.orderBy("updatedTime").desc();
         return paperMapper.selectByExample(example);
     }

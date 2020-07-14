@@ -21,7 +21,7 @@ public class TemplateCombExamVO extends BaseVO {
      */
     @NotBlank(message = "组卷人名不能为空")
     @Length(max = 32,message = "组卷人名不能超过32个字符")
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 试卷描述
      */
@@ -42,7 +42,7 @@ public class TemplateCombExamVO extends BaseVO {
      * 试卷难度
      */
     @NotBlank(message = "试卷难度不能为空")
-    private String difficulty;
+    private String difficuty;
     /**
      * 所属公司
      */

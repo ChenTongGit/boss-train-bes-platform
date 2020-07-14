@@ -1,5 +1,10 @@
 package com.boss.xtrain.paper.vo.conditionquerypaper;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,6 +12,10 @@ import java.util.Date;
  * @author lenovo
  * 试卷接收对象
  */
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PaperVO
 {
     /**
@@ -20,7 +29,7 @@ public class PaperVO
     /**
      * 组卷人
      */
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 试卷类型
      */
@@ -28,11 +37,11 @@ public class PaperVO
     /**
      * 试卷难度
      */
-    private String difficulty;
+    private String difficuty;
     /**
      * 组卷时间
      */
-    private Date combExamTime;
+    private Date combExamTim;
     /**
      * 试卷总分
      */

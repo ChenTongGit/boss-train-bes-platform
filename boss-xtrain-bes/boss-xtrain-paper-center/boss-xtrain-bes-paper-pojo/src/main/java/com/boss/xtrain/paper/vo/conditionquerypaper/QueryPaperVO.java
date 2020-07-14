@@ -1,6 +1,7 @@
 package com.boss.xtrain.paper.vo.conditionquerypaper;
 
 import com.boss.xtrain.common.core.pojo.BaseQuery;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -35,20 +36,22 @@ public class QueryPaperVO extends BaseQuery {
     /**
      * 试卷难度
      */
-    private String difficulty;
+    private String difficuty;
     /**
      * 日期开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date beginTime;
     /**
      * 日期结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
     /**
      * 模板标记
      */
     @NotBlank(message = "模板标记不能为空")
-    private Byte template;
+    private Boolean template;
     public Date getBeginTime() {
         if (beginTime == null){
             return null;

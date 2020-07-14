@@ -15,7 +15,7 @@ public class TemplateCombDTO extends BaseDTO {
     /**
      * 用户名（组卷人）
      */
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 试卷描述
      */
@@ -31,7 +31,7 @@ public class TemplateCombDTO extends BaseDTO {
     /**
      * 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 所属公司
      */

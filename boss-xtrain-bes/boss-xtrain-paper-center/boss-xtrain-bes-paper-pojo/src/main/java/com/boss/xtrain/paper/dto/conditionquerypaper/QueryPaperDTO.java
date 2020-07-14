@@ -1,6 +1,7 @@
 package com.boss.xtrain.paper.dto.conditionquerypaper;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -29,14 +30,20 @@ public class QueryPaperDTO extends BaseDTO {
     /**
      * 日期开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date beginTime;
     /**
      * 日期结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
     /**
      * 模板标记
      */
     private Boolean template;
+
+    private Integer pageNum;
+    private Integer pageSize;
+
 }
 

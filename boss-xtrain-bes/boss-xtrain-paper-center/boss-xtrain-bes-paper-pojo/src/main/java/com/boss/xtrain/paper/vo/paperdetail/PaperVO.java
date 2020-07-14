@@ -19,7 +19,7 @@ public class PaperVO extends BaseVO {
     /**
      * 组卷人
      */
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 试卷类型
      */
@@ -31,7 +31,7 @@ public class PaperVO extends BaseVO {
     /**
      * 组卷时间
      */
-    private Date combExamTime;
+    private Date combExamTim;
     /**
      * 试卷总分
      */
@@ -42,18 +42,18 @@ public class PaperVO extends BaseVO {
     private String discript;
 
 
-    public Date getCombExamTime() {
-        if (combExamTime == null){
+    public Date getCombExamTim() {
+        if (combExamTim == null){
             return null;
         }
-        return (Date)combExamTime.clone();
+        return (Date)combExamTim.clone();
     }
 
-    public void setCombExamTime(Date combExamTime) {
+    public void setCombExamTim(Date combExamTime) {
         if (combExamTime == null){
-            this.combExamTime = null;
+            this.combExamTim = null;
         }else {
-            this.combExamTime = (Date)combExamTime.clone();
+            this.combExamTim = (Date)combExamTime.clone();
         }
     }
 }

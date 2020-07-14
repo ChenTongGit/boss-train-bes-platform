@@ -2,8 +2,10 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.paper.vo.downloadtemplate.TemplateCombExamVO;
-import com.boss.xtrain.paper.vo.downloadtemplate.TemplateQueryVO;
+
+
+import com.boss.xtrain.paper.dto.templatecomb.TemplateCombDTO;
+import com.boss.xtrain.paper.vo.templatecomb.TemplateQueryVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,7 +30,6 @@ public interface DownloadTemplateApi {
     @PostMapping(value = "/queryTemplateList")
     public CommonResponse getTemplate(@Valid CommonRequest<TemplateQueryVO> commonRequest);
     /**
-     * @author:  zjh
      * @methodsName: downLoadTemplate
      * @description: 下载模板
      * @param:  commonRequest
@@ -36,6 +37,6 @@ public interface DownloadTemplateApi {
      * @throws:
      */
     @PostMapping(value = "/downLoadTemplate")
-    public CommonResponse downLoadTemplate(@Valid CommonRequest<TemplateCombExamVO> commonRequest);
+    public CommonResponse downLoadTemplate(@Valid CommonRequest<TemplateCombDTO> commonRequest);
 }
 

@@ -16,13 +16,14 @@ import com.boss.xtrain.paper.entity.PaperSubjectAnswer;
 import com.boss.xtrain.paper.entity.SubjectAnswer;
 import com.boss.xtrain.paper.vo.uploadexam.PaperVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.boss.xtrain.common.core.exception.error.BusinessError.*;
-
+@Service
 public class UploadPaperServiceImpl implements UploadPaperService {
 
     @Autowired
@@ -49,6 +50,7 @@ public class UploadPaperServiceImpl implements UploadPaperService {
         Paper tPaper = uploadPaperDao.queryPaperById(uploadPaperDto.getPaperId());
         //模板
         Paper template = new Paper();
+        PojoUtils.copyProperties(tPaper,template);
         template.setTemplate(true);
         template.setPaperId(idWorker.nextId());
         template.setStatus(false);
@@ -56,6 +58,10 @@ public class UploadPaperServiceImpl implements UploadPaperService {
         template.setScore(tPaper.getScore());
         template.setCombExamTim(tPaper.getCombExamTim());
         template.setDownloadTimes(0);
+        template.setDifficuty(tPaper.getDifficuty());
+        template.setDiscript(tPaper.getDiscript());
+        template.setDownloadTimes(0);
+        template.setPublishTimes(0);
         Integer uploadPaperCount = uploadPaperDao.uploadPaper(template);
         //将试卷题目及答案复制到新的模板上
         List<SubjectAnswer> subjectAnswers = uploadPaperDao.querySubjectAnswerList(uploadPaperDto.getPaperId());

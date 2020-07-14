@@ -58,16 +58,6 @@ public class MainTainTemplateServiceImpl implements MainTainTemplateService {
     @TryCatch
     public List<SubjectVO> querySubjectList(SubjectQueryDTO subjectQueryDto) {
         //查询模板题目前，查询模板的version
-        Long paperId = subjectQueryDto.getPaperId();
-        version = mainTainTemplateDao.queryPaperVersion(paperId);
-        if (version == null){
-            version = 1L;
-            Paper tPaper = new Paper();
-            tPaper.setPaperId(paperId);
-            tPaper.setVersion(version);
-            mainTainTemplateDao.updateVersion(tPaper);
-        }
-
         return mainTainTemplateDao.querySubjectList(subjectQueryDto.getPaperId());
 
     }

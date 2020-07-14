@@ -1,6 +1,6 @@
 package com.boss.xtrain.paper.impl;
 
-import com.boss.xtrain.common.core.exception.BusinessException;
+
 import com.boss.xtrain.papaer.annotation.TryCatch;
 import com.boss.xtrain.paper.ConditionQueryPaperService;
 import com.boss.xtrain.paper.dao.ConditionQueryPaperDao;

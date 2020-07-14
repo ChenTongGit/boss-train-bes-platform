@@ -7,7 +7,8 @@
 package com.boss.xtrain.common.core.pojo;
 
 import java.io.Serializable;
-
+import lombok.Data;
+import lombok.ToString;
 /**
  * @class BaseQuery 本质上也是dto
  * @classdesc 查询的DTO对象考虑从这里继承也建议从这里继承，服务端存在基于该类型的实现 组合查询条件
@@ -17,6 +18,14 @@ import java.io.Serializable;
  * @see
  * @since
  */
+
+
+@Data
+@ToString
 public abstract class BaseQuery implements Serializable {
     private static final long serialVersionUID = 42432423432432L;
+
+    protected int pageNum;
+    protected int pageSize;
+
 }

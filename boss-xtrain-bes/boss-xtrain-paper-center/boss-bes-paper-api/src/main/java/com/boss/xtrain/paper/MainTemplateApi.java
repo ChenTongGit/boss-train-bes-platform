@@ -2,7 +2,16 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.paper.vo.templatemanage.*;
+
+import com.boss.xtrain.paper.dto.templatemanage.DeleteTemplateDTO;
+import com.boss.xtrain.paper.dto.templatemanage.SubjectQueryDTO;
+import com.boss.xtrain.paper.dto.templatemanage.TemplateListDTO;
+import com.boss.xtrain.paper.dto.templatemanage.TemplateUpdateDTO;
+import com.boss.xtrain.paper.vo.templatecomb.TemplateQueryVO;
+import com.boss.xtrain.paper.vo.templatemanage.DeleteTemplateVO;
+import com.boss.xtrain.paper.vo.templatemanage.SubjectQueryVO;
+import com.boss.xtrain.paper.vo.templatemanage.TemplateListVO;
+import com.boss.xtrain.paper.vo.templatemanage.TemplateUpdateVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,7 +42,7 @@ public interface MainTemplateApi {
      * @throws:
      */
     @PostMapping(value = "/querySubjectList")
-    public CommonResponse queryPaperDetail(@Valid CommonRequest<SubjectQueryVO> commonRequest);
+    public CommonResponse queryPaperDetail(@Valid CommonRequest<SubjectQueryDTO> commonRequest);
     /**
      * @methodsName: deleteOnePaper
      * @description: 删除指定模板
@@ -42,7 +51,7 @@ public interface MainTemplateApi {
      * @throws:
      */
     @PostMapping(value = "/deleteOneTemplate")
-    public CommonResponse deleteOnePaper(@Valid CommonRequest<DeleteTemplateVO> commonRequest);
+    public CommonResponse deleteOnePaper(@Valid CommonRequest<DeleteTemplateDTO> commonRequest);
     /**
      * @methodsName: deleteSomePaper
      * @description: 批量删除指定模板
@@ -51,7 +60,7 @@ public interface MainTemplateApi {
      * @throws:
      */
     @PostMapping(value = "/deleteSomeTemplate")
-    public CommonResponse deleteSomePaper(@Valid CommonRequest<TemplateListVO> commonRequest);
+    public CommonResponse deleteSomePaper(@Valid CommonRequest<TemplateListDTO> commonRequest);
     /**
      * @methodsName: updateSubjectList
      * @description: 更新题目集合
@@ -60,6 +69,6 @@ public interface MainTemplateApi {
      * @throws:
      */
     @PostMapping(value = "/updateSubjectList")
-    public CommonResponse updateSubjectList(@Valid CommonRequest<TemplateUpdateVO> commonRequest);
+    public CommonResponse updateSubjectList(@Valid CommonRequest<TemplateUpdateDTO> commonRequest);
 }
 

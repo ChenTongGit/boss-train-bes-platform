@@ -18,7 +18,7 @@ public class AnswerVO extends BaseVO {
     /**
      * 答案ID
      */
-    private String answerId;
+    private String paperSubjectAnswerId;
     /**
      * 答案
      */

@@ -51,12 +51,12 @@ public class ConditionQueryPaperDaoImpl  implements ConditionQueryPaperDao {
         }
         Example example = new Example(Paper.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andBetween("combExamTime", queryPaperDto.getBeginTime(), queryPaperDto.getEndTime())
+        criteria.andBetween("combExamTim", queryPaperDto.getBeginTime(), queryPaperDto.getEndTime())
                 .andLike("paperName", paperNameLike)
                 .andEqualTo("paperType", queryPaperDto.getPaperType())
                 .andEqualTo("difficuty", queryPaperDto.getDifficuty())
                 .andEqualTo(TEMPLATE, queryPaperDto.getTemplate())
-                .andLike("combExamMan", combExamManLike);
+                .andLike("combExamMa", combExamManLike);
         //无公司id查根据组织机构id查，判断模板标记是试卷还是模板
         if (queryPaperDto.getCompanyId() == null || queryPaperDto.getTemplate().equals(TEMPLATE_SIGN)) {
             criteria.andEqualTo(ORG_ID, queryPaperDto.getOrganizationId());

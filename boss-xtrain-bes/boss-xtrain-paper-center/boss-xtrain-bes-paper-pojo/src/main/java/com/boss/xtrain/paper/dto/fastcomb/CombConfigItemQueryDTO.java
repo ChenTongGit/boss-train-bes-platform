@@ -15,7 +15,7 @@ public class CombConfigItemQueryDTO extends BaseDTO {
      * 组卷配置ID
      */
     @NotBlank(message = "组卷配置ID不能为空")
-    private Long id;
+    private Long configId;
     /**
      * 试卷名
      */

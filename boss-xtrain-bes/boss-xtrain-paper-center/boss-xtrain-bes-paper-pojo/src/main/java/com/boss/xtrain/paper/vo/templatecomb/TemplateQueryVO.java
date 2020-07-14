@@ -14,7 +14,7 @@ public class TemplateQueryVO extends BaseQuery {
      * 组织id
      */
     @NotBlank(message = "组织机构ID不能为空")
-    private String orgId;
+    private Long orgId;
 
 }
 

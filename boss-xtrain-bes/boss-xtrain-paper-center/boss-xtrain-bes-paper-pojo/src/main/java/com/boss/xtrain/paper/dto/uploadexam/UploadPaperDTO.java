@@ -27,6 +27,6 @@ public class UploadPaperDTO extends BaseDTO {
     /**
      * 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
 }
 

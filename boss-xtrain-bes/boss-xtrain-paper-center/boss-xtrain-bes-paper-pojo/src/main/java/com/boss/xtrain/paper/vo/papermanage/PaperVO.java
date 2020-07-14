@@ -22,7 +22,7 @@ public class PaperVO extends BaseVO {
     /**
      * 组卷人
      */
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 试卷类型
      */
@@ -30,11 +30,11 @@ public class PaperVO extends BaseVO {
     /**
      * 试卷难度
      */
-    private String difficulty;
+    private String difficuty;
     /**
      * 组卷时间
      */
-    private Date combExamTime;
+    private Date combExamTim;
     /**
      * 试卷总分
      */

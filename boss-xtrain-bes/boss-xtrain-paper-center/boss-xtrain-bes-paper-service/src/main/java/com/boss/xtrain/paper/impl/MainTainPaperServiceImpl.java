@@ -44,17 +44,7 @@ public class MainTainPaperServiceImpl implements MainTainPaperService {
     public boolean deletePaperById(DeletePaperDTO deletePaperDto) {
         //判断试卷是否被考试服务引用
         Long paperId = deletePaperDto.getPaperId();
-        // TODO 调用考试服务后再来完成
-//        QueryPaperStatusDTO queryPaperStatusDTO = new QueryPaperStatusDTO();
-//        queryPaperStatusDTO.setPaperId(paperId);
-//        if (examServiceApi.paperIsUsed(queryPaperStatusDTO)) {
-//            return true;
-//        } else {
-//            if (mainTainPaperDao.deletePaperById(deletePaperDto.getPaperId()) == 0) {
-//                throw new BusinessException(ErrorCodeMsg.MAINTAIN_PAPER_DELETE_ERROR.getCode(), ErrorCodeMsg.MAINTAIN_PAPER_DELETE_ERROR.getMsg());
-//            }
-//            return false;
-//        }
+        mainTainPaperDao.deletePaperById(paperId);
         return false;
     }
 
@@ -70,25 +60,10 @@ public class MainTainPaperServiceImpl implements MainTainPaperService {
     @Transactional(rollbackFor = Exception.class)
     @TryCatch
     public boolean deletePaperByList(PaperListDTO paperListDto) {
-        // TODO 调用考试服务后再来完成
-//        List<DeletePaperDTO> deletePaperVos = paperListDto.getDeletePaperVos();
-//        List<Long> paperIdList = new ArrayList<>();
-//        for (DeletePaperDTO deletePaperVo : deletePaperVos) {
-//            paperIdList.add(deletePaperVo.getPaperId());
-//        }
-//        QueryPaperStatusDTO queryPaperStatusDTO = new QueryPaperStatusDTO();
-//        queryPaperStatusDTO.setPaperList(paperIdList);
-//        if (examServiceApi.paperListIsUsed(queryPaperStatusDTO)) {
-//            return true;
-//        } else {
-//            List<Paper> list = BeanCopierUtil.copyPropertiesOfList(paperListDto.getDeletePaperVos(), Paper.class, new BasicConverter());
-//            Integer count = mainTainPaperDao.deletePaperByList(list);
-//            if (count != paperListDto.getDeletePaperVos().size()) {
-//                throw new BusinessException(ErrorCodeMsg.MAINTAIN_PAPER_BATCHDELETE_ERROR.getCode(), ErrorCodeMsg.MAINTAIN_PAPER_BATCHDELETE_ERROR.getMsg());
-//            }
-//            //判断试卷是否被考试服务引用，是就删除失败
-//            return false;
-//        }
+        for (DeletePaperDTO deletePaperDTO:
+             paperListDto.getDeletePaperVos()) {
+            mainTainPaperDao.deletePaperById(deletePaperDTO.getPaperId());
+        }
         return false;
 
     }
