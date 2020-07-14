@@ -31,6 +31,9 @@ public class SmsTools {
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
+
+
+
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = null;
         try {

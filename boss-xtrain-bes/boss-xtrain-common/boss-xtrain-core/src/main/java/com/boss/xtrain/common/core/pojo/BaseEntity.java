@@ -6,8 +6,6 @@
  */  
 package com.boss.xtrain.common.core.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import tk.mybatis.mapper.annotation.Version;
 
 import javax.persistence.Column;
@@ -27,11 +25,11 @@ import java.util.Date;
 public abstract class BaseEntity implements Serializable {
  
     private static final long serialVersionUID = 1L;
+
     /**
      * 主键id
      */
     @Id
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**

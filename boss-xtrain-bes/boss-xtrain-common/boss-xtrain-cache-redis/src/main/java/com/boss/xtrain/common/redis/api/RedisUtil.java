@@ -109,7 +109,6 @@ public class RedisUtil {
     public boolean set(String key, Object value) {
         try{
             redisTemplate.opsForValue().set(key,value);
-            log.info("redis set "+key+":"+value);
             return true;
         }catch (Exception e){
             log.error(e.getMessage(),e);

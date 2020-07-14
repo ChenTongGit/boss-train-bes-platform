@@ -10,7 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>boss-xtrain-common</module>
-        <module>boss-xtrain-exam-center</module>
         <module>boss-bes-user-permission-center</module>
     </modules>
 
