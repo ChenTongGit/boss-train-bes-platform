@@ -36,5 +36,7 @@ public class User extends BaseSystemEntity {
     private String email;
     @Column(name = "other")
     private String other;
+    @Column(name = "remark")
+    private String remark;
 
 }

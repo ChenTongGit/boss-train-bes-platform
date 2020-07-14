@@ -115,15 +115,6 @@ public enum BusinessError {
     SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR("220305","查询部门失败"),
     SYSTEM_MANAGER_DEPARTMENT_USED_ERROR("220306","部门已被使用"),
     SYSTEM_MANAGER_DEPARTMENT_NOTIN_ERROR("220307","部门不存在用"),
-
-    /**
-     * 系统管理 资源模块异常码
-     */
-    SYSTEM_MANAGER_RESOURCE_REPEAT_ERROR("220401","资源已存在"),
-    SYSTEM_MANAGER_RESOURCE_INSERT_ERROR("220402","新增资源失败"),
-    SYSTEM_MANAGER_RESOURCE_DELETE_ERROR("220403","删除资源失败"),
-    SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR("220404","更新资源失败"),
-    SYSTEM_MANAGER_RESOURCE_QUERY_ERROR("220405","查询资源失败"),
     /**
      * 系统管理 角色模块异常码
      */
@@ -159,6 +150,27 @@ public enum BusinessError {
     SYSTEM_MANAGER_USER_IN_USE("220706","该用户正在使用，无法编辑"),
     SYSTEM_MANAGER_USER_NOT_EXIST_ERROR("220707","该用户不存在"),
 
+
+    /**
+     * 系统管理 系统参数模块异常码
+     */
+    SYSTEM_MANAGER_PARAM_REPEAT_ERROR("220801","系统参数已存在"),
+    SYSTEM_MANAGER_PARAM_INSERT_ERROR("220802","新增系统参数失败"),
+    SYSTEM_MANAGER_PARAM_DELETE_ERROR("220803","删除系统参数失败"),
+    SYSTEM_MANAGER_PARAM_UPDATE_ERROR("220804","更新系统参数失败"),
+    SYSTEM_MANAGER_PARAM_QUERY_ERROR("220805","查询系统参数失败"),
+    SYSTEM_MANAGER_PARAM_NOTIN_ERROR("220806","系统参数不存在"),
+    SYSTEM_MANAGER_PARAM_USED_ERROR("220807","系统参数是启用状态，不可删除"),
+    /**
+     * 系统管理 在线用户管理模块异常码
+     */
+    SYSTEM_MANAGER_ONLINE_REPEAT_ERROR("220901","在线用户信息已存在"),
+    SYSTEM_MANAGER_ONLINE_INSERT_ERROR("220902","新增在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_DELETE_ERROR("220903","删除在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_UPDATE_ERROR("220904","更新在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_QUERY_ERROR("220905","查询在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
+    SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
 
     /**
      * 试卷 试卷服务错误

@@ -24,4 +24,6 @@ public class Role extends BaseSystemEntity {
     private String name;
     @Column(name = "code")
     private String code;
+    @Column(name = "remark")
+    private String remark;
 }

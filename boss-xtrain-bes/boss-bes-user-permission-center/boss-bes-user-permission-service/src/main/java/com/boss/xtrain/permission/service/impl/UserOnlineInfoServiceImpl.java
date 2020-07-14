@@ -62,8 +62,8 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         //通过所负责的org获得的负责的company，再通过companyId匹配到user，获得所负责的user列表
         for(Company company:companyList){
             queryDTO.setCompanyId(company.getId());
-            List<User> temp = userDao.query(queryDTO);
-            for(User user:temp){
+            List<UserDTO> temp = userDao.queryByCondition(queryDTO);
+            for(UserDTO user:temp){
                 userIds.add(user.getId());
             }
         }
