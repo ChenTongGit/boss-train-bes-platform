@@ -19,4 +19,5 @@ public interface CommonQuery<T,Q> {
      * @since
      */
     List<T> queryByCondition(Q query);
+
 }

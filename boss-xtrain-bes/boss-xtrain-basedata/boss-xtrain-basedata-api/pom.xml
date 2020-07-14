@@ -9,15 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-<<<<<<< HEAD:boss-xtrain-bes/boss-bes-user-permission-center/boss-bes-user-permission-api/pom.xml
-    <artifactId>boss-bes-user-permission-api</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-bes-user-permission-pojo</artifactId>
-            <version>${project.version}</version>
-=======
     <artifactId>boss-xtrain-basedata-api</artifactId>
     <dependencies>
         <dependency>
@@ -25,7 +16,8 @@
             <artifactId>boss-xtrain-basedata-pojo</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
->>>>>>> 47fac41e751a9e5e13bd3159a821a075a0669ac8:boss-xtrain-bes/boss-xtrain-basedata/boss-xtrain-basedata-api/pom.xml
         </dependency>
     </dependencies>
+
+
 </project>

@@ -36,66 +36,6 @@
             <artifactId>mapper</artifactId>
             <version>4.0.4</version>
         </dependency>
-<<<<<<< HEAD:boss-xtrain-bes/boss-bes-user-permission-center/pom.xml
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-log</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.2.7.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-=======
->>>>>>> 47fac41e751a9e5e13bd3159a821a075a0669ac8:boss-xtrain-bes/boss-xtrain-basedata/pom.xml
     </dependencies>
 
 
