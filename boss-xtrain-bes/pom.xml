@@ -12,6 +12,7 @@
         <module>boss-xtrain-common</module>
         <module>boss-xtrain-exam-center</module>
         <module>boss-xtrain-api-gateway</module>
+        <module>boss-bes-user-permission-center</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->

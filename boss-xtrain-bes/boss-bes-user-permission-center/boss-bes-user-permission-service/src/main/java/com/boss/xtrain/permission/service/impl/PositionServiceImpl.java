@@ -1,7 +1,6 @@
 package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
-import com.boss.xtrain.common.core.exception.DaoException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -10,7 +9,6 @@ import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
 import com.boss.xtrain.permission.service.PositionService;
-import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
