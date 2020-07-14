@@ -1,12 +1,11 @@
 package com.boss.xtrain.permission.controller;
 
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
+import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.service.RoleService;
 import com.boss.xtrain.permission.api.RoleApi;
@@ -65,6 +64,11 @@ public class RoleController implements RoleApi {
     @Override
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<RoleDTO>> request) {
         return CommonResponseUtil.ok(roleService.delete(request.getBody()));
+    }
+
+    @Override
+    public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request) {
+        return null;
     }
 
     @Override

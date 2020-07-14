@@ -1,12 +1,16 @@
 package com.boss.xtrain.permission.api;
 
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
+import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,16 +26,14 @@ import java.util.List;
 @RequestMapping("/education/bes/v1/role")
 public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> {
     /**
-     * 唯一查询
+     *
      *
      * @param request
-     * @return CommonResponse<ResourceListVO>
+     * @return CommonResponse<CommonPage<PositionListVO>>
      *
      */
-    @RequestMapping("/selectOne")
-    @Override
-    CommonResponse<RoleListVO> select(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
-
+    @PostMapping("/selectByPage")
+    CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request);
     /**
      * 列出所有
      *
