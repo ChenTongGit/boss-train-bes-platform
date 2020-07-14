@@ -1,58 +1,33 @@
 package com.boss.xtrain.common.core.http;
 
-import com.boss.xtrain.common.core.constant.ResponseConstant;
-import lombok.Data;
-
 /**
- * HTTP请求响应封装
+ * 封装响应数据
+ *
  * @author ChenTong
  * @version 1.0
- * @date 2020/7/4 6:57
+ * @date 2020/7/7 16:31
  * @copyright
  * @modified
  * @see
  * @since
  **/
-@Data
-public class CommonResponse<T>{
+public class CommonResponse<T> {
+    ResponseHeader header;
+    T data;
 
-    /**
-     * 应用程序版本号
-     **/
-    private String version = ResponseConstant.SYSTEM_VERSION;
-    /**
-     * 返回应答码:0表示成功
-     **/
-    private Integer code;
-    /**
-     * 返回消息
-     */
-    private String msg;
-    /**
-     * 加密标志:1标记加密|0标记不加密
-     */
-    private Integer flag = ResponseConstant.NOT_ENCRYPT_FLAG;
-    /**
-     * 泛型。存放VO对象
-     */
-    private T data;
-
-    public CommonResponse(Integer code, String msg, Integer flag, T data) {
-        this.code = code;
-        this.flag = flag;
-        this.data = data;
-        this.msg = msg;
+    public ResponseHeader getHeader() {
+        return header;
     }
 
-    public CommonResponse(Integer code, String msg){
-        this.code = code;
-        this.msg = msg;
+    public void setHeader(ResponseHeader header) {
+        this.header = header;
     }
 
-    public CommonResponse(Integer code, String msg, T data){
-        this.msg = msg;
-        this.code = code;
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
         this.data = data;
     }
-
 }

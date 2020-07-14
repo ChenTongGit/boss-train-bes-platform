@@ -1,5 +1,12 @@
 package com.boss.xtrain.common.core.web.controller;
 
+import com.boss.xtrain.common.core.http.CommonResponse;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 /**
  * 基础curd逻辑控制器controller，公共curd方法
  * D, M, V, Q, T
@@ -12,7 +19,14 @@ package com.boss.xtrain.common.core.web.controller;
  * @see
  * @since
  **/
-public abstract class AbstractCURDController<D, T, V, Q, M> extends AbstractController {
+public abstract class AbstractCURDController<D, T, V, Q, M> extends BaseController {
     // TODO 需要修改
-    
+
+    CommonResponse<Integer> create(@RequestBody @Valid D dtoParam){return null;}
+
+    CommonResponse<List<V>> query(@Valid Q queryParam){return null;}
+
+    CommonResponse<Integer> update(@RequestBody @Valid D dtoParam){return null;}
+
+    CommonResponse<Integer> delete(@NotNull Long id){return null;}
 }
