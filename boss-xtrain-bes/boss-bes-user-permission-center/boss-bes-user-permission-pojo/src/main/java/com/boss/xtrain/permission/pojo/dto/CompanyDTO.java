@@ -16,7 +16,6 @@ import java.io.Serializable;
 @ToString
 public class CompanyDTO extends BaseDTO {
 
-    private Long organizationId;
     private String orgName;
     private String name;
     private String code;

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,9 +34,11 @@ public class OrganizationDaoImpl implements OrganizationDao {
      */
     @Override
     public List<Organization> selectByCondition(OrganizationQuery query) {
-        Organization organization = new Organization();
-        PojoUtils.copyProperties(query,organization);
-        return mapper.select(organization);
+        Example example = new Example(Organization.class);
+        Example.Criteria criteria = example.createCriteria();
+        //模糊查询
+        criteria.andLike("name",query.getName());
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -110,7 +113,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
     public int update(OrganizationDTO dto) {
         Organization organization = new Organization();
         PojoUtils.copyProperties(dto,organization);
-        return mapper.updateByPrimaryKey(organization);
+        return mapper.updateByPrimaryKeySelective(organization);
     }
 
     /**
@@ -124,7 +127,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
         Organization organization = new Organization();
         PojoUtils.copyProperties(dto,organization);
         log.info(organization.getName());
-        return mapper.insert(organization);
+        return mapper.insertSelective(organization);
     }
 
     @Override

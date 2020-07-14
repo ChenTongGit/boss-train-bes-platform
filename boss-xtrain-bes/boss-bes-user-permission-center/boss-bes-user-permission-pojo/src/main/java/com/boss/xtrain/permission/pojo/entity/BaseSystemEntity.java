@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.pojo.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import javax.persistence.Column;

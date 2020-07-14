@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.service.OrganizationService;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -108,23 +109,21 @@ public class OrganizationController extends BaseController implements Organizati
 
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "分页全搜索组织机构")
+    @ApiLog(msg = "分页全搜索组织机构并排序")
     public CommonResponse<CommonPage<OrganizationVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
-        CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<OrganizationDTO> organizationDTOList = service.selectAll();
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<OrganizationDTO> organizationDTOList = service.selectByCondition(request.getBody().getQuery());
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-        return buildPageResponse(new PageInfo<>(organizationVOList));
+        return buildPageResponse(page,organizationVOList);
     }
 
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "分页条件(模糊)搜索组织机构")
-    public CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
-        CommonPageRequest<OrganizationQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<OrganizationDTO> organizationDTOList = service.selectByCondition(pageRequest.getQuery());
+    @ApiLog(msg = "分页条件(模糊)搜索组织机构并排序")
+    public CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<OrganizationDTO> organizationDTOList = service.selectAll();
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
-        return buildPageResponse(new PageInfo<>(organizationVOList));
+        return buildPageResponse(page,organizationVOList);
     }
 }

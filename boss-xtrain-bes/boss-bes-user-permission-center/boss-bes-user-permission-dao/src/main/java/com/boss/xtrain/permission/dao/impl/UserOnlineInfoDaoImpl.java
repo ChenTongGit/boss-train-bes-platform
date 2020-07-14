@@ -6,9 +6,8 @@ import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.UserOnlineInfo;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -27,18 +26,29 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     /**
      * 条件查询
      *
-     * @param query 组织机构query
+     * @param query
      * @return 结果
      */
     @Override
     public List<UserOnlineInfo> selectByCondition(UserOnlineInfoQuery query) {
-        UserOnlineInfo info = new UserOnlineInfo();
-        PojoUtils.copyProperties(query,info);
-        return mapper.select(info);
+        Example example = new Example(UserOnlineInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("code",query.getCode());
+        criteria.andEqualTo("name",query.getName());
+
+        String start = query.getOnlineTime().toString();
+        String off = query.getOfflineTime().toString();
+
+        criteria.andLike("onlineTime",start);
+        if(off!=null){
+            criteria.andLike("offlineTime",off);
+        }
+
+        return mapper.selectByExample(example);
     }
 
     /**
-     * 获取所有
+     * 获取组织机构所有
      *
      * @return 列表
      */
@@ -126,7 +136,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     public int update(UserOnlineInfoDTO dto) {
         UserOnlineInfo info = new UserOnlineInfo();
         PojoUtils.copyProperties(dto,info);
-        return mapper.updateByPrimaryKey(info);
+        return mapper.updateByPrimaryKeySelective(info);
     }
 
     /**
@@ -140,7 +150,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         List<UserOnlineInfo> infoList = PojoUtils.copyListProperties(dtoList,UserOnlineInfo::new);
         int count = 0;
         for(UserOnlineInfo info:infoList){
-            if(mapper.updateByPrimaryKey(info)!=0){
+            if(mapper.updateByPrimaryKeySelective(info)!=0){
                 count++;
             }
         }
@@ -157,7 +167,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     public int insert(UserOnlineInfoDTO dto) {
         UserOnlineInfo info = new UserOnlineInfo();
         PojoUtils.copyProperties(dto,info);
-        return mapper.insert(info);
+        return mapper.insertSelective(info);
     }
 
     /**

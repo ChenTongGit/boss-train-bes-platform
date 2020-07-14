@@ -11,6 +11,11 @@
     <packaging>jar</packaging>
 
     <artifactId>boss-bes-user-permission-pojo</artifactId>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-bes-user-permission-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

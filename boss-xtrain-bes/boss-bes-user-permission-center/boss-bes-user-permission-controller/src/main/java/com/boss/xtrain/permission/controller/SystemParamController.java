@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
 import com.boss.xtrain.permission.pojo.vo.SystemParamVO;
 import com.boss.xtrain.permission.service.SystemParamService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -96,13 +97,26 @@ public class SystemParamController extends BaseController implements SystemParam
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "分页条件搜索系统参数信息")
+    @ApiLog(msg = "分页条件搜索系统参数信息并排序")
     public CommonResponse<CommonPage<SystemParamVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
-        CommonPageRequest<SystemParamQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<SystemParamDTO> systemParamDTOList = service.selectByCondition(pageRequest.getQuery());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<SystemParamDTO> systemParamDTOList = service.selectByCondition(request.getBody().getQuery());
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
-        return buildPageResponse(new PageInfo<>(systemParamVOList));
+        return buildPageResponse(page,systemParamVOList);
+    }
+
+    /**
+     * 分页全搜索
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public CommonResponse<CommonPage<SystemParamVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(request.getBody().getQuery());
+        List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
+        return buildPageResponse(page,systemParamVOList);
     }
 
     /**

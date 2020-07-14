@@ -1,6 +1,8 @@
 package com.boss.xtrain.permission.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 /**
@@ -13,6 +15,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class OrganizationDTO extends BaseDTO {
+
+    private Long id;
 
     private String name;
     private String code;

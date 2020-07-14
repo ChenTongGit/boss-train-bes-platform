@@ -1,14 +1,20 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
+import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
+import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.permission.service.TreeService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +34,9 @@ public class CompanyController extends BaseController implements CompanyApi {
 
     @Autowired
     private CompanyService service;
+
+    @Autowired
+    private TreeService treeService;
 
     /**
      * 批量删除
@@ -49,13 +58,42 @@ public class CompanyController extends BaseController implements CompanyApi {
      * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @Override
-    @ApiLog(msg = "初始化组织机构下所有的公司")
+    @ApiLog(msg = "初始化下所有的公司")
     @ApiOperation(value = "test")
-    public CommonResponse<List<CompanyVO>> selectAllCompany(@Valid CommonRequest<CompanyQuery> request) {
-        CompanyQuery query = request.getBody();
-        List<CompanyDTO> companyDTOList = service.selectOrgCompanyAll(query);
+    public CommonResponse<List<CompanyVO>> selectAllCompany() {
+        List<CompanyDTO> companyDTOList = service.selectAll();
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
         return CommonResponseUtil.ok(companyVOList);
+    }
+
+    /**
+     * 查所有ORG以供选择
+     *
+     * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
+    @Override
+    @ApiLog(msg = "获得所有的org信息以供company添加的时候选择")
+    @ApiOperation(value = "test")
+    public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
+        try{
+            return CommonResponseUtil.ok(treeService.orgTree());
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
+    }
+
+    @Override
+    @ApiLog(msg = "根据点击的org获得Company树的列表")
+    @ApiOperation(value = "test")
+    public CommonResponse<List<CompanyQuery>> selectCombineCompany(@Valid CommonRequest<CompanyQuery> request) {
+        try {
+            CompanyQuery query = request.getBody();
+            return CommonResponseUtil.ok(treeService.companyList(query.getOrganizationId()));
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
     }
 
     /**
@@ -65,14 +103,29 @@ public class CompanyController extends BaseController implements CompanyApi {
      * @return 分页搜索结果
      */
     @Override
-    @ApiLog(msg = "分页条件搜索公司信息")
+    @ApiLog(msg = "分页条件搜索公司信息并排序")
     @ApiOperation(value = "test")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
-        CommonPageRequest<CompanyQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<CompanyDTO> companyDTOList = service.selectByCondition(pageRequest.getQuery());
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<CompanyDTO> companyDTOList = service.selectByCondition(request.getBody().getQuery());
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
-        return buildPageResponse(new PageInfo<>(companyVOList));
+        return buildPageResponse(page,companyVOList);
+    }
+
+    /**
+     * 分页全搜索
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiLog(msg = "分页搜索全部公司信息并排序")
+    @ApiOperation(value = "test")
+    public CommonResponse<CommonPage<CompanyVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<CompanyDTO> companyDTOList = service.selectAll();
+        List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
+        return buildPageResponse(page,companyVOList);
     }
 
     @Override

@@ -3,11 +3,14 @@ package com.boss.xtrain.permission.api;
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
+import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,22 +25,38 @@ import java.util.List;
 @RequestMapping("/education/bes/v1/department")
 public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQuery, DepartmentVO> {
     /**
-     * 查树
-     * @param request request
+     * 查树的公司
+     * @param
      * @return
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
-    @PostMapping("/tree")
-    CommonResponse<List<DepartmentQuery>> selectTree(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+    @GetMapping("/tree")
+    CommonResponse<List<CompanyQuery>> selectTree();
 
     /**
-     * 初始化所有
-     * @param request request
+     * 查树的部门
+     * @param request
      * @return
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
-    @PostMapping("/originAll")
-    CommonResponse<List<DepartmentVO>> selectAll(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+    @PostMapping("/treeDepartment")
+    CommonResponse<List<TreeNode>> selectDepartmentTree(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+
+    /**
+     * 初始化所有分页
+     * @param request
+     * @return
+     * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
+    @PostMapping("/AllByPage")
+    CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+
+    /**
+     * 初始化所有不分页
+     * @return
+     */
+    @GetMapping("/selectAll")
+    CommonResponse<List<DepartmentVO>> selectAll();
 
     /**
      * 分页条件搜索

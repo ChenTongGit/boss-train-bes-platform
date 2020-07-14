@@ -47,18 +47,19 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
 
     /**
      * 查询所有
-     *
+     * 只需要有userID即可
      * @return origin初始化
      */
     @Override
     public List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query) {
+        //获得所负责的org
         Long orgId = getOrg(query.getUserId());
         CompanyQuery companyQuery = new CompanyQuery();
         companyQuery.setOrganizationId(orgId);
         List<Company> companyList = companyDao.selectByCondition(companyQuery);
         List<Long> userIds = new ArrayList<>();
         UserQueryDTO queryDTO = new UserQueryDTO();
-
+        //通过所负责的org获得的负责的company，再通过companyId匹配到user，获得所负责的user列表
         for(Company company:companyList){
             queryDTO.setCompanyId(company.getId());
             List<User> temp = userDao.query(queryDTO);
@@ -66,7 +67,7 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
                 userIds.add(user.getId());
             }
         }
-
+        //通过所管理的user列表，获得该管理员可管理的上线信息
         try{
             List<UserOnlineInfo> infoList = infoDao.selectAllOrigin(userIds);
             return PojoUtils.copyListProperties(infoList,UserOnlineInfoDTO::new);

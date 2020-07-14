@@ -30,6 +30,14 @@ public interface UserOnlineInfoApi extends CommonCRUDApi<UserOnlineInfoDTO, User
     CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request);
 
     /**
+     * 分页全搜索
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectAllPage")
+    CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request);
+
+    /**
      * 批量下线
      * @param request
      * @return

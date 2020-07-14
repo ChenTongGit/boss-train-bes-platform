@@ -29,6 +29,14 @@ public interface SystemParamApi extends CommonCRUDApi<SystemParamDTO, SystemPara
     CommonResponse<CommonPage<SystemParamVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request);
 
     /**
+     * 分页全搜索
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<SystemParamVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request);
+
+    /**
      * 禁用/启用 更改status
      * @param request
      * @return

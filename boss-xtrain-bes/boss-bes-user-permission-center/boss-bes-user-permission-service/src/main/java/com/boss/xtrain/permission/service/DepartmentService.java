@@ -3,6 +3,7 @@ package com.boss.xtrain.permission.service;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 
 import java.util.List;
 
@@ -11,11 +12,6 @@ import java.util.List;
  * @date 2020.07.07
  */
 public interface DepartmentService extends CommonCurdService<DepartmentDTO, DepartmentQuery> {
-    /**
-     * 查询所有树节点
-     * @return
-     */
-    List<DepartmentQuery> selectTree(DepartmentQuery query);
 
     /**
      * 查询所有

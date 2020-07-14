@@ -25,6 +25,14 @@ public interface DepartmentDao {
     List<Department> selectAll(DepartmentQuery query);
 
     /**
+     *  无条件查所有
+     * @return 结果
+     */
+    List<Department> selectAll();
+
+    List<Department> selectByCompany(Long companyId);
+
+    /**
      * 用主键找
      * @param departmentId
      * @return
@@ -68,7 +76,7 @@ public interface DepartmentDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int insert(DepartmentDTO dto);
+    int add(DepartmentDTO dto);
 
     /**
      *

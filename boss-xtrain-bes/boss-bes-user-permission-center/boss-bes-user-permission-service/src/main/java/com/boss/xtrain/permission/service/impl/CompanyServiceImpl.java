@@ -4,11 +4,13 @@ import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.DepartmentDao;
+import com.boss.xtrain.permission.dao.OrganizationDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
+import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +37,9 @@ public class CompanyServiceImpl implements CompanyService {
     private DepartmentDao departmentDao;
 
     @Autowired
+    private OrganizationDao organizationDao;
+
+    @Autowired
     private UserDao userDao;
 
     private IdWorker worker = new IdWorker();
@@ -46,7 +52,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> selectAll() {
         try{
-            return PojoUtils.copyListProperties(companyDao.selectAll(),CompanyDTO::new);
+            List<CompanyDTO> companyDTOList =  PojoUtils.copyListProperties(companyDao.selectAll(),CompanyDTO::new);
+            for(CompanyDTO companyDTO:companyDTOList){
+                companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
+            }
+            return companyDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -64,7 +74,22 @@ public class CompanyServiceImpl implements CompanyService {
         try{
             CompanyDTO companyDTO = new CompanyDTO();
             PojoUtils.copyProperties(companyDao.selectOne(query),companyDTO);
-            return  companyDTO;
+            companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
+            return companyDTO;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
+    }
+
+    /**
+     * 获得所有的org以供添加公司时选择
+     * @return
+     */
+    @Override
+    public List<OrganizationQuery> listAllOrg() {
+        try{
+            return  PojoUtils.copyListProperties(organizationDao.selectAll(),OrganizationQuery::new);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -83,7 +108,11 @@ public class CompanyServiceImpl implements CompanyService {
             //得到user所负责的组织机构
             Long orgId = getOrg(query.getUserId());
             query.setOrganizationId(orgId);
-            return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            List<CompanyDTO> companyDTOList = PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            for(CompanyDTO companyDTO:companyDTOList){
+                companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
+            }
+            return companyDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -101,7 +130,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> selectByCondition(CompanyQuery query) {
         try{
-            return PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            List<CompanyDTO>companyDTOList = PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            //加orgName
+            for(CompanyDTO companyDTO:companyDTOList){
+                companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
+            }
+            return companyDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -170,6 +204,7 @@ public class CompanyServiceImpl implements CompanyService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_NOTIN_ERROR);
         }
         try{
+            dto.setUpdatedTime(new Date());
             return companyDao.update(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR.getMessage(),e);
@@ -196,7 +231,10 @@ public class CompanyServiceImpl implements CompanyService {
         }
         try{
             dto.setId(worker.nextId());
-            return companyDao.insert(dto);
+            Long orgId = dto.getOrganizationId();
+            dto.setOrganizationId(orgId);
+            dto.setCreatedTime(new Date());
+            return companyDao.add(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_INSERT_ERROR,e);
@@ -205,9 +243,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private boolean isNotUsed(CompanyDTO dto){
         Long companyId = dto.getId();
-        DepartmentQuery query = new DepartmentQuery();
-        query.setCompanyId(companyId);
-        return departmentDao.selectByCondition(query).isEmpty();
+        return departmentDao.selectByCompany(companyId).isEmpty();
     }
 
     /**

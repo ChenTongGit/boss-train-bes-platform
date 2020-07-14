@@ -24,6 +24,8 @@ public interface CompanyDao {
      */
     List<Company> selectAll();
 
+    List<Company> selectByOrg(Long orgId);
+
     /**
      * 用主键查
      * @param companyId
@@ -68,7 +70,7 @@ public interface CompanyDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int insert(CompanyDTO dto);
+    int add(CompanyDTO dto);
 
     /**
      *

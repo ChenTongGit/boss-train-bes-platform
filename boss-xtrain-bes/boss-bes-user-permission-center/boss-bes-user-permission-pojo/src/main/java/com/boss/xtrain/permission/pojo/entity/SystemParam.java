@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author 53534秦昀清

@@ -166,23 +166,6 @@ public enum BusinessError {
     SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
     SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
 
-     * 系统管理 用户模块异常码
-     */
-    SYSTEM_MANAGER_USER_REPEAT_ERROR("220501","用户已存在"),
-    SYSTEM_MANAGER_USER_INSERT_ERROR("220502","新增用户失败"),
-    SYSTEM_MANAGER_USER_DELETE_ERROR("220503","删除用户失败"),
-    SYSTEM_MANAGER_USER_UPDATE_ERROR("220504","更新用户失败"),
-    SYSTEM_MANAGER_USER_QUERY_ERROR("220505","查询用户失败"),
-
-    /**
-     * 系统管理 角色模块异常码
-     */
-    SYSTEM_MANAGER_ROLE_REPEAT_ERROR("220601","角色已存在"),
-    SYSTEM_MANAGER_ROLE_INSERT_ERROR("220602","新增角色失败"),
-    SYSTEM_MANAGER_ROLE_DELETE_ERROR("220603","删除角色失败"),
-    SYSTEM_MANAGER_ROLE_UPDATE_ERROR("220604","更新角色失败"),
-    SYSTEM_MANAGER_ROLE_QUERY_ERROR("220605","查询角色失败"),
-
 
     /**
      * 试卷 试卷服务错误
@@ -206,12 +189,7 @@ public enum BusinessError {
     PAPER_TEMPLATE_NOT_FOUND_ERROR("230104","未找到符合条件的模板试题"),
     PAPER_TEMPLATE_REPEAT_ERROR("230205","模板名已存在"),
 
-    /**
-     * 考试服务 答题记录异常
-     */
-    EXAM_RECORD_INSERT_RECORD_ERROR("240301","新增考试记录失败"),
-    EXAM_RECORD_UPDATE_RECORD_ERROR("240302","交卷更新考试记录失败");
-     
+
     /**
      * 考试服务
      */

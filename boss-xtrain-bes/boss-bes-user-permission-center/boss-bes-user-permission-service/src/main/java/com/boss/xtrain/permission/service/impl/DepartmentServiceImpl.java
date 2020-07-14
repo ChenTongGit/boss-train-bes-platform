@@ -2,13 +2,14 @@ package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.DepartmentDao;
-import com.boss.xtrain.permission.dao.PositionDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.entity.Department;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +34,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDao departmentDao;
 
     @Autowired
-    private PositionDao positionDao;
+    private CompanyDao companyDao;
 
     @Autowired
     private UserDao userDao;
@@ -39,24 +42,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     private IdWorker worker = new IdWorker();
 
     /**
-     * 查询所有树节点
-     * 用户Id获取到org，然后向下获取到所有的
-     * @param query q
-     * @return list
-     */
-    @Override
-    public List<DepartmentQuery> selectTree(DepartmentQuery query) {
-        return PojoUtils.copyListProperties(doBeforeQueryOrigin(query),DepartmentQuery::new);
-    }
-
-    /**
-     * 查询所有部门信息
+     * 查询组织机构下所有部门信息
      * @param query q
      * @return list
      */
     @Override
     public List<DepartmentDTO> selectAll(DepartmentQuery query) {
-        return PojoUtils.copyListProperties(doBeforeQueryOrigin(query),DepartmentDTO::new);
+        List<DepartmentDTO> departmentDTOList = PojoUtils.copyListProperties(doBeforeQueryOrigin(query),DepartmentDTO::new);
+        for(DepartmentDTO departmentDTO:departmentDTOList){
+            departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
+        }
+        return departmentDTOList;
     }
 
     /**
@@ -70,6 +66,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         try{
             DepartmentDTO dto = new DepartmentDTO();
             PojoUtils.copyProperties(departmentDao.selectOne(query),dto);
+            dto.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
             return dto;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
@@ -88,7 +85,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentDTO> selectByCondition(DepartmentQuery query) {
         try{
-            return PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
+           List<DepartmentDTO> departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
+           for(DepartmentDTO departmentDTO:departmentDTOList){
+               departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
+           }
+           return departmentDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
@@ -105,8 +106,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentDTO> selectAll() {
         try{
-            DepartmentQuery query = new DepartmentQuery();
-            return PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
+            List<DepartmentDTO> departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectAll(),DepartmentDTO::new);
+            for(DepartmentDTO departmentDTO:departmentDTOList){
+                departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
+            }
+            return departmentDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
@@ -168,6 +172,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_NOTIN_ERROR);
         }
         try{
+            dto.setUpdatedTime(new Date());
             return departmentDao.update(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR.getMessage(),e);
@@ -194,7 +199,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         try{
             dto.setId(worker.nextId());
-            return departmentDao.insert(dto);
+            dto.setCreatedTime(new Date());
+            return departmentDao.add(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR,e);

@@ -46,5 +46,5 @@ public interface OrganizationApi extends CommonCRUDApi<OrganizationDTO, Organiza
      * @return
      */
     @PostMapping("/allByPage")
-    CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request);
+    CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
 }

@@ -7,6 +7,7 @@ import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,15 +23,17 @@ public class CompanyDaoImpl implements CompanyDao {
     private CompanyMapper mapper;
     /**
      * 条件查询
-     *
-     * @param query 组织机构query
+     * 点击树列表查询
+     * @param query query
      * @return 结果
      */
     @Override
     public List<Company> selectByCondition(CompanyQuery query) {
-        Company company = new Company();
-        PojoUtils.copyProperties(query,company);
-        return mapper.select(company);
+        Example example = new Example(Company.class);
+        Example.Criteria criteria = example.createCriteria();
+        //criteria.andEqualTo("id",query.getId());
+        criteria.andEqualTo("name",query.getName());
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -41,6 +44,14 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Company> selectAll() {
         return mapper.selectAll();
+    }
+
+    @Override
+    public List<Company> selectByOrg(Long orgId) {
+        Example example = new Example(Company.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",orgId);
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -105,7 +116,7 @@ public class CompanyDaoImpl implements CompanyDao {
     public int update(CompanyDTO dto) {
         Company company = new Company();
         PojoUtils.copyProperties(dto,company);
-        return mapper.updateByPrimaryKey(company);
+        return mapper.updateByPrimaryKeySelective(company);
     }
 
     /**
@@ -115,10 +126,10 @@ public class CompanyDaoImpl implements CompanyDao {
      * @return int
      */
     @Override
-    public int insert(CompanyDTO dto) {
+    public int add(CompanyDTO dto) {
         Company company = new Company();
         PojoUtils.copyProperties(dto,company);
-        return mapper.insert(company);
+        return mapper.insertSelective(company);
     }
 
     /**

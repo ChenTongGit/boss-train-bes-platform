@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,6 +106,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_NOTIN_ERROR);
         }
         try{
+            dto.setUpdatedTime(new Date());
             return organizationDao.update(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR.getMessage(),e);
@@ -129,6 +131,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
         try {
             dto.setId(worker.nextId());
+            dto.setCreatedTime(new Date());
             return organizationDao.insert(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR.getMessage(),e);
@@ -171,9 +174,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private boolean isNotUsedInCompany(OrganizationDTO dto){
         Long orgId = dto.getId();
-        CompanyQuery query = new CompanyQuery();
-        query.setOrganizationId(orgId);
         //如果orgId搜索到的结果是空的，说明该org并未被使用，可以删除。
-        return companyDao.selectByCondition(query).isEmpty();
+        return companyDao.selectByOrg(orgId).isEmpty();
     }
 }

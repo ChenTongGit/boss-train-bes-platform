@@ -1,16 +1,21 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.DepartmentApi;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
+import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
 import com.boss.xtrain.permission.service.DepartmentService;
-import com.boss.xtrain.common.core.exception.ServiceException;
-import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.permission.service.TreeService;
+import com.boss.xtrain.permission.utils.TreeUtils;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,10 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
     @Autowired
     private DepartmentService service;
+
+    @Autowired
+    private TreeService treeService;
+
     /**
      * 批量删除
      *
@@ -47,52 +56,83 @@ public class DepartmentController extends BaseController implements DepartmentAp
     /**
      * 查树
      *
-     * @param request 请求
+     * @param
      * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "查找该组织机构下的公司及部门树节点")
-    public CommonResponse<List<DepartmentQuery>> selectTree(@Valid CommonRequest<DepartmentQuery> request) {
-        DepartmentQuery query = request.getBody();
-        //至少userID信息不为空
-        List<DepartmentQuery> departmentQueryList = service.selectTree(query);
-        return CommonResponseUtil.ok(departmentQueryList);
+    @ApiLog(msg = "查找公司树节点")
+    public CommonResponse<List<CompanyQuery>> selectTree() {
+        try{
+            return CommonResponseUtil.ok(treeService.companyTree());
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
+        }
     }
 
-    /**
-     * 初始化所有
-     *
-     * @param request request
-     * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
-     */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "查找该组织机构下的公司及部门")
-    public CommonResponse<List<DepartmentVO>> selectAll(@Valid CommonRequest<DepartmentQuery> request) {
-        DepartmentQuery query = request.getBody();
-        //至少userId信息不为空
-        List<DepartmentDTO> departmentDTOList = service.selectAll(query);
-        List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
-        return CommonResponseUtil.ok(departmentVOList);
+    @ApiLog(msg = "查找公司下的部门树节点")
+    public CommonResponse<List<TreeNode>> selectDepartmentTree(@Valid CommonRequest<DepartmentQuery> request) {
+        try{
+            Long companyId = request.getBody().getCompanyId();
+            List<TreeNode> departmentList = treeService.departmentUnderCompany(companyId);
+            return CommonResponseUtil.ok(departmentList);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
+        }
     }
 
+
     /**
-     * 分页条件搜索
+     * 分页搜索
      *
      * @param request 请求
      * @return 分页搜索结果
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "分页条件搜索部门信息")
-    public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
-        CommonPageRequest<DepartmentQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(pageRequest.getQuery());
-        List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
-        return buildPageResponse(new PageInfo<>(departmentVOList));
+    @ApiLog(msg = "分页搜索所有部门信息并排序")
+    public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<DepartmentDTO> companyDTOList = service.selectAll();
+        List<DepartmentVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,DepartmentVO::new);
+        return buildPageResponse(page,companyVOList);
     }
+
+    /**
+     * 初始化所有分页
+     *
+     * @param request@return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
+    @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "分页条件搜索部门信息并排序")
+    public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<DepartmentDTO> departmentDTOList = service.selectByCondition(request.getBody().getQuery());
+        List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
+        return buildPageResponse(page,departmentVOList);
+    }
+
+    /**
+     * 初始化所有
+     *
+     * @param
+     * @return RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
+    @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "查找该组织机构下的公司及部门")
+    public CommonResponse<List<DepartmentVO>> selectAll() {
+        //至少userId信息不为空
+        List<DepartmentDTO> departmentDTOList = service.selectAll();
+        List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
+        return CommonResponseUtil.ok(departmentVOList);
+    }
+
 
     @Override
     @ApiOperation(value = "test")

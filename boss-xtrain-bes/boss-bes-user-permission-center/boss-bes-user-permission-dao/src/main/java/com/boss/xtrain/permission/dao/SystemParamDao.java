@@ -25,6 +25,12 @@ public interface SystemParamDao {
     List<SystemParam> selectAll();
 
     /**
+     * 找组织机构所有
+     * @return
+     */
+    List<SystemParam> selectAllUnderOrg(Long orgId);
+
+    /**
      * 主键查找
      * @param id
      * @return
@@ -68,7 +74,7 @@ public interface SystemParamDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int insert(SystemParamDTO dto);
+    int add(SystemParamDTO dto);
 
     /**
      * 批量添加

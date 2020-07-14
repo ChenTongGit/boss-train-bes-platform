@@ -1,6 +1,8 @@
 package com.boss.xtrain.permission.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 /**
@@ -13,8 +15,13 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CompanyVO extends BaseVO {
+
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
+
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long organizationId;
+
     private String orgName;
     private String name;
     private String code;

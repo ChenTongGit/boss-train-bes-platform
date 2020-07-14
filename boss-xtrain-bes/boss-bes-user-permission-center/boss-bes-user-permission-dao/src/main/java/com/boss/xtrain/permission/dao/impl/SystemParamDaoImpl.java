@@ -9,6 +9,7 @@ import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,9 +32,10 @@ public class SystemParamDaoImpl implements SystemParamDao {
      */
     @Override
     public List<SystemParam> selectByCondition(SystemParamQuery query) {
-        SystemParam systemParam = new SystemParam();
-        PojoUtils.copyProperties(query,systemParam);
-        return mapper.select(systemParam);
+        Example example = new Example(SystemParamQuery.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("paramType",query.getParamType());
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -44,6 +46,20 @@ public class SystemParamDaoImpl implements SystemParamDao {
     @Override
     public List<SystemParam> selectAll() {
         return mapper.selectAll();
+    }
+
+    /**
+     * 找org所有
+     *
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<SystemParam> selectAllUnderOrg(Long orgId) {
+        Example example = new Example(SystemParam.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",orgId);
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -109,7 +125,7 @@ public class SystemParamDaoImpl implements SystemParamDao {
     public int update(SystemParamDTO dto) {
         SystemParam systemParam = new SystemParam();
         PojoUtils.copyProperties(dto,systemParam);
-        return mapper.updateByPrimaryKey(systemParam);
+        return mapper.updateByPrimaryKeySelective(systemParam);
     }
 
     /**
@@ -119,10 +135,10 @@ public class SystemParamDaoImpl implements SystemParamDao {
      * @return int
      */
     @Override
-    public int insert(SystemParamDTO dto) {
+    public int add(SystemParamDTO dto) {
         SystemParam systemParam = new SystemParam();
         PojoUtils.copyProperties(dto,systemParam);
-        return mapper.insert(systemParam);
+        return mapper.insertSelective(systemParam);
     }
 
     /**

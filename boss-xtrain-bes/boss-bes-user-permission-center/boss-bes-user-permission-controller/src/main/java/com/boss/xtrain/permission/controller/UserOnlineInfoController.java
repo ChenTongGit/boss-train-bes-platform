@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.vo.UserOnlineInfoVO;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,21 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "分页条件查找在线用户信息")
+    @ApiLog(msg = "分页条件查找在线用户信息并排序")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
-        CommonPageRequest<UserOnlineInfoQuery> pageRequest = request.getBody();
-        doBeforePagination(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(pageRequest.getQuery());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(request.getBody().getQuery());
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
-        return buildPageResponse(new PageInfo<>(userOnlineInfoVOList));
+        return buildPageResponse(page,userOnlineInfoVOList);
+    }
+
+    @Override
+    public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        //传入登录的userId，获得该管理员所负责的org
+        List<UserOnlineInfoDTO> infoDTOList = service.selectAll(request.getBody().getQuery());
+        List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
+        return buildPageResponse(page,userOnlineInfoVOList);
     }
 
     /**

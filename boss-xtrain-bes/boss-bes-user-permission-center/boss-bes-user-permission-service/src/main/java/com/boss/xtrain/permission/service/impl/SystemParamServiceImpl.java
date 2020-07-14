@@ -3,6 +3,7 @@ package com.boss.xtrain.permission.service.impl;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.permission.dao.SystemParamDao;
+import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.entity.SystemParam;
 import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 /**
  * @author 53534秦昀清
@@ -25,6 +27,9 @@ public class SystemParamServiceImpl implements SystemParamService {
 
     @Autowired
     private SystemParamDao systemParamDao;
+
+    @Autowired
+    private UserDao userDao;
 
     private IdWorker worker = new IdWorker();
 
@@ -59,6 +64,28 @@ public class SystemParamServiceImpl implements SystemParamService {
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR,e);
         }
+    }
+
+    /**
+     * 搜索树节点
+     *
+     * @param query query
+     * @return
+     */
+    @Override
+    public List<SystemParamQuery> selectTree(SystemParamQuery query) {
+        return PojoUtils.copyListProperties(getOriginParam(query),SystemParamQuery::new);
+    }
+
+    /**
+     * 查询组织机构所有
+     *
+     * @param query
+     * @return LIST
+     */
+    @Override
+    public List<SystemParamDTO> selectAllUnderOrg(SystemParamQuery query) {
+        return PojoUtils.copyListProperties(getOriginParam(query),SystemParamDTO::new);
     }
 
     /**
@@ -144,6 +171,7 @@ public class SystemParamServiceImpl implements SystemParamService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_NOTIN_ERROR);
         }
         try{
+            dto.setUpdatedTime(new Date());
             return systemParamDao.update(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_UPDATE_ERROR.getMessage(),e);
@@ -171,10 +199,35 @@ public class SystemParamServiceImpl implements SystemParamService {
         }
         try {
             dto.setId(worker.nextId());
-            return systemParamDao.insert(dto);
+            dto.setCreatedTime(new Date());
+            return systemParamDao.add(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR,e);
+        }
+    }
+
+    /**
+     * 获取登录用户所属的org
+     * //@param
+     * @return id
+     */
+    private Long getOrg(Long userId){
+        return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
+    }
+
+    /**
+     *  获取登录用户负责的组织机构，然后根据orgId得到数据库中 组织机构所有的param
+     * @param query userId
+     * @return
+     */
+    private List<SystemParam> getOriginParam(SystemParamQuery query){
+        try{
+            Long orgId = userDao.getRoleByUserId(query.getUserId()).get(0).getOrganizationId();
+            return systemParamDao.selectAllUnderOrg(orgId);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_QUERY_ERROR,e);
         }
     }
 }

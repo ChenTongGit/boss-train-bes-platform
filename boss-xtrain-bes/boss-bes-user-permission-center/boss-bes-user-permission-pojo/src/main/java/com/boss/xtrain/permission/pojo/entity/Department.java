@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author 53534秦昀清
@@ -18,9 +17,6 @@ public class Department extends BaseSystemEntity {
 
     @Column(name = "t_c_id")
     private Long companyId;
-
-    @Transient
-    private String companyName;
 
     /**
      *

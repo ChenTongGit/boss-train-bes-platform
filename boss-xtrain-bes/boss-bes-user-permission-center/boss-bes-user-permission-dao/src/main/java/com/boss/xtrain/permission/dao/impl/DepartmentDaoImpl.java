@@ -6,11 +6,13 @@ import com.boss.xtrain.permission.mapper.DepartmentMapper;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.Department;
+import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -31,15 +33,22 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 条件查询
-     *
+     * 点击树上公司或部门查询
      * @param query 组织机构query
      * @return 结果
      */
     @Override
     public List<Department> selectByCondition(DepartmentQuery query) {
-        Department department = new Department();
-        PojoUtils.copyProperties(query,department);
-        return mapper.select(department);
+        Example example = new Example(Department.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(query.getName()!=null){
+            criteria.andEqualTo("name",query.getName());
+            return mapper.selectByExample(example);
+        }else if(query.getCompanyId()!=null){
+            criteria.andEqualTo("companyId",query.getCompanyId());
+            return mapper.selectByExample(example);
+        }
+        return mapper.selectAll();
     }
 
     /**
@@ -51,20 +60,41 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public List<Department> selectAll(DepartmentQuery query) {
         Long orgId = query.getOrganizationId();
         List<Department> all = new ArrayList<>();
-        Company company = new Company();
-        Department department = new Department();
+
+        Example companyExample = new Example(Company.class);
+        Example departmentExample = new Example(Department.class);
+
         if(orgId!=null){
-            company.setOrganizationId(orgId);
-            List<Company> companyList = companyMapper.select(company);
+            Example.Criteria criteriaCom = companyExample.createCriteria();
+            criteriaCom.andEqualTo("organizationId",orgId);
+            List<Company> companyList = companyMapper.selectByExample(companyExample);
             if(!companyList.isEmpty()){
                 for(Company temp:companyList){
-                    department.setCompanyId(temp.getId());
-                    department.setCompanyName(temp.getName());
-                    all.addAll(mapper.select(department));
+                    Example.Criteria criteriaDept = departmentExample.createCriteria();
+                    criteriaDept.andEqualTo("companyId",temp.getId());
+                    all.addAll(mapper.selectByExample(departmentExample));
                 }
             }
         }
         return all;
+    }
+
+    /**
+     * 无条件查所有
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Department> selectAll() {
+        return mapper.selectAll();
+    }
+
+    @Override
+    public List<Department> selectByCompany(Long companyId) {
+        Example example = new Example(Department.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("companyId",companyId);
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -129,7 +159,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public int update(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
-        return mapper.updateByPrimaryKey(department);
+        return mapper.updateByPrimaryKeySelective(department);
     }
 
     /**
@@ -139,10 +169,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
      * @return int
      */
     @Override
-    public int insert(DepartmentDTO dto) {
+    public int add(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
-        return mapper.insert(department);
+        return mapper.insertSelective(department);
     }
 
     /**
