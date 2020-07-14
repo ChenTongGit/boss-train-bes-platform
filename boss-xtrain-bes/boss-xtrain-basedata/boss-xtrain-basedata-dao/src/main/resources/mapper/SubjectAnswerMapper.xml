@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boss.xtrain.basedata.mapper.SubjectAnswerMapper">
+  <resultMap id="BaseResultMap" type="com.boss.xtrain.basedata.pojo.entity.SubjectAnswer">
+    <!--@mbg.generated-->
+    <!--@Table t_subject_answer-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="t_s_id" jdbcType="BIGINT" property="subjectId" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="right_answer" jdbcType="TINYINT" property="rightAnswer" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="field1" jdbcType="VARCHAR" property="field1" />
+    <result column="field2" jdbcType="VARCHAR" property="field2" />
+    <result column="field3" jdbcType="VARCHAR" property="field3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, t_s_id, answer, right_answer, image_url, field1, field2, field3
+  </sql>
+   <insert id="insertBatch" parameterType="java.util.List">
+    insert into t_subject_answer
+    (id,subject_id,answer,right_answer,image_url)
+    values
+    <foreach collection ="itemList" item="item" separator =",">
+      (#{item.id}, #{item.subjectId}, #{item.answer}, #{item.rightAnswer}, #{item.imageUrl})
+    </foreach >
+  </insert>
+
+</mapper>

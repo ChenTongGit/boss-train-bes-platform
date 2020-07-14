@@ -73,6 +73,7 @@ public enum BusinessError {
     BASE_DATA_DICTIONARY_REPEAT_ERROR("200605", "数据字典已存在"),
     BASE_DATA_DICTIONARY_INUSE_ERROR("200606", "删除的数据字典正在使用"),
     BASE_DATA_DICTIONARY_NOT_EXIST_ERROR("200605", "删除的数据字典已经不存在"),
+    BASE_DATA_DICTIONARY_ID_NOT_EXIST_ERROR("200606", "删除的数据字典ID不存在"),
 
     /**
      * 系统管理 资源模块异常码

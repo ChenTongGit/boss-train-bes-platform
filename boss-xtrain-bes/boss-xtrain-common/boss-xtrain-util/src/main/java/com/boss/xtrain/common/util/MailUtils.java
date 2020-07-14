@@ -17,7 +17,7 @@ import java.io.File;
 //@Component
 public class MailUtils {
 //    @Value("873190934@qq.com")
-    @Value("${spring.mail.username}")
+    //@Value("${spring.mail.username}")
     private String mailSender;
 //    @Autowired
     private JavaMailSender javaMailSender;
