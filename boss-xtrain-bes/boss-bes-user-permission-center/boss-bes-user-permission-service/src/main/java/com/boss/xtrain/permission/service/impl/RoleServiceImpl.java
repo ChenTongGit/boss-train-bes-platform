@@ -5,7 +5,6 @@ import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.RoleDao;
-import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
@@ -13,7 +12,6 @@ import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.service.RoleService;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
