@@ -43,7 +43,7 @@ public class PaperBaseController extends BaseController {
         pageInfo.setTotal(objects.getTotal());
         return pageInfo;
     }
-    PageInfo queryPaperList(PaperQueryVO paperQueryVo){
+    protected PageInfo queryPaperList(PaperQueryVO paperQueryVo){
         PaperQueryDTO paperQueryDto = new PaperQueryDTO();
         PojoUtils.copyProperties(paperQueryVo,paperQueryDto);
         //设置分页信息

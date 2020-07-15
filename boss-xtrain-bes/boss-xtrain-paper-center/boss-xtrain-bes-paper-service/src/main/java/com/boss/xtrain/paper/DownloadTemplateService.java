@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * @version: V1.0
- * @author: zjh
  * @className: DownloadTemplateService
  * @packageName: com.boss.bes.paper.service
  * @description: 下载模板Service
@@ -17,7 +16,6 @@ import java.util.List;
  **/
 public interface DownloadTemplateService {
     /**
-     * @author:  zjh
      * @methodsName: getTempalte
      * @description: 获取模板
      * @param:  templateQueryDto
