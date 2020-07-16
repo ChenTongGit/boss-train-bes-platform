@@ -4,6 +4,7 @@ import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
+import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -95,7 +96,7 @@ public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
      * @return List<Resource>
      */
 
-    List<Role> getResourcesByRoleId(Long id);
+    List<Resource> getResourcesByRoleId(Long id);
 
     /**
      * 获取role表中所有的roleId

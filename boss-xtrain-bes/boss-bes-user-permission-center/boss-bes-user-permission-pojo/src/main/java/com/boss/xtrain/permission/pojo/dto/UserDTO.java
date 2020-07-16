@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
+import com.boss.xtrain.permission.pojo.entity.Resource;
 import lombok.*;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ public class UserDTO extends BaseDTO {
     private Long positionId;
     private Long departmentId;
     private Long companyId;
+    private Long organizationId;
+    private  String organizationName;
     private String code;
     private String password;
     private String name;
@@ -37,5 +40,4 @@ public class UserDTO extends BaseDTO {
     private String companyName;
     private String departmentName;
     private List<RoleDTO> roleList;
-
 }

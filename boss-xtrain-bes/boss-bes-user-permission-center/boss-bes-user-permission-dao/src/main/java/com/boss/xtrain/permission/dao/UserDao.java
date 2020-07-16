@@ -2,6 +2,7 @@ package com.boss.xtrain.permission.dao;
 
 import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
