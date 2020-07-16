@@ -63,6 +63,18 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    @Override
+    public CompanyDTO selectByPrimaryKey(CompanyQuery query) {
+        try{
+            CompanyDTO dto = new CompanyDTO();
+            PojoUtils.copyProperties(companyDao.selectByKey(query.getId()),dto);
+            return dto;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
+    }
+
     /**
      * 搜索一个
      *
@@ -130,7 +142,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> selectByCondition(CompanyQuery query) {
         try{
-            List<CompanyDTO>companyDTOList = PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            List<CompanyDTO>companyDTOList = PojoUtils.copyListProperties(companyDao.selectByOrg(query.getOrganizationId()),CompanyDTO::new);
             //加orgName
             for(CompanyDTO companyDTO:companyDTOList){
                 companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());

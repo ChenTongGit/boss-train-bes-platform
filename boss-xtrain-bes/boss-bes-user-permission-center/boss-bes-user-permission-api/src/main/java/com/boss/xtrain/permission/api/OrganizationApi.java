@@ -32,6 +32,9 @@ public interface OrganizationApi extends CommonCRUDApi<OrganizationDTO, Organiza
     @GetMapping("/selectAll")
     CommonResponse<List<OrganizationVO>> selectAllOrg();
 
+    @PostMapping("/selectByKey")
+    CommonResponse<OrganizationVO> selectByPrimaryKey(OrganizationQuery query);
+
     /**
      * 分页条件搜索
      * @param request

@@ -41,14 +41,16 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public List<Department> selectByCondition(DepartmentQuery query) {
         Example example = new Example(Department.class);
         Example.Criteria criteria = example.createCriteria();
+        if(query.getParentId()!=null){
+            criteria.andEqualTo("parentId",query.getParentId());
+        }
         if(query.getName()!=null){
             criteria.andEqualTo("name",query.getName());
-            return mapper.selectByExample(example);
-        }else if(query.getCompanyId()!=null){
-            criteria.andEqualTo("companyId",query.getCompanyId());
-            return mapper.selectByExample(example);
         }
-        return mapper.selectAll();
+        if(query.getCompanyId()!=null){
+            criteria.andEqualTo("companyId",query.getCompanyId());
+        }
+        return mapper.selectByExample(example);
     }
 
     /**

@@ -32,7 +32,15 @@ public class CompanyDaoImpl implements CompanyDao {
         Example example = new Example(Company.class);
         Example.Criteria criteria = example.createCriteria();
         //criteria.andEqualTo("id",query.getId());
-        criteria.andEqualTo("name",query.getName());
+        if(query.getOrganizationId()!=null){
+            criteria.andEqualTo("organizationId",query.getOrganizationId());
+        }
+        if(query.getName()!=null){
+            criteria.andEqualTo("name",query.getName());
+        }
+        if(query.getId()!=null){
+            criteria.andEqualTo("id",query.getId());
+        }
         return mapper.selectByExample(example);
     }
 

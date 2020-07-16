@@ -7,9 +7,10 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.DepartmentApi;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
+import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
+import com.boss.xtrain.permission.pojo.query.DepartmentTreeNode;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
@@ -60,6 +61,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找公司树节点")
+    @ResponseBody
     public CommonResponse<List<CompanyQuery>> selectTree() {
         try{
             return CommonResponseUtil.ok(treeService.companyTree());
@@ -72,11 +74,11 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找公司下的部门树节点")
-    public CommonResponse<List<TreeNode>> selectDepartmentTree(@Valid CommonRequest<DepartmentQuery> request) {
+    @ResponseBody
+    public CommonResponse<List<CompanyDepartmentNode>> selectDepartmentTree(@Valid CommonRequest<CompanyQuery> request) {
         try{
-            Long companyId = request.getBody().getCompanyId();
-            List<TreeNode> departmentList = treeService.departmentUnderCompany(companyId);
-            return CommonResponseUtil.ok(departmentList);
+            List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(request.getBody());
+            return CommonResponseUtil.ok(treeList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
@@ -98,6 +100,16 @@ public class DepartmentController extends BaseController implements DepartmentAp
         List<DepartmentDTO> companyDTOList = service.selectAll();
         List<DepartmentVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,DepartmentVO::new);
         return buildPageResponse(page,companyVOList);
+    }
+
+    @ApiLog(msg = "用主键搜索部门信息")
+    @Override
+    @ApiOperation(value = "test")
+    public CommonResponse<DepartmentVO> selectByPrimaryKey(DepartmentQuery query) {
+        DepartmentDTO departmentDTO = service.selectByPrimaryKey(query);
+        DepartmentVO vo = new DepartmentVO();
+        PojoUtils.copyProperties(departmentDTO,vo);
+        return CommonResponseUtil.ok(vo);
     }
 
     /**

@@ -11,6 +11,8 @@ import com.boss.xtrain.common.core.web.service.CommonCurdService;
  */
 public interface OrganizationService extends CommonCurdService<OrganizationDTO, OrganizationQuery> {
 
+    OrganizationDTO selectByPrimaryKey(OrganizationQuery query);
+
     /**
      * 只查一个
      * @param query query
