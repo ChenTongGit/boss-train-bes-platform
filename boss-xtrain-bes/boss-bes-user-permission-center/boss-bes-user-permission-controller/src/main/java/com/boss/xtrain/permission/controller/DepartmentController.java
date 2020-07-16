@@ -105,8 +105,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @ApiLog(msg = "用主键搜索部门信息")
     @Override
     @ApiOperation(value = "test")
-    public CommonResponse<DepartmentVO> selectByPrimaryKey(DepartmentQuery query) {
-        DepartmentDTO departmentDTO = service.selectByPrimaryKey(query);
+    public CommonResponse<DepartmentVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<DepartmentQuery> request) {
+        DepartmentDTO departmentDTO = service.selectByPrimaryKey(request.getBody());
         DepartmentVO vo = new DepartmentVO();
         PojoUtils.copyProperties(departmentDTO,vo);
         return CommonResponseUtil.ok(vo);

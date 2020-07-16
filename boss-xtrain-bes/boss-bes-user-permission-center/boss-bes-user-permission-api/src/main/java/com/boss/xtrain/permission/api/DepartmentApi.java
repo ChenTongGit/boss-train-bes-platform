@@ -53,7 +53,7 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
     CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
 
     @PostMapping("/selectByKey")
-    CommonResponse<DepartmentVO> selectByPrimaryKey(DepartmentQuery query);
+    CommonResponse<DepartmentVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
 
     /**
      * 初始化所有不分页

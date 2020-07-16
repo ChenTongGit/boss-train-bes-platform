@@ -101,8 +101,8 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiLog(msg = "用主键搜索公司信息")
     @Override
     @ApiOperation(value = "test")
-    public CommonResponse<CompanyVO> selectByPrimaryKey(CompanyQuery query) {
-        CompanyDTO dto = service.selectByPrimaryKey(query);
+    public CommonResponse<CompanyVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
+        CompanyDTO dto = service.selectByPrimaryKey(request.getBody());
         CompanyVO vo = new CompanyVO();
         PojoUtils.copyProperties(dto,vo);
         return CommonResponseUtil.ok(vo);

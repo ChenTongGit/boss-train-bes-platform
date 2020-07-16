@@ -110,8 +110,8 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "用主键搜索组织机构")
     @Override
     @ApiOperation(value = "test")
-    public CommonResponse<OrganizationVO> selectByPrimaryKey(OrganizationQuery query) {
-        OrganizationDTO dto = service.selectByPrimaryKey(query);
+    public CommonResponse<OrganizationVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
+        OrganizationDTO dto = service.selectByPrimaryKey(request.getBody());
         OrganizationVO vo = new OrganizationVO();
         PojoUtils.copyProperties(dto,vo);
         return CommonResponseUtil.ok(vo);
