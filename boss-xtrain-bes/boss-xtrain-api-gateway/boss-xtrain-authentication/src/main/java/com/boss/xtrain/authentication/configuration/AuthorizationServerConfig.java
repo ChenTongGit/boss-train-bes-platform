@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -15,45 +16,83 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableAuthorizationServer
-public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     RedisConnectionFactory redisConnectionFactory;
     @Autowired
-    DataSource dataSource;
-    @Autowired
     private BesUserDetailService besUserDetailService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private BesAccessTokenConverter besAccessTokenConverter;
+
     // 使用redis存储
     @Bean
     public TokenStore tokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
-    /*
-    @Bean
+
+    /*@Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
     }*/
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey("jwt_key");
-        return accessTokenConverter;
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        // 这里只做password认证
+        clients.inMemory()
+            .withClient("bes")
+            .scopes("read")
+            .secret("12345")
+            .authorizedGrantTypes("password", "authorization_code", "refresh_token");
     }
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> delegates = new ArrayList<>();
+        delegates.add(jwtTokenEnhancer());
+        delegates.add(jwtAccessTokenConverter());
+        enhancerChain.setTokenEnhancers(delegates);
+        endpoints
+            .tokenEnhancer(enhancerChain)
+            .authenticationManager(authenticationManager)
+            .tokenStore(tokenStore());
+
+        DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
+        tokenServices.setTokenStore(endpoints.getTokenStore());
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1));
+        endpoints.tokenServices(tokenServices);
+        super.configure(endpoints);
+    }
+
+    @Bean
+    public TokenEnhancer jwtAccessTokenConverter() {
+        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        KeyStoreKeyFactory keyStoreKeyFactory =
+            new KeyStoreKeyFactory(new ClassPathResource("bes-jwt.jks"), "123456".toCharArray());
+        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("bes-jwt"));
+        converter.setAccessTokenConverter(besAccessTokenConverter);
+        return converter;
+    }
+
     @Bean
     public JwtTokenEnhancer jwtTokenEnhancer() {
         return new JwtTokenEnhancer();
@@ -68,56 +107,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security
             .allowFormAuthenticationForClients()
+            .passwordEncoder(new NoEncryptPasswordEncoder())
             .tokenKeyAccess("permitAll()")
             .checkTokenAccess("isAuthenticated()");
     }
-
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // 这里只做password认证
-        clients.inMemory()
-            .withClient("bes")
-            .scopes("read")
-            .secret("12345")
-            .authorizedGrantTypes("password", "authorization_code", "refresh_token");
-            /*
-            .and()
-            .withClient("webapp")
-            .scopes("read")
-            .authorizedGrantTypes("implicit")
-            .and()
-            .withClient("browser")
-            .authorizedGrantTypes("refresh_token", "password")
-            .scopes("read");*/
-    }
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        List<TokenEnhancer> delegates = new ArrayList<>();
-        delegates.add(jwtTokenEnhancer());
-        delegates.add(jwtAccessTokenConverter());
-        enhancerChain.setTokenEnhancers(delegates);
-
-        endpoints
-            .tokenStore(new RedisTokenStore(redisConnectionFactory))
-            .userDetailsService(besUserDetailService)
-            .authenticationManager(authenticationManager)
-            .tokenServices(defaultTokenServices())
-            .tokenEnhancer(enhancerChain)
-            .exceptionTranslator(webResponseExceptionTranslator());
-    }
-
-    @Primary
-    @Bean
-    public DefaultTokenServices defaultTokenServices(){
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setTokenStore(tokenStore());
-        tokenServices.setSupportRefreshToken(true);
-        // token有效期自定义设置，默认12小时
-        tokenServices.setAccessTokenValiditySeconds(60*60*12);
-        // refresh_token默认30天
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);
-        return tokenServices;
-    }
-
 }

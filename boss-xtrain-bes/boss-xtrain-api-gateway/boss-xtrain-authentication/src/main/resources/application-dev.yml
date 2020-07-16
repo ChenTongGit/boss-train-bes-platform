@@ -48,6 +48,15 @@ security:
     resource:
       user-info-uri:  http://localhost:4445/api/user
       prefer-token-info: false
+# feign调用超时时间配置
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 600000
 
 # Generator
 generator:

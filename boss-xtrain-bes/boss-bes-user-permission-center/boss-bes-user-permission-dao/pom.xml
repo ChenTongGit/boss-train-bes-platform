@@ -64,6 +64,7 @@
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
                 </configuration>
+                <!--
                 <executions>
                     <execution>
                         <id>Generate MyBatis Artifacts</id>
@@ -73,6 +74,7 @@
                         </goals>
                     </execution>
                 </executions>
+                -->
                 <dependencies>
                     <dependency>
                         <groupId>org.mybatis.generator</groupId>

@@ -13,6 +13,14 @@ spring:
           # 去除前缀
           filters:
             - StripPrefix=1
+        - id: boss-bes-system-center
+          uri: lb://boss-bes-system-center
+          order: 0
+          predicates:
+            - Path=/system/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
 
   # 组nacos和seata服务地址
   nacos-url:

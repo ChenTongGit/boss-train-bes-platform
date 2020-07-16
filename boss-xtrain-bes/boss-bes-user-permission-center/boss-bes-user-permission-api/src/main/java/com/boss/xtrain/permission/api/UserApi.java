@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.api;
 
+import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
@@ -7,6 +8,7 @@ import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /*
