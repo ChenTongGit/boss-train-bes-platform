@@ -6,6 +6,7 @@ import com.boss.xtrain.permission.mapper.RoleMapper;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
+import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -99,7 +100,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<Role> getResourcesByRoleId(Long id) {
+    public List<Resource> getResourcesByRoleId(Long id) {
         return roleMapper.getResourcesByRoleId(id);
     }
 

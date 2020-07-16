@@ -10,6 +10,7 @@ import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
 import com.boss.xtrain.permission.service.PositionService;
+import lombok.extern.slf4j.Slf4j;
 import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 public class PositionServiceImpl implements PositionService {
 
     @Autowired
@@ -34,10 +36,11 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public int insert(PositionDTO dto) {
+        log.info(dto.toString());
         PositionQueryDTO query = new PositionQueryDTO();
-
         PojoUtils.copyProperties(dto,query);
-        if(!positionDao.queryByCondition(query).isEmpty()){
+        List<PositionDTO> list = positionDao.queryByCondition(query);
+        if(!list.isEmpty()){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_REPEAT_ERROR);
         }
         try {

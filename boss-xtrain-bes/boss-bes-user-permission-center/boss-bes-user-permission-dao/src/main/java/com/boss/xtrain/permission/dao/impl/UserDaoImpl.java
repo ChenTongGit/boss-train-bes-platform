@@ -1,9 +1,14 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.permission.dao.CompanyDao;
+import com.boss.xtrain.permission.dao.OrganizationDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.mapper.UserMapper;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.entity.Resource;
+import com.boss.xtrain.permission.pojo.query.CompanyQuery;
+import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
@@ -28,6 +33,7 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     UserMapper userMapper;
 
+
     @Override
     public int insert(UserDTO dto) {
         User user = new User();
@@ -50,7 +56,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<UserDTO> queryByCondition(UserQueryDTO dto) {
         User user = new User();
-        PojoUtils.copyProperties(dto,user);
         return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
     }
 
@@ -63,6 +68,7 @@ public class UserDaoImpl implements UserDao {
     public List<Role> getAllRoles(UserQueryDTO queryDTO) {
         return userMapper.getAllRoles(queryDTO);
     }
+
 
     @Override
     public int deleteByIds(List<Long> ids) {

@@ -1,6 +1,8 @@
 package com.boss.xtrain.permission.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 /*
@@ -16,11 +18,14 @@ import lombok.*;
 @ToString
 public class ResourceListVO extends BaseVO {
     private String parentName;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String code;
     private String name;
     private Integer orderIndex;
-    private String parentId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long parentId;
     private String url;
     private String openImg;
     private String closeImg;

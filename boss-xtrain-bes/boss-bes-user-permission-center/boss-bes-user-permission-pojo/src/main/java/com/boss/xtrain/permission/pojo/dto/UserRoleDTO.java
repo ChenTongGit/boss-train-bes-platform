@@ -15,7 +15,6 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class UserRoleDTO {
-
     private Long id;
     private Long userId;
     private Long roleId;

@@ -4,7 +4,8 @@ import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.permission.dao.UserDao;
+import com.boss.xtrain.permission.dao.*;
+import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
@@ -31,11 +32,23 @@ public class UserServiceImpl implements UserSerivce {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    CompanyDao companyDao;
+
+    @Autowired
+    OrganizationDao organizationDao;
+
+    @Autowired
+    DepartmentDao departmentDao;
+
+    @Autowired
+    RoleDao roleDao;
+
     private IdWorker worker = new IdWorker();
 
 
     private boolean isInUse(UserDTO dto){
-        return false;
+        return true;
     }
     @Override
     public List<RoleDTO> getRoleByUserId(Long id) {
@@ -45,7 +58,12 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public UserDTO select(UserQueryDTO query) {
         try {
-            return userDao.queryByCondition(query).get(0);
+            UserDTO userDTO = userDao.queryByCondition(query).get(0);
+            userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
+            userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
+            userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
+            userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
+            return userDTO;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);
         }
@@ -54,6 +72,16 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public List<RoleDTO> getAllRoles(UserQueryDTO queryDTO) {
         return PojoUtils.copyListProperties(userDao.getAllRoles(queryDTO),RoleDTO::new);
+    }
+
+    @Override
+    public List<ResourceDTO> getAllResource(UserQueryDTO queryDTO) {
+        List<RoleDTO> roleDTOS = getAllRoles(queryDTO);
+        List<ResourceDTO> resourceDTOS = new ArrayList<>();
+        for(RoleDTO roleDTO : roleDTOS){
+            resourceDTOS.addAll(PojoUtils.copyListProperties(roleDao.getResourcesByRoleId(roleDTO.getId()),ResourceDTO::new));
+        }
+        return resourceDTOS;
     }
 
     @Override
@@ -69,7 +97,14 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public List<UserDTO> selectByCondition(UserQueryDTO query) {
         try {
-            return userDao.queryByCondition(query);
+            List<UserDTO> userDTOS = userDao.queryByCondition(query);
+            for(UserDTO userDTO : userDTOS){
+                userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
+                userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
+                userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
+                userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
+            }
+            return userDTOS;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR);
         }
@@ -79,7 +114,14 @@ public class UserServiceImpl implements UserSerivce {
     public List<UserDTO> selectAll() {
         try {
             List<User> resources = userDao.selectAll();
-            return PojoUtils.copyListProperties(resources,UserDTO::new);
+            List<UserDTO> userDTOS = PojoUtils.copyListProperties(resources,UserDTO::new);
+            for(UserDTO userDTO : userDTOS){
+                userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
+                userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
+                userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
+                userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
+            }
+            return userDTOS;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR);
         }
