@@ -89,11 +89,6 @@ public enum BusinessError {
     /**
      * 系统管理 公司 异常码
      */
-    SYSTEM_MANAGER_RESOURCE_REPEAT_ERROR("220401","资源已存在"),
-    SYSTEM_MANAGER_RESOURCE_INSERT_ERROR("220402","新增资源失败"),
-    SYSTEM_MANAGER_RESOURCE_DELETE_ERROR("220403","删除资源失败"),
-    SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR("220404","更新资源失败"),
-    SYSTEM_MANAGER_RESOURCE_QUERY_ERROR("220405","查询资源失败"),
     SYSTEM_MANAGER_RESOURCE_IN_USE("220406","该资源正在使用，无法编辑"),
     SYSTEM_MANAGER_RESOURCE_NOT_EXIST_ERROR("220407","该资源不存在"),
     SYSTEM_MANAGER_RESOURCE_LOAD_RESOURCE_ERROR("220408","获取角色资源表失败"),
@@ -115,6 +110,16 @@ public enum BusinessError {
     SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR("220305","查询部门失败"),
     SYSTEM_MANAGER_DEPARTMENT_USED_ERROR("220306","部门已被使用"),
     SYSTEM_MANAGER_DEPARTMENT_NOTIN_ERROR("220307","部门不存在用"),
+
+    /**
+     * 系统管理 资源模块异常码
+     */
+    SYSTEM_MANAGER_RESOURCE_REPEAT_ERROR("220401","资源已存在"),
+    SYSTEM_MANAGER_RESOURCE_INSERT_ERROR("220402","新增资源失败"),
+    SYSTEM_MANAGER_RESOURCE_DELETE_ERROR("220403","删除资源失败"),
+    SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR("220404","更新资源失败"),
+    SYSTEM_MANAGER_RESOURCE_QUERY_ERROR("220405","查询资源失败"),
+
     /**
      * 系统管理 角色模块异常码
      */
@@ -149,6 +154,28 @@ public enum BusinessError {
     SYSTEM_MANAGER_USER_QUERY_ERROR("220705","查询用户失败"),
     SYSTEM_MANAGER_USER_IN_USE("220706","该用户正在使用，无法编辑"),
     SYSTEM_MANAGER_USER_NOT_EXIST_ERROR("220707","该用户不存在"),
+
+    /**
+     * 系统管理 系统参数模块异常码
+     */
+    SYSTEM_MANAGER_PARAM_REPEAT_ERROR("220801","系统参数已存在"),
+    SYSTEM_MANAGER_PARAM_INSERT_ERROR("220802","新增系统参数失败"),
+    SYSTEM_MANAGER_PARAM_DELETE_ERROR("220803","删除系统参数失败"),
+    SYSTEM_MANAGER_PARAM_UPDATE_ERROR("220804","更新系统参数失败"),
+    SYSTEM_MANAGER_PARAM_QUERY_ERROR("220805","查询系统参数失败"),
+    SYSTEM_MANAGER_PARAM_NOTIN_ERROR("220806","系统参数不存在"),
+    SYSTEM_MANAGER_PARAM_USED_ERROR("220807","系统参数是启用状态，不可删除"),
+
+    /**
+     * 系统管理 在线用户管理模块异常码
+     */
+    SYSTEM_MANAGER_ONLINE_REPEAT_ERROR("220901","在线用户信息已存在"),
+    SYSTEM_MANAGER_ONLINE_INSERT_ERROR("220902","新增在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_DELETE_ERROR("220903","删除在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_UPDATE_ERROR("220904","更新在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_QUERY_ERROR("220905","查询在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
+    SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
 
 
     /**
@@ -210,7 +237,18 @@ public enum BusinessError {
     EXAM_PUBLISHED("240310", "重复发布"),
 
 
-    EXAM_PEOPLE_REG_FAIL("250301","考生注册失败");
+    EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),
+    EXAM_PEOPLE_NOT_EXIT("250302","登录失败，考生不存在"),
+    EXAM_PEOPLE_LOGIN_WITH_PASSWORD_FAIL("250302","考生通过账号密码登录失败"),
+    EXAM_PEOPLE_LOGIN_WITH_MSG_SEND_SSM_FAIL("250303", "发送验证码失败"),
+    EXAM_RECORD_INSERT_FAIL("250304","考试记录插入失败"),
+    EXAM_MARK_PEOPLE_NOT_EXIT("240304", "该场考试没有阅卷官"),
+    EXAM_ANSWER_SAVE_FAIL("240305", "考生作答题目记录保存失败"),
+    EXAM_SUBMIT_FAIL("240306", "考试提交异常"),
+    GET_TMP_ANSWER_FAIL("240307", "获取临时回答保存异常"),
+    GET_EXAM_LIMIT_TIME_FAIL("240308","获取考试剩余时间失败"),
+    SET_EXAM_LIMIT_TIME_FAIL("240309", "设置考试剩余时间失败"),
+    EXAM_RECORD_QUERY_FAIL("240310", "获取考试记录失败");
 
     /**
      * 异常码

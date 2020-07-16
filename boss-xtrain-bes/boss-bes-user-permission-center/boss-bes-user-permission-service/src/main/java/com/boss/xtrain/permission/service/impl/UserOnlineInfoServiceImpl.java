@@ -58,12 +58,12 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         companyQuery.setOrganizationId(orgId);
         List<Company> companyList = companyDao.selectByCondition(companyQuery);
         List<Long> userIds = new ArrayList<>();
-        UserQueryDTO queryDTO = new UserQueryDTO();
         //通过所负责的org获得的负责的company，再通过companyId匹配到user，获得所负责的user列表
         for(Company company:companyList){
+            UserQueryDTO queryDTO = new UserQueryDTO();
             queryDTO.setCompanyId(company.getId());
-            List<UserDTO> temp = userDao.queryByCondition(queryDTO);
-            for(UserDTO user:temp){
+            List<User> temp = PojoUtils.copyListProperties(userDao.queryByCondition(queryDTO),User::new);
+            for(User user:temp){
                 userIds.add(user.getId());
             }
         }
