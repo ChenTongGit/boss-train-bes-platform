@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.service;
 
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
+import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
@@ -38,6 +39,14 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @description 所有角色
      */
     List<RoleDTO> getAllRoles(UserQueryDTO queryDTO);
+    /**
+     *
+     *
+     * @param queryDTO
+     * @return List<ResourceDTO>
+     *
+    */
+    List<ResourceDTO> getAllResource(UserQueryDTO queryDTO);
 
     /**
      * @param userRoleDTO

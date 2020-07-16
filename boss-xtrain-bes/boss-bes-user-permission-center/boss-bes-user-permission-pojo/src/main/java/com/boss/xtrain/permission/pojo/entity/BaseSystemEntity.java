@@ -25,14 +25,7 @@ public class BaseSystemEntity implements Serializable {
      */
     @Id
     private Long id;
-    /**
-     *
-     *
-     * 备注
-     *
-    */
-    @Column(name = "remark")
-    private String remark;
+
 
     /**
      * 状态

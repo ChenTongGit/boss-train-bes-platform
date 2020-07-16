@@ -11,6 +11,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 public class PositionQueryDTO extends BaseQuery {
     private String name;
-    private long companyId;
-    private  long id;
+    private Long companyId;
+    private  Long id;
 }

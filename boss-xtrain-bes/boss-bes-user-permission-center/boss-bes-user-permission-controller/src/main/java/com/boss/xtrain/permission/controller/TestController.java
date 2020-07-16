@@ -46,14 +46,12 @@ public class TestController {
         log.info(token);
         Map<String,Object> res = new HashMap<>();
         Map<String,Object> role = new HashMap<>();
-
         role.put("introduction","I am a super administrator");
         role.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         role.put("name","Super Admin");
         List<String> roles = new ArrayList<>();
         roles.add("admin");
         role.put("roles", roles);
-
         res.put("code",0);
         res.put("data",role);
         return res;

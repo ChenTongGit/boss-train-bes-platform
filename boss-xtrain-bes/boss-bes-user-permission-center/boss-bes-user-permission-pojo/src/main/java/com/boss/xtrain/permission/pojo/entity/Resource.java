@@ -32,4 +32,6 @@ public class Resource extends BaseSystemEntity {
     private int leaf;
     @Column(name = "action")
     private String action;
+    @Column(name = "remark")
+    private String remark;
 }

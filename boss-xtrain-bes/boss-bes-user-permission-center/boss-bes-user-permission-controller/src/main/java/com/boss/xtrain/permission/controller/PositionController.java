@@ -88,6 +88,7 @@ public class PositionController implements PositionApi {
 //       List<PositionDTO> positionDTOS = positionService.selectAll(query);
 //       List<PositionListVO> positionListVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
 //       return CommonResponseUtil.ok(positionListVOS);
+        log.info("getAll");
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(positionService.selectAll(),PositionListVO::new));
     }
 

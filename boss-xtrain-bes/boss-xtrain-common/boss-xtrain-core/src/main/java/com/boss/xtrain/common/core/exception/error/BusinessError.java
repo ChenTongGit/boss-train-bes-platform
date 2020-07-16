@@ -179,6 +179,27 @@ public enum BusinessError {
 
 
     /**
+     * 系统管理 系统参数模块异常码
+     */
+    SYSTEM_MANAGER_PARAM_REPEAT_ERROR("220801","系统参数已存在"),
+    SYSTEM_MANAGER_PARAM_INSERT_ERROR("220802","新增系统参数失败"),
+    SYSTEM_MANAGER_PARAM_DELETE_ERROR("220803","删除系统参数失败"),
+    SYSTEM_MANAGER_PARAM_UPDATE_ERROR("220804","更新系统参数失败"),
+    SYSTEM_MANAGER_PARAM_QUERY_ERROR("220805","查询系统参数失败"),
+    SYSTEM_MANAGER_PARAM_NOTIN_ERROR("220806","系统参数不存在"),
+    SYSTEM_MANAGER_PARAM_USED_ERROR("220807","系统参数是启用状态，不可删除"),
+    /**
+     * 系统管理 在线用户管理模块异常码
+     */
+    SYSTEM_MANAGER_ONLINE_REPEAT_ERROR("220901","在线用户信息已存在"),
+    SYSTEM_MANAGER_ONLINE_INSERT_ERROR("220902","新增在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_DELETE_ERROR("220903","删除在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_UPDATE_ERROR("220904","更新在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_QUERY_ERROR("220905","查询在线用户信息失败"),
+    SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR("220906","用户已经不在线上"),
+    SYSTEM_MANAGER_ONLINE_ISONLINE_ERROR("220907","用户还在线上，数据不能删除"),
+
+    /**
      * 试卷 试卷服务错误
      */
     PAPER_PAPER_INSERT_ERROR("230101", "新增试卷失败"),

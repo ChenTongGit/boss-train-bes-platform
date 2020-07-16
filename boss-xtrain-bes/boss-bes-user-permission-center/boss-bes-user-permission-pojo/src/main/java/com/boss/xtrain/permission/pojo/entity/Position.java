@@ -25,4 +25,7 @@ public class Position extends BaseSystemEntity {
 
     @Column(name = "t_c_id")
     private String companyId;
+
+    @Column(name = "remark")
+    private String remark;
 }
