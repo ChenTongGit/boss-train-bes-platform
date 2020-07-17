@@ -23,7 +23,7 @@ public class AnswerVO extends BaseVO {
     /**
      * 是否是正确答案
      */
-    private Byte rightAnswer;
+    private Boolean rightAnswer;
     /**
      * 图片答案URL
      */

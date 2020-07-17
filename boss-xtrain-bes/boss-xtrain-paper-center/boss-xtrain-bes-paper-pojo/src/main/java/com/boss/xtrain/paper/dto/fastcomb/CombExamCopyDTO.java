@@ -19,7 +19,7 @@ public class CombExamCopyDTO extends BaseDTO {
     /**
      * Description: 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * Description: 试卷类型
      */
@@ -27,6 +27,6 @@ public class CombExamCopyDTO extends BaseDTO {
     /**
      * Description: 组卷人
      */
-    private String combExamMan;
+    private String combExamMa;
 }
 

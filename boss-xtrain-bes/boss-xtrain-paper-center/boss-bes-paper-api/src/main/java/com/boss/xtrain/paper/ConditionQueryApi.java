@@ -15,7 +15,6 @@ import javax.validation.Valid;
  * @className: ConditionQueryApi
  * @packageName: com.boss.bes.paper.api.paperapi
  * @description: 条件查询试卷搜索框API
- * @data: 20:53 2020/4/1
  **/
 @RequestMapping(value = "/education/bes/v1/paper/conditionQuery")
 public interface ConditionQueryApi {

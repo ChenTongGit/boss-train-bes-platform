@@ -3,6 +3,7 @@ package com.boss.xtrain.paper.controller;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.paper.MainTainPaperApi;
 import com.boss.xtrain.paper.MainTainPaperService;
 
@@ -89,6 +90,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("删除试卷集合")
+    @ApiLog
     @Override
     public CommonResponse deleteSomePaper(@RequestBody CommonRequest<PaperListDTO> commonRequest) {
         PaperListDTO paperListDto = commonRequest.getBody();

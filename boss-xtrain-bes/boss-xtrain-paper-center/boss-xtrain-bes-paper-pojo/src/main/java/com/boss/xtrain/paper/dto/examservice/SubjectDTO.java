@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.dto.examservice;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
-import com.boss.xtrain.paper.dto.papermanage.AnswerDTO;
+
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author lenovo
  */
 @Data
-public class SubjectDTO extends BaseDTO {
+public class SubjectDTO{
     /**
      * 试卷ID
      */
@@ -19,7 +19,7 @@ public class SubjectDTO extends BaseDTO {
     /**
      * 题目ID
      */
-    private Long subjectId;
+    private Long paperSubjectId;
     /**
      * 题型
      */
@@ -39,7 +39,7 @@ public class SubjectDTO extends BaseDTO {
     /**
      * 题目难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 题目类别
      */

@@ -30,7 +30,7 @@ public class ExaminationController extends PaperBaseController implements Examin
      */
     @ApiOperation("查询试卷集合")
     @Override
-    public CommonResponse getAllPaper(CommonRequest<PaperQueryVO> commonRequest) {
+    public CommonResponse getAllPaper(@RequestBody CommonRequest<PaperQueryVO> commonRequest) {
 
         return CommonResponseUtil.ok("20000","查询试卷成功",queryPaperList(commonRequest.getBody()));
     }

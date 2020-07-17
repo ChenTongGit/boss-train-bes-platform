@@ -24,7 +24,7 @@ import java.util.List;
  * @packageName: com.boss.bes.paper.api.paperapi
  * @description: 调用基础服务接口
  **/
-@RequestMapping(value = "/education/bes/v1/basedata")
+// @RequestMapping(value = "/education/bes/v1/basedata")
 public interface BaseServiceApi {
     /**
      * @methodsName: queryCombExamConfiguration
@@ -33,7 +33,7 @@ public interface BaseServiceApi {
      * @return: com.github.pagehelper.PageInfo<com.boss.bes.paper.pojo.vo.fastcomb.CombConfigVO>
      * @throws:
      */
-    @PostMapping("/combexamconfig/queryConfig")
+    // @PostMapping("/combexamconfig/queryConfig")
     PageInfo<CombConfigVO> queryCombExamConfiguration(@Valid CombConfigQueryDTO combConfigQueryDTO);
     /**
      * @methodsName: queryCombExamConfigItem
@@ -42,7 +42,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.fastcomb.CombConfigItemVO>
      * @throws:
      */
-    @PostMapping("/combexamconfig/getConfigItem")
+    // @PostMapping("/combexamconfig/getConfigItem")
     List<CombConfigItemVO> queryCombExamConfigItem(@Valid CombConfigItemQueryDTO combConfigItemQueryDTO);
 
     /**
@@ -52,7 +52,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.fastcomb.CombSubjectListVO>
      * @throws:
      */
-    @PostMapping("/subject/queryByConfigId")
+    // @PostMapping("/subject/queryByConfigId")
     List<CombSubjectListVO> addPaper(@Valid CreatePaperDTO createPaperDTO);
     /**
      * @methodsName: addPaperByConfigItems
@@ -61,7 +61,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.fastcomb.CombSubjectListVO>
      * @throws:
      */
-    @PostMapping("/subject/querySubject")
+    // @PostMapping("/subject/querySubject")
     List<CombSubjectListVO> addPaperByConfigItems(@Valid ConfigItemListDTO configItemListDTO);
     /**
      * @methodsName: saveCombItemList
@@ -70,7 +70,7 @@ public interface BaseServiceApi {
      * @return: boolean
      * @throws:
      */
-    @PostMapping("/combexamconfig/saveConfigItem")
+    // @PostMapping("/combexamconfig/saveConfigItem")
     boolean saveCombItemList(@Valid ConfigItemListDTO configItemListDTO);
     /**
      * @methodsName: standardCombExam
@@ -79,7 +79,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.fastcomb.CombSubjectListVO>
      * @throws:
      */
-    @PostMapping("/subject/querySubjectByConfig")
+    // @PostMapping("/subject/querySubjectByConfig")
     List<CombSubjectListVO> standardCombExam(@Valid StandardCombDTO standardCombDTO);
     /**
      * @methodsName: querySubjectCategory
@@ -88,7 +88,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.baseinfo.SubjectCategoryVO>
      * @throws:
      */
-    @PostMapping("/category/queryCategoryList")
+    // @PostMapping("/category/queryCategoryList")
     List<SubjectCategoryVO> querySubjectCategory(@Valid CombInfoQueryDTO combInfoQueryDTO);
     /**
      * @methodsName: querySubjectType
@@ -97,7 +97,7 @@ public interface BaseServiceApi {
      * @return: java.util.List<com.boss.bes.paper.pojo.vo.baseinfo.SubjectTypeVO>
      * @throws:
      */
-    @PostMapping("/subjecttype/querySubjectType")
+    // @PostMapping("/subjecttype/querySubjectType")
     List<SubjectTypeVO> querySubjectType(@Valid CombInfoQueryDTO combInfoQueryDTO);
 
 }

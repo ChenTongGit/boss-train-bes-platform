@@ -29,7 +29,7 @@ public class CombConfigItemQueryDTO extends BaseDTO {
      * 试卷难度
      */
     @NotBlank(message = "试卷难度能为空")
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 试卷类型
      */
@@ -39,7 +39,7 @@ public class CombConfigItemQueryDTO extends BaseDTO {
      * 组卷人
      */
     @NotBlank(message = "试卷类型不能为空")
-    private String combExamMan;
+    private String combExamMa;
     /**
      * 所属公司
      */

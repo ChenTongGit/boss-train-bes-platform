@@ -19,7 +19,7 @@ public class AnswerDTO extends BaseDTO {
     /**
      * 答案ID
      */
-    private Long answerId;
+    private Long paperSubjectAnswerId;
     /**
      * 答案
      */
@@ -27,7 +27,7 @@ public class AnswerDTO extends BaseDTO {
     /**
      * 是否是正确答案
      */
-    private Byte rightAnswer;
+    private Boolean rightAnswer;
     /**
      * 图片答案URL
      */

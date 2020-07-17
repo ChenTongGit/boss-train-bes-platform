@@ -45,9 +45,8 @@ public interface CreatePaperService {
      */
     void downLoadTemplate(TemplateCombDTO templateCombDto);
     /**
-     * @author:  zjh
      * @methodsName: addPaper
-     * @description: 查询试卷名
+     * @description:
      * @param:  combConfigItemQueryDTO
      * @return: void
      * @throws:

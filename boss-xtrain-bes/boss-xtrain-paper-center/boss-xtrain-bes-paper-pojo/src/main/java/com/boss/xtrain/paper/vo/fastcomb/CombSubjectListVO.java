@@ -20,9 +20,13 @@ public class CombSubjectListVO extends BaseVO {
      */
     private String subjectTypeId;
     /**
+     * 题型名字
+     */
+    private String subjectTypeName;
+    /**
      * 题目难度
      */
-    private String difficulty;
+    private String difficuty;
     /**
      * 分数
      */
@@ -35,6 +39,9 @@ public class CombSubjectListVO extends BaseVO {
      * 题目类别
      */
     private String categoryId;
-
+    /**
+     * 题目类别名字
+     */
+    private String categoryName;
 }
 

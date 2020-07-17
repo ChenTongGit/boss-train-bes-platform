@@ -25,7 +25,7 @@ public abstract class BaseVO implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * 记录所属公司ID
@@ -73,11 +73,11 @@ public abstract class BaseVO implements Serializable {
         this.id = id;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

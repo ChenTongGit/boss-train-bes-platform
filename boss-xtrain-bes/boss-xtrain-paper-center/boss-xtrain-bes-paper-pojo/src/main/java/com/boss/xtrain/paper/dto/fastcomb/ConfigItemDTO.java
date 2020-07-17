@@ -30,7 +30,7 @@ public class ConfigItemDTO extends BaseDTO {
     /**
      * 难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 分值
      */
@@ -46,6 +46,6 @@ public class ConfigItemDTO extends BaseDTO {
     /**
      * 难度名
      */
-    private String difficultyName;
+    private String difficutyName;
 }
 

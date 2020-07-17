@@ -18,20 +18,9 @@ public class PaperAllMsgDTO {
 
     private Long difficuty;
 
-    private String combExamMa;
-
-    private Date combExamTim;
-
     private BigDecimal score;
 
     private String discript;
-
-    private Integer downloadTimes;
-
-    private Integer publishTimes;
-
-    private Boolean status;
-
     private Long orgId;
 
     private Long companyId;

@@ -44,5 +44,4 @@ public class PaperVO extends BaseVO {
      */
     private String discript;
 
-
 }

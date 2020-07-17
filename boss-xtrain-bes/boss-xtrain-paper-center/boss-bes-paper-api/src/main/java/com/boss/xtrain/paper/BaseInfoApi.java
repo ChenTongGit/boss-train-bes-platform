@@ -2,6 +2,7 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
 import com.boss.xtrain.paper.vo.baseinfo.CombInfoQueryVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public interface BaseInfoApi {
      * @throws:
      */
     @PostMapping(value = "/querySubjectCategoryList")
-    CommonResponse querySubjectCategoryList(@Valid CommonRequest<CombInfoQueryVO> commonRequest);
+    CommonResponse querySubjectCategoryList(@Valid CommonRequest<CombInfoQueryDTO> commonRequest);
 
     /**
      * @methodsName: querySubjectTypeList
@@ -35,7 +36,7 @@ public interface BaseInfoApi {
      * @throws:
      */
     @PostMapping(value = "/querySubjectTypeList")
-    CommonResponse querySubjectTypeList(@Valid CommonRequest<CombInfoQueryVO> commonRequest);
+    CommonResponse querySubjectTypeList(@Valid CommonRequest<CombInfoQueryDTO> commonRequest);
     /**
      * @methodsName: queryPaperInfo
      * @description: 获取试卷类型或试卷难度或题目难度集合
@@ -44,7 +45,7 @@ public interface BaseInfoApi {
      * @throws:
      */
     @PostMapping(value = "/queryPaperInfo")
-    CommonResponse queryPaperInfo(@Valid CommonRequest<CombInfoQueryVO> commonRequest);
+    CommonResponse queryPaperInfo(@Valid CommonRequest<CombInfoQueryDTO> commonRequest);
     /**
      * @methodsName: queryCompanyList
      * @description: 获取公司集合

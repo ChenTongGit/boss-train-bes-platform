@@ -1,9 +1,12 @@
 package com.boss.xtrain.paper.controller;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.papaer.utils.BasicConverter;
+import com.boss.xtrain.papaer.utils.BeanCopierUtil;
 import com.boss.xtrain.paper.CreatePaperService;
 
 
@@ -45,7 +48,7 @@ public class PaperBaseController extends BaseController {
     }
     protected PageInfo queryPaperList(PaperQueryVO paperQueryVo){
         PaperQueryDTO paperQueryDto = new PaperQueryDTO();
-        PojoUtils.copyProperties(paperQueryVo,paperQueryDto);
+        BeanCopierUtil.copy(paperQueryVo,paperQueryDto,new BasicConverter());
         //设置分页信息
         Page<Object> objects = doBeforePagination(paperQueryVo.getPageNum(),paperQueryVo.getPageSize());
         List<PaperVO> paperList = createPaperService.getPaper(paperQueryDto);
@@ -53,8 +56,13 @@ public class PaperBaseController extends BaseController {
         pageInfo.setTotal(objects.getTotal());
         return pageInfo;
     }
+
     CommonResponse downloadTemplatePaper(TemplateCombDTO templateCombDto){
-        createPaperService.downLoadTemplate(templateCombDto);
+        try{
+            createPaperService.downLoadTemplate(templateCombDto);
+        }catch (BusinessException e){
+            return CommonResponseUtil.error(e.getCode(),e.getMessage());
+        }
         return CommonResponseUtil.ok("20000","模板组卷成功!");
     }
 }

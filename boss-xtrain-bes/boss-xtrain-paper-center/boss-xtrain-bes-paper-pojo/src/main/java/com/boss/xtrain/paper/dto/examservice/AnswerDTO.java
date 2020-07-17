@@ -11,7 +11,7 @@ import lombok.Data;
  * @data: 11:00 2020/1/6
  **/
 @Data
-public class AnswerDTO extends BaseDTO {
+public class AnswerDTO{
     /**
      * 题目ID
      */

@@ -39,7 +39,7 @@ public class StandardCombDTO extends BaseDTO {
      * Description: 试卷难度
      */
     @NotBlank(message = "试卷难度不能为空")
-    private Long difficulty;
+    private Long difficuty;
     /**
      * Description: 试卷类型
      */
@@ -50,7 +50,7 @@ public class StandardCombDTO extends BaseDTO {
      */
     @NotBlank(message = "组卷人不能为空")
     @Length(max = 32,message = "组卷人名不能超过32个字符")
-    private String combExamMan;
+    private String combExamMa;
     /**
      * Description: 所属公司
      */
