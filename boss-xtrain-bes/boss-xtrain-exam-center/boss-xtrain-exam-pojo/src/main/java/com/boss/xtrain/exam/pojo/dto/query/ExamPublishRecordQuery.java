@@ -2,6 +2,8 @@ package com.boss.xtrain.exam.pojo.dto.query;
 
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 
@@ -30,30 +32,27 @@ public class ExamPublishRecordQuery extends BaseQuery {
     /**
      * 发布人员ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long publisher;
 
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
      * 发布时间段-左
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date leftPublishTime;
 
     /**
      * 发布时间段-右
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date rightPublishTime;
 
     /**
@@ -64,6 +63,7 @@ public class ExamPublishRecordQuery extends BaseQuery {
     /**
      * 公司id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
 
     public Long getCompanyId() {

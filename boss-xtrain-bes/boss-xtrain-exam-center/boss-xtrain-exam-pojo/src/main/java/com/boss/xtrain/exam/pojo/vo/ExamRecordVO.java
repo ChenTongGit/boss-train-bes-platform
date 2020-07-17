@@ -2,6 +2,8 @@ package com.boss.xtrain.exam.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class ExamRecordVO extends BaseVO {
     /**
      * 考试记录id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
@@ -50,6 +53,16 @@ public class ExamRecordVO extends BaseVO {
     private BigDecimal objectiveSubjectScore;
 
     /**
+     * 主观题得分
+     */
+    private BigDecimal subjectiveSubjectScore;
+
+    /**
+     * 总得分
+     */
+    private BigDecimal score;
+
+    /**
      * 计划结束时间
      */
     private Date planEndTime;
@@ -57,14 +70,28 @@ public class ExamRecordVO extends BaseVO {
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date actualStartTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date actualEndTime;
+
+    public BigDecimal getScore() {
+        return score;
+    }
+
+    public void setScore(BigDecimal score) {
+        this.score = score;
+    }
+
+    public BigDecimal getSubjectiveSubjectScore() {
+        return subjectiveSubjectScore;
+    }
+
+    public void setSubjectiveSubjectScore(BigDecimal subjectiveSubjectScore) {
+        this.subjectiveSubjectScore = subjectiveSubjectScore;
+    }
 
     @Override
     public Long getId() {

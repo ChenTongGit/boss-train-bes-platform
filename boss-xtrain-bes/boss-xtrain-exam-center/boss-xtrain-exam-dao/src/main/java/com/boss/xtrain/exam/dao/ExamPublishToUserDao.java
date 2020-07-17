@@ -28,11 +28,13 @@ public interface ExamPublishToUserDao {
     /**
      * 批量删除关系
      * @author ChenTong
-     * @param publishIDs
+     * @param publishID
      * @return int
      * @date 2020/7/9 10:30
      */
-    int deleteBatchByPublishId(List<Long> publishIDs);
+    int deleteBatchByPublishId(Long publishID);
+
+    int deleteBatchByPublishIds(List<Long> ids);
 
     /**
      * 通过发布id获取该发布记录下的所有阅卷官关系表

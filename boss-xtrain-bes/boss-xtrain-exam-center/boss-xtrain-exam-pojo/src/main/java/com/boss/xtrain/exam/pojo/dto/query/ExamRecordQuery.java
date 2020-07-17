@@ -2,6 +2,8 @@ package com.boss.xtrain.exam.pojo.dto.query;
 
 import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 
@@ -20,6 +22,7 @@ public class ExamRecordQuery extends BaseQuery {
     /**
      * 考试记录id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
@@ -30,27 +33,40 @@ public class ExamRecordQuery extends BaseQuery {
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date planStartTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date planEndTime;
 
     /**
      * 试卷发布人
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long publisher;
+
+    /**
+     * 考试场次编号
+     */
+    private String examSession;
 
     public Long getId() {
         return id;
     }
 
+    public String getExamSession() {
+        return examSession;
+    }
+
+    public void setExamSession(String examSession) {
+        this.examSession = examSession;
+    }
+
     /**
      * 公司id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     public Long companyId;
 
     public Long getCompanyId() {

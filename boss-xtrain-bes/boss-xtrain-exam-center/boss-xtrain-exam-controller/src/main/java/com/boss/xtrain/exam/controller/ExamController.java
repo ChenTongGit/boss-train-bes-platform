@@ -11,20 +11,19 @@ import com.boss.xtrain.exam.pojo.dto.AnswerRecordTempInsertDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamStartAddRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamPaperInfoQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamBasicInfoVO;
+import com.boss.xtrain.exam.pojo.vo.ExamRecordIdVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import com.boss.xtrain.exam.service.ExamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 手机答卷逻辑控制器
@@ -51,8 +50,8 @@ public class ExamController implements ExamApi {
     @ApiLog(msg = "考试开始获取基础的考试信息")
     @ApiOperation(value = "获取基础的考试发布信息")
     @Override
-    public CommonResponse<ExamBasicInfoVO> getExamBasicInfo(@Valid CommonRequest<Map<String, Long>> request) {
-        ExamPublishRecordDTO dto = examPublishRecordService.selectOne(request.getBody().get("publishExamId"));
+    public CommonResponse<ExamBasicInfoVO> getExamBasicInfo(@Valid CommonRequest<ExamPaperInfoQuery> request) {
+        ExamPublishRecordDTO dto = examPublishRecordService.selectOne(request.getBody().getExamPublishRecordId());
         ExamBasicInfoVO examBasicInfoVO = new ExamBasicInfoVO();
         PojoUtils.copyProperties(dto, examBasicInfoVO);
         return CommonResponseUtil.ok(examBasicInfoVO);
@@ -61,8 +60,10 @@ public class ExamController implements ExamApi {
     @ApiLog(msg = "考试开始初次添加考试记录,并分配阅卷人员以及阅卷时间")
     @ApiOperation(value = "考试开始，初次添加考试记录")
     @Override
-    public CommonResponse<Long> createExamRecord(@Valid CommonRequest<ExamStartAddRecordDTO> request) {
-        return CommonResponseUtil.ok(examService.insertBasicExamRecord(request.getBody()));
+    public CommonResponse<ExamRecordIdVO> createExamRecord(@Valid CommonRequest<ExamStartAddRecordDTO> request) {
+        ExamRecordIdVO result = new ExamRecordIdVO();
+        result.setExamRecordId(examService.insertBasicExamRecord(request.getBody()));
+        return CommonResponseUtil.ok(result);
     }
 
     @ApiLog(msg = "暂时存储考生答案")

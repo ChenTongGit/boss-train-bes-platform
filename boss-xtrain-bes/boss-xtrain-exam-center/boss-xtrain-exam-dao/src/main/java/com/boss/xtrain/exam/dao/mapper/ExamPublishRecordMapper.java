@@ -1,7 +1,9 @@
 package com.boss.xtrain.exam.dao.mapper;
 
 import com.boss.xtrain.common.core.web.dao.CommonMapper;
+import com.boss.xtrain.exam.pojo.dto.ReportDataListDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.dto.query.ExamReportQuery;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,6 +32,15 @@ public interface ExamPublishRecordMapper extends CommonMapper<ExamPublishRecord>
     Long getVersionById(Long id);
 
     Integer deleteBatch(@Param("ids") List<Long> ids);
+
+    /**
+     * 根据dto查询report报表表格信息，
+     * report使用
+     *
+     * @param query
+     * @return
+     */
+    List<ReportDataListDTO> queryReportListByCondition(ExamReportQuery query);
 
 
 }

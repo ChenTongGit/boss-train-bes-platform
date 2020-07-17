@@ -37,6 +37,8 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
      */
     @Override
     public int insert(ExamPublishRecord entity) {
+
+        entity.setPublisher(entity.getCreatedBy());
         return mapper.insert(entity);
     }
 
@@ -62,7 +64,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
      */
     @Override
     public int update(ExamPublishRecord entity) {
-        return mapper.updateByPrimaryKeySelective(entity);
+        return mapper.updateByPrimaryKeySelectiveWithVersion(entity);
     }
 
 

@@ -33,11 +33,13 @@ public abstract class BaseVO implements Serializable {
     /**
      * 记录所属公司ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
 
     /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long organizationId;
 
     /**
@@ -49,6 +51,7 @@ public abstract class BaseVO implements Serializable {
     /**
      *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long createdBy;
 
     /**
@@ -60,10 +63,12 @@ public abstract class BaseVO implements Serializable {
     /**
      * 更新人id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long updatedBy;
     /**
      * 数据版本号
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long version;
 
 

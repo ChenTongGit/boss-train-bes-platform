@@ -128,6 +128,9 @@ public enum BusinessError {
     VERSION_NOT_THE_SAME("240309", "数据版本号不一致"),
     EXAM_PUBLISH_FAIL("240310", "考试发布失败"),
     EXAM_PUBLISHED("240310", "重复发布"),
+    PUBLISH_UPDATE_IS_PUBLISHED("240311","已发布"),
+    PUBLISH_TABLE_UPDATE_FAILED("240312","发布记录更新失败"),
+    EXAM_TMP_ANSWER_GET_FAIL("240313","获取缓存中作答数据失败"),
 
 
     EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),
@@ -141,7 +144,15 @@ public enum BusinessError {
     GET_TMP_ANSWER_FAIL("240307", "获取临时回答保存异常"),
     GET_EXAM_LIMIT_TIME_FAIL("240308","获取考试剩余时间失败"),
     SET_EXAM_LIMIT_TIME_FAIL("240309", "设置考试剩余时间失败"),
-    EXAM_RECORD_QUERY_FAIL("240310", "获取考试记录失败");
+    EXAM_RECORD_QUERY_FAIL("240310", "获取考试记录失败"),
+    MOBILE_PAPER_NOT_EXIST("250201","考试试卷不存在"),
+    EXAM_REPORT_QUERY_FAIL("250202", "考试报表查询失败"),
+    EXAM_REPORT_DETAIL_QUERY_FAIL("250203","考试报表详情查询失败"),
+    EXAM_EVALUATE_QUERY_FAIL("260201","获取阅卷所需考试记录失败"),
+    EXAM_EVALUATE_SET_TMP_MARKING_FAIL("260202","将阅卷的回传结果存储到redis失败"),
+    EXAM_EVALUATE_GET_TMP_MARKING_FAIL("260203","从redis中获取阅卷的回传结果失败"),
+    MARKING_ANSWER_TABLE_QUERY_FAILED("260204","阅卷状态更新失败")
+    ;
 
     /**
      * 异常码

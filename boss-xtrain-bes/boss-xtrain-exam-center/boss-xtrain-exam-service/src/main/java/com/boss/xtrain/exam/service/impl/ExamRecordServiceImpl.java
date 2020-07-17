@@ -5,9 +5,11 @@ import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamRecordDao;
 import com.boss.xtrain.exam.pojo.dto.ExamRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordQuery;
 import com.boss.xtrain.exam.pojo.entity.ExamRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamRecordListEntity;
+import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
 import com.boss.xtrain.exam.service.ExamRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,10 @@ public class ExamRecordServiceImpl implements ExamRecordService {
             throw new BusinessException(BusinessError.EXAM_RECORD_QUERY_FAIL);
         }
 
+    }
+
+    @Override
+    public PaperSubjectAnswerVO getCompletePaper(ExamRecordDetailQuery submitPaperVO, boolean queryRedis) {
+        return null;
     }
 }
