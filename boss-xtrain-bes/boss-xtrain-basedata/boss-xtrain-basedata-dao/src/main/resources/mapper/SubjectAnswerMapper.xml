@@ -19,10 +19,14 @@
   </sql>
    <insert id="insertBatch" parameterType="java.util.List">
     insert into t_subject_answer
-    (id,subject_id,answer,right_answer,image_url)
+    (id,t_s_id,answer,right_answer,image_url)
     values
-    <foreach collection ="itemList" item="item" separator =",">
-      (#{item.id}, #{item.subjectId}, #{item.answer}, #{item.rightAnswer}, #{item.imageUrl})
+    <foreach collection="subjectAnswers" item="item" separator=",">
+      (#{item.id,jdbcType=BIGINT},
+      #{item.subjectId,jdbcType=BIGINT},
+      #{item.answer,jdbcType=VARCHAR},
+      #{item.rightAnswer,jdbcType=TINYINT},
+      #{item.imageUrl,jdbcType=VARCHAR})
     </foreach >
   </insert>
 

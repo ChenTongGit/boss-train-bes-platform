@@ -16,4 +16,38 @@
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
     <result column="version" jdbcType="BIGINT" property="version" />
   </resultMap>
+   <update id="updateCombConfig" parameterType="com.boss.xtrain.basedata.pojo.entity.CombExamConfig">
+        update t_comb_exam_config
+        <set >
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="organizationId != null" >
+                org_id = #{organizationId},
+            </if>
+            <if test="createdBy != null" >
+                created_by = #{createdBy},
+            </if>
+            <if test="createdTime != null" >
+                created_time = #{createdTime},
+            </if>
+            <if test="updatedBy != null" >
+                updated_by = #{updatedBy},
+            </if>
+            <if test="updatedTime != null" >
+                updated_time = #{updatedTime},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
 </mapper>

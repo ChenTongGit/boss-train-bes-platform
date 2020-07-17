@@ -18,7 +18,7 @@
     <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
     <result column="version" jdbcType="BIGINT" property="version" />
-    <result column="field1" jdbcType="VARCHAR" property="field1" />
+    <result column="field1" jdbcType="VARCHAR" property="difficulty" />
     <result column="field2" jdbcType="VARCHAR" property="field2" />
     <result column="field3" jdbcType="VARCHAR" property="field3" />
   </resultMap>
@@ -32,19 +32,12 @@
     <collection property="subjectAnswers" column="id" javaType="ArrayList" ofType="com.boss.xtrain.basedata.pojo.entity.SubjectAnswer" select="selectSubjectAnswer">
     </collection>
   </resultMap>
-   <select id="getCategoryName" resultType="java.lang.String">
-    select name as categoryName from t_category where id = #{category_id}
-  </select>
-
-  <select id="getTypeName" resultType="java.lang.String">
-    select type_name as typeName from t_subject_type where id = #{subject_type_id}
-  </select>
 
   <select id="queryByCondition" resultMap="BaseResultMap">
     select a.* from t_subject a,t_category b,t_subject_type c
-    where a.category_id = b.id and a.subject_type_id = c.id and a.org_id = #{orgId}
-    and a.subject_name like CONCAT('%',#{subjectName},'%') and b.name like CONCAT('%',#{categoryName},'%')
-    and c.type_name like CONCAT('%',#{typeName},'%') order by updated_time desc
+    where a.category_id = b.id and a.t_s_id = c.id and a.org_id = #{orgId}
+    or a.name like CONCAT('%',#{name},'%') or b.name like CONCAT('%',#{categoryName},'%')
+    or c.name like CONCAT('%',#{subjectTypeName},'%') order by updated_time desc
   </select>
 
   <select id="querySubject" resultMap="BaseResultMap">
@@ -75,5 +68,53 @@
   <select id="getSubjects" resultMap="BaseResultMap">
     select * from t_subject order by updated_time desc
   </select>
+<update id="updateSubject" parameterType="com.boss.xtrain.basedata.pojo.entity.Subject">
+        update t_subject
+        <set>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="imageUrl != null" >
+                image_url = #{imageUrl},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="organizationId != null" >
+                org_id = #{organizationId},
+            </if>
+            <if test="createdBy != null" >
+                created_by = #{createdBy},
+            </if>
+            <if test="createdTime != null" >
+                created_time = #{createdTime},
+            </if>
+            <if test="updatedBy != null" >
+                updated_by = #{updatedBy},
+            </if>
+            <if test="updatedTime != null" >
+                updated_time = #{updatedTime},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+            <if test="difficulty != null" >
+               field1 = #{difficulty},
+            </if>
+            <if test="companyId != null" >
+                company_id = #{companyId},
+            </if>
+            <if test="categoryId != null" >
+                t_c_id = #{categoryId},
+            </if>
+            <if test="subjectTypeId != null" >
+                t_s_id = #{subjectTypeId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

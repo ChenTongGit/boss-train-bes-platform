@@ -26,6 +26,14 @@ public interface SubjectService {
 
     List<SubjectAnswerDTO> queryAnswer(SubjectAnswerQueryDTO answerQueryDTO);
 
+    List<DifficultDTO> queryDifficult(DifficultQueryDTO difficultQueryDTO);
+
+    List<Long> queryCategoryIdByName(SubjectUpdateDTO subjectUpdateDTO);
+
+    List<Long> queryTypeIdByName(SubjectUpdateDTO subjectUpdateDTO);
+
+    List<SubjectAnswerDTO> querySubjectOtherInfo(SubjectAnswerQueryDTO answerQueryDTO);
+
     List<SubjectDTO> querySubject(List<CombExamItemDTO> combExamItemDTOS);
 
     List<SubjectDTO> querySubjectByConfig(CombExamItemDTO combExamItemDTO);
@@ -36,7 +44,7 @@ public interface SubjectService {
 
     Integer querySubjectCount(CombExamItemDTO combExamItemDTO);
 
-    void isNameAlreadyExist(SubjectUpdateDTO subjectUpdateDTO);
+    void checkRepeatName(SubjectUpdateDTO subjectUpdateDTO);
 
 
 }

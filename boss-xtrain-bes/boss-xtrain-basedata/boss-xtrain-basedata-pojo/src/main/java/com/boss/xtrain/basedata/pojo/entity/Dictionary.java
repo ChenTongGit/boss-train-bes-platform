@@ -17,12 +17,6 @@ import java.util.Date;
 @Data
 public class Dictionary extends BaseEntity{
     /**
-     * 数据字典ID
-     */
-   /* @Column(name = "id")
-    private Long id;*/
-
-    /**
      * 字典名称
      */
     @Column(name = "name")
@@ -47,16 +41,6 @@ public class Dictionary extends BaseEntity{
     private String remark;
 
     private static final long serialVersionUID = 1L;
-
-   /* @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }*/
 
     public String getName() {
         return name;

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SubjectQueryDTO {
-    private String subjectName;
+    private String name;
     private String subjectTypeName;
     private String categoryName;
     private Long orgId;

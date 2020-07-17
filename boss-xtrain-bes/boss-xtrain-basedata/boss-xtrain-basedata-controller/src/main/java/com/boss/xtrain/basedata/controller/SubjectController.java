@@ -13,8 +13,13 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class SubjectController implements SubjectApi {
+@Slf4j
+@CrossOrigin
+public class SubjectController extends BaseController implements SubjectApi {
 
     @Resource
     private SubjectService subjectService;
@@ -33,14 +40,25 @@ public class SubjectController implements SubjectApi {
     private CombExamConfigService combExamConfigService;
 
     @Override
+    @ApiLog(msg = "查询题目(分页)")
     @ResponseBody
-    public CommonResponse<CommonPage<SubjectVO>> querySubject(@RequestBody CommonRequest<SubjectQuery> commonRequest) {
-        return null;
+    public CommonResponse<CommonPage<SubjectVO>> querySubjectPage(@RequestBody CommonRequest<SubjectQueryVO> commonRequest) {
+        SubjectQueryVO subjectQuery = commonRequest.getBody();
+        log.info(subjectQuery.toString());
+        Page<Object> objects = doBeforePagination(subjectQuery.getPageNum(),subjectQuery.getPageSize(),null);
+        SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
+        PojoUtils.copyProperties(subjectQuery,subjectQueryDTO);
+        List<SubjectDTO> subjectDTOS = subjectService.querySubjectByCondition(subjectQueryDTO);
+        List<SubjectVO> subjectVOS = PojoUtils.copyListProperties(subjectDTOS,SubjectVO::new);
+        PageInfo<SubjectVO> pageInfo = new PageInfo<>(subjectVOS);
+        pageInfo.setTotal(objects.getTotal());
+        return buildPageResponse(pageInfo,subjectVOS);
     }
 
     @Override
+    @ApiLog(msg = "查询题目(不分页)")
     @ResponseBody
-    public CommonResponse<List<SubjectVO>> querySubjectList(@RequestBody CommonRequest<SubjectQuery> commonRequest) {
+    public CommonResponse<List<SubjectVO>> querySubjectList(@RequestBody CommonRequest<SubjectQueryVO> commonRequest) {
         SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectQueryDTO);
         List<SubjectDTO> subjectListDto = subjectService.querySubjectByCondition(subjectQueryDTO);
@@ -50,6 +68,7 @@ public class SubjectController implements SubjectApi {
     }
 
     @Override
+    @ApiLog(msg = "删除题目")
     @ResponseBody
     public CommonResponse<Boolean> deleteSubject(@RequestBody CommonRequest<SubjectDeleteVO> commonRequest) {
         SubjectDeleteDTO subjectDeleteDTO = new SubjectDeleteDTO();
@@ -60,21 +79,23 @@ public class SubjectController implements SubjectApi {
     }
 
     @Override
+    @ApiLog(msg = "批量删除题目")
     @ResponseBody
     public CommonResponse<Boolean> deleteSubjectList(@RequestBody CommonRequest<SubjectDeleteIdsVO> commonRequest) {
         SubjectDeleteIdsDTO subjectDeleteIdsDTO = new SubjectDeleteIdsDTO();
-        List<Long> deleteList = new ArrayList<>();
-        PojoUtils.copyProperties(commonRequest.getBody().getIds(),deleteList);
+        List<Long> deleteList = commonRequest.getBody().getIds();
         subjectDeleteIdsDTO.setIds(deleteList);
         subjectService.deleteSubjectList(subjectDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
     }
 
     @Override
+    @ApiLog(msg = "插入题目")
     @ResponseBody
     public CommonResponse<SubjectVO> insertSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
+        log.info(subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.insertSubject(subjectUpdateDTO);
@@ -83,10 +104,12 @@ public class SubjectController implements SubjectApi {
     }
 
     @Override
+    @ApiLog(msg = "更新题目")
     @ResponseBody
     public CommonResponse<SubjectVO> updateSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
+        log.info(subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.updateSubject(subjectUpdateDTO);
@@ -94,17 +117,36 @@ public class SubjectController implements SubjectApi {
     }
 
     @Override
+    @ApiLog(msg = "获取题目答案")
     @ResponseBody
     public CommonResponse<List<SubjectAnswerVO>> queryAnswer(@RequestBody CommonRequest<SubjectAnswerQueryVO> commonRequest) {
-        SubjectAnswerQueryDTO answerQueryDto = new SubjectAnswerQueryDTO();
-        PojoUtils.copyProperties(commonRequest.getBody(),answerQueryDto);
-        List<SubjectAnswerDTO> subjectAnswerDtoList = subjectService.queryAnswer(answerQueryDto);
-        List<SubjectAnswerVO> subjectAnswerVos = new ArrayList<>();
-        PojoUtils.copyProperties(subjectAnswerDtoList,subjectAnswerVos);
-        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),subjectAnswerVos);
+        SubjectAnswerQueryDTO answerQueryDTO = new SubjectAnswerQueryDTO();
+        PojoUtils.copyProperties(commonRequest.getBody(),answerQueryDTO);
+        log.info(answerQueryDTO.toString());
+        List<SubjectAnswerDTO> subjectAnswerDTOS = subjectService.queryAnswer(answerQueryDTO);
+        log.info(subjectAnswerDTOS.toString());
+        List<SubjectAnswerDTO> subjectAnswerDTOList = subjectService.querySubjectOtherInfo(answerQueryDTO);
+        log.info(subjectAnswerDTOList.toString());
+        List<SubjectAnswerVO> subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOS,SubjectAnswerVO::new);
+        log.info(subjectAnswerVOS.toString());
+        subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOList,SubjectAnswerVO::new);
+        log.info(subjectAnswerVOS.toString());
+        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),subjectAnswerVOS);
     }
 
     @Override
+    @ApiLog(msg = "获取题目难度")
+    @ResponseBody
+    public CommonResponse<List<DifficultVO>> queryDifficult(@RequestBody CommonRequest<DifficultQueryVO> commonRequest) {
+        DifficultQueryDTO difficultQueryDTO = new DifficultQueryDTO();
+        PojoUtils.copyProperties(commonRequest.getBody(),difficultQueryDTO);
+        List<DifficultDTO> difficultDTOS = subjectService.queryDifficult(difficultQueryDTO);
+        List<DifficultVO> difficultVOS = PojoUtils.copyListProperties(difficultDTOS,DifficultVO::new);
+        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),difficultVOS);
+    }
+
+    @Override
+    @ApiLog(msg = "批量插入题目")
     @ResponseBody
     public CommonResponse<SubjectVO> insertSubjectList(@RequestBody CommonRequest<List<SubjectUpdateVO>> commonRequest) {
         List<SubjectUpdateDTO> subjectUpdateDTOS = new ArrayList<>();
@@ -117,44 +159,5 @@ public class SubjectController implements SubjectApi {
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
     }
 
-    @Override
-    @ResponseBody
-    public SubjectExamVO querySubjectById(@RequestBody List<Long> subjectIds) {
-        SubjectExamDTO examSubjectDto = subjectService.querySubjectById(subjectIds);
-        SubjectExamVO examSubjectVo = new SubjectExamVO();
-        PojoUtils.copyProperties(examSubjectDto,examSubjectVo);
-        List<SubjectVO> subjectVos = new ArrayList<>();
-        PojoUtils.copyProperties(examSubjectDto.getSubjectVOS(),subjectVos);
-        examSubjectVo.setSubjectVOS(subjectVos);
-        return examSubjectVo;
-
-    }
-
-    @Override
-    @ResponseBody
-    public List<SubjectVO> querySubject(@RequestBody SubjectQueryDTO subjectQueryDTO) {
-        String subjectItemList = subjectQueryDTO.getSubjectName();
-        return null;
-    }
-
-    @Override
-    @ResponseBody
-    public List<SubjectVO> querySubjectToPaper(@RequestBody CombExamItemQueryDTO configItemQueryDto) {
-        List<CombExamItemDTO> combExamItemDTOS =  combExamConfigService.queryItem(configItemQueryDto);
-        List<SubjectDTO> subjectDtoList = subjectService.querySubject(combExamItemDTOS);
-        List<SubjectVO> subjectVOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjectDtoList,subjectDtoList);
-        return subjectVOS;
-
-    }
-
-    @Override
-    @ResponseBody
-    public List<SubjectVO> querySubjectByConfig(@RequestBody CombExamItemDTO configItemsDto) {
-        List<SubjectDTO> subjectDtoList = subjectService.querySubjectByConfig(configItemsDto);
-        List<SubjectVO> subjectVOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjectDtoList,subjectVOS);
-        return subjectVOS;
-    }
 
 }

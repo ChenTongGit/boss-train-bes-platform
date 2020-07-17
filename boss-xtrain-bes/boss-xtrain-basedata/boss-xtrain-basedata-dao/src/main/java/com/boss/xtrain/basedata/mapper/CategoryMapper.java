@@ -11,17 +11,10 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
-    /**
-     * 查询全部题目类别信息
-     * @return
-     */
     List<CategoryDTO> queryCategory();
 
-    /**
-     *
-     * @param categoryQueryDTO
-     * @return
-     */
     List<CategoryDTO> queryCategoryByName(CategoryQueryDTO categoryQueryDTO);
+
+    int updateCategory(Category category);
 
 }

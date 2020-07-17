@@ -2,12 +2,18 @@ package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.CombExamConfigDao;
 import com.boss.xtrain.basedata.dao.CombExamItemDao;
+import com.boss.xtrain.basedata.dao.SubjectDao;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.*;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
+import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.google.gson.internal.$Gson$Preconditions;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -20,8 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Resource
@@ -31,29 +39,30 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     private CombExamItemDao combExamItemDao;
 
     @Autowired
+    private SubjectDao subjectDao;
+
+    @Autowired
     private IdWorker idWorker;
 
     @Override
     public void insertConfig(CombExamConfigDTO combExamConfigDTO) {
         checkRepeatName(combExamConfigDTO);
         CombExamConfig combExamConfig = new CombExamConfig();
-        PojoUtils.copyProperties(combExamConfig,combExamConfig);
+        PojoUtils.copyProperties(combExamConfigDTO,combExamConfig);
         combExamConfig.setId(idWorker.nextId());
         combExamConfigDao.insertCombExamConfig(combExamConfig);
 
-        List<CombExamItem> combExamConfigItems = new ArrayList<>();
-        PojoUtils.copyProperties(combExamConfigDTO.getCombExamItems(),combExamConfigItems);
+        List<CombExamItem> combExamConfigItems = PojoUtils.copyListProperties(combExamConfigDTO.getCombExamItems(),CombExamItem::new);
         for(CombExamItem item : combExamConfigItems){
             item.setId(idWorker.nextId());
             item.setCombExamConfigId(combExamConfig.getId());
         }
         combExamItemDao.insertItem(combExamConfigItems);
-
     }
 
     @Override
     public void deleteConfig(CombExamConfigDeleteDTO combExamConfigDeleteDTO) {
-        //combExamItemDao.deleteItem(combExamConfigDeleteDTO);
+        combExamItemDao.deleteItem(combExamConfigDeleteDTO);
 
         Example example = new Example(CombExamConfig.class);
         Example.Criteria criteria = example.createCriteria();
@@ -64,31 +73,82 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     }
 
     @Override
-    public void updateConfig(CombExamConfigUpdateDTO combExamConfigUpdateDTO) {
-        List<Long> idList = combExamConfigUpdateDTO.getDeleteItemIds();
+    public void deleteConfigs(CombExamConfigDeleteIdsDTO combExamConfigDeleteIdsDTO) {
+        List<CombExamConfigDeleteDTO> combExamConfigDeleteDTOS = combExamConfigDeleteIdsDTO.getDeleteList();
+        List<Long> ids = combExamConfigDeleteDTOS.stream().map(CombExamConfigDeleteDTO::getId).collect(Collectors.toList());
         try{
-            combExamItemDao.deleteByConfigIds(idList);
-            combExamConfigDao.deleteCombExamConfigByIds(idList);
+            combExamItemDao.deleteByConfigIds(ids);
+            combExamConfigDao.deleteCombExamConfigByIds(ids);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.BASE_DATA_COMB_UPDATE_ERROR);
+            throw new BusinessException(BusinessError.BASE_DATA_COMB_DELETE_ERROR,e);
         }
 
     }
 
     @Override
-    public List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
-        Example example = new Example(CombExamConfig.class);
-        example.orderBy("updatedTime").desc();
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("orgId",combExamConfigQueryDTO.getOrgId());
-        criteria.andLike("name","%"+combExamConfigQueryDTO.getName()+"%");
-        List<CombExamConfigDTO> combExamConfigDtoList = combExamConfigDao.getCombExamConfig(example);
-        for(CombExamConfigDTO c : combExamConfigDtoList){
-            CombExamItemQueryDTO configItemQueryDTO = new CombExamItemQueryDTO();
-            configItemQueryDTO.setId(c.getId());
-            configItemQueryDTO.setOrgId(c.getOrganizationId());
-            List<CombExamItemDTO> itemList = combExamItemDao.queryItemById(configItemQueryDTO);
+    public void updateConfig(CombExamConfigUpdateDTO combExamConfigUpdateDTO) {
+        if (combExamConfigUpdateDTO.getDifficultyName() == "简单"){
+            combExamConfigUpdateDTO.setDifficulty(1L);
+        }else if (combExamConfigUpdateDTO.getDifficultyName() == "中等"){
+            combExamConfigUpdateDTO.setDifficulty(2L);
+        }else if (combExamConfigUpdateDTO.getDifficultyName() == "复杂"){
+            combExamConfigUpdateDTO.setDifficulty(3L);
+        }
+        CombExamConfig combExamConfig = new CombExamConfig();
+        PojoUtils.copyProperties(combExamConfigUpdateDTO,combExamConfig);
+        combExamConfigDao.updateCombExamConfig(combExamConfig);
 
+        List<Long> deleteItemIds = combExamConfigUpdateDTO.getDeleteItemIds();
+        if( deleteItemIds != null){
+            combExamItemDao.deleteByIds(deleteItemIds);
+        }
+
+        List<CombExamItem> itemList =PojoUtils.copyListProperties(combExamConfigUpdateDTO.getItemList(),CombExamItem::new);
+        if(!itemList.isEmpty()){
+            List<CombExamItem> addList = new ArrayList<>();
+            List<CombExamItem> updateList = new ArrayList<>();
+            for(CombExamItem c : itemList){
+                if(c.getId() ==  null){
+                    c.setId(idWorker.nextId());
+                    c.setCombExamConfigId(combExamConfigUpdateDTO.getId());
+                    addList.add(c);
+                }else{
+                    updateList.add(c);
+                }
+            }
+            if(!addList.isEmpty()){
+                combExamItemDao.insertItem(addList);
+            }
+            if(!updateList.isEmpty()){
+                combExamItemDao.updateItem(updateList);
+            }
+        }
+
+
+    }
+
+    @Override
+    public List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
+        List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfig(combExamConfigQueryDTO);
+        List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
+        log.info(combExamConfigDtoList.toString());
+        for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
+            CombExamItemQueryDTO configItemQueryDTO = new CombExamItemQueryDTO();
+            configItemQueryDTO.setId(combExamConfigDTO.getId());
+            configItemQueryDTO.setOrgId(combExamConfigDTO.getOrganizationId());
+            List<CombExamItemDTO> combExamItemDTOS = combExamItemDao.queryItemById(configItemQueryDTO);
+            combExamConfigDTO.setCombExamItems(combExamItemDTOS);
+        }
+
+        if (!combExamConfigDtoList.isEmpty()){
+            List<Long> companyIds = new ArrayList<>();
+            List<Long> updateByIds = new ArrayList<>();
+            for (CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
+                if (combExamConfigDTO.getCompanyId() != null){
+                    companyIds.add(combExamConfigDTO.getCompanyId());
+                }
+                updateByIds.add(combExamConfigDTO.getUpdatedBy());
+            }
         }
 
         return combExamConfigDtoList;
@@ -99,13 +159,25 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     public List<CombExamItemDTO> queryItem(CombExamItemQueryDTO combExamItemQueryDTO) {
         List<CombExamItemDTO> configItemDtoList = combExamItemDao.queryItemById(combExamItemQueryDTO);
 
+        log.info(configItemDtoList.toString());
+        int count = 0;
+        Example example = new Example(Dictionary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",combExamItemQueryDTO.getOrgId());
+        criteria.andEqualTo("category","题目难度");
+        List<DifficultDTO> difficultyVOS = subjectDao.queryDifficult(example);
+        for(CombExamItemDTO combExamItemDTO : configItemDtoList){
+            combExamItemDTO.setDifficultyName(difficultyVOS.get(count).getValue());
+            count++;
+        }
+
         return configItemDtoList;
 
     }
 
     @Override
     public boolean insertItem(List<CombExamItemDTO> itemList) {
-        Long combExamConfigId = itemList.get(0).getConfigId();
+        Long combExamConfigId = itemList.get(0).getCombExamConfigId();
         if(combExamConfigId == null){
             return false;
         }
@@ -117,7 +189,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
         CombExamConfigDeleteDTO combExamConfigDelDto = new CombExamConfigDeleteDTO();
         combExamConfigDelDto.setId(combExamConfigId);
-      //  combExamItemDao.deleteItem(combExamConfigDelDto);
+        combExamItemDao.deleteItem(combExamConfigDelDto);
 
         List<CombExamItem> configItemList = new ArrayList<>();
         PojoUtils.copyProperties(itemList,configItemList);
@@ -128,17 +200,6 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     }
 
-    @Override
-    public void deleteConfigs(CombExamConfigDeleteDTO object) {
-        List<Long> idList = new ArrayList<>();
-        try{
-            combExamItemDao.deleteByConfigIds(idList);
-            combExamConfigDao.deleteCombExamConfigByIds(idList);
-        }catch (Exception e){
-            throw new BusinessException(BusinessError.BASE_DATA_COMB_DELETE_ERROR);
-        }
-
-    }
 
     @Override
     public void checkRepeatName(CombExamConfigDTO combExamConfigDto) {

@@ -3,10 +3,12 @@ package com.boss.xtrain.basedata.dao.impl;
 import com.boss.xtrain.basedata.dao.CombExamItemDao;
 import com.boss.xtrain.basedata.mapper.CombExamItemMapper;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDTO;
+import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDeleteDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class CombExamItemDaoImpl implements CombExamItemDao {
 
     @Autowired
@@ -26,7 +29,7 @@ public class CombExamItemDaoImpl implements CombExamItemDao {
     }
 
     @Override
-    public void deleteItem(CombExamConfigDTO c) {
+    public void deleteItem(CombExamConfigDeleteDTO c) {
         Example example = new Example(CombExamItem.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("combExamConfigId",c.getId());
@@ -59,8 +62,9 @@ public class CombExamItemDaoImpl implements CombExamItemDao {
     public List<CombExamItemDTO> queryItemById(CombExamItemQueryDTO c) {
         Long combExamConfigId = c.getId();
         List<CombExamItem> combExamConfigItems =  combExamItemMapper.getItemInfo(combExamConfigId);
-        List<CombExamItemDTO> combExamItemDTOS = new ArrayList<>();
-        PojoUtils.copyProperties(combExamConfigItems,combExamItemDTOS);
+        log.info(combExamConfigItems.toString());
+        List<CombExamItemDTO> combExamItemDTOS = PojoUtils.copyListProperties(combExamConfigItems,CombExamItemDTO::new);
+        log.info(combExamItemDTOS.toString());
         return combExamItemDTOS;
 
     }

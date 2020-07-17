@@ -58,5 +58,45 @@
         </where>
         order by updated_time desc
     </select>
+     <update id="updateCategory" parameterType="com.boss.xtrain.basedata.pojo.entity.Category">
+        update t_category
+        <set >
+            <if test="id != null" >
+                id = #{id},
+            </if>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="parentId != null" >
+                parent_id = #{parentId,},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="organizationId != null" >
+                org_id = #{organizationId},
+            </if>
+            <if test="createdBy != null" >
+                created_by = #{createdBy},
+            </if>
+            <if test="createdTime != null" >
+                created_time = #{createdTime},
+            </if>
+            <if test="updatedBy != null" >
+                updated_by = #{updatedBy},
+            </if>
+            <if test="updatedTime != null" >
+                updated_time = #{updatedTime},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 
 </mapper>

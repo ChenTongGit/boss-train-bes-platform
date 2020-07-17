@@ -37,9 +37,10 @@ public class TreeUtil {
                     data.setChildren(new ArrayList<>());
                 }
                 //把子节点 放到父节点children当中
-                resultList.add(itemTree);
-                data.setChildren(resultList);
-                //data.getChildren().add(itemTree);
+              //  resultList.add(itemTree);
+              //  data.setChildren(itemTree);
+
+                data.getChildren().add(itemTree);
                 //把放好的数据放回map当中
                 treeMap.put(itemTree.getParentId(), data);
             }

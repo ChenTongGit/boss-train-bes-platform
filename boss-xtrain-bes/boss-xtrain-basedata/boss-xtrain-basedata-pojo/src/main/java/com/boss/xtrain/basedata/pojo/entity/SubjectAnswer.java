@@ -1,6 +1,5 @@
 package com.boss.xtrain.basedata.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -9,8 +8,11 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Table(name = "t_subject_answer")
-public class SubjectAnswer extends BaseEntity implements Serializable {
+public class SubjectAnswer implements Serializable {
 
+    @Id
+    @Column(name = "id")
+    private Long id;
     /**
      * 题目ID
      */
@@ -27,7 +29,7 @@ public class SubjectAnswer extends BaseEntity implements Serializable {
      * 正确答案
      */
     @Column(name = "right_answer")
-    private Byte rightAnswer;
+    private Integer rightAnswer;
 
     /**
      * 图片路径
@@ -55,6 +57,14 @@ public class SubjectAnswer extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getSubjectId() {
         return subjectId;
     }
@@ -71,11 +81,11 @@ public class SubjectAnswer extends BaseEntity implements Serializable {
         this.answer = answer;
     }
 
-    public Byte getRightAnswer() {
+    public Integer getRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(Byte rightAnswer) {
+    public void setRightAnswer(Integer rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
 

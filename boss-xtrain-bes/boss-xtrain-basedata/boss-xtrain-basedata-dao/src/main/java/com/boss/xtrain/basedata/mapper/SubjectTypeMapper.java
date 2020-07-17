@@ -11,4 +11,6 @@ import java.util.List;
 @Mapper
 public interface SubjectTypeMapper extends BaseMapper<SubjectType> {
 
+    int updateSubjectType(SubjectType subjectType);
+
 }

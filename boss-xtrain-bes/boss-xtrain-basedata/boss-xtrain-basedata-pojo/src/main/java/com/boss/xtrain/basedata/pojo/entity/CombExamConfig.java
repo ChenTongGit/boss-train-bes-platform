@@ -19,15 +19,9 @@ import javax.persistence.Table;
 @Table(name = "t_comb_exam_config")
 public class CombExamConfig extends BaseEntity implements Serializable {
 
-    /**
-     * 配置名
-     */
     @Column(name = "name")
     private String name;
 
-    /**
-     * 备注
-     */
     @Column(name = "remark")
     private String remark;
 

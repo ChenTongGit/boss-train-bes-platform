@@ -1,6 +1,7 @@
 package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.CategoryDao;
+import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.*;
 import com.boss.xtrain.basedata.pojo.vo.category.CategoryVO;
 import com.boss.xtrain.common.core.exception.BusinessException;
@@ -64,23 +65,17 @@ public class CategoryServiceImpl implements CategoryService{
     public void updateCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         PojoUtils.copyProperties(categoryDTO,category);
-
-        Example example = new Example(Category.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("id", category.getId());
-        criteria.andEqualTo("name", category.getName());
-        criteria.andEqualTo("version", category.getVersion());
-
-        categoryDao.updateCategory(category,example);
-
+        categoryDao.updateCategory(category);
     }
 
     @Override
     public List<CategoryDTO> queryCategoryPage(CategoryQueryDTO categoryQueryDTO) {
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
+        example.orderBy("updatedTime").desc();
         criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
-        criteria.andEqualTo("name", "%"+categoryQueryDTO.getName()+"%");
+        criteria.andEqualTo("name", categoryQueryDTO.getName());
+        log.info(categoryQueryDTO.getName());
         return categoryDao.queryByCondition(example);
     }
 
@@ -100,7 +95,9 @@ public class CategoryServiceImpl implements CategoryService{
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
-        criteria.andEqualTo("name", "%"+categoryQueryDTO.getName()+"%");
+        criteria.andEqualTo("name", categoryQueryDTO.getName());
+        log.info(categoryQueryDTO.getName());
+
         return categoryDao.queryByCondition(example);
     }
 

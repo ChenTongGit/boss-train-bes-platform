@@ -16,6 +16,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(value = "{handler}")
 public class CategoryDTO extends BaseVO {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long id;
     @NotNull(message = "题目类别名称不能为空")
     private String name;
     private Long parentId;

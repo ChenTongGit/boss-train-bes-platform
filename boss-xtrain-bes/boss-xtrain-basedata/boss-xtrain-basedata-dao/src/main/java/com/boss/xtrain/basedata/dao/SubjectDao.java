@@ -16,11 +16,21 @@ public interface SubjectDao{
 
     int deleteSubject(List<Long> ids);
 
-    int update(Subject subject);
+    int updateSubject(Subject subject);
 
     List<SubjectDTO> queryAll();
 
+    List<SubjectDTO> querySubjectOtherInfo(Example example);
+
     List<SubjectDTO> queryByCondition(Long orgId,String subjectName,String categoryName,String typeName);
+
+    List<DifficultDTO> queryDifficult(Example example);
+
+    List<String> querySubjectDifficult(Example example);
+
+    List<Long> queryCategoryIdByName(Example example);
+
+    List<Long> queryTypeIdByName(Example example);
 
     List<Subject> querySubject(CombExamItemDTO combExamItemDTO);
 

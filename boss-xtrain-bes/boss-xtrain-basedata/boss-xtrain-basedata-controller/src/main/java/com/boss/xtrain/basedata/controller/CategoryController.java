@@ -1,6 +1,8 @@
 package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.basedata.api.CategoryApi;
+import com.boss.xtrain.basedata.api.paper.CombInfoQueryDTO;
+import com.boss.xtrain.basedata.api.paper.SubjectCategoryVO;
 import com.boss.xtrain.basedata.pojo.dto.category.*;
 import com.boss.xtrain.basedata.pojo.vo.category.*;
 import com.boss.xtrain.basedata.service.CategoryService;
@@ -12,7 +14,9 @@ import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.github.pagehelper.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,14 +88,16 @@ public class CategoryController extends BaseController implements CategoryApi {
     public CommonResponse<CommonPage<CategoryVO>> queryCategoryPage(@RequestBody CommonRequest<CategoryQueryVO> commonRequest) {
         CategoryQueryVO categoryQueryVO = commonRequest.getBody();
         log.info(categoryQueryVO.toString());
-        doBeforePagination(categoryQueryVO.getPageIndex(),categoryQueryVO.getPageSize(),categoryQueryVO.getOrderBy());
+        Page<Object> objects = doBeforePagination(categoryQueryVO.getPageIndex(),categoryQueryVO.getPageSize(),categoryQueryVO.getOrderBy());
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
         PojoUtils.copyProperties(categoryQueryVO,categoryQueryDTO);
         List<CategoryDTO> categoryDTOS = categoryService.queryCategoryPage(categoryQueryDTO);
-        List<CategoryVO> categoryVOS = new ArrayList<>();
-        PojoUtils.copyProperties(categoryDTOS,categoryVOS);
+        log.info(categoryDTOS.toString());
+        List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS,CategoryVO::new);
         PageInfo<CategoryVO> pageInfo = new PageInfo<>(categoryVOS);
-        return buildPageResponse(pageInfo);
+        pageInfo.setTotal(objects.getTotal());
+        log.info(categoryVOS.toString());
+        return buildPageResponse(pageInfo,categoryVOS);
     }
 
     @Override
@@ -118,12 +124,18 @@ public class CategoryController extends BaseController implements CategoryApi {
     public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CategoryIdsVO> commonRequest) {
         CategoryIdsDTO categoryIdListDTO = new CategoryIdsDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryIdListDTO);
-        doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
+        Page<Object> objects = doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         List<CategoryDTO> categoryDtoList = categoryService.queryByIdList(categoryIdListDTO);
         log.info(categoryDtoList.toString());
         List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDtoList,CategoryVO::new);
         PageInfo<CategoryVO> pageInfo = new PageInfo<>(categoryVOS);
-        return buildPageResponse(pageInfo);
+        pageInfo.setTotal(objects.getTotal());
+        return buildPageResponse(pageInfo,categoryVOS);
 
+    }
+
+    @Override
+    public List<SubjectCategoryVO> querySubjectCategory(CombInfoQueryDTO combInfoQueryDTO) {
+        return null;
     }
 }

@@ -20,7 +20,7 @@ public interface DictionaryApi {
     @PostMapping("/deleteDictionary")
     CommonResponse<Boolean> deleteDictionary(CommonRequest<DictionaryDeleteVO> commonRequest);
 
-    @PostMapping("/deleteDictionary/Batches")
+    @PostMapping("/deleteDictionaryList")
     CommonResponse<Boolean> deleteDictionaryByIds(CommonRequest<DictionaryVO> commonRequest);
 
     @PostMapping("/updateDictionary")

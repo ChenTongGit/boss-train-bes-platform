@@ -6,8 +6,8 @@
     <!--@Table t_comb_exam_config_item-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="t_s_id" jdbcType="BIGINT" property="subjectTypeId" />
-    <result column="t_c_id" jdbcType="BIGINT" property="categoryId" />
-    <result column="t_c_id2" jdbcType="BIGINT" property="combExamConfigId" />
+    <result column="t_c_id" jdbcType="BIGINT" property="combExamConfigId" />
+    <result column="t_c_id2" jdbcType="BIGINT" property="categoryId" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="difficult" jdbcType="BIGINT" property="difficult" />
     <result column="score" jdbcType="DECIMAL" property="score" />
@@ -17,20 +17,12 @@
     id, t_s_id, t_c_id, t_c_id2, num, difficult, score
   </sql>
  <select id="getItemInfo" resultMap="BaseResultMap">
-    select * from t_comb_exam_config_item where t_comb_exam_config_item.id = #{combExamConfigId}
-  </select>
-
-  <select id="getCategoryName" resultType="java.lang.String">
-    select name as categoryName from t_category where id = #{category_id}
-  </select>
-
-  <select id="getTypeName" resultType="java.lang.String">
-    select type_name as typeName from t_subject_type where id = #{subject_type_id}
+    select * from t_comb_exam_config_item where t_comb_exam_config_item.t_c_id = #{combExamConfigId}
   </select>
 
   <insert id="insertBatch" parameterType="java.util.List">
     insert into t_comb_exam_config_item
-    (id,comb_exam_config_id,category_id,subject_type_id,num,difficulty,score)
+    (id,t_c_id,t_c_id2,t_s_id,num,difficult,score)
     values
     <foreach collection ="itemList" item="item" separator =",">
       (#{item.id}, #{item.combExamConfigId}, #{item.categoryId}, #{item.subjectTypeId}, #{item.num}, #{item.difficult}, #{item.score})
@@ -42,10 +34,10 @@
       update t_comb_exam_config_item
       <set>
         <if test="item.categoryId != null">
-          category_id = #{item.categoryId},
+          t_c_id2 = #{item.categoryId},
         </if>
         <if test="item.subjectTypeId != null">
-          subject_type_id = #{item.subjectTypeId},
+          t_s_id = #{item.subjectTypeId},
         </if>
         <if test="item.num != null">
           num = #{item.num},

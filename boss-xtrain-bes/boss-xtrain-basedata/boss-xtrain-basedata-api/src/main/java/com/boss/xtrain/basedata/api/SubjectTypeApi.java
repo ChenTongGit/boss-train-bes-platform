@@ -1,7 +1,10 @@
 package com.boss.xtrain.basedata.api;
 
+import com.boss.xtrain.basedata.api.paper.CombInfoQueryDTO;
+import com.boss.xtrain.basedata.api.paper.SubjectTypePaperVO;
 import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeQueryDTO;
 import com.boss.xtrain.basedata.pojo.vo.subject.SubjectDeleteVO;
+import com.boss.xtrain.basedata.pojo.vo.subjecttype.SubjectTypeDeleteIdsVO;
 import com.boss.xtrain.basedata.pojo.vo.subjecttype.SubjectTypeDeleteVO;
 import com.boss.xtrain.basedata.pojo.vo.subjecttype.SubjectTypeQueryVO;
 import com.boss.xtrain.basedata.pojo.vo.subjecttype.SubjectTypeVO;
@@ -23,7 +26,7 @@ public interface SubjectTypeApi {
     CommonResponse<Boolean> deleteSubjectType(CommonRequest<SubjectDeleteVO> commonRequest);
 
     @PostMapping("/deleteSubjectTypeList")
-    CommonResponse<Boolean> deleteSubjectTypeList(CommonRequest<List<SubjectTypeDeleteVO>> commonRequest);
+    CommonResponse<Boolean> deleteSubjectTypeList(CommonRequest<SubjectTypeDeleteIdsVO> commonRequest);
 
     @PostMapping("/updateSubjectType")
     CommonResponse<SubjectTypeVO> updateSubjectType(CommonRequest<SubjectTypeVO> commonRequest);
@@ -32,5 +35,5 @@ public interface SubjectTypeApi {
     CommonResponse<CommonPage<SubjectTypeVO>> querySubjectTypePage(CommonRequest<SubjectTypeQueryVO> commonRequest);
 
     @PostMapping("/querySubjectType")
-    List<SubjectTypeVO> querySubjectType(SubjectTypeQueryDTO subjectTypeQueryDTO);
+    List<SubjectTypePaperVO> querySubjectType(CombInfoQueryDTO combInfoQueryDTO);
 }
