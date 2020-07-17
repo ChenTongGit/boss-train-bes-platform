@@ -31,5 +31,6 @@ public class ResourceListVO extends BaseVO {
     private String closeImg;
     private Byte resourceType;
     private Byte leaf;
-
+    //
+    private String tenantName;
 }

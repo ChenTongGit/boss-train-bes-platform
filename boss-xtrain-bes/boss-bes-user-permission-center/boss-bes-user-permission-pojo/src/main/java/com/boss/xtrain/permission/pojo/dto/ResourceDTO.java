@@ -9,7 +9,6 @@ import lombok.*;
  * @Description :resource的dto对象
  * @Version: 1.0
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +27,6 @@ public class ResourceDTO extends BaseDTO {
     private Byte resourceType;
     private Byte leaf;
     private String remark;
+    //
+    private String tenantName;
 }

@@ -35,19 +35,19 @@ public class PermissonServiceClientFallbackImpl implements PermissonServiceClien
      */
     @Override
     public CommonResponse<UserDTO> findUserByName(@RequestBody @Valid CommonRequest<UserQueryDTO> request){
-        log.error(ClientConstant.FIND_USER_BY_NAME_FAIL_MSG, throwable);
+        log.error("服务降级返回", throwable);
         return null;
     }
 
     @Override
-    public CommonResponse<List<RoleListVO>> findRoleByName(@RequestBody @Valid CommonRequest<RoleQueryDTO> request){
-        log.error(ClientConstant.FIND_ROLE_BY_NAME_FAIL_MSG, throwable);
+    public CommonResponse<List<RoleListVO>> findRoleByName(@RequestBody @Valid CommonRequest<UserQueryDTO> request){
+        log.error("服务降级返回", throwable);
         return null;
     }
 
     @Override
-    public CommonResponse<List<ResourceListVO>> findResourceByName(@RequestBody @Valid CommonRequest<ResourceQueryDTO> request){
-        log.error(ClientConstant.FIND_RESOURCE_BY_NAME_FAIL_MSG, throwable);
+    public CommonResponse<List<ResourceListVO>> findResourceByName(@RequestBody @Valid CommonRequest<RoleQueryDTO> request){
+        log.error("服务降级返回", throwable);
         return null;
     }
 

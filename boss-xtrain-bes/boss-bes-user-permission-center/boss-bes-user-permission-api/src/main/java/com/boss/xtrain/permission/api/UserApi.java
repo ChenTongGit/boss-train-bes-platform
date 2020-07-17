@@ -3,10 +3,12 @@ package com.boss.xtrain.permission.api;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.pojo.vo.UserListVO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -96,8 +98,8 @@ public interface UserApi {
      * @return CommonResponse<List<RoleListVO>>
      *
     */
-    @RequestMapping("/getRoleList")
-    CommonResponse<List<RoleListVO>> getAllRole(@Valid CommonRequest<UserQueryDTO> request);
+    @PostMapping("/getRoleList")
+    CommonResponse<List<RoleListVO>> getAllRole(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
 
     /**
      *
@@ -106,8 +108,8 @@ public interface UserApi {
      * @return CommonResponse<List<ResourceListVO>>
      *
     */
-    @RequestMapping("/getAllResource")
-    CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<UserQueryDTO> request);
+    @PostMapping("/getAllResource")
+    CommonResponse<List<ResourceListVO>> getAllResource(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
 
 }
 

@@ -44,9 +44,11 @@ public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
                 userJwt = (UserJwt) userDetails;
             }
             response.put("id", userJwt.getId());
-            response.put("companyName",userJwt.getCompanyName());
-            response.put("departmentName",userJwt.getDepartmentName());
-            response.put("positionName",userJwt.getPositionName());
+            response.put("companyName", userJwt.getCompanyName());
+            response.put("departmentName", userJwt.getDepartmentName());
+            response.put("organizationId", userJwt.getOrganizationId());
+            response.put("companyId", userJwt.getCompanyId());
+            response.put("departmentId", userJwt.getDepartmentId());
             if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
                 response.put("authorities", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
             }

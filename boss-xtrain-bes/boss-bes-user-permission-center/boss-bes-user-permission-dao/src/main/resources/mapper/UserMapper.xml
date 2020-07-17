@@ -30,7 +30,7 @@
   <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
     <id column="id" property="id"/>
     <result column="t_c_id" property="companyId"/>
-    <result column="t_o_id" property="orgId"/>
+    <result column="t_o_id" property="organizationId"/>
     <result column="name" property="name" />
     <result column="code" property="code" />
     <result column="remark" property="remark" />
@@ -86,11 +86,11 @@
   </delete>
 
   <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
-    SELECT tr.*,tr.company_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
+    SELECT tr.*,tr.t_c_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
     <where>
-      tr.company_id= tc.id
+      tr.t_c_id = tc.id
       <if test="companyId != null and companyId != ''">
-        AND tr.company_id = #{companyId}
+        AND tr.t_c_id = #{companyId}
       </if>
     </where>
   </select>

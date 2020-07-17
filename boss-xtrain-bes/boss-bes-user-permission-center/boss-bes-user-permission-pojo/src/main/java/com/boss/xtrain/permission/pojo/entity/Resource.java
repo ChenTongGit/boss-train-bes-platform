@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "t_resource")
 public class Resource extends BaseSystemEntity {
     @Column(name = "tenant_name")
-    private  Long tenantName;
+    private String tenantName;
     @Column(name = "code")
     private String code;
     @Column(name = "order_index")

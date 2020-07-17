@@ -84,6 +84,11 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
         <!-- druid mysql -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -143,6 +148,17 @@
         <dependency>
             <groupId>com.boss.xtrain.bes</groupId>
             <artifactId>boss-bes-user-permission-pojo</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-util</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>

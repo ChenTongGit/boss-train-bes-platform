@@ -4,11 +4,10 @@ import com.boss.xtrain.authentication.feign.PermissonServiceClient;
 import com.boss.xtrain.authentication.service.UserDaoService;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
-import com.boss.xtrain.permission.pojo.entity.Resource;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
@@ -16,8 +15,6 @@ import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,36 +33,20 @@ public class UserDaoServiceImpl implements UserDaoService {
         CommonResponse<UserDTO> user = permissonServiceClient.findUserByName(userQuery);
         UserDTO userDTO = user.getData();
 
-        /*CommonRequest<RoleQueryDTO> roleQuery = new CommonRequest<>();
-        RoleQueryDTO roleQueryDTO = new RoleQueryDTO();
-        roleQueryDTO.setName(userName);
-        roleQuery.setBody(roleQueryDTO);
-        CommonResponse<List<RoleListVO>> roles = permissonServiceClient.findRoleByName(roleQuery);*/
+        CommonResponse<List<RoleListVO>> roles = permissonServiceClient.findRoleByName(userQuery);
+        List<RoleDTO> roleDTOs = PojoUtils.copyListProperties(roles.getData(), RoleDTO::new);
 
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setName("admin");
-        userDTO.setRoleList(new ArrayList<>());
-        userDTO.getRoleList().add(roleDTO);
+        userDTO.setRoleList(roleDTOs);
+        userDTO.getRoleList().forEach(roleDTO -> {
+            CommonRequest<RoleQueryDTO> roleQuery = new CommonRequest<>();
+            RoleQueryDTO roleQueryDTO = new RoleQueryDTO();
+            roleQueryDTO.setId(roleDTO.getId());
+            roleQuery.setBody(roleQueryDTO);
+            List<ResourceListVO> resources = permissonServiceClient.findResourceByName(roleQuery).getData();
 
-        ResourceDTO resourceDTO = new ResourceDTO();
-        resourceDTO.setName("request_url1");
-        userDTO.getRoleList().get(0).setResourceList(new ArrayList<>());
-        userDTO.getRoleList().get(0).getResourceList().add(resourceDTO);
-        /*
-        roles.getData().forEach(roleListVO -> {
-            CommonRequest<ResourceQueryDTO> resourceQuery = new CommonRequest<>();
-            ResourceQueryDTO resourceQueryDTO = new ResourceQueryDTO();
-            resourceQueryDTO.setName(roleListVO.getName());
-            resourceQuery.setBody(resourceQueryDTO);
-
-            CommonResponse<List<ResourceListVO>> resources = permissonServiceClient.findResourceByName(resourceQuery);
-            resources.getData().forEach(resourceListVO -> {
-                if (resourceListVO.getResourceType() == 1)
-                    roleListVO.getResourceList().add(resourceListVO);
-            });
+            List<ResourceDTO> resourceDTOs = PojoUtils.copyListProperties(resources, ResourceDTO::new);
+            roleDTO.setResourceList(resourceDTOs);
         });
-*/
-        log.info(userDTO.toString());
         return userDTO;
     }
 }

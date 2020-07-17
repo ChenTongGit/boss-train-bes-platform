@@ -11,6 +11,9 @@ spring:
     url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai
     username: root
     password: zzy873190934
+    hikari:
+      max-lifetime: 10000
+      minimum-idle: 5
 
   application:
     name: boss-bes-system-center
@@ -22,7 +25,18 @@ spring:
     nacos-host: 123.57.156.184
     nacos-port: 8848
 
-      #cloud:
+security:
+  oauth2:
+    client:
+      clientId: bes
+      clientSecret: 12345
+      userAuthorizationUri: http://localhost:4444/oauth/authorize
+      grant-type: password
+      scope: read
+      access-token-uri: http://localhost:4444/oauth/token
+    authorization:
+      check-token-access: http://localhost:4444/oauth/check_token
+  #cloud:
     #nacos:
       # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
       #discovery:

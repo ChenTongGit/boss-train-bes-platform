@@ -22,22 +22,24 @@
   </resultMap>
   <resultMap id="ResourceMap" type="com.boss.xtrain.permission.pojo.entity.Resource">
     <id column="id" property="id"/>
-    <result column="status" property="status" />
-    <result column="created_by" property="createdBy" />
-    <result column="created_time" property="createdTime" />
-    <result column="updated_by" property="updatedBy" />
-    <result column="updated_time" property="updatedTime" />
-    <result column="version" property="version" />
-    <result column="code" property="code" />
-    <result column="name" property="name" />
-    <result column="order_index" property="orderIndex" />
-    <result column="parent_id" property="parentId" />
-    <result column="url" property="url" />
-    <result column="open_img" property="openImg" />
-    <result column="close_img" property="closeImg" />
-    <result column="resource_type" property="resourceType" />
-    <result column="leaf" property="leaf" />
-    <result column="remark" property="remark" />
+      <result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />
+      <result column="tenant_name" property="tenantName" jdbcType="VARCHAR" />
+      <result column="code" property="code" jdbcType="VARCHAR" />
+      <result column="order_index" property="orderIndex" jdbcType="INTEGER" />
+      <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+      <result column="url" property="url" jdbcType="VARCHAR" />
+      <result column="open_img" property="openImg" jdbcType="VARCHAR" />
+      <result column="close_img" property="closeImg" jdbcType="VARCHAR" />
+      <result column="resource_type" property="resourceType" jdbcType="TINYINT" />
+      <result column="leaf" property="leaf" jdbcType="TINYINT" />
+      <result column="action" property="action" jdbcType="TINYINT" />
+      <result column="remark" property="remark" jdbcType="VARCHAR" />
+      <result column="status" property="status" jdbcType="TINYINT" />
+      <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+      <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+      <result column="updated_by" property="updatedBy" jdbcType="BIGINT" />
+      <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+      <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
 
   <resultMap id="UserMap" type="com.boss.xtrain.permission.pojo.entity.User">
@@ -82,8 +84,8 @@
 
   <!--通过RoleId去role_resource表查询相连的resourceId-->
   <select id="getResourcesByRoleId" parameterType="java.lang.Long" resultMap="ResourceMap">
-        select  a.id,a.name  from t_resource a left join role_resource b on a.id = b.resource_id  where b.role_id = #{id}
-    </select>
+    select  a.id,a.tenant_name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
+  </select>
 
   <select id="getUsers" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="UserMap">
     SELECT  tu.id,tu.name,tu.code,tu.company_id as companyId, tc.name as companyName

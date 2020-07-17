@@ -10,6 +10,7 @@ import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
 import com.boss.xtrain.permission.service.PositionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

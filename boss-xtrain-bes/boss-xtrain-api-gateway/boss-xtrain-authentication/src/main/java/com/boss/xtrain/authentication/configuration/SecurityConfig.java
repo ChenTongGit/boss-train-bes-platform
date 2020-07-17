@@ -47,7 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated()
             .and()
             .formLogin()
-            .permitAll();
+            .permitAll()
+            .successForwardUrl("/index")
+            
+            .and()
+            .logout()
+            .logoutSuccessUrl("http://127.0.0.1:4444/exit");
     }
 
     @Override
