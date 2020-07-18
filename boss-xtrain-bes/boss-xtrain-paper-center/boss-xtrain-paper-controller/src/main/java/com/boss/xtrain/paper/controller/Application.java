@@ -11,8 +11,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.boss.xtrain.paper")
 @MapperScan("com.boss.xtrain.paper.mapper")
-@EnableDiscoveryClient
-@EnableFeignClients
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
