@@ -191,7 +191,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return departmentDao.update(dto);
+            return departmentDao.deptUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR,e);

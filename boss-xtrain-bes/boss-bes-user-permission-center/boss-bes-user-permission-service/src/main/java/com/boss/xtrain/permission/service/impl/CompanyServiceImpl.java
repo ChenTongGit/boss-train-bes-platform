@@ -217,7 +217,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return companyDao.update(dto);
+            return companyDao.companyUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR,e);
@@ -243,8 +243,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         try{
             dto.setId(worker.nextId());
-            Long orgId = dto.getOrganizationId();
-            dto.setOrganizationId(orgId);
             dto.setCreatedTime(new Date());
             return companyDao.add(dto);
         }catch (Exception e){

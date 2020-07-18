@@ -145,6 +145,9 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+        //        Long createdBy = token获取userID
+        Long createdBy = null;
+        dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -174,6 +177,8 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+//        Long updateUser = token;从token中获得更新人id
+//        dto.setUpdatedBy(updateUser);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

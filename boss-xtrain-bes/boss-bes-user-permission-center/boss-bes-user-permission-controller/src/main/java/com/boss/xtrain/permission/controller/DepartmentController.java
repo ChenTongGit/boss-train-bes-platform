@@ -60,7 +60,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "查找公司树节点")
+    @ApiLog(msg = "查找公司节点")
     @ResponseBody
     public CommonResponse<List<CompanyQuery>> selectTree() {
         try{
@@ -135,20 +135,21 @@ public class DepartmentController extends BaseController implements DepartmentAp
      */
     @Override
     @ApiOperation(value = "test")
-    @ApiLog(msg = "查找该组织机构下的公司及部门")
+    @ApiLog(msg = "无条件查找所有的部门")
     public CommonResponse<List<DepartmentVO>> selectAll() {
-        //至少userId信息不为空
         List<DepartmentDTO> departmentDTOList = service.selectAll();
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return CommonResponseUtil.ok(departmentVOList);
     }
-
 
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "添加部门信息")
     public CommonResponse<Integer> insert(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
+//        Long createdBy = token获取userID
+        Long createdBy = null;
+        dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -178,6 +179,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @ApiLog(msg = "更新部门信息")
     public CommonResponse<Integer> update(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
+//        Long updateUser = token;从token中获得更新人id
+//        dto.setUpdatedBy(updateUser);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

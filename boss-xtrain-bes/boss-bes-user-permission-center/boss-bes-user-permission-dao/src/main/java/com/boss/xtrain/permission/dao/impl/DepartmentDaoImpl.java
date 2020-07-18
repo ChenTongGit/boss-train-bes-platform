@@ -44,8 +44,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
         if(query.getParentId()!=null){
             criteria.andEqualTo("parentId",query.getParentId());
         }
-        if(query.getName()!=null){
-            criteria.andEqualTo("name",query.getName());
+        if(query.getId()!=null){
+            criteria.andEqualTo("id",query.getId());
         }
         if(query.getCompanyId()!=null){
             criteria.andEqualTo("companyId",query.getCompanyId());
@@ -153,12 +153,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 更新用户数据
-     *
+     * 不通过统一的aop切面，updatedBy在controller层获取
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
     @Override
-    public int update(DepartmentDTO dto) {
+    public int deptUpdate(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
         return mapper.updateByPrimaryKeySelective(department);
@@ -174,6 +174,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public int add(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
+        department.setVersion(0L);
         return mapper.insertSelective(department);
     }
 

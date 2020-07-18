@@ -18,6 +18,7 @@
         <module>boss-bes-user-permission-pojo</module>
         <module>boss-bes-user-permission-service</module>
         <module>boss-bes-user-permission-utils</module>
+        <module>boss-bes-user-permission-config</module>
     </modules>
 
     <dependencies>

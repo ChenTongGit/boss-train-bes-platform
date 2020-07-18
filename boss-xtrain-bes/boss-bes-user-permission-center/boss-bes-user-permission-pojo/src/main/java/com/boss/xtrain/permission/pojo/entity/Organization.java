@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
+import tk.mybatis.mapper.annotation.Version;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -28,9 +29,4 @@ public class Organization extends BaseSystemEntity {
     @Column(name = "address")
     private String address;
 
-    /**
-     *  当前行的版初始为0 每次数据变动则加1
-     */
-    @Column(name = "version")
-    private Long version;
 }

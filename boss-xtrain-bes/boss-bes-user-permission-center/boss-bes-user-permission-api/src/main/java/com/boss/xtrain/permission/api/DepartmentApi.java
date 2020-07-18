@@ -62,6 +62,13 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
     @GetMapping("/selectAll")
     CommonResponse<List<DepartmentVO>> selectAll();
 
+//    /**
+//     * 通过确认的公司加载这个公司下的部门
+//     * @return
+//     */
+//    @GetMapping("/selectAll")
+//    CommonResponse<List<DepartmentQuery>> selectByCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
+
     /**
      * 分页条件搜索
      * @param request

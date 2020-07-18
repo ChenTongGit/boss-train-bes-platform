@@ -68,7 +68,7 @@ public class SystemParamServiceImpl implements SystemParamService {
 
     /**
      * 搜索树节点
-     *
+     * 不需要了
      * @param query query
      * @return
      */
@@ -80,17 +80,36 @@ public class SystemParamServiceImpl implements SystemParamService {
     /**
      * 查询组织机构所有
      *
-     * @param query
+     * @param orgId 所负责的组织机构ID
      * @return LIST
      */
     @Override
-    public List<SystemParamDTO> selectAllUnderOrg(SystemParamQuery query) {
-        return PojoUtils.copyListProperties(getOriginParam(query),SystemParamDTO::new);
+    public List<SystemParamDTO> selectAllUnderOrg(Long orgId) {
+        return PojoUtils.copyListProperties(systemParamDao.selectAllUnderOrg(orgId),SystemParamDTO::new);
+    }
+
+    @Override
+    public int deleteByParamType(SystemParamDTO dto) {
+        SystemParamQuery query = new SystemParamQuery();
+        //获取到所有参数类型为传入至的纪录
+        query.setParamType(dto.getParamType());
+        List<SystemParamDTO> systemParamDTOList = PojoUtils.copyListProperties(systemParamDao.selectByCondition(query),SystemParamDTO::new);
+        for(SystemParamDTO systemParamDTO:systemParamDTOList){
+            if(systemParamDTO.getStatus()!=0){
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_USED_ERROR);
+            }
+        }
+        try{
+            return systemParamDao.delete(systemParamDTOList);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_DELETE_ERROR,e);
+        }
     }
 
     /**
      * 通过query查找列表
-     *
+     * paramType 通过点击paramType树搜索
      * @param query Q extends BaseQuery查询条件
      * @return java.util.List<V>
      * @author ChenTong
@@ -200,7 +219,7 @@ public class SystemParamServiceImpl implements SystemParamService {
         try {
             dto.setId(worker.nextId());
             dto.setCreatedTime(new Date());
-            return systemParamDao.add(dto);
+            return systemParamDao.insert(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR,e);
