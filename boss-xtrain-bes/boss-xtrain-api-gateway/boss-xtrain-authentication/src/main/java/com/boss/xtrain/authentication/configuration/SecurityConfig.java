@@ -3,6 +3,7 @@ package com.boss.xtrain.authentication.configuration;
 
 import com.boss.xtrain.authentication.service.BesUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -21,6 +22,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BesUserDetailService userDetailService;
+
+    @Qualifier("authSuccessHandle")
+    @Autowired
+    private Oauth2AuthenticationSuccessHandler successHandler;
+    @Autowired
+    private Oauth2AuthenticationFailureHandler failureHandler;
+
     /* 加密密码
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -47,8 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated()
             .and()
             .formLogin()
-            .permitAll()
-            .successForwardUrl("/index")
+            .successHandler(successHandler)
+            .failureHandler(failureHandler)
             .and()
             .logout()
             .logoutSuccessUrl("http://127.0.0.1:4444/exit");

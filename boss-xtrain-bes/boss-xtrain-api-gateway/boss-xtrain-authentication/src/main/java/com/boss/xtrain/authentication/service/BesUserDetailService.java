@@ -60,7 +60,7 @@ public class BesUserDetailService implements UserDetailsService {
             roles.forEach(roleDTO -> {
                 permission.add("ROLE_" + roleDTO.getName());
                 if (roleDTO.getResourceList() != null) {
-                    roleDTO.getResourceList().forEach(resourceDTO -> permission.add(resourceDTO.getTenantName()));
+                    roleDTO.getResourceList().forEach(resourceDTO -> permission.add(resourceDTO.getName()));
                 }
             });
         }
