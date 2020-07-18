@@ -16,6 +16,6 @@ public class Oauth2AuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(exception.getMessage(), null));
+        response.getWriter().write(JSON.toJSONString(exception.getMessage()));
     }
 }
