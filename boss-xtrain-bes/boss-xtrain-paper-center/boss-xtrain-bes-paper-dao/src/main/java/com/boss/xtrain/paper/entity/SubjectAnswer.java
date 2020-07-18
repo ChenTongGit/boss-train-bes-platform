@@ -5,6 +5,7 @@ import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @version: V1.0
@@ -29,7 +30,6 @@ public class SubjectAnswer extends BaseEntity {
     private Long difficult;
 
     private BigDecimal score;
-
 
     private Long typeId;
 
