@@ -28,7 +28,7 @@ public class SubjectAnswer extends BaseEntity {
 
     private Long categoryId;
 
-    private Long difficulty;
+    private Long difficult;
 
     private BigDecimal score;
 

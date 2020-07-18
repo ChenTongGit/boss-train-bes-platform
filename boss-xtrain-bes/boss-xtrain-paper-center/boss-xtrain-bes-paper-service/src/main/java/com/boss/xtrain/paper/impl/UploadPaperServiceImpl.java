@@ -51,7 +51,7 @@ public class UploadPaperServiceImpl implements UploadPaperService {
         //模板
         Paper template = new Paper();
         PojoUtils.copyProperties(tPaper,template);
-        template.setTemplate(true);
+        template.setTemplate(false);
         template.setPaperId(idWorker.nextId());
         template.setStatus(false);
         template.setCombExamMa(tPaper.getCombExamMa());

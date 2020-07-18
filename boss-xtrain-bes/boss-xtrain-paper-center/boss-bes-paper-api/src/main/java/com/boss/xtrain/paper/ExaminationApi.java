@@ -29,4 +29,6 @@ public interface ExaminationApi {
      */
     @PostMapping(value = "/queryOnePaper")
     CommonResponse getOnePaperWithSubject(CommonRequest<ExamServiceQueryPaperDTO> commonRequest);
+
+    CommonResponse getOnePaperAnswer(CommonRequest<ExamServiceQueryPaperDTO> commonRequest);
 }

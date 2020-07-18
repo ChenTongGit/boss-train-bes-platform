@@ -1,6 +1,6 @@
 package com.boss.xtrain.paper.vo.templatecomb;
 
-import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.boss.xtrain.paper.vo.BaseVO;
 import lombok.Data;
 
 import java.math.BigDecimal;
