@@ -1,7 +1,7 @@
 package com.boss.xtrain.authentication.feign.factory;
 
 import com.boss.xtrain.authentication.feign.PermissonServiceClient;
-import com.boss.xtrain.authentication.feign.fallback.PermissonServiceClientFallbackImpl;
+import com.boss.xtrain.authentication.feign.fallback.PermissonFallbackImpl;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
  * 用户断路器工厂
  */
 @Component
-public class PermissonServiceClientFallbackFactory implements FallbackFactory<PermissonServiceClient> {
+public class PermissonFallbackFactory implements FallbackFactory<PermissonServiceClient> {
 
     @Override
     public PermissonServiceClient create(Throwable throwable) {
-        PermissonServiceClientFallbackImpl userServiceClientFallback = new PermissonServiceClientFallbackImpl();
+        PermissonFallbackImpl userServiceClientFallback = new PermissonFallbackImpl();
         userServiceClientFallback.setThrowable(throwable);
         return userServiceClientFallback;
     }

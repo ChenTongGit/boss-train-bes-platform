@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken;
 
 import java.lang.reflect.Type;
 
-public class DefaultOauth2RefreshTokenSerializer implements ObjectDeserializer {
+public class RefreshTokenSerializer implements ObjectDeserializer {
     @Override
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
         if (type == DefaultOAuth2RefreshToken.class) {

@@ -21,7 +21,7 @@ import java.io.IOException;
  * @author lzx
  * @version 1.0.0
  */
-public class BesWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
+public class BesExceptionTranslator implements WebResponseExceptionTranslator {
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
     @Override
@@ -34,19 +34,19 @@ public class BesWebResponseExceptionTranslator implements WebResponseExceptionTr
         ase = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class,
                 causeChain);
         if (ase != null) {
-            return handleOAuth2Exception(new BesWebResponseExceptionTranslator.UnauthorizedException(e.getMessage(), e));
+            return handleOAuth2Exception(new BesExceptionTranslator.UnauthorizedException(e.getMessage(), e));
         }
         ase = (AccessDeniedException) throwableAnalyzer
                 .getFirstThrowableOfType(AccessDeniedException.class, causeChain);
         if (ase instanceof AccessDeniedException) {
-            return handleOAuth2Exception(new BesWebResponseExceptionTranslator.ForbiddenException(ase.getMessage(), ase));
+            return handleOAuth2Exception(new BesExceptionTranslator.ForbiddenException(ase.getMessage(), ase));
         }
         ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(
                 HttpRequestMethodNotSupportedException.class, causeChain);
         if (ase instanceof HttpRequestMethodNotSupportedException) {
-            return handleOAuth2Exception(new BesWebResponseExceptionTranslator.MethodNotAllowed(ase.getMessage(), ase));
+            return handleOAuth2Exception(new BesExceptionTranslator.MethodNotAllowed(ase.getMessage(), ase));
         }
-        return handleOAuth2Exception(new BesWebResponseExceptionTranslator.ServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
+        return handleOAuth2Exception(new BesExceptionTranslator.ServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
     }
 
     private ResponseEntity<OAuth2Exception> handleOAuth2Exception(OAuth2Exception e) throws IOException {

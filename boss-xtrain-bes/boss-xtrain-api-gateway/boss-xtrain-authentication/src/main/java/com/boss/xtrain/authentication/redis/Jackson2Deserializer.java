@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
-public class OAuth2AuthenticationJackson2Deserializer extends StdDeserializer<OAuth2Authentication> {
-    protected OAuth2AuthenticationJackson2Deserializer(Class<?> vc) {
+public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> {
+    protected Jackson2Deserializer(Class<?> vc) {
         super(vc);
     }
 

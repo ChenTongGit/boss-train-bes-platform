@@ -1,8 +1,8 @@
 package com.boss.xtrain.authentication.configuration;
 
-import com.boss.xtrain.authentication.error.BesWebResponseExceptionTranslator;
+import com.boss.xtrain.authentication.error.BesExceptionTranslator;
 import com.boss.xtrain.authentication.jwt.JwtTokenEnhancer;
-import com.boss.xtrain.authentication.redis.JacksonRedisTokenStoreSerializationStrategy;
+import com.boss.xtrain.authentication.redis.JacksonSerializationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +40,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenStore tokenStore() {
         RedisTokenStore store = new RedisTokenStore(redisConnectionFactory);
-        store.setSerializationStrategy(new JacksonRedisTokenStoreSerializationStrategy());
+        store.setSerializationStrategy(new JacksonSerializationStrategy());
         return store;
     }
 
@@ -99,7 +99,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public WebResponseExceptionTranslator webResponseExceptionTranslator(){
-        return new BesWebResponseExceptionTranslator();
+        return new BesExceptionTranslator();
     }
 
     @Override

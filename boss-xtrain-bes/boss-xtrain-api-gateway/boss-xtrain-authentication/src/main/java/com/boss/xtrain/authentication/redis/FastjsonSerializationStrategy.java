@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 import java.nio.charset.Charset;
 
-public class FastjsonRedisTokenStoreSerializationStrategy implements RedisTokenStoreSerializationStrategy {
+public class FastjsonSerializationStrategy implements RedisTokenStoreSerializationStrategy {
 
     private static ParserConfig config = new ParserConfig();
 
@@ -35,8 +35,8 @@ public class FastjsonRedisTokenStoreSerializationStrategy implements RedisTokenS
     protected static void init() {
         //自定义oauth2序列化：DefaultOAuth2RefreshToken 没有setValue方法，会导致JSON序列化为null
         config.setAutoTypeSupport(true);
-        config.putDeserializer(DefaultOAuth2RefreshToken.class, new DefaultOauth2RefreshTokenSerializer());
-        config.putDeserializer(OAuth2Authentication.class, new OAuth2AuthenticationSerializer());
+        config.putDeserializer(DefaultOAuth2RefreshToken.class, new RefreshTokenSerializer());
+        config.putDeserializer(OAuth2Authentication.class, new AuthenticationSerializer());
         config.addAccept("org.springframework.security.oauth2.provider.");
         config.addAccept("org.springframework.security.oauth2.provider.client");
         config.addAccept("com.boss.xtrain.authentication.jwt.");

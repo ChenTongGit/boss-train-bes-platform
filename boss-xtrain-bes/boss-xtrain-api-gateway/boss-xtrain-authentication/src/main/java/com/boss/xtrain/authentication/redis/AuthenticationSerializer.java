@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 @Slf4j
-public class OAuth2AuthenticationSerializer implements ObjectDeserializer {
+public class AuthenticationSerializer implements ObjectDeserializer {
     @Override
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
         if (type == OAuth2Authentication.class) {

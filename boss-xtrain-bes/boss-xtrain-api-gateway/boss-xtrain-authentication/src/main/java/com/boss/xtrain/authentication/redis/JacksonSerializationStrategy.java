@@ -10,13 +10,13 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 import java.nio.charset.Charset;
 
-public class JacksonRedisTokenStoreSerializationStrategy implements RedisTokenStoreSerializationStrategy {
+public class JacksonSerializationStrategy implements RedisTokenStoreSerializationStrategy {
     protected static ObjectMapper mapper = new ObjectMapper();
 
     {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(OAuth2Authentication.class,
-            new OAuth2AuthenticationJackson2Deserializer(OAuth2Authentication.class));
+            new Jackson2Deserializer(OAuth2Authentication.class));
         mapper.registerModule(module);
     }
 

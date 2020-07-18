@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class PermissonServiceClientFallbackImpl implements PermissonServiceClient {
+public class PermissonFallbackImpl implements PermissonServiceClient {
 
     private Throwable throwable;
 
