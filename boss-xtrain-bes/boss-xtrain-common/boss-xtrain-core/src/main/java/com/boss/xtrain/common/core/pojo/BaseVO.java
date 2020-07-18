@@ -16,6 +16,16 @@ import java.util.Date;
  * @see
  * @since
  */
+/**
+ * @class BaseVO
+ * @classdesc 抽象界面显示的公用信息
+ *
+ * @author Administrator
+ * @date 2020-6-19  11:01
+ * @version 1.0.0
+ * @see
+ * @since
+ */
 public abstract class BaseVO implements Serializable {
     public static final long serialVersionUID = 443243264652L;
 
@@ -156,10 +166,11 @@ public abstract class BaseVO implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-    
+
 
     public BaseVO() {
     }
 
 
 }
+

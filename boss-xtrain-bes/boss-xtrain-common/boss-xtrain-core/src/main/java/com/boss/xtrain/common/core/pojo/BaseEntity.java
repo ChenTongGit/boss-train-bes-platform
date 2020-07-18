@@ -31,7 +31,6 @@ public abstract class BaseEntity implements Serializable {
      * 主键id
      */
     @Id
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**

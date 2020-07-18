@@ -4,11 +4,9 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

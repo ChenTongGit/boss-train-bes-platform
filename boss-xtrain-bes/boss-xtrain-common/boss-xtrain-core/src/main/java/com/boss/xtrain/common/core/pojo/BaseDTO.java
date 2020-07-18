@@ -60,7 +60,6 @@ public abstract class BaseDTO implements Serializable {
      */
     private Long version;
 
-
     public Long getVersion() {
         return version;
     }

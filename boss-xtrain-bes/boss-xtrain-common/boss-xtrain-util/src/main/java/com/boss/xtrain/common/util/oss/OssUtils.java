@@ -1,11 +1,8 @@
 package com.boss.xtrain.common.util.oss;
 
+import com.aliyun.oss.model.*;
 import com.boss.xtrain.common.util.MyFileUtils;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.Bucket;
-import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PutObjectResult;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -47,7 +44,9 @@ public class OssUtils {
         }
         return bucketNames;
     }
-
+    public  static String getUrl(String bucketName,String folder,String key){
+        return "https://"+bucketName+"."+OssConstant.END_POINT+"/"+folder+key;
+    }
     /**
      * 删除存储空间buckName
      * @param ossClient  oss对象
@@ -93,7 +92,7 @@ public class OssUtils {
         log.info("删除" + bucketName + "下的文件" + folder + key + "成功");
     }
     public static void downLoading(OSSClient ossClient,  String bucketName, String folder,String fileName,String filePath){
-        OSSObject ossObject = ossClient.getObject(bucketName,folder+fileName);
+        OSSObject ossObject = ossClient.getObject(new GetObjectRequest(bucketName, folder+fileName));
         try {
             MyFileUtils.saveBit(ossObject.getObjectContent(),filePath);
         } catch (IOException e) {
