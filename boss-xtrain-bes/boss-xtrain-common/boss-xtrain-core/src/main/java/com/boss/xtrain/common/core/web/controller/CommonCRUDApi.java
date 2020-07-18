@@ -2,9 +2,6 @@ package com.boss.xtrain.common.core.web.controller;
 
 
 import com.boss.xtrain.common.core.http.CommonRequest;
-
-import com.boss.xtrain.common.core.http.CommonRequest;
-
 import com.boss.xtrain.common.core.http.CommonResponse;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-
-import javax.validation.constraints.NotNull;
-
 import java.util.List;
 
 /**
@@ -30,9 +24,6 @@ import java.util.List;
  */
 public interface CommonCRUDApi<D,Q,V>  {
 
-
-    CommonResponse<Integer> create(@RequestBody @Valid CommonRequest<D> request);
-
     /**
      * 添加新的数据
      * @author ChenTong
@@ -42,7 +33,6 @@ public interface CommonCRUDApi<D,Q,V>  {
      */
     @PostMapping("/insert")
     CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<D> request);
-
 
     /**
      * 查询数据 返回数据vo列表
@@ -74,10 +64,6 @@ public interface CommonCRUDApi<D,Q,V>  {
     @DeleteMapping("/delete")
     CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<D> request);
 
-    CommonResponse<Integer> create(@RequestBody @Valid D dtoParam);
-
-    CommonResponse<List<V>> query(@Valid Q queryParam);
-
     /**
      * 批量删除数据
      * @author ChenTong
@@ -88,8 +74,6 @@ public interface CommonCRUDApi<D,Q,V>  {
     @DeleteMapping("/deleteBatch")
     CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<D>> request);
 
-    CommonResponse<Integer> delete(@NotNull Long id);
-
     /**
      * 更新数据
      * @author ChenTong
@@ -99,5 +83,4 @@ public interface CommonCRUDApi<D,Q,V>  {
      */
     @PutMapping("update")
     CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<D> request);
-
 }

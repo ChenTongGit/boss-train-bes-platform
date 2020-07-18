@@ -18,6 +18,7 @@
         <module>boss-xtrain-db-transaction</module>
         <module>boss-xtrain-log</module>
         <module>boss-xtrain-util</module>
+        <module>boss-xtrain-feign</module>
     </modules>
 
 

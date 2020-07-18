@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+    gateway:
+      routes:
+        - id: boss-bes-authentication
+          uri: lb://boss-bes-authentication
+          order: 0
+          predicates:
+            - Path=/auth/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-system-center
+          uri: lb://boss-bes-system-center
+          order: 0
+          predicates:
+            - Path=/system/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+    #sentinel:
+        #transport:
+        # dashboard: localhost:8080 #配置sentinel dashboard地址
+        #port: 8719
+  #service-url:
+  #boss-bes-system-center: http://boss-bes-system-center
+
+  # 组nacos和seata服务地址
+  nacos-url:
+    nacos-host: 123.57.156.184
+    nacos-port: 8848
+  seata-url:
+    seata-host: 123.57.156.184
+    seata-port: 8091
