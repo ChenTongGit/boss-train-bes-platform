@@ -3,6 +3,8 @@ package com.boss.xtrain.basedata.dao.impl;
 import com.boss.xtrain.basedata.dao.SubjectAnswerDao;
 import com.boss.xtrain.basedata.mapper.SubjectAnswerMapper;
 import com.boss.xtrain.basedata.pojo.dto.subject.SubjectAnswerDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDTO;
+import com.boss.xtrain.basedata.pojo.entity.Subject;
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,8 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     private SubjectAnswerMapper answerMapper;
 
     @Override
-    public int insertAnswer(List<SubjectAnswer> itemList) {
-        return answerMapper.insertBatch(itemList);
+    public int insertAnswer(List<SubjectAnswer> subjectAnswers) {
+        return answerMapper.insertBatch(subjectAnswers);
     }
 
     @Override
@@ -48,8 +50,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     @Override
     public List<SubjectAnswerDTO> queryAnswer(Example example) {
         List<SubjectAnswer> subjectAnswers = answerMapper.selectByExample(example);
-        List<SubjectAnswerDTO> subjectAnswerDTOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjectAnswers,subjectAnswerDTOS);
+        List<SubjectAnswerDTO> subjectAnswerDTOS = PojoUtils.copyListProperties(subjectAnswers,SubjectAnswerDTO::new);
         return subjectAnswerDTOS;
 
     }
@@ -62,4 +63,5 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
         return answerMapper.selectByExample(example);
 
     }
+
 }

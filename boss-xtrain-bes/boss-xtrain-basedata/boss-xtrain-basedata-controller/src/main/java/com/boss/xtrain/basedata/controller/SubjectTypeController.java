@@ -1,10 +1,14 @@
 package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.basedata.api.SubjectTypeApi;
+import com.boss.xtrain.basedata.api.paper.CombInfoQueryDTO;
+import com.boss.xtrain.basedata.api.paper.SubjectTypePaperVO;
+import com.boss.xtrain.basedata.mapper.SubjectTypeMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryQueryDTO;
 import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDTO;
 import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDeleteDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDeleteIdsDTO;
 import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.SubjectType;
 import com.boss.xtrain.basedata.pojo.vo.category.CategoryQueryVO;
@@ -21,26 +25,33 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class SubjectTypeController extends BaseController implements SubjectTypeApi {
 
     @Resource
     private SubjectTypeService subjectTypeService;
 
     @Override
+    @ApiLog(msg = "新增题型")
     @ResponseBody
-    public CommonResponse<SubjectTypeVO> insertSubjectType(@RequestBody CommonRequest<SubjectTypeVO> commonRequest) {
+    public CommonResponse<SubjectTypeVO> insertSubjectType(@RequestBody @Valid CommonRequest<SubjectTypeVO> commonRequest) {
         SubjectTypeVO subjectTypeVO = commonRequest.getBody();
         SubjectTypeDTO subjectTypeDTO = new SubjectTypeDTO();
         PojoUtils.copyProperties(subjectTypeVO,subjectTypeDTO);
@@ -49,6 +60,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     }
 
     @Override
+    @ApiLog(msg = "删除题型")
     @ResponseBody
     public CommonResponse<Boolean> deleteSubjectType(@RequestBody CommonRequest<SubjectDeleteVO> commonRequest) {
         SubjectTypeDeleteDTO subjectTypeDelDto = new SubjectTypeDeleteDTO();
@@ -59,16 +71,19 @@ public class SubjectTypeController extends BaseController implements SubjectType
     }
 
     @Override
-    public CommonResponse<Boolean> deleteSubjectTypeList(@RequestBody CommonRequest<List<SubjectTypeDeleteVO>> commonRequest) {
-        List<SubjectTypeDeleteVO> subjectTypeDeleteVOS = commonRequest.getBody();
-        List<SubjectTypeDeleteDTO> subjectTypeDeleteDTOS = PojoUtils.copyListProperties(subjectTypeDeleteVOS,SubjectTypeDeleteDTO::new);
-        subjectTypeService.deleteSubjectTypes(subjectTypeDeleteDTOS);
+    @ApiLog(msg = "批量删除题型")
+    @ResponseBody
+    public CommonResponse<Boolean> deleteSubjectTypeList(@RequestBody CommonRequest<SubjectTypeDeleteIdsVO> commonRequest) {
+        SubjectTypeDeleteIdsVO subjectTypeDeleteIdsVO = commonRequest.getBody();
+        SubjectTypeDeleteIdsDTO subjectTypeDeleteIdsDTO = new SubjectTypeDeleteIdsDTO();
+        PojoUtils.copyProperties(subjectTypeDeleteIdsVO,subjectTypeDeleteIdsDTO);
+        subjectTypeService.deleteSubjectTypes(subjectTypeDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
     }
 
     @Override
     @ResponseBody
-    public CommonResponse<SubjectTypeVO> updateSubjectType(@RequestBody CommonRequest<SubjectTypeVO> commonRequest) {
+    public CommonResponse<SubjectTypeVO> updateSubjectType(@RequestBody @Valid CommonRequest<SubjectTypeVO> commonRequest) {
         SubjectTypeVO subjectTypeVO = commonRequest.getBody();
         SubjectTypeDTO subjectTypeDTO = new SubjectTypeDTO();
         PojoUtils.copyProperties(subjectTypeVO,subjectTypeDTO);
@@ -77,23 +92,35 @@ public class SubjectTypeController extends BaseController implements SubjectType
     }
 
     @Override
-    public CommonResponse<CommonPage<SubjectTypeVO>> querySubjectTypePage(@RequestBody CommonRequest<SubjectTypeQueryVO> commonRequest) {
+    public CommonResponse<CommonPage<SubjectTypeVO>> querySubjectTypePage(@RequestBody @Valid CommonRequest<SubjectTypeQueryVO> commonRequest) {
         SubjectTypeQueryVO subjectTypeQueryVO = commonRequest.getBody();
-        log.info(subjectTypeQueryVO.toString());
-        doBeforePagination(subjectTypeQueryVO.getPageIndex(),subjectTypeQueryVO.getPageSize(),subjectTypeQueryVO.getOrderBy());
-        SubjectTypeQueryDTO subjectTypeQueryDTO = new SubjectTypeQueryDTO();
-        PojoUtils.copyProperties(subjectTypeQueryVO,subjectTypeQueryDTO);
-        List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.querySubjectType(subjectTypeQueryDTO);
-        List<SubjectTypeVO> subjectTypeVOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjectTypeDTOS,subjectTypeVOS);
-        PageInfo<SubjectTypeVO> pageInfo = new PageInfo<>(subjectTypeVOS);
-        return buildPageResponse(pageInfo);
+        if (subjectTypeQueryVO.getName() == "" || subjectTypeQueryVO.getName() == null){
+            List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.queryAll();
+            Page<Object> objects = doBeforePagination(subjectTypeQueryVO.getPageNum(),subjectTypeQueryVO.getPageSize(),subjectTypeQueryVO.getName());
+            List<SubjectTypeVO> subjectTypeVOS = PojoUtils.copyListProperties(subjectTypeDTOS,SubjectTypeVO::new);
+            PageInfo<SubjectTypeVO> pageInfo = new PageInfo<>(subjectTypeVOS);
+            pageInfo.setTotal(objects.getTotal());
+            return buildPageResponse(pageInfo,subjectTypeVOS);
+        }else {
+            Page<Object> objects = doBeforePagination(subjectTypeQueryVO.getPageNum(),subjectTypeQueryVO.getPageSize(),null);
+            SubjectTypeQueryDTO subjectTypeQueryDTO = new SubjectTypeQueryDTO();
+            PojoUtils.copyProperties(subjectTypeQueryVO,subjectTypeQueryDTO);
+            log.info(subjectTypeQueryDTO.toString());
+            List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.querySubjectType(subjectTypeQueryDTO);
+            log.info(subjectTypeDTOS.toString());
+            List<SubjectTypeVO> subjectTypeVOS  = PojoUtils.copyListProperties(subjectTypeDTOS,SubjectTypeVO::new);
+            PageInfo<SubjectTypeVO> pageInfo = new PageInfo<>(subjectTypeVOS);
+            pageInfo.setTotal(objects.getTotal());
+            return buildPageResponse(pageInfo,subjectTypeVOS);
+        }
+
+
     }
 
     @Override
-    public List<SubjectTypeVO> querySubjectType(@RequestBody SubjectTypeQueryDTO subjectTypeQueryDTO) {
-        List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.querySubjectTypeById(subjectTypeQueryDTO.getOrgId());
-        List<SubjectTypeVO> subjectTypeVOS = PojoUtils.copyListProperties(subjectTypeDTOS,SubjectTypeVO::new);
-        return subjectTypeVOS;
+    public List<SubjectTypePaperVO> querySubjectType(@RequestBody @Valid CombInfoQueryDTO combInfoQueryDTO) {
+        return null;
     }
+
+
 }

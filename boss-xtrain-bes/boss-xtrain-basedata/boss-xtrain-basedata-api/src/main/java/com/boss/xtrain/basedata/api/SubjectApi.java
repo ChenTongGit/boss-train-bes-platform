@@ -20,7 +20,7 @@ public interface SubjectApi {
      * @return
      */
     @PostMapping("/querySubjectPage")
-    CommonResponse<CommonPage<SubjectVO>> querySubject(CommonRequest<SubjectQuery> commonRequest);
+    CommonResponse<CommonPage<SubjectVO>> querySubjectPage(CommonRequest<SubjectQueryVO> commonRequest);
 
     /**
      * 查询题目（不分页）
@@ -28,7 +28,7 @@ public interface SubjectApi {
      * @return
      */
     @PostMapping("/querySubjectList")
-    CommonResponse<List<SubjectVO>> querySubjectList(CommonRequest<SubjectQuery> commonRequest);
+    CommonResponse<List<SubjectVO>> querySubjectList(CommonRequest<SubjectQueryVO> commonRequest);
 
     /**
      * 删除题目
@@ -55,6 +55,13 @@ public interface SubjectApi {
     CommonResponse<SubjectVO> insertSubject(CommonRequest<SubjectUpdateVO> commonRequest);
 
     /**
+     * 批量增加题目（导入题目）
+     * @param commonRequest
+     * @return
+     */
+    @PostMapping("/insertSubjectList")
+    CommonResponse<SubjectVO> insertSubjectList(CommonRequest<List<SubjectUpdateVO>> commonRequest);
+    /**
      * 修改题目
      * @param commonRequest
      * @return
@@ -67,52 +74,16 @@ public interface SubjectApi {
      * @param commonRequest
      * @return
      */
-    @PostMapping(value = "/queryAnswer")
+    @PostMapping("/queryAnswer")
     CommonResponse<List<SubjectAnswerVO>> queryAnswer(CommonRequest<SubjectAnswerQueryVO> commonRequest);
 
     /**
-     * 批量增加题目（导入题目）
+     * 获取题目难度
      * @param commonRequest
      * @return
      */
-    @PostMapping("/insertSubjectList")
-    CommonResponse<SubjectVO> insertSubjectList(CommonRequest<List<SubjectUpdateVO>> commonRequest);
-
-    /**
-     * 根据题目ids获取题目类别、难度
-     * 提供给考试服务
-     * @param subjectIds
-     * @return
-     */
-    @PostMapping(value = "/querySubjectById")
-    SubjectExamVO querySubjectById(List<Long> subjectIds);
-
-    /**
-     * 自定义配置项快速组卷
-     * 提供给试卷服务
-     * @param subjectQueryDTO
-     * @return
-     */
-    @PostMapping(value = "/querySubject")
-    List<SubjectVO> querySubject(SubjectQueryDTO subjectQueryDTO);
-
-    /**
-     * 快速组卷
-     * 提供给试卷服务
-     * @param configItemQueryDto
-     * @return
-     */
-    @PostMapping(value = "/queryByConfigId")
-    List<SubjectVO> querySubjectToPaper(CombExamItemQueryDTO configItemQueryDto);
-
-    /**
-     * 标准组卷
-     * 从系统管理获得
-     * @param configItemsDto
-     * @return
-     */
-    @PostMapping(value = "/querySubjectByConfig")
-    List<SubjectVO> querySubjectByConfig(CombExamItemDTO configItemsDto);
+    @PostMapping("/queryDifficult")
+    CommonResponse<List<DifficultVO>> queryDifficult(CommonRequest<DifficultQueryVO> commonRequest);
 
 
 }

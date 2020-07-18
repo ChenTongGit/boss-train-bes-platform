@@ -21,4 +21,42 @@
     id, `name`, `attribute`, `status`, org_id, company_id, created_by, created_time,
     updated_by, updated_time, version
   </sql>
+  <update id="updateSubjectType" parameterType="com.boss.xtrain.basedata.pojo.entity.SubjectType">
+        update t_subject_type
+        <set >
+            <if test="id != null" >
+                id = #{id},
+            </if>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="attribute != null" >
+                attribute = #{attribute},
+            </if>
+
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="organizationId != null" >
+                org_id = #{organizationId},
+            </if>
+            <if test="createdBy != null" >
+                created_by = #{createdBy},
+            </if>
+            <if test="createdTime != null" >
+                created_time = #{createdTime},
+            </if>
+            <if test="updatedBy != null" >
+                updated_by = #{updatedBy},
+            </if>
+            <if test="updatedTime != null" >
+                updated_time = #{updatedTime},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

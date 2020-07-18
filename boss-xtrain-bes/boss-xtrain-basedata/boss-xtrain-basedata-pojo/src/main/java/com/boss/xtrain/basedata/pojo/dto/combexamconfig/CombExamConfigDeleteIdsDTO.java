@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CombExamItemDeleteIdsDTO {
-    private List<CombExamItemDeleteIdsDTO> deleteIdsDTOS;
+public class CombExamConfigDeleteIdsDTO {
+    private List<CombExamConfigDeleteDTO> deleteList;
 }

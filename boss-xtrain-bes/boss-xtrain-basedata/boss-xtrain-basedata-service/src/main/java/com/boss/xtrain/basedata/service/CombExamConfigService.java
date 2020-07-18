@@ -11,6 +11,8 @@ public interface CombExamConfigService{
 
     void deleteConfig(CombExamConfigDeleteDTO combExamConfigDeleteDTO);
 
+    void deleteConfigs(CombExamConfigDeleteIdsDTO combExamConfigDeleteIdsDTO);
+
     void updateConfig(CombExamConfigUpdateDTO combExamConfigUpdateDTO);
 
     List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO);
@@ -18,8 +20,6 @@ public interface CombExamConfigService{
     List<CombExamItemDTO> queryItem(CombExamItemQueryDTO combExamItemQueryDTO);
 
     boolean insertItem(List<CombExamItemDTO> itemList);
-
-    void deleteConfigs(CombExamConfigDeleteDTO object);
 
     void checkRepeatName(CombExamConfigDTO combExamConfigDto);
 

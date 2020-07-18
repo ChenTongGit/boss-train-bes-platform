@@ -2,6 +2,7 @@ package com.boss.xtrain.basedata.mapper;
 
 import com.boss.xtrain.basedata.base.BaseMapper;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDeleteDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.SubjectQueryDTO;
@@ -21,8 +22,8 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @param typeName
      * @return
      */
-    List<Subject> queryByCondition(@Param("orgId") Long orgId,@Param("subjectName") String subjectName,
-                                   @Param("categoryName") String categoryName,@Param("typeName") String typeName);
+    List<Subject> queryByCondition(@Param("orgId") Long orgId,@Param("name") String subjectName,
+                                   @Param("categoryName") String categoryName,@Param("subjectTypeName") String typeName);
 
     /**
      * 根据题目类别、题型、难度获取题目
@@ -70,5 +71,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @return
      */
     List<Subject> getSubjects();
+
+    int updateSubject(Subject subject);
 
 }

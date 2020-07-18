@@ -1,6 +1,7 @@
 package com.boss.xtrain.basedata.api;
 
-import com.boss.xtrain.basedata.pojo.dto.category.CategoryIdsDTO;
+import com.boss.xtrain.basedata.api.paper.CombInfoQueryDTO;
+import com.boss.xtrain.basedata.api.paper.SubjectCategoryVO;
 import com.boss.xtrain.basedata.pojo.vo.category.*;
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonRequest;
@@ -32,6 +33,9 @@ public interface CategoryApi {
     @PostMapping("/queryCategoryTree")
     CommonResponse<List<CategoryTreeVO>> getCategoryTree(CommonRequest<CategoryQueryVO> commonRequest);
 
-    @PostMapping("/getAll")
+    @PostMapping("/queryTree")
     CommonResponse<CommonPage<CategoryVO>> getCategory(CommonRequest<CategoryIdsVO> commonRequest);
+
+    @PostMapping("/queryCategoryPaper")
+    List<SubjectCategoryVO> querySubjectCategory(CombInfoQueryDTO combInfoQueryDTO);
 }

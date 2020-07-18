@@ -13,10 +13,12 @@ import java.util.Date;
 
 @Data
 public class CategoryVO extends BaseVO {
-    // @NotBlank(message = "题目类别名称不能为空")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long id;
     private String name;
     private Long parentId;
-    private int PageSize;
-    private int PageIndex;
+    private int pageSize;
+    private int pageIndex;
     private String orderBy;
+    private Long version;
 }

@@ -27,21 +27,21 @@ public class CombExamItem implements Serializable {
     @KeySql(useGeneratedKeys = true)
     private Long id;
     /**
-     * 题目类别ID
+     * 题型ID
      */
     @Column(name = "t_s_id")
     private Long subjectTypeId;
 
     /**
-     * 题型ID
+     * 题目类别ID
      */
-    @Column(name = "t_c_id")
+    @Column(name = "t_c_id2")
     private Long categoryId;
 
     /**
      * 组卷ID
      */
-    @Column(name = "t_c_id2")
+    @Column(name = "t_c_id")
     private Long combExamConfigId;
 
     /**

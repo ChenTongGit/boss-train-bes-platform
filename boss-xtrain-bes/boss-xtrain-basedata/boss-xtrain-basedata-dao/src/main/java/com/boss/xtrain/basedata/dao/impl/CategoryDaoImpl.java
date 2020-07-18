@@ -4,7 +4,9 @@ import com.boss.xtrain.basedata.dao.CategoryDao;
 import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryTreeDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.SubjectQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
+import com.boss.xtrain.basedata.pojo.entity.SubjectType;
 import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,8 +41,8 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public int updateCategory(Category category, Example example) {
-        return categoryMapper.updateByExampleSelective(category,example);
+    public int updateCategory(Category category) {
+        return categoryMapper.updateCategory(category);
     }
 
     @Override
@@ -49,9 +51,17 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public int checkRepeatName(Example example) {
-        log.info("dao：{}",categoryMapper.selectCountByExample(example));
-        return categoryMapper.selectCountByExample(example);
+    public int checkRepeatName(Example example) { return categoryMapper.selectCountByExample(example); }
+
+
+    @Override
+    public List<String> queryCategoryNameById(Example example){
+        List<Category> categories = categoryMapper.selectByExample(example);
+        List<String> names = new ArrayList<>();
+        for (Category category : categories){
+            names.add(category.getName());
+        }
+        return names;
     }
 
     @Override

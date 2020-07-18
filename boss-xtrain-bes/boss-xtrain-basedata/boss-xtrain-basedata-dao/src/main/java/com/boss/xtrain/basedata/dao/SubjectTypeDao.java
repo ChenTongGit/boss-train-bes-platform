@@ -14,11 +14,13 @@ public interface SubjectTypeDao extends CommonQuery<SubjectTypeDTO,Example> {
 
     int deleteSubjectType(Example example);
 
-    int updateSubjectType(SubjectType subjectType, Example example);
+    int updateSubjectType(SubjectType subjectType);
 
-    SubjectType getSubjectTypes(Long id);
+    List<SubjectType> queryAll();
 
     int checkRepeatName(Example example);
+
+    List<String> queryTypeNameById(Example example);
 
 
 }
