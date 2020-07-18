@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -26,12 +25,12 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         log.info("认证成功");
-        User user = (User) authentication.getPrincipal();
+        UserJwt user = (UserJwt) authentication.getPrincipal();
         if (user != null) {
             log.info(user.toString());
         }
         assert user != null;
-        redisUtil.set("bes:effectentity:" + user.getUsername(), user);
+        redisUtil.set("bes:effectentity:" + user.getId(), user);
         response.sendRedirect("/index");
     }
 }
