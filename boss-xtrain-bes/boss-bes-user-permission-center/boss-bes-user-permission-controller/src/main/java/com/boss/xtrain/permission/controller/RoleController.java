@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @Author  :yushiqian
@@ -77,6 +78,22 @@ public class RoleController implements RoleApi {
         List<RoleDTO> roleDTOS = roleService.selectAll();
         log.info(roleDTOS.toString());
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
+    }
+
+    @Override
+    public CommonResponse<List<Long>> getResourceIds(@Valid CommonRequest<RoleQueryDTO> dtoCommonRequest) {
+        RoleQueryDTO body = dtoCommonRequest.getBody();
+        Long id =body.getId();
+        List<Long> resourceIds = roleService.getResourceIdsByRoleId(id);
+        return CommonResponseUtil.ok(resourceIds);
+    }
+
+    @Override
+    public CommonResponse<List<Long>> getUserIds(@Valid CommonRequest<RoleQueryDTO> dtoCommonRequest) {
+        RoleQueryDTO body = dtoCommonRequest.getBody();
+        Long id =body.getId();
+        List<Long> userIds = roleService.getUserIdsByRoleId(id);
+        return CommonResponseUtil.ok(userIds);
     }
 
 }

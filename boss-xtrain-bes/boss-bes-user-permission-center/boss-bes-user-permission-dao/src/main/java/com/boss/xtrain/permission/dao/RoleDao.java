@@ -141,19 +141,19 @@ public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
      * 通过RoleId查询拥有的资源Id
      *
      * @param id
-     * @return List<String>
+     * @return List<long>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
     /**
      * 通过RoleId查询拥有的用户Id
      *
      * @param id
-     * @return List<String>
+     * @return List<long>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 
     /**

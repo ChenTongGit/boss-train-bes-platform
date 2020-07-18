@@ -45,5 +45,24 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
     @RequestMapping("/selectAll")
     CommonResponse<List<RoleListVO>> selectAllRole();
 
+    /**
+     * 获取角色已有的资源Id集合
+     *
+     * @param dtoCommonRequest 查询条件
+     * @return body为 角色已有的资源ID列表
+     */
+
+    @PostMapping("/getResourceIds")
+    CommonResponse<List<Long>> getResourceIds(@RequestBody @Valid CommonRequest<RoleQueryDTO> dtoCommonRequest);
+
+    /**
+     * 获取角色已有的用户ID集合
+     *
+     * @param dtoCommonRequest 查询条件
+     * @return body为 角色已有的用户ID列表
+     */
+
+    @PostMapping("/getUserIds")
+    CommonResponse<List<Long>> getUserIds(@RequestBody @Valid CommonRequest<RoleQueryDTO> dtoCommonRequest);
 
 }

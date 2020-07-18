@@ -58,7 +58,6 @@ public class TreeServiceImpl implements TreeService {
         List<TreeNode> treeNodeList = PojoUtils.copyListProperties(departmentDao.selectByCompany(companyId),TreeNode::new);
         for(TreeNode treeNode:treeNodeList){
             treeNode.setCompanyName(companyDao.selectByKey(companyId).getName());
-
             TreeNode node = new TreeNode();
             PojoUtils.copyProperties(treeNode,node);
             //递归查子树

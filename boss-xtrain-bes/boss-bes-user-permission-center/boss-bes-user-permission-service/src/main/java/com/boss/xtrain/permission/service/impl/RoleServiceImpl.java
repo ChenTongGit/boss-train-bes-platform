@@ -189,12 +189,12 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public List<String> getResourceIdsByRoleId(Long id) {
+    public List<Long> getResourceIdsByRoleId(Long id) {
         return roleDao.getResourceIdsByRoleId(id);
     }
 
     @Override
-    public List<String> getUserIdsByRoleId(Long id) {
+    public List<Long> getUserIdsByRoleId(Long id) {
         return roleDao.getUserIdsByRoleId(id);
     }
 

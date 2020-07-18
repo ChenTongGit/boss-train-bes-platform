@@ -133,14 +133,14 @@
   <select id="getStatusById" parameterType="java.lang.Long" resultMap="RoleMap">
         select status from t_role where id=#{id}
     </select>
-  <select id="getResourceIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
+  <select id="getResourceIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
         select  a.id  from t_resource a left join role_resource b on a.id = b.resource_id  where b.role_id = #{id}
     </select>
   <select id="queryName" parameterType="com.boss.xtrain.permission.pojo.dto.RoleDTO" resultType="com.boss.xtrain.permission.pojo.dto.RoleDTO">
         select * from t_role where name=#{name}
     </select>
 
-  <select id="getUserIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
+  <select id="getUserIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
         select distinct a.id  from t_user a left join t_user_role b on a.id = b.t_u_id  where b.t_r_id = #{id}
     </select>
 

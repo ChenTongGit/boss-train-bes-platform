@@ -144,12 +144,12 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<String> getResourceIdsByRoleId(Long id) {
+    public List<Long> getResourceIdsByRoleId(Long id) {
         return roleMapper.getResourceIdsByRoleId(id);
     }
 
     @Override
-    public List<String> getUserIdsByRoleId(Long id) {
+    public List<Long> getUserIdsByRoleId(Long id) {
         return roleMapper.getUserIdsByRoleId(id);
     }
 

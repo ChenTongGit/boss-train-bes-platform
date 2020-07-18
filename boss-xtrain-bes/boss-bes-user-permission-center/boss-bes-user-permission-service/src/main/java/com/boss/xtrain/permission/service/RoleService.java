@@ -62,7 +62,7 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      * @return List<String>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
 
     /**
@@ -72,6 +72,6 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      * @return List<String>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 }

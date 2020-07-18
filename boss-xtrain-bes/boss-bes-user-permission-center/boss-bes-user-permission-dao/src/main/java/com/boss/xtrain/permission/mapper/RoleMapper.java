@@ -101,7 +101,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return List<String>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
     /**
      * 通过RoleId查询拥有的用户Id
@@ -110,7 +110,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return List<String>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 
     /**
