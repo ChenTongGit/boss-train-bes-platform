@@ -4,13 +4,9 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,8 +32,8 @@ public interface ExamPublishRecordApi {
      * @author ChenTong
      * @date 2020/7/7 22:10
      */
-    @PutMapping("/publishRecordChange")
-    CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordDTO> request);
+    @PostMapping("/publishRecordChange")
+    CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordUpdateDTO> request);
     
     /**
      * 发布考试
@@ -79,12 +75,12 @@ public interface ExamPublishRecordApi {
      * @date 2020/7/7 22:09
      */
     @PostMapping("/newPublishRecord")
-    CommonResponse<Integer> insert(@RequestBody @Valid  CommonRequest<ExamPublishRecordDTO> request);
+    CommonResponse<Integer> insert(@RequestBody @Valid  CommonRequest<ExamPublishRecordAddDTO> request);
 
     /**
      * 条件查询并分页
      * @author ChenTong
-     * @param request 
+     * @param request
      * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.common.core.http.CommonPage<com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO>>
      * @date 2020/7/8 21:34
      */

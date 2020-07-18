@@ -6,9 +6,7 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamPublishRecordApi;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
@@ -16,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +38,7 @@ import java.util.List;
 @RestController
 @RequestMapping(CommonConstant.BASIC_URL+"/examPublishRecord")
 @Api(value = "考试发布记录Controller" , tags = {"考试发布记录操作接口"})
+@Slf4j
 public class ExamPublishRecordController extends BaseController implements ExamPublishRecordApi {
 
     @Autowired
@@ -53,7 +53,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      */
     @ApiOperation(value = "添加考试发布记录")
     @Override
-    public CommonResponse<Integer> insert(@Valid CommonRequest<ExamPublishRecordDTO> request) {
+    public CommonResponse<Integer> insert(@Valid CommonRequest<ExamPublishRecordAddDTO> request) {
         return CommonResponseUtil.ok(examPublishRecordService.insert(request.getBody()));
     }
 
@@ -84,6 +84,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @author ChenTong
      * @date 2020/7/7 22:09
      */
+    @ApiLog(msg = "删除考试发布记录")
     @ApiOperation(value = "删除考试发布记录")
     @Override
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<ExamPublishDeleteDTO>> request) {
@@ -97,9 +98,11 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @author ChenTong
      * @date 2020/7/7 22:10
      */
+    @ApiLog(msg = "查询考试发布记录")
     @ApiOperation(value = "更新考试发布记录")
     @Override
-    public CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordDTO> request) {
+    public CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordUpdateDTO> request) {
+        log.info("test update");
         return CommonResponseUtil.ok(this.examPublishRecordService.update(request.getBody()));
     }
 

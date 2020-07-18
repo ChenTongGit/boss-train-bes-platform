@@ -1,5 +1,8 @@
 package com.boss.xtrain.exam.pojo.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,12 +21,14 @@ public class ExamPublishDTO {
      * 所要发布考试记录id
      */
     @NotNull(message = "考试发布记录id不能为空")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 所要发布的试卷id
      */
     @NotNull(message = "要发布的试卷id不能为空")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long paperId;
 
     /**
@@ -36,6 +41,7 @@ public class ExamPublishDTO {
      * 版本号
      */
     @NotNull(message = "数据版本号不能为空")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long version;
 
     public Long getVersion() {

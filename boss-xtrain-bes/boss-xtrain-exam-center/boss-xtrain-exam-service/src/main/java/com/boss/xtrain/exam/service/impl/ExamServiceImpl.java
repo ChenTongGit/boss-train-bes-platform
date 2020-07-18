@@ -15,9 +15,12 @@ import com.boss.xtrain.exam.pojo.dto.AnswerRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.AnswerRecordTempInsertDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamStartAddRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.entity.AnswerRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamRecord;
+import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
+import com.boss.xtrain.exam.pojo.vo.test.SubjectDetailsVO;
 import com.boss.xtrain.exam.service.ExamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +78,7 @@ public class ExamServiceImpl implements ExamService {
     public Long insertBasicExamRecord(ExamStartAddRecordDTO dto) {
         if (null == dto)
             throw new BusinessException(BusinessError.EXAM_RECORD_INSERT_FAIL);
+
         ExamPublishRecord examPublishRecord = new ExamPublishRecord();
         examPublishRecord.setId(dto.getPublishId());
         // 获取考试的基本信息
@@ -99,7 +103,6 @@ public class ExamServiceImpl implements ExamService {
         // 分配阅卷官
         examRecord.setMarkUserId(allocateMarkPeople(examPublishRecord.getId(),examPublishRecord.getMarkingMode()));
         // 分配阅卷时间
-        // TODO
         examRecord.setMarkingAssignTime(examRecord.getActualStartTime());
 
         String key = "examLimitTime:"+examRecord.getId();
@@ -128,6 +131,44 @@ public class ExamServiceImpl implements ExamService {
             throw new BusinessException(BusinessError.SET_EXAM_LIMIT_TIME_FAIL,e);
 
         }
+    }
+
+    /**
+     * 获取试卷
+     * @param query 查询试卷id 记录id
+     * @param queryRedis 为了方便复用
+     */
+    @Override
+    public PaperSubjectAnswerVO getPaper(ExamRecordDetailQuery query, boolean queryRedis) {
+        // 调用服务获取试卷
+//        PaperIdDto paperIdDto = new PaperIdDto(Long.valueOf(vo.getPaperId()));
+        //--- 使用假数据 start
+        PaperSubjectAnswerVO paperSubjectAnswerVO = new PaperSubjectAnswerVO();
+        paperSubjectAnswerVO.setDescription("描述1");
+        paperSubjectAnswerVO.setDifficulty("难");
+        paperSubjectAnswerVO.setDownloadTimes(21);
+        paperSubjectAnswerVO.setId(123L);
+        paperSubjectAnswerVO.setName("试卷1");
+        paperSubjectAnswerVO.setScore(new BigDecimal(100));
+        paperSubjectAnswerVO.setVersion("version1");
+        paperSubjectAnswerVO.setPublishTimes(12);
+
+        List<SubjectDetailsVO> subjectDetailsVOS = new ArrayList<>();
+        SubjectDetailsVO subjectDetailsVO = new SubjectDetailsVO();
+        subjectDetailsVO.setAnswerRecordId(12L);
+        subjectDetailsVO.setCategoryId(1L);
+        paperSubjectAnswerVO.setSubjectList(subjectDetailsVOS);
+        //--- 使用假数据 end
+        if (paperSubjectAnswerVO == null) {
+            // 试卷不存在
+            throw new BusinessException(BusinessError.MOBILE_PAPER_NOT_EXIST);
+        }
+        // 如果需要恢复答案，那么查询redis
+        Map<Long, String> backAnswerMap = createBackAnswerMap(query.getExamRecordId());
+        // 试卷dto转vo
+
+
+        return paperSubjectAnswerVO;
     }
 
     /**
@@ -172,6 +213,22 @@ public class ExamServiceImpl implements ExamService {
     }
 
     /**
+     * 获取试卷使用，
+     * 取出redis中的答案，并生成subjectId->answer的map
+     *
+     * @param recordId 考试记录id，redis的key
+     * @return 如果redis中不存在答案，返回空的map
+     */
+    private Map<Long, String> createBackAnswerMap(Long recordId) {
+        List<AnswerRecordTempInsertDTO> answerRecordTempInsertDTOS =  this.getRealAnswer(recordId);
+        Map<Long, String> map = new HashMap<>();
+        for (AnswerRecordTempInsertDTO dto : answerRecordTempInsertDTOS) {
+            map.put(dto.getPaperSubjectId(), dto.getMyAnswer());
+        }
+        return map;
+    }
+
+    /**
      * 考试结束提交答案
      * 提交需要通过试卷的id获取正确答案计算客观题得分
      * @param dto
@@ -202,6 +259,8 @@ public class ExamServiceImpl implements ExamService {
             // 计算客观题得分
             totalScore = totalScore.add(answer.getScore());
 
+            answer.setExamRecordId(dto.getExamRecordId());
+
         }
         ExamRecord examRecord = new ExamRecord();
         examRecord.setId(dto.getExamRecordId());
@@ -221,6 +280,8 @@ public class ExamServiceImpl implements ExamService {
             throw new BusinessException(BusinessError.EXAM_ANSWER_SAVE_FAIL);
         }
     }
+
+
 
     private void setSubScore(AnswerRecordDTO answer) {
         // 获取实际作答情况

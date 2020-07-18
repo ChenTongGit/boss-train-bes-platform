@@ -48,4 +48,16 @@
       )
     </foreach>
   </insert>
+
+  <!--保存批卷记录-->
+  <update id="updateEvaluate" parameterType="com.boss.xtrain.exam.pojo.entity.AnswerRecord">
+        UPDATE t_answer_record
+        SET score        = #{answerRecord.score},
+            evaluate     = #{answerRecord.evaluate},
+            company_id   = #{answerRecord.companyId},
+            updated_by   = #{answerRecord.updatedBy},
+            updated_time = #{answerRecord.updatedTime},
+            version      = #{answerRecord.version}
+        WHERE id = #{answerRecord.id}
+    </update>
 </mapper>

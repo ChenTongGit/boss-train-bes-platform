@@ -20,11 +20,15 @@
     <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
 
-  <delete id="deleteBatchByPublishId" parameterType="list">
+  <delete id="deleteBatchByPublishIds" parameterType="list">
     delete from t_exam_publish_record_user where t_p_id in
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
       #{id}
     </foreach>
+  </delete>
+
+  <delete id="deleteBatchByPublishId" parameterType="list">
+    delete from t_exam_publish_record_user where t_p_id  = #{id}
   </delete>
 
   <insert id="insertBatch" parameterType="java.util.List">

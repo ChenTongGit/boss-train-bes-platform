@@ -13,10 +13,12 @@ public abstract class TreeEntity extends BaseEntity implements Serializable {
     private Long id;
     private Long parentId;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

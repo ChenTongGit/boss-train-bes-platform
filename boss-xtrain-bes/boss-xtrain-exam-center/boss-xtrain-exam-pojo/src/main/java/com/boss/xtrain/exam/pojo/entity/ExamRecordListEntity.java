@@ -72,6 +72,18 @@ public class ExamRecordListEntity extends BaseEntity {
      */
     private BigDecimal score;
 
+    /**
+     * 考试场次编号
+     */
+    private String examSession;
+
+    public String getExamSession() {
+        return examSession;
+    }
+
+    public void setExamSession(String examSession) {
+        this.examSession = examSession;
+    }
 
     public String getTitle() {
         return title;

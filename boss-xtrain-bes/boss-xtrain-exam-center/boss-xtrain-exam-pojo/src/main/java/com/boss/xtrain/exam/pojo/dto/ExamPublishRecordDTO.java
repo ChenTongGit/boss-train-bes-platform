@@ -46,13 +46,13 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 考试开始时间
      */
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -68,8 +68,7 @@ public class ExamPublishRecordDTO extends BaseDTO {
     /**
      * 阅卷结束时间
      */
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date markStopTime;
+    private Date markingStopTime;
 
     /**
      * 阅卷方式
@@ -80,6 +79,24 @@ public class ExamPublishRecordDTO extends BaseDTO {
      * 限制时间
      */
     private Long limitTime;
+
+    /**
+     * 考试场次
+     */
+    private String examSession;
+
+    /**
+     * 阅卷人ids
+     */
+    private List<Long>  markPeople;
+
+    public String getExamSession() {
+        return examSession;
+    }
+
+    public void setExamSession(String examSession) {
+        this.examSession = examSession;
+    }
 
     public String getQrcodeUrl() {
         return qrcodeUrl;
@@ -106,9 +123,9 @@ public class ExamPublishRecordDTO extends BaseDTO {
     }
 
 
-    private List<ExamPublishToUserDTO>  markPeople;
 
-    public List<ExamPublishToUserDTO> getMarkPeople() {
+
+    public List<Long> getMarkPeople() {
         return markPeople;
     }
 
@@ -121,7 +138,7 @@ public class ExamPublishRecordDTO extends BaseDTO {
     }
 
 
-    public void setMarkPeople(List<ExamPublishToUserDTO> markPeople) {
+    public void setMarkPeople(List<Long> markPeople) {
         this.markPeople = markPeople;
     }
 
@@ -182,12 +199,12 @@ public class ExamPublishRecordDTO extends BaseDTO {
         this.description = description;
     }
 
-    public Date getMarkStopTime() {
-        return markStopTime;
+    public Date getMarkingStopTime() {
+        return markingStopTime;
     }
 
-    public void setMarkStopTime(Date markStopTime) {
-        this.markStopTime = markStopTime;
+    public void setMarkingStopTime(Date markingStopTime) {
+        this.markingStopTime = markingStopTime;
     }
 
 
@@ -205,7 +222,7 @@ public class ExamPublishRecordDTO extends BaseDTO {
                 ", endTime=" + endTime +
                 ", planPeopleNum=" + planPeopleNum +
                 ", description='" + description + '\'' +
-                ", markStopTime=" + markStopTime +
+                ", markingStopTime=" + markingStopTime +
                 ", markingMode=" + markingMode +
                 ", markPeople=" + markPeople +
                 "} ";

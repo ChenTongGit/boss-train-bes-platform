@@ -40,6 +40,14 @@
         <bind name="title" value="'%%'"/>
       </otherwise>
     </choose>
+    <choose>
+      <when test="examSession">
+        <bind name="ptnExamSession" value="'%' + _parameter.examSession + '%'"/>
+      </when>
+      <otherwise>
+        <bind name="ptnExamSession" value="'%%'"/>
+      </otherwise>
+    </choose>
     SELECT
     r.id id,
     p.t_p_id paperId,
@@ -48,6 +56,7 @@
     peo.name name,
     peo.id examPeople,
     peo.mobile mobile,
+    p.exam_session examSession,
     r.actual_start_time actualStartTime,
     r.actual_end_time actualEndTime,
     r.plan_end_time planEndTime,
@@ -81,10 +90,98 @@
       <if test="planEndTime != null">
         AND r.plan_end_time &lt;= #{ planEndTime }
       </if>
+      <if test="examSession != null and examSession != ''">
+        AND p.exam_session LIKE #{ ptnExamSession }
+      </if>
       <if test="companyId != null">
         AND p.company_id = #{companyId}
       </if>
     </where>
     ORDER BY r.`score` DESC, r.objective_subject_score DESC
   </select>
+
+  <select id="queryReportDetail" parameterType="java.lang.Long"
+          resultType="com.boss.xtrain.exam.pojo.dto.ReportDataItemDTO">
+        SELECT
+            peo.name peopleName,
+            peo.sex sex,
+            p.title title,
+            r.objective_subject_score objectiveMark,
+            r.subjective_subject_score subjectiveMark,
+            r.score score,
+           	@rownum:=@rownum+1 as rank,
+            r.actual_start_time actualStartTime,
+            r.actual_end_time actualEndTime
+        FROM
+            t_exam_record r
+            LEFT JOIN t_exam_publish_record p ON p.id = r.t_pr_id
+            LEFT JOIN t_exam_people peo ON r.t_p_id = peo.id,
+            (select @rownum:=0) r
+        WHERE r.t_pr_id = #{publishId} AND r.status != 0
+        ORDER BY r.score DESC
+   </select>
+
+  <update id="updateStatus" parameterType="com.boss.xtrain.exam.pojo.entity.ExamRecord">
+        UPDATE t_exam_record
+        SET status       = 1,
+            company_id   = #{examRecord.companyId},
+            created_by   = #{examRecord.createdBy},
+            created_time = #{examRecord.createdTime},
+            updated_by   = #{examRecord.updatedBy},
+            updated_time = #{examRecord.updatedTime},
+            version      = #{examRecord.version}
+        WHERE status = 0
+          AND id = #{examRecord.examRecordId}
+    </update>
+
+  <select id="queryEvaluateByCondition" parameterType="com.boss.xtrain.exam.pojo.dto.query.MarkingQuery"
+          resultType="com.boss.xtrain.exam.pojo.dto.MarkingDataListDto">
+    <choose>
+      <when test="examSession">
+        <bind name="ptnExamSession" value="'%' + _parameter.examSession + '%'"/>
+      </when>
+      <otherwise>
+        <bind name="ptnExamSession" value="'%%'"/>
+      </otherwise>
+    </choose>
+    SELECT
+    r.id examRecordId,
+    p.t_p_id paperId,
+    p.title title,
+    p.exam_session examSession,
+    peo.name name,
+    peo.mobile mobile,
+    p.created_time publishTime,
+    r.actual_end_time actualEndTime,
+    p.marking_stop_time markingStopTime,
+    r.objective_subject_score objectiveSubjectScore,
+    r.subjective_subject_score subjectiveSubjectScore,
+    r.system_evaluate systemEvaluate,
+    r.status status,
+    r.version version
+    FROM t_exam_record r
+    LEFT JOIN t_exam_publish_record p
+    ON p.id = r.t_pr_id
+    LEFT JOIN t_exam_people peo
+    ON r.t_p_id = peo.id
+    <where>
+      r.status != 0
+      <if test="markPeople != null and markPeople != ''">
+        AND r.t_u_id = #{ markPeople }
+      </if>
+      <if test="status != null and status != ''">
+        AND r.status = #{ status }
+      </if>
+      <if test="leftHandInTime != null">
+        AND r.actual_end_time &gt;= #{ leftHandInTime }
+      </if>
+      <if test="examSession != null and examSession != ''">
+        AND p.exam_session LIKE #{ ptnExamSession }
+      </if>
+      <if test="rightHandInTime != null">
+        AND r.actual_end_time &lt;= #{ rightHandInTime }
+      </if>
+    </where>
+  </select>
+
 </mapper>

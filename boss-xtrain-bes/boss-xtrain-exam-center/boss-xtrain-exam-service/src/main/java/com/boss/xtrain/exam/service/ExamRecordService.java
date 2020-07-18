@@ -1,7 +1,9 @@
 package com.boss.xtrain.exam.service;
 
 import com.boss.xtrain.exam.pojo.dto.ExamRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordQuery;
+import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
 
 import java.util.List;
 
@@ -26,4 +28,7 @@ public interface ExamRecordService {
      * @date 2020/7/11 15:03
      */
     List<ExamRecordDTO> queryForCondition(ExamRecordQuery query);
+
+
+    PaperSubjectAnswerVO getCompletePaper(ExamRecordDetailQuery submitPaperVO, boolean queryRedis);
 }

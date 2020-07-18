@@ -9,11 +9,14 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamRecordApi;
 import com.boss.xtrain.exam.pojo.dto.ExamRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamRecordVO;
+import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
 import com.boss.xtrain.exam.service.ExamRecordService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +40,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping(CommonConstant.BASIC_URL+"/examRecord")
+@Api(value = "考试记录Controller" , tags = {"考试记录操作接口"})
 public class ExamRecordController extends BaseController implements ExamRecordApi {
 
     @Autowired
@@ -56,5 +60,18 @@ public class ExamRecordController extends BaseController implements ExamRecordAp
         List<ExamRecordDTO> examRecordDTOS = this.examRecordService.queryForCondition(request.getBody().getQuery());
         List<ExamRecordVO> examRecordVOS = PojoUtils.copyListProperties(examRecordDTOS, ExamRecordVO::new);
         return buildPageResponse(page,examRecordVOS);
+    }
+
+    /**
+     * 通过考试记录id获取具体的答卷情况
+     *
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<AnserPaperDetailsVO>
+     * @author ChenTong
+     * @date 2020/7/11 0:41
+     */
+    @Override
+    public CommonResponse<PaperSubjectAnswerVO> findAnswerPaperDetail(@Valid CommonRequest<ExamRecordDetailQuery> request) {
+        return null;
     }
 }

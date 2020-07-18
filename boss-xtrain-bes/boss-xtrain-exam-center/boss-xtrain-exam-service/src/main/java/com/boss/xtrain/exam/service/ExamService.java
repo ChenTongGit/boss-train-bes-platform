@@ -3,6 +3,8 @@ package com.boss.xtrain.exam.service;
 import com.boss.xtrain.exam.pojo.dto.AnswerRecordTempInsertDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamStartAddRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
+import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
 
 import java.util.List;
 
@@ -50,5 +52,10 @@ public interface ExamService {
     Long getLimitTimeFromRedis(String key);
 
     void setLimitTimeToRedis(String key, Long limit);
+
+    /**
+     * 获取试卷
+     */
+    PaperSubjectAnswerVO getPaper(ExamRecordDetailQuery vo, boolean queryRedis);
 
 }

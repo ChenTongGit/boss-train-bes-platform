@@ -1,5 +1,8 @@
 package com.boss.xtrain.exam.pojo.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 /**
  * 考生基础信息dto
  *
@@ -20,6 +23,7 @@ public class ExamPeopleInfoDTO{
     /**
      * 考生id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
