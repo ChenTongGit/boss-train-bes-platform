@@ -2,7 +2,7 @@ package com.boss.xtrain.common.util;
 
 import com.alibaba.fastjson.JSON;
 import com.boss.xtrain.common.core.aspect.EntityFields;
-import com.boss.xtrain.common.util.Constant.JwtContant;
+import com.boss.xtrain.common.util.constant.JwtContant;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 
