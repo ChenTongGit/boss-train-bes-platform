@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * 考试中心微服务 naco客户端
  * @author ChenTong
  * @version 1.0
- * @date 2020/7/7 15:39
+ * @date 2020/7/23 15:39
  * @copyright
  * @modified
  * @see
