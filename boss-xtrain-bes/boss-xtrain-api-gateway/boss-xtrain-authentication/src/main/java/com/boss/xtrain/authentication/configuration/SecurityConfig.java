@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/login", "/testFeign")
+            .antMatchers("/login", "/api/userinfo","/api/testFeign")
             .permitAll()
             .anyRequest()
             .authenticated()
@@ -49,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             .permitAll()
             .successForwardUrl("/index")
-            
             .and()
             .logout()
             .logoutSuccessUrl("http://127.0.0.1:4444/exit");

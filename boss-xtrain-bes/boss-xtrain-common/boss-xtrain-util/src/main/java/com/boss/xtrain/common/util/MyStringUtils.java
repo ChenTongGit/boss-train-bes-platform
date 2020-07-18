@@ -1,5 +1,6 @@
 package com.boss.xtrain.common.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
  * 字符串工具类, 继承org.apache.commons.lang3.StringUtils类
  *
  */
+@Slf4j
 public class MyStringUtils extends StringUtils {
 
     private static final char SEPARATOR = '_';
@@ -269,5 +271,23 @@ public class MyStringUtils extends StringUtils {
         }
     }
 
-
+    /**
+     * 删除字符串自定的前缀
+     * @param str 处理的字符串
+     * @param prefix 前缀
+     * @return
+     */
+    public static String removePrefix(String str, String prefix) {
+        return StringUtils.replace(str, prefix, "");
+    }
+    /**
+     * 判断是不是三段式的jwt
+     * @param str 处理的字符串
+     * @return
+     */
+    public static Boolean isJwtStr(String str) {
+        String[] strings = str.split(".");
+        log.info(String.valueOf(strings.length));
+        return strings.length == 3;
+    }
 }

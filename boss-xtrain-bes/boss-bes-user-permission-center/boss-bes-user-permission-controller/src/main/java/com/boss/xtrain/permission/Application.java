@@ -14,7 +14,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.boss.xtrain.permission.mapper")
 @EnableDiscoveryClient
 public class Application {
-
     /**
      * (scanBasePackages = {CommonConstant.BASE_PACKAGE},exclude = {DataSourceAutoConfiguration.class})
      * @param args
@@ -22,5 +21,4 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 }

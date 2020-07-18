@@ -25,7 +25,6 @@ public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
         super.setUserTokenConverter(new BesUserAuthenticationConverter());
     }
 
-
     private class BesUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
         @Override

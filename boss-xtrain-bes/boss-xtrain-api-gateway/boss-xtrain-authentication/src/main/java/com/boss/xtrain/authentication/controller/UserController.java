@@ -6,6 +6,7 @@ import com.boss.xtrain.authentication.service.BesUserDetailService;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -29,9 +30,9 @@ public class UserController {
         return client.testFeign().getData();
     }
 
-    @GetMapping("/user")
-    public Principal user(Principal user) {
-        return user;
+    @GetMapping("/userinfo")
+    public UserDetails user(String userName) {
+        return userDetailService.loadUserByUsername(userName);
     }
 
     @DeleteMapping(value = "/exit")

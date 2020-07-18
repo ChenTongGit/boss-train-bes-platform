@@ -81,7 +81,7 @@ public class EntityFieldStufferAspect {
 	}
 
 	@Around("daoUpdate()")
-	public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
+    public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("update");
 		EntityFields entityFields = getEntityFields();
 		if (entityFields == null) return pjp.proceed();
@@ -149,6 +149,7 @@ public class EntityFieldStufferAspect {
 
 	private EntityFields getEntityFields() {
 		//TODO		return SecurityUtils.getUserID();从自定义token中获取数据 || 从缓存中获取EntityFields entityFields =(EntityFields) redisUtil.get("current:"+"id");
+
 		EntityFields entityFields = new EntityFields();
 //		redisUtil.hashGetAll(key)
 		entityFields.setCompanyId(11L);
