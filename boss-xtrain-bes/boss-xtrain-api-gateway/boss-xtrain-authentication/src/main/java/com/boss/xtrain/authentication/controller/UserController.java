@@ -1,22 +1,33 @@
 package com.boss.xtrain.authentication.controller;
 
 
+import com.boss.xtrain.authentication.feign.PermissonServiceClient;
 import com.boss.xtrain.authentication.service.BesUserDetailService;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class UserController {
+
+    @Autowired
+    PermissonServiceClient client;
 
     @Autowired
     private BesUserDetailService userDetailService;
     @Autowired
     private ConsumerTokenServices consumerTokenServices;
+
+    @GetMapping("/testFeign")
+    public List<CompanyVO> testFeigin(){
+        return client.testFeign().getData();
+    }
 
     @GetMapping("/user")
     public Principal user(Principal user) {

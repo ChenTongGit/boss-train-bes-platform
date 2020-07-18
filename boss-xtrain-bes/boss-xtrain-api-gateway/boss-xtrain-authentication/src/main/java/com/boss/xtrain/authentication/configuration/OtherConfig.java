@@ -21,4 +21,9 @@ public class OtherConfig {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
+
+    @Bean
+    public FeignClientInterceptor feignClientInterceptor(){
+        return new FeignClientInterceptor();
+    }
 }

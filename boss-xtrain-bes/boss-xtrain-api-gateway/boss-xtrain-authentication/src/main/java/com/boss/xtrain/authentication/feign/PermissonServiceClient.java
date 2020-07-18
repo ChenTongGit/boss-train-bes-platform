@@ -7,6 +7,7 @@ import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
+import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -35,4 +36,7 @@ public interface PermissonServiceClient {
 
     @PostMapping("/education/bes/v1/user/getAllResource")
     CommonResponse<List<ResourceListVO>> findResourceByName(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
+
+    @GetMapping("/education/bes/v1/company/selectAll")
+    CommonResponse<List<CompanyVO>> testFeign();
 }

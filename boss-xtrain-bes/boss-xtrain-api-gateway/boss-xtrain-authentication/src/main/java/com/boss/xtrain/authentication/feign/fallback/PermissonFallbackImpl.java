@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
+import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,12 @@ public class PermissonFallbackImpl implements PermissonServiceClient {
 
     @Override
     public CommonResponse<List<ResourceListVO>> findResourceByName(@RequestBody @Valid CommonRequest<RoleQueryDTO> request){
+        log.error("服务降级返回", throwable);
+        return null;
+    }
+
+    @Override
+    public CommonResponse<List<CompanyVO>> testFeign(){
         log.error("服务降级返回", throwable);
         return null;
     }
