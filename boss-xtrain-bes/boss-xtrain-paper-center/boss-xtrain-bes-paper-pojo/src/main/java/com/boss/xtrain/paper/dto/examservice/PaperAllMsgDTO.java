@@ -13,7 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 public class PaperAllMsgDTO {
     private Long paperId;
+
     private String paperName;
+
     private Long paperType;
 
     private Long difficuty;
@@ -21,6 +23,7 @@ public class PaperAllMsgDTO {
     private BigDecimal score;
 
     private String discript;
+
     private Long orgId;
 
     private Long companyId;

@@ -13,8 +13,6 @@ import com.boss.xtrain.paper.dto.papermanage.PaperListDTO;
 
 import com.boss.xtrain.paper.dto.papermanage.PaperUpdateDTO;
 import com.boss.xtrain.paper.dto.templatemanage.SubjectQueryDTO;
-import com.boss.xtrain.paper.entity.Paper;
-import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
 import com.boss.xtrain.paper.vo.papermanage.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 import java.util.List;
 

@@ -10,7 +10,6 @@ import com.boss.xtrain.paper.dto.standardcomb.StandardCombDTO;
 import com.boss.xtrain.paper.mockdata.BaseData;
 import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
 import com.boss.xtrain.paper.vo.baseinfo.SubjectTypeVO;
-import com.boss.xtrain.paper.vo.fastcomb.AnswerVO;
 import com.boss.xtrain.paper.vo.fastcomb.CombConfigItemVO;
 import com.boss.xtrain.paper.vo.fastcomb.CombConfigVO;
 import com.boss.xtrain.paper.vo.fastcomb.CombSubjectListVO;
@@ -18,14 +17,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import sun.plugin2.util.PojoUtil;
+
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 @Component
 public class BaseServiceApiImpl implements BaseServiceApi {
 

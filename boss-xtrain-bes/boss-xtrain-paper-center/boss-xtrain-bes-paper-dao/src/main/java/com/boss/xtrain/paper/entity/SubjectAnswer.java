@@ -4,9 +4,7 @@ package com.boss.xtrain.paper.entity;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * @version: V1.0
