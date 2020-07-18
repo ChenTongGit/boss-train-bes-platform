@@ -101,14 +101,14 @@
       </if>
     </where>
   </select>
-  <select id="getResources" resultType="com.boss.xtrain.permission.pojo.entity.ResourceTreeNode">
+  <select id="getResources" resultType="com.boss.xtrain.permission.pojo.query.TreeNode">
         SELECT id,name,order_index,parent_id as parentId from t_resource order by order_index
     </select>
   <insert id="allocateUser" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
   <delete id="deleteUserRole">
-    DELETE FROM user_role
+    DELETE FROM t_user_role
     WHERE role_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
@@ -116,10 +116,10 @@
   </delete>
 
   <insert id="allocateResource" parameterType="com.boss.xtrain.permission.pojo.dto.RoleResourceDTO">
-        insert into role_resource (id,role_id,resource_id) VALUES (#{id},#{roleId},#{resourceId})
+        insert into t_role_resource (t_r_id,t_rs_id) VALUES (#{roleId},#{resourceId})
     </insert>
   <delete id="deleteRoleResource">
-    DELETE FROM role_resource
+    DELETE FROM t_role_resource
     WHERE role_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
@@ -141,7 +141,7 @@
     </select>
 
   <select id="getUserIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
-        select distinct a.id  from t_user a left join user_role b on a.id = b.user_id  where b.role_id = #{id}
+        select distinct a.id  from t_user a left join t_user_role b on a.id = b.t_u_id  where b.t_r_id = #{id}
     </select>
 
 </mapper>

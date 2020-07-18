@@ -3,11 +3,12 @@ package com.boss.xtrain.permission.controller;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
-import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.service.ResourceService;
 import com.boss.xtrain.permission.api.ResourceApi;
+import com.boss.xtrain.permission.service.TreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,8 @@ public class ResourceController implements ResourceApi {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private TreeService treeService;
     @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<ResourceDTO> request) {
         ResourceDTO dto = request.getBody();
@@ -72,5 +75,11 @@ public class ResourceController implements ResourceApi {
     @Override
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
         return null;
+    }
+
+    @Override
+    public CommonResponse<List<TreeNode>> selectResourceTree(CommonRequest<ResourceQueryDTO> request) {
+        return CommonResponseUtil.ok(treeService.resourceTree());
+
     }
 }

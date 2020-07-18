@@ -11,6 +11,7 @@ import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.service.ResourceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Service
+@Slf4j
 public class ResourceServiceImpl implements ResourceService{
 
     @Autowired
@@ -89,9 +91,11 @@ public class ResourceServiceImpl implements ResourceService{
     public List<ResourceDTO> selectAll() {
         try {
             List<Resource> resources = resourceDao.selectAll();
+            log.info(resources.toString());
             return PojoUtils.copyListProperties(resources,ResourceDTO::new);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR,e);
         }
     }
 
@@ -133,6 +137,11 @@ public class ResourceServiceImpl implements ResourceService{
         PojoUtils.copyProperties(resource,dto);
         return dto;
     }
+
+//    @Override
+//    public List<TreeDTO> getAllResourceTree(ResourceQueryDTO dto) {
+//        return null;
+//    }
 
     private boolean isInUse(ResourceDTO dto){
         return roleDao.getResourcesByRoleId(dto.getId()).isEmpty();

@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "t_resource")
 public class Resource extends BaseSystemEntity {
-    @Column(name = "tenant_name")
-    private  Long tenantName;
+    @Column(name = "name")
+    private  String name;
     @Column(name = "code")
     private String code;
     @Column(name = "order_index")

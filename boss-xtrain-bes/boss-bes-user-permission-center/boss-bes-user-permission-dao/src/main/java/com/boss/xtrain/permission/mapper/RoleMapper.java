@@ -5,6 +5,7 @@ import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -33,7 +34,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return  List<ResourceTreeNode>
      */
 
-    List<ResourceTreeNode> getResources();
+    List<TreeNode> getResources();
     /**
      * 角色下分配用户
      *

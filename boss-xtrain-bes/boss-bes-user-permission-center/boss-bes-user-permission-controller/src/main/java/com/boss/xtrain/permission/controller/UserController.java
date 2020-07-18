@@ -11,6 +11,7 @@ import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
+@Slf4j
 public class UserController implements UserApi {
 
     @Autowired
@@ -31,6 +33,7 @@ public class UserController implements UserApi {
 
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserDTO> request) {
         UserDTO userDTO = request.getBody();
+        log.info(userDTO.toString());
         int row = userSerivce.insert(userDTO);
         return CommonResponseUtil.ok(row);
     }
@@ -54,6 +57,7 @@ public class UserController implements UserApi {
     }
 
     public CommonResponse<Integer> update(@Valid CommonRequest<UserDTO> request) {
+        log.info(request.getBody().toString());
         return CommonResponseUtil.ok(userSerivce.update(request.getBody()));
     }
 

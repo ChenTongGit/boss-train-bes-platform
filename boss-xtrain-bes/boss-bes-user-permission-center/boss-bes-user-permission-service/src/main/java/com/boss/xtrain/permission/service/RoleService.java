@@ -54,13 +54,6 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      */
     int deleteRoleResource(List<RoleResourceDTO> roleResourceDTOS);
 
-    /**
-     * 获取资源树
-     *
-     * @param
-     * @return  List<ResourceTreeNode>
-     */
-    List<ResourceTreeNode> getResources();
 
     /**
      * 通过RoleId查询拥有的资源Id

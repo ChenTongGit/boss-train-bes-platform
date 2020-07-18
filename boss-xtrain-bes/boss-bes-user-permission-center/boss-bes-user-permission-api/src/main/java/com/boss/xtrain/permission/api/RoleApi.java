@@ -6,6 +6,7 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
+import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
@@ -43,5 +44,6 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
      */
     @RequestMapping("/selectAll")
     CommonResponse<List<RoleListVO>> selectAllRole();
+
 
 }

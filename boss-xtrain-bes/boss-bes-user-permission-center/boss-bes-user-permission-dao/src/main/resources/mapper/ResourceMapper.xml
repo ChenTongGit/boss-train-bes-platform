@@ -9,7 +9,7 @@
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />
-    <result column="tenant_name" property="tenantName" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="order_index" property="orderIndex" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />

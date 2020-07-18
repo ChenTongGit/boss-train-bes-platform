@@ -14,6 +14,7 @@ import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,7 @@ import java.util.List;
  */
 
 @Component
+@Slf4j
 public class UserDaoImpl implements UserDao {
 
     @Autowired
@@ -36,10 +38,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int insert(UserDTO dto) {
+//        User user = new User();
+//        PojoUtils.copyProperties(dto,user);
+//        return userMapper.insert(user);
+        return 0;
+    }
+    @Override
+    public int userInsert(UserDTO dto) {
         User user = new User();
         PojoUtils.copyProperties(dto,user);
+        log.info(dto.toString());
+        log.info(user.toString());
         return userMapper.insert(user);
     }
+
 
     @Override
     public int delete(UserDTO dto) {
@@ -48,14 +60,27 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int update(UserDTO dto) {
-        User user = new User();
-        PojoUtils.copyProperties(dto,user);
-        return userMapper.updateByPrimaryKeySelective(user);
+//        log.info(dto.toString());
+//        User user = new User();
+//        PojoUtils.copyProperties(dto,user);
+//        log.info(user.toString());
+//        return userMapper.updateByPrimaryKeySelective(user);
+        return 0;
     }
 
     @Override
+    public int userUpdate(UserDTO dto) {
+        log.info(dto.toString());
+        User user = new User();
+        PojoUtils.copyProperties(dto,user);
+        log.info(user.toString());
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+    @Override
     public List<UserDTO> queryByCondition(UserQueryDTO dto) {
         User user = new User();
+        PojoUtils.copyProperties(dto,user);
+        log.info("queryByCondition:",user.toString());
         return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
     }
 

@@ -28,6 +28,22 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
     List<Role> getRoleByUserId(Long id);
 
     /**
+     * 避开切面注入 update
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int userUpdate(UserDTO dto);
+    /**
+     *
+     * 避开切面注入 insert
+     * @param dto
+     * @return int
+     *
+    */
+    int userInsert(UserDTO dto);
+    /**
      * @param queryDTO
      * @return List<Role>
      * @description 所有角色

@@ -3,12 +3,12 @@ package com.boss.xtrain.permission.controller;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.service.RoleService;
 import com.boss.xtrain.permission.api.RoleApi;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +23,7 @@ import java.util.List;
  */
 
 @RestController
+@Slf4j
 public class RoleController implements RoleApi {
 
     @Autowired
@@ -36,7 +37,7 @@ public class RoleController implements RoleApi {
 
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<RoleDTO> request) {
-        RoleDTO roleDTO = new RoleDTO();
+        RoleDTO roleDTO = request.getBody();
         return CommonResponseUtil.ok(roleService.delete(roleDTO));
     }
 
@@ -74,6 +75,8 @@ public class RoleController implements RoleApi {
     @Override
     public CommonResponse<List<RoleListVO>> selectAllRole(){
         List<RoleDTO> roleDTOS = roleService.selectAll();
+        log.info(roleDTOS.toString());
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
+
 }

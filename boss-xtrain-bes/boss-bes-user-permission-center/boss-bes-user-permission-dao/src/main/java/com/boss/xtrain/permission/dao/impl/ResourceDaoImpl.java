@@ -6,6 +6,7 @@ import com.boss.xtrain.permission.mapper.ResourceMapper;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 
 @Component
+@Slf4j
 public class ResourceDaoImpl implements ResourceDao {
 
     @Autowired
@@ -63,6 +65,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<Resource> selectAll() {
+        log.info("resourceDao,selectAll");
         return resourceMapper.selectAll();
     }
 

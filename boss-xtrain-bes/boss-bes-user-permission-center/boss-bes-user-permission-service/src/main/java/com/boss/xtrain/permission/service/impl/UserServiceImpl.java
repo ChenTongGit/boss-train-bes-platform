@@ -9,11 +9,10 @@ import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.service.UserSerivce;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +26,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserSerivce {
 
     @Autowired
@@ -39,6 +39,9 @@ public class UserServiceImpl implements UserSerivce {
     OrganizationDao organizationDao;
 
     @Autowired
+    PositionDao positionDao;
+
+    @Autowired
     DepartmentDao departmentDao;
 
     @Autowired
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserSerivce {
 
 
     private boolean isInUse(UserDTO dto){
-        return true;
+        return dto.getStatus() == 1;
     }
     @Override
     public List<RoleDTO> getRoleByUserId(Long id) {
@@ -120,6 +123,7 @@ public class UserServiceImpl implements UserSerivce {
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
                 userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
+//                userDTO.setPositionName(positionDao.selectByKey(userDTO.getPositionId()).getName());
             }
             return userDTOS;
         }catch (Exception e){
@@ -160,21 +164,32 @@ public class UserServiceImpl implements UserSerivce {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_NOT_EXIST_ERROR);
         }
         try {
-            return userDao.update(dto);
+            log.info(dto.toString());
+//            return userDao.update(dto);
+            return userDao.userUpdate(dto);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_UPDATE_ERROR);
         }
     }
 
     @Override
     public int insert(UserDTO dto) {
-        if(userDao.isExist(dto.getId())){
+        log.info(dto.toString());
+        UserQueryDTO query = new UserQueryDTO();
+        PojoUtils.copyProperties(dto,query);
+        log.info(query.toString());
+        List<UserDTO> list = userDao.queryByCondition(query);
+        log.info(list.toString());
+        if(!list.isEmpty()){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_REPEAT_ERROR);
         }
         try {
             dto.setId(worker.nextId());
-            return userDao.insert(dto);
+//            return userDao.insert(dto);
+            return userDao.userInsert(dto);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_INSERT_ERROR,e);
         }
     }
