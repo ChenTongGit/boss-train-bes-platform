@@ -47,4 +47,9 @@ public class ExaminationController extends PaperBaseController implements Examin
         PaperAllMsgDTO paperAllMsgDTO= examService.getOnePaperMsg(commonRequest.getBody());
         return CommonResponseUtil.ok("20000","查询信息成功",paperAllMsgDTO);
     }
+
+    @Override
+    public CommonResponse getOnePaperAnswer(CommonRequest<ExamServiceQueryPaperDTO> commonRequest) {
+        return null;
+    }
 }

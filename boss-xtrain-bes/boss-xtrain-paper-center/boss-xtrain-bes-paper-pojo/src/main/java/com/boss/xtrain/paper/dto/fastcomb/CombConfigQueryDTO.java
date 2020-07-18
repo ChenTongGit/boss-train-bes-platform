@@ -16,5 +16,8 @@ public class CombConfigQueryDTO extends BaseQuery {
      */
     @NotBlank(message = "组织机构ID不能为空")
     private Long orgId;
+    protected int pageNum;
+    protected int pageSize;
+
 }
 

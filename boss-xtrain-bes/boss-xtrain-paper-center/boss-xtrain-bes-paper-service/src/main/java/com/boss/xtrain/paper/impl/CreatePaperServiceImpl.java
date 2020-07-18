@@ -97,6 +97,7 @@ public class CreatePaperServiceImpl implements CreatePaperService {
         //查询下载的模板为基础生成新试卷
         IdWorker idWorker = new IdWorker();
         Paper template = combPaperDao.queryTemplateById(templateCombDto.getPaperId());
+        template.setDownloadTimes(template.getDownloadTimes()+1);
         Paper paper = new Paper();
         PojoUtils.copyProperties(templateCombDto,paper);
         paper.setPaperId(idWorker.nextId());
@@ -105,6 +106,8 @@ public class CreatePaperServiceImpl implements CreatePaperService {
         paper.setCombExamTim(new Date());
         paper.setScore(template.getScore());
         paper.setOrgId(template.getOrgId());
+        paper.setCreatedTime(new Date());
+        paper.setUpdatedTime(new Date());
         Integer downLoadTemplateCount = combPaperDao.insertPaper(paper);
 
         //将模板题目及答案复制到新的试卷上

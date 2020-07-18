@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.vo.standardcomb;
 
 import com.boss.xtrain.paper.vo.fastcomb.ConfigItemVO;
-import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.boss.xtrain.paper.vo.BaseVO;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 

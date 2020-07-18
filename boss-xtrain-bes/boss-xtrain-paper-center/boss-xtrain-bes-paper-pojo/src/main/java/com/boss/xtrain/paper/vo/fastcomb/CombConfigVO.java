@@ -1,6 +1,6 @@
 package com.boss.xtrain.paper.vo.fastcomb;
 
-import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.boss.xtrain.paper.vo.BaseVO;
 import lombok.Data;
 
 /**组卷项对象

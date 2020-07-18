@@ -1,6 +1,6 @@
 package com.boss.xtrain.paper.vo.baseinfo;
 
-import com.boss.xtrain.common.core.pojo.BaseVO;
+import com.boss.xtrain.paper.vo.BaseVO;
 import lombok.Data;
 
 /**试卷基本信息的接收对象

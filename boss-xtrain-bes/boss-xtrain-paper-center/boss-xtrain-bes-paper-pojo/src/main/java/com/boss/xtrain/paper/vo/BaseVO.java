@@ -1,44 +1,22 @@
-package com.boss.xtrain.common.core.pojo;
+package com.boss.xtrain.paper.vo;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @class BaseVO
- * @classdesc 抽象界面显示的公用信息
- *
- * @author Administrator
- * @date 2020-6-19  11:01
- * @version 1.0.0
- * @see
- * @since
- */
-/**
- * @class BaseVO
- * @classdesc 抽象界面显示的公用信息
- *
- * @author Administrator
- * @date 2020-6-19  11:01
- * @version 1.0.0
- * @see
- * @since
- */
 public abstract class BaseVO implements Serializable {
     public static final long serialVersionUID = 443243264652L;
 
     /**
      * 主键id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 状态
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * 记录所属公司ID
@@ -54,6 +32,7 @@ public abstract class BaseVO implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+
     private Date createdTime;
 
     /**
@@ -64,7 +43,7 @@ public abstract class BaseVO implements Serializable {
     /**
      *  更新时间记录便于追踪
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updatedTime;
 
     /**
@@ -72,7 +51,7 @@ public abstract class BaseVO implements Serializable {
      */
     private Long updatedBy;
     /**
-     * 数据版本号
+     * 版本
      */
     private Long version;
 
@@ -85,11 +64,11 @@ public abstract class BaseVO implements Serializable {
         this.id = id;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -168,4 +147,3 @@ public abstract class BaseVO implements Serializable {
 
 
 }
-
