@@ -1,0 +1,9 @@
+
+e
+java:S11920"JDefine a constant instead of duplicating this literal "companyId" 3 times.(£°°ƒûÿÿÿÿ
+n
+java:S1128"SRemove this unused import 'org.springframework.beans.factory.annotation.Autowired'.(¡ž¸Îùÿÿÿÿ
+e
+java:S1128	"ORemove this unused import 'com.boss.xtrain.permission.pojo.query.CompanyQuery'.(ÌçüÊ
+`
+java:S1128"ERemove this unused import 'org.springframework.stereotype.Component'.(Þ÷Ñ¸ÿÿÿÿÿ
