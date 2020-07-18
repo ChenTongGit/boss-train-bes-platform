@@ -42,15 +42,20 @@ public class ExamPublishToUserDaoImpl implements ExamPublishToUserDao {
 
     /**
      * 批量删除关系
-     * @param ids 考试发布id
+     * @param id 考试发布id
      * @return int
      * @author ChenTong
      * @date 2020/7/9 10:30
      */
     @Override
-    public int deleteBatchByPublishId(List<Long> ids) {
+    public int deleteBatchByPublishId(Long id) {
 
-        return examPublishToUserMapper.deleteBatchByPublishId(ids);
+        return examPublishToUserMapper.deleteBatchByPublishId(id);
+    }
+
+    @Override
+    public int deleteBatchByPublishIds(List<Long> ids) {
+        return examPublishToUserMapper.deleteBatchByPublishIds(ids);
     }
 
     /**

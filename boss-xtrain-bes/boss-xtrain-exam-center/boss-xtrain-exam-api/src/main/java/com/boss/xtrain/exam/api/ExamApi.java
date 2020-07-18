@@ -5,7 +5,9 @@ import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.exam.pojo.dto.AnswerRecordTempInsertDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamStartAddRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamPaperInfoQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamBasicInfoVO;
+import com.boss.xtrain.exam.pojo.vo.ExamRecordIdVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -33,7 +35,7 @@ public interface ExamApi {
      * @return
      */
     @PostMapping("/examInfo")
-    CommonResponse<ExamBasicInfoVO> getExamBasicInfo(@RequestBody @Valid CommonRequest<Map<String, Long>> request);
+    CommonResponse<ExamBasicInfoVO> getExamBasicInfo(@RequestBody @Valid CommonRequest<ExamPaperInfoQuery> request);
 
     /**
      * 考试开始记录考试
@@ -42,7 +44,7 @@ public interface ExamApi {
      */
     // 考试开始 创建改考生的考试记录 根据该场次的阅卷方式分配阅卷官以及阅卷时间
     @PostMapping("/examRecord")
-    CommonResponse<Long> createExamRecord(@RequestBody @Valid CommonRequest<ExamStartAddRecordDTO> request);
+    CommonResponse<ExamRecordIdVO> createExamRecord(@RequestBody @Valid CommonRequest<ExamStartAddRecordDTO> request);
 
     /**
      * 暂时保存答案

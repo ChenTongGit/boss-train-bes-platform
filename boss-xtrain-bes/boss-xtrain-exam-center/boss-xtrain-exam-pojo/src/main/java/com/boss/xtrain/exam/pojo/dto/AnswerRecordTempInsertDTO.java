@@ -1,6 +1,9 @@
 package com.boss.xtrain.exam.pojo.dto;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.math.BigDecimal;
 
 /**
@@ -29,11 +32,13 @@ public class AnswerRecordTempInsertDTO {
     /**
      * 考试试题id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long paperSubjectId;
 
     /**
      * 题目类型id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long subjectTypeId;
 
     /**

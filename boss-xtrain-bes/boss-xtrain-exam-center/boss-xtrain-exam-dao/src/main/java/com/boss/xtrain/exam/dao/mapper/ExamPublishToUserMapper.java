@@ -10,10 +10,10 @@ import java.util.List;
 public interface ExamPublishToUserMapper extends CommonMapper<ExamPublishToUser> {
     /**
      * 批量删除
-     * @param ids
+     * @param id
      * @return
      */
-    int deleteBatchByPublishId(@Param("ids") List<Long> ids);
+    int deleteBatchByPublishId(Long id);
 
     /**
      * 批量添加
@@ -28,5 +28,7 @@ public interface ExamPublishToUserMapper extends CommonMapper<ExamPublishToUser>
      * @return
      */
     List<Long> queryMarkUsersByPublishId(Long publishId);
+
+    int deleteBatchByPublishIds(@Param("ids") List<Long> ids);
 
 }
