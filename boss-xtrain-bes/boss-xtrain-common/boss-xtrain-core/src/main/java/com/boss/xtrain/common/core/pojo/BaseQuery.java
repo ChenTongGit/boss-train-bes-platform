@@ -25,7 +25,6 @@ import lombok.ToString;
 public abstract class BaseQuery implements Serializable {
     private static final long serialVersionUID = 42432423432432L;
 
-    protected int pageNum;
-    protected int pageSize;
+
 
 }

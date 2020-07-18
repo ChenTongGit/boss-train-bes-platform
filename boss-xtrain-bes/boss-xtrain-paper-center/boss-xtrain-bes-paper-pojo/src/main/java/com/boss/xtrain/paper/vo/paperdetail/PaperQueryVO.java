@@ -19,6 +19,7 @@ public class PaperQueryVO extends BaseQuery {
      */
     @NotBlank(message = "组织机构ID不能为空")
     private String orgId;
-
+    protected int pageNum;
+    protected int pageSize;
 }
 

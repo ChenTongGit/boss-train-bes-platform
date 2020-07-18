@@ -16,5 +16,7 @@ public class PaperQueryDTO extends BaseQuery {
      * 公司IDs
      */
     private Long  orgId;
+    protected int pageNum;
+    protected int pageSize;
 }
 
