@@ -15,7 +15,7 @@
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="master" jdbcType="VARCHAR" property="master" />
-    <result column="descript" jdbcType="VARCHAR" property="description" />
+    <result column="discript" jdbcType="VARCHAR" property="description" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />

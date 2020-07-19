@@ -2,7 +2,7 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.paper.dto.examservice.ExamServiceQueryPaperDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 
 import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ public interface ExaminationApi {
      * @return
      */
     @PostMapping(value = "/queryOnePaper")
-    CommonResponse getOnePaperWithSubject(CommonRequest<ExamServiceQueryPaperDTO> commonRequest);
+    CommonResponse getOnePaperWithSubject(CommonRequest<ExamPaperQuery> commonRequest);
 
-    CommonResponse getOnePaperAnswer(CommonRequest<ExamServiceQueryPaperDTO> commonRequest);
+    CommonResponse getOnePaperAnswer(CommonRequest<ExamPaperQuery> commonRequest);
 }

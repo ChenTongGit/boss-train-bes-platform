@@ -8,10 +8,13 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamPublishRecordApi;
 import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
+import com.boss.xtrain.exam.service.PaperFeign;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +44,17 @@ import java.util.List;
 @Slf4j
 public class ExamPublishRecordController extends BaseController implements ExamPublishRecordApi {
 
+    /**
+     * 考试发布记录
+     */
     @Autowired
     private ExamPublishRecordService examPublishRecordService;
+
+    /**
+     * 试卷服务openfeign调用
+     */
+    @Autowired
+    private PaperFeign paperFeign;
 
     /**
      * 添加新的数据
@@ -71,14 +83,28 @@ public class ExamPublishRecordController extends BaseController implements ExamP
         List<ExamPublishRecordDTO> recordDTOS = examPublishRecordService.selectByPage(request.getBody().getQuery());
         // 转换为vo
         List<ExamPublishRecordVO> examPublishRecordVOS = PojoUtils.copyListProperties(recordDTOS, ExamPublishRecordVO::new);
-
         return buildPageResponse(page,examPublishRecordVOS);
     }
 
+    /**
+     * 调用服务：获取考试预览
+     * @param request 考试试卷id
+     * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO>
+     * @author ChenTong
+     * @date 2020/7/18 19:30
+     */
+    @ApiLog(msg = "获取试卷预览信息")
+    @ApiOperation(value = "获取试卷预览信息")
+    @Override
+    public CommonResponse<ExamPaperPreviewVO> getPaperDetail(@RequestBody @Valid CommonRequest<ExamPaperQuery> request) {
+        ExamPaperPreviewVO paperPreviewVO = new ExamPaperPreviewVO();
+        ExamPaperDTO examPaperDTO = this.paperFeign.getExamPaper(request).getData();
+        PojoUtils.copyProperties(examPaperDTO, paperPreviewVO);
+        return CommonResponseUtil.ok(paperPreviewVO);
+    }
 
     /**
      * 批量删除数据
-     *
      * @param request 请求报文对象，body为dto
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
@@ -93,7 +119,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
 
     /**
      * 更新考试发布记录
-     * @param request
+     * @param request 请求
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
      * @date 2020/7/7 22:10

@@ -1,9 +1,10 @@
 package com.boss.xtrain.exam.service;
 
 import com.boss.xtrain.exam.pojo.dto.ExamRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordQuery;
-import com.boss.xtrain.exam.pojo.vo.test.PaperSubjectAnswerVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
 
 import java.util.List;
 
@@ -30,5 +31,11 @@ public interface ExamRecordService {
     List<ExamRecordDTO> queryForCondition(ExamRecordQuery query);
 
 
-    PaperSubjectAnswerVO getCompletePaper(ExamRecordDetailQuery submitPaperVO, boolean queryRedis);
+    /**
+     * 获取试卷信息
+     * @param submitExamDTO
+     * @param queryRedis
+     * @return
+     */
+    PaperSubjectAnswerVO getCompletePaper(SubmitExamDTO submitExamDTO, boolean queryRedis);
 }

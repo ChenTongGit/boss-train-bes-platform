@@ -83,7 +83,7 @@
 
   <delete id="deleteBatch" parameterType="list">
     delete from t_exam_publish_record
-    where id in 
+    where id in
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
       #{id}
     </foreach>

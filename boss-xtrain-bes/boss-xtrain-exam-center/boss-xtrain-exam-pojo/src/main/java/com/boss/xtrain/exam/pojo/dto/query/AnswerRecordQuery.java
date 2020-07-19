@@ -1,7 +1,5 @@
 package com.boss.xtrain.exam.pojo.dto.query;
 
-import com.boss.xtrain.common.core.pojo.BaseQuery;
-
 /**
  * 题目作答记录查询query
  *
@@ -13,5 +11,15 @@ import com.boss.xtrain.common.core.pojo.BaseQuery;
  * @see
  * @since
  **/
-public class AnswerRecordQuery extends BaseQuery {
+public class AnswerRecordQuery{
+
+    private Long examRecordId;
+
+    public Long getExamRecordId() {
+        return examRecordId;
+    }
+
+    public void setExamRecordId(Long examRecordId) {
+        this.examRecordId = examRecordId;
+    }
 }

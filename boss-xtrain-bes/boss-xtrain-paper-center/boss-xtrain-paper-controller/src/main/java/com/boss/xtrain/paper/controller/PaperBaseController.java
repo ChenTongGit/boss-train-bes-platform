@@ -3,7 +3,6 @@ package com.boss.xtrain.paper.controller;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
-import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.papaer.utils.BasicConverter;
 import com.boss.xtrain.papaer.utils.BeanCopierUtil;

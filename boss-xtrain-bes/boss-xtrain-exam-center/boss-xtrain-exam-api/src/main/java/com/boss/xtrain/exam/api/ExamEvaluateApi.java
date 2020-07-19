@@ -6,8 +6,11 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.exam.pojo.dto.MarkingSubmitDTO;
 import com.boss.xtrain.exam.pojo.dto.MarkingTempListDTO;
+import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
 import com.boss.xtrain.exam.pojo.dto.query.MarkingQuery;
 import com.boss.xtrain.exam.pojo.vo.MarkingDataListVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 考试评卷管理Api
@@ -43,9 +46,17 @@ public interface ExamEvaluateApi {
 
     /**
      * 提交批卷记录
-     *
      * @param request
      * @return
      */
     CommonResponse<Boolean> submitEvaluate(CommonRequest<MarkingSubmitDTO> request);
+
+    /**
+     * 获取前端，答卷详情需要的完整的试卷
+     * @author ChenTong
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<PaperSubjectAnswerVO>
+     * @date 2020/7/19 14:43
+     */
+    CommonResponse<PaperSubjectAnswerVO> doQueryExamEvaluateDetail(CommonRequest<SubmitExamDTO> request);
 }

@@ -26,6 +26,11 @@ public class ExamRecordDTO extends BaseDTO {
     private Long publishId;
 
     /**
+     * 试卷id
+     */
+    private Long paperId;
+
+    /**
      * 考生id
      */
     private Long examPeople;
@@ -101,6 +106,14 @@ public class ExamRecordDTO extends BaseDTO {
      */
     private String systemEvaluate;
 
+
+    public Long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
+    }
 
     public String getMobile() {
         return mobile;

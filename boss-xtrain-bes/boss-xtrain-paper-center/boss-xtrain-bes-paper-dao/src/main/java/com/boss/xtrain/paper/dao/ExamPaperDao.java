@@ -1,9 +1,17 @@
 package com.boss.xtrain.paper.dao;
 
-import com.boss.xtrain.paper.dto.examservice.ExamServiceQueryPaperDTO;
-import com.boss.xtrain.paper.dto.examservice.PaperAllMsgDTO;
-import com.boss.xtrain.paper.vo.examservice.PaperQueryVO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
 
+/**
+ * 试卷获取操作接口
+ */
 public interface ExamPaperDao {
-    PaperAllMsgDTO getOnePaperMsg(ExamServiceQueryPaperDTO queryPaperDTO);
+
+    /**
+     * 通过试卷id获取试卷完成信息
+     * @param queryPaperDTO
+     * @return
+     */
+    ExamPaperDTO getExamPaper(ExamPaperQuery queryPaperDTO);
 }

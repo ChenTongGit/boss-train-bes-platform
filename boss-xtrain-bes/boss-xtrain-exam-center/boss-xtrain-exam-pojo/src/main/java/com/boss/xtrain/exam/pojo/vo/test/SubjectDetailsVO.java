@@ -23,7 +23,7 @@ public class SubjectDetailsVO {
      * 试题id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    private Long paperSubjectId;
 
     /**
      * 试题内容
@@ -55,7 +55,6 @@ public class SubjectDetailsVO {
     /**
      * 试题对应的答案
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private List<AnswerDetailsVO> answers;
 
     /**
@@ -77,19 +76,19 @@ public class SubjectDetailsVO {
     /**
      * 考生得分
      */
-    private Double myScore;
+    private BigDecimal myScore;
 
     /**
      * 评价
      */
-    private String evaluate;
+    private String evaluate="";
 
-    public Long getId() {
-        return id;
+    public Long getPaperSubjectId() {
+        return paperSubjectId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaperSubjectId(Long paperSubjectId) {
+        this.paperSubjectId = paperSubjectId;
     }
 
     public String getSubject() {
@@ -165,11 +164,11 @@ public class SubjectDetailsVO {
         this.standardAnswer = standardAnswer;
     }
 
-    public Double getMyScore() {
+    public BigDecimal getMyScore() {
         return myScore;
     }
 
-    public void setMyScore(Double myScore) {
+    public void setMyScore(BigDecimal myScore) {
         this.myScore = myScore;
     }
 

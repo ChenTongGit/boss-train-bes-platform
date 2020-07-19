@@ -13,11 +13,15 @@ import com.boss.xtrain.exam.pojo.dto.MarkingSubmitDTO;
 import com.boss.xtrain.exam.pojo.dto.query.MarkingQuery;
 import com.boss.xtrain.exam.pojo.entity.AnswerRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamRecord;
+import com.boss.xtrain.exam.pojo.vo.MarkingDataItemVO;
 import com.boss.xtrain.exam.service.ExamEvaluateService;
+import com.boss.xtrain.exam.service.PaperFeign;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +49,9 @@ public class ExamEvaluateServiceImpl implements ExamEvaluateService {
     @Autowired
     private ExamRecordDao examRecordDao;
 
+    @Autowired
+    private PaperFeign paperFeign;
+
     private static final String keyPrefix = "bes:exam:evaluate:tempMarkingResultRecord:";
     /**
      * 查询该阅卷官阅卷试题
@@ -57,6 +64,7 @@ public class ExamEvaluateServiceImpl implements ExamEvaluateService {
     @Override
     public List<MarkingDataListDto> queryByCondition(MarkingQuery query) {
         try {
+
             return this.examEvaluateDao.queryByCondition(query);
         }catch (Exception e){
             log.error(e.getMessage(), e);
@@ -104,6 +112,7 @@ public class ExamEvaluateServiceImpl implements ExamEvaluateService {
             for (AnswerRecord entity : answerRecordList) {
                 // status置一，代表已批阅
                 entity.setStatus(1);
+                entity.setVersion(0L);
                 examEvaluateDao.updateEvaluate(entity);
             }
             ExamRecord record = new ExamRecord();
@@ -136,8 +145,44 @@ public class ExamEvaluateServiceImpl implements ExamEvaluateService {
      * @date 2020/7/16 15:08
      */
     @Override
-    public Map<String, MarkingDataItemDTO> getTempEvaluateResultMap(Long examRecordId) {
-        return null;
+    public Map<String, MarkingDataItemVO> getTempEvaluateResultMap(Long examRecordId) {
+        Map<String, MarkingDataItemVO> map = new HashMap<>();
+        /* 从redis将答案取出 */
+        List<MarkingDataItemVO> markingDataItemVOS = getBackEvaluate(examRecordId);
+
+        if(markingDataItemVOS!= null){
+            for (MarkingDataItemVO vo : markingDataItemVOS) {
+                map.put(Long.toString(vo.getSubjectId()), vo);
+            }
+        }
+        // 生成map
+
+        return map;
+    }
+
+
+    /**
+     * 获取redis中回传的批卷记录
+     *
+     * @param recordId
+     * @return 如果不存在，那么返回一个空的list
+     */
+    private List<MarkingDataItemVO> getBackEvaluate(Long recordId) {
+        String key = keyPrefix+recordId;
+        /* 从redis将数据取出 */
+        Object backEvaluate = null;
+        try {
+            backEvaluate = redisUtil.get(key);
+        } catch (Exception e) {
+            throw new BusinessException(BusinessError.MARKING_GET_REDIS_FAILED);
+        }
+        List<MarkingDataItemVO> vos = new ArrayList<>();
+        if (backEvaluate != null) {
+            // arrayList
+            vos = JSON.parseArray(backEvaluate.toString(),MarkingDataItemVO.class);
+        }
+        log.info("redis get: " + vos);
+        return vos;
     }
 
     private String systemEvaluate(MarkingSubmitDTO dto){

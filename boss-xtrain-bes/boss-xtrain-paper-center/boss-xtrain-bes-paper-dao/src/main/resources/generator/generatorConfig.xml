@@ -7,7 +7,7 @@
 
 <!--    <properties resource="db.properties"/>-->
 
-    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+    <context subjectId="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="useMapperCommentGenerator" value="false"/>

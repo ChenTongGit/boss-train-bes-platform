@@ -1,25 +1,22 @@
-package com.boss.xtrain.exam.pojo.dto;
+package com.boss.xtrain.exam.pojo.vo;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * 考试阅卷结果
+ * 阅卷每道题明细的vo
  *
  * @author ChenTong
  * @version 1.0
- * @date 2020/7/16 14:48
+ * @date 2020/7/19 14:49
  * @copyright
  * @modified
  * @see
  * @since
  **/
-public class MarkingDataItemDTO {
-
+public class MarkingDataItemVO {
     /**
      * 答案记录id
      */
-    @NotNull(message = "考试答案记录id不能为空")
     private Long id;
 
     /**
@@ -37,10 +34,6 @@ public class MarkingDataItemDTO {
      */
     private String evaluate;
 
-    /**
-     * 版本号
-     */
-    private Long version;
 
     public Long getId() {
         return id;
@@ -49,15 +42,6 @@ public class MarkingDataItemDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
 
     public Long getSubjectId() {
         return subjectId;

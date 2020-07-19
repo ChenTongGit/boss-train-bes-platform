@@ -28,6 +28,12 @@ public class ExamRecordVO extends BaseVO {
     private Long id;
 
     /**
+     * paperId
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long paperId;
+
+    /**
      * 考试名
      */
     private String title;
@@ -76,6 +82,14 @@ public class ExamRecordVO extends BaseVO {
      * 考试结束时间
      */
     private Date actualEndTime;
+
+    public Long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
+    }
 
     public BigDecimal getScore() {
         return score;

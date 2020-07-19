@@ -21,14 +21,12 @@ public class ExamRecordDetailQuery {
      * 考试记录id
      */
     @NotNull(message = "考试记录id不能为空")
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long examRecordId;
 
     /**
      * 试卷id
      */
     @NotNull(message = "试卷id不能为空")
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long paperId;
 
     public Long getExamRecordId() {

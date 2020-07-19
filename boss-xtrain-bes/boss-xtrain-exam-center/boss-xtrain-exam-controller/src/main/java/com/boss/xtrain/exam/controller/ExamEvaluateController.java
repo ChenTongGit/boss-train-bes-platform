@@ -8,9 +8,12 @@ import com.boss.xtrain.exam.api.ExamEvaluateApi;
 import com.boss.xtrain.exam.pojo.dto.MarkingDataListDto;
 import com.boss.xtrain.exam.pojo.dto.MarkingSubmitDTO;
 import com.boss.xtrain.exam.pojo.dto.MarkingTempListDTO;
+import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
 import com.boss.xtrain.exam.pojo.dto.query.MarkingQuery;
 import com.boss.xtrain.exam.pojo.vo.MarkingDataListVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
 import com.boss.xtrain.exam.service.ExamEvaluateService;
+import com.boss.xtrain.exam.service.ExamRecordService;
 import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +46,9 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
 
     @Autowired
     private ExamEvaluateService examEvaluateService;
+
+    @Autowired
+    private ExamRecordService examRecordService;
 
     /**
      * 获取阅卷部分的考试记录列表
@@ -89,5 +95,20 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
     public CommonResponse<Boolean> submitEvaluate(@Valid @RequestBody CommonRequest<MarkingSubmitDTO> request) {
         Boolean result = this.examEvaluateService.submitEvaluate(request.getBody());
         return CommonResponseUtil.ok(result);
+    }
+
+    /**
+     * 获取前端，答卷详情需要的完整的试卷
+     *
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<PaperSubjectAnswerVO>
+     * @author ChenTong
+     * @date 2020/7/19 14:43
+     */
+    @PostMapping("/paper")
+    @ApiOperation(value = "获取试卷")
+    @Override
+    public CommonResponse<PaperSubjectAnswerVO> doQueryExamEvaluateDetail(@RequestBody @Valid CommonRequest<SubmitExamDTO> request) {
+        return CommonResponseUtil.ok(this.examRecordService.getCompletePaper(request.getBody(), true));
     }
 }
