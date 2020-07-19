@@ -12,6 +12,7 @@ import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,15 @@ public class ResourceServiceImpl implements ResourceService{
         }
 
         try {
+            for(int i = 0 ; i<resourceDTOS.size(); i++){
+                Long parentId = resourceDTOS.get(i).getParentId();
+                for(ResourceDTO dto : selectAll()){
+                    if(dto.getParentId() == parentId){
+                        dto.setParentId(null);
+                        update(dto);
+                    }
+                }
+            }
             return resourceDao.deleteByIds(resourceDTOS);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
@@ -105,6 +115,13 @@ public class ResourceServiceImpl implements ResourceService{
         if(isInUse(dto))
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
         try {
+            List<ResourceDTO> resourceDTOList = selectAll();
+            for(ResourceDTO resourceDTO : resourceDTOList){
+                if(resourceDTO.getParentId() == dto.getId()){
+                    resourceDTO.setParentId(null);
+                    update(resourceDTO);
+                }
+            }
             resourceDao.deleteRoleResource(dto.getId());
             return resourceDao.delete(dto);
         }catch (Exception e){

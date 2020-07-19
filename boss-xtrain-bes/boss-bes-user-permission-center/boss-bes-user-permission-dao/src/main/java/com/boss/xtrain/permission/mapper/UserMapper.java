@@ -38,7 +38,7 @@ public interface UserMapper extends CommonMapper<User> {
     * @return int
     * @description 删除用户的角色
     */
-    int deleteUserRole(@Param("ids") List<Long> ids);
+    int deleteRoleUser(@Param("ids") List<Long> ids);
 
     /**
      *

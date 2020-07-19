@@ -77,7 +77,7 @@
         select  a.id,a.name  from t_role a left join user_role b on a.id = b.role_id  where b.user_id = #{Id}
     </select>
 
-  <delete id="deleteUserRole">
+  <delete id="deleteRoleUser">
     DELETE FROM t_user_role
     WHERE t_u_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">

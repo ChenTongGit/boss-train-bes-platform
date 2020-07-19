@@ -53,7 +53,7 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return int
      * @description 删除用户的某一角色
      */
-    int deleteUserRole(List<UserRoleDTO> userRoleDTOS);
+    int deleteRoleUser(List<UserRoleDTO> userRoleDTOS);
 
     /**
      * 分配角色

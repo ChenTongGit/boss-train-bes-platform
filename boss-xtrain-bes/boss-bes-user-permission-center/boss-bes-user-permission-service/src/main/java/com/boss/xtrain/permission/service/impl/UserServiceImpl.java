@@ -91,17 +91,20 @@ public class UserServiceImpl implements UserSerivce {
     }
 
     @Override
-    public int deleteUserRole(List<UserRoleDTO> userRoleDTOS) {
+    public int deleteRoleUser(List<UserRoleDTO> userRoleDTOS) {
+        log.info("deleteUserRole:"+userRoleDTOS.toString());
         List<Long> ids = new ArrayList<>();
         for(UserRoleDTO dto : userRoleDTOS){
             ids.add(dto.getUserId());
         }
-        return userDao.deleteUserRole(ids);
+        log.info("deleteUserRole ids"+ids.toString());
+        return userDao.deleteRoleUser(ids);
     }
 
     @Override
     public boolean allocateRole(List<UserRoleDTO> dtos) {
-        deleteUserRole(dtos);
+        log.info("allocateRole "+dtos.toString());
+        deleteRoleUser(dtos);
         if(dtos.get(0).getRoleId() == null){
             return false;
         }else {
@@ -190,7 +193,7 @@ public class UserServiceImpl implements UserSerivce {
         try {
             List<Long> userIds = new ArrayList<>();
             userIds.add(dto.getId());
-            userDao.deleteUserRole(userIds);
+            userDao.deleteRoleUser(userIds);
             return userDao.delete(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_DELETE_ERROR,e);
@@ -210,7 +213,7 @@ public class UserServiceImpl implements UserSerivce {
             for(UserDTO dto : dtoList){
                 userIds.add(dto.getId());
             }
-            userDao.deleteUserRole(userIds);
+            userDao.deleteRoleUser(userIds);
             return userDao.deleteByIds(ids);
         }catch (Exception e){
             log.error(e.getMessage());

@@ -11,6 +11,7 @@ import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
+import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -46,7 +47,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public int insert(RoleDTO dto) {
-        if(roleDao.isExist(dto.getId()))
+        RoleQueryDTO queryDTO = new RoleQueryDTO();
+        PojoUtils.copyProperties(dto,queryDTO);
+        List<RoleDTO> roleDTOS = roleDao.queryByCondition(queryDTO);
+        if(!roleDTOS.isEmpty())
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_REPEAT_ERROR);
         try {
             dto.setId(worker.nextId());
@@ -75,6 +79,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> selectByCondition(RoleQueryDTO dto) {
         try {
+            log.info(dto.toString());
             List<RoleDTO> roleDTOS = roleDao.queryByCondition(dto);
             for(RoleDTO roleDTO : roleDTOS){
                 roleDTO.setCompanyName(companyDao.selectByKey(roleDTO.getCompanyId()).getName());
@@ -82,6 +87,7 @@ public class RoleServiceImpl implements RoleService {
             }
             return roleDTOS;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_QUERY_ERROR,e);
         }
     }
@@ -138,6 +144,7 @@ public class RoleServiceImpl implements RoleService {
                 try {
                     roleDao.allocateUser(userRoleDTO);
                 }catch (Exception e){
+                    log.error(e.getMessage());
                     throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_ALLOCATE_USER_ERROR,e);
                 }
             }
@@ -149,9 +156,14 @@ public class RoleServiceImpl implements RoleService {
     public int deleteUserRole(List<UserRoleDTO> userRoleDTOS) {
         List<Long> ids = new ArrayList<>();
         for(UserRoleDTO userRoleDTO : userRoleDTOS){
-            ids.add(userRoleDTO.getUserId());
+            ids.add(userRoleDTO.getRoleId());
         }
-        return roleDao.deleteUserRole(ids);
+        try {
+            return roleDao.deleteUserRole(ids);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_ALLOCATE_USER_ERROR,e);
+        }
     }
 
     @Override
