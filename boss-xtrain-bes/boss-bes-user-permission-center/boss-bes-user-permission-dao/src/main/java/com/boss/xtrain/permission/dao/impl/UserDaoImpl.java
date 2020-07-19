@@ -129,4 +129,9 @@ public class UserDaoImpl implements UserDao {
     public List<User> selectAll(){
         return userMapper.selectAll();
     }
+
+    @Override
+    public User selectByKey(Long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
 }

@@ -35,6 +35,7 @@ public class UserListVO extends BaseVO {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long organizationId;
     private  String organizationName;
+    private String updateName;
     private String profilePicture;
     private String name;
     private String code;

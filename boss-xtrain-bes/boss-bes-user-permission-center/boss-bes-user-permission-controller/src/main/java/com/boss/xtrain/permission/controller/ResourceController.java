@@ -81,6 +81,15 @@ public class ResourceController extends BaseController implements ResourceApi {
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<ResourceDTO> companyDTOList = resourceService.selectByCondition(request.getBody().getQuery());
+        log.info("isSearchChild"+request.getBody().getQuery().isSearchChild());
+        if (request.getBody().getQuery().isSearchChild()) {
+            ResourceQueryDTO d = new ResourceQueryDTO();
+            d.setParentId(companyDTOList.get(0).getId());
+            List<ResourceDTO> l = resourceService.selectByCondition(d);
+            companyDTOList.addAll(l);
+            log.info("result"+d.toString()+" "+l.toString());
+
+        }
         List<ResourceListVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,ResourceListVO::new);
         return buildPageResponse(page,companyVOList);
     }

@@ -61,12 +61,15 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public UserDTO select(UserQueryDTO query) {
         try {
-            UserDTO userDTO = userDao.queryByCondition(query).get(0);
-            userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
-            userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
-            userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
-            userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
-            return userDTO;
+            User user = userDao.selectByKey(query.getId());
+            UserDTO dto = new UserDTO();
+            PojoUtils.copyProperties(user,dto);
+            dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
+            dto.setOrganizationId(companyDao.selectByKey(dto.getCompanyId()).getOrganizationId());
+            dto.setOrganizationName(organizationDao.selectByPrimaryKey(dto.getOrganizationId()).getName());
+            dto.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
+            dto.setDepartmentName(departmentDao.selectByKey(dto.getDepartmentId()).getName());
+            return dto;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);
         }
@@ -125,6 +128,7 @@ public class UserServiceImpl implements UserSerivce {
         try {
             List<UserDTO> userDTOS = userDao.queryByCondition(query);
             for(UserDTO userDTO : userDTOS){
+                userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
                 userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
@@ -146,7 +150,8 @@ public class UserServiceImpl implements UserSerivce {
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
                 userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
-//                userDTO.setPositionName(positionDao.selectByKey(userDTO.getPositionId()).getName());
+                userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+
             }
             return userDTOS;
         }catch (Exception e){

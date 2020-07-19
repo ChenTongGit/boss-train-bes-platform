@@ -95,5 +95,13 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      *
     */
     List<User> selectAll();
+    /**
+     * 唯一查询
+     *
+     * @param id
+     * @return User
+     *
+    */
+    User selectByKey(Long id);
 
 }
