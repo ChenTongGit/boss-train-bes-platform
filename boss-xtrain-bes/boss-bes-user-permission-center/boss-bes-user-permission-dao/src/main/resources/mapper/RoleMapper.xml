@@ -109,7 +109,7 @@
     </insert>
   <delete id="deleteUserRole">
     DELETE FROM t_user_role
-    WHERE role_id IN
+    WHERE t_r_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
@@ -120,7 +120,7 @@
     </insert>
   <delete id="deleteRoleResource">
     DELETE FROM t_role_resource
-    WHERE role_id IN
+    WHERE t_r_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>

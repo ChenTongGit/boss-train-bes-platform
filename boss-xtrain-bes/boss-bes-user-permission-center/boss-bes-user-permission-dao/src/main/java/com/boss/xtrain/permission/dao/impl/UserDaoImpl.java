@@ -106,8 +106,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteUserRole(UserRoleDTO userRoleDTO) {
-        return userMapper.deleteUserRole(userRoleDTO);
+    public int deleteUserRole(List<Long> ids) {
+        return userMapper.deleteUserRole(ids);
     }
 
     @Override

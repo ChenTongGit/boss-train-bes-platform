@@ -149,6 +149,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_USER_QUERY_ERROR("220705","查询用户失败"),
     SYSTEM_MANAGER_USER_IN_USE("220706","该用户正在使用，无法编辑"),
     SYSTEM_MANAGER_USER_NOT_EXIST_ERROR("220707","该用户不存在"),
+    SYSTEM_MANAGER_USER_ALLOCATE_ROLE_ERROR("220708","用户分配角色失败"),
 
 
     /**

@@ -41,6 +41,9 @@ public interface ResourceApi extends CommonCRUDApi<ResourceDTO,ResourceQueryDTO,
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request);
 
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+
     @PostMapping("selectResourceTree")
     CommonResponse<List<TreeNode>> selectResourceTree(@RequestBody CommonRequest<ResourceQueryDTO> request);
 }

@@ -57,11 +57,11 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      */
     int deleteByIds(@Param("ids")List<Long> ids);
     /**
-     * @param userRoleDTO
+     * @param ids
      * @return int
-     * @description 删除用户的某一角色
+     * @description 删除用户角色关系
      */
-    int deleteUserRole(UserRoleDTO userRoleDTO);
+    int deleteUserRole(@Param("ids") List<Long> ids);
     /**
      * 为用户分配角色
      *

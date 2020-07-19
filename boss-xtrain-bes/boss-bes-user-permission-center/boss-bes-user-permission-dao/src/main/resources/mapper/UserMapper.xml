@@ -78,8 +78,8 @@
     </select>
 
   <delete id="deleteUserRole">
-    DELETE FROM user_role
-    WHERE user_id IN
+    DELETE FROM t_user_role
+    WHERE t_u_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
@@ -95,7 +95,7 @@
     </where>
   </select>
   <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
 
 

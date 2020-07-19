@@ -130,12 +130,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public boolean allocateUser(List<UserRoleDTO> userRoleDTOS) {
         deleteUserRole(userRoleDTOS);
-        IdWorker idWorker = new IdWorker();
         if(userRoleDTOS.get(0).getUserId() == null){
             return false;
         }else {
             for (UserRoleDTO userRoleDTO :userRoleDTOS){
-                userRoleDTO.setId(idWorker.nextId());
+                userRoleDTO.setId(worker.nextId());
                 try {
                     roleDao.allocateUser(userRoleDTO);
                 }catch (Exception e){
@@ -150,7 +149,7 @@ public class RoleServiceImpl implements RoleService {
     public int deleteUserRole(List<UserRoleDTO> userRoleDTOS) {
         List<Long> ids = new ArrayList<>();
         for(UserRoleDTO userRoleDTO : userRoleDTOS){
-            ids.add(userRoleDTO.getRoleId());
+            ids.add(userRoleDTO.getUserId());
         }
         return roleDao.deleteUserRole(ids);
     }
@@ -158,16 +157,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public boolean allocateResource(List<RoleResourceDTO> roleResourceDTOS) {
         deleteRoleResource(roleResourceDTOS);
-        IdWorker idWorker = new IdWorker();
         if(roleResourceDTOS.get(0).getResourceId() == null){
             return false;
         }else {
             try {
                 for(RoleResourceDTO roleResourceDTO :roleResourceDTOS){
-                    roleResourceDTO.setId(idWorker.nextId());
+                    roleResourceDTO.setId(worker.nextId());
                     roleDao.allocateResource(roleResourceDTO);
                 }
             }catch (Exception e){
+                log.error(e.getMessage());
                 throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_ALLOCATE_RESOURCE_ERROR,e);
             }
             return true;
@@ -187,7 +186,6 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.deleteRoleResource(ids);
     }
 
-
     @Override
     public List<Long> getResourceIdsByRoleId(Long id) {
         return roleDao.getResourceIdsByRoleId(id);
@@ -199,7 +197,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     private boolean isInUse(RoleDTO dto){
-//        return roleDao.getUserIdsByRoleId(dto.getId()).isEmpty();
         return dto.getStatus() == 1;
     }
 }

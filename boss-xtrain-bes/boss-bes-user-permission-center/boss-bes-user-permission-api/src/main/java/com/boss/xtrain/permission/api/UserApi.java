@@ -1,8 +1,11 @@
 package com.boss.xtrain.permission.api;
 
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
+import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
@@ -108,6 +111,21 @@ public interface UserApi {
     */
     @RequestMapping("/getAllResource")
     CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<UserQueryDTO> request);
+
+    @PostMapping("/selectByPage")
+    CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request);
+
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+    /**
+     *
+     * 分配角色
+     * @param request
+     * @return boolean
+     *
+    */
+    @RequestMapping("/allocateRole")
+    CommonResponse<Boolean> allocateRole(@RequestBody @Valid CommonRequest<List<UserRoleDTO>> request);
 
 }
 

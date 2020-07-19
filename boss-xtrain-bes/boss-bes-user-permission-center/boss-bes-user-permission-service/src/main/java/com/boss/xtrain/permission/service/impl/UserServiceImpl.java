@@ -88,8 +88,31 @@ public class UserServiceImpl implements UserSerivce {
     }
 
     @Override
-    public int deleteUserRole(UserRoleDTO userRoleDTO) {
-        return userDao.deleteUserRole(userRoleDTO);
+    public int deleteUserRole(List<UserRoleDTO> userRoleDTOS) {
+        List<Long> ids = new ArrayList<>();
+        for(UserRoleDTO dto : userRoleDTOS){
+            ids.add(dto.getRoleId());
+        }
+        return userDao.deleteUserRole(ids);
+    }
+
+    @Override
+    public boolean allocateRole(List<UserRoleDTO> dtos) {
+        deleteUserRole(dtos);
+        if(dtos.get(0).getRoleId() == null){
+            return false;
+        }else {
+            try {
+                for(UserRoleDTO userRoleDTO :dtos){
+                    userRoleDTO.setId(worker.nextId());
+                    userDao.allocateRole(userRoleDTO);
+                }
+            }catch (Exception e){
+                log.error(e.getMessage());
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_ALLOCATE_ROLE_ERROR,e);
+            }
+            return true;
+        }
     }
 
     @Override

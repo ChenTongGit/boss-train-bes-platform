@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.controller;
 
 import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
@@ -9,6 +10,9 @@ import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.service.ResourceService;
 import com.boss.xtrain.permission.api.ResourceApi;
 import com.boss.xtrain.permission.service.TreeService;
+import com.github.pagehelper.Page;
+import jdk.nashorn.internal.runtime.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +27,8 @@ import java.util.List;
  */
 
 @RestController
-public class ResourceController implements ResourceApi {
+@Slf4j
+public class ResourceController extends BaseController implements ResourceApi {
 
     @Autowired
     private ResourceService resourceService;
@@ -74,7 +79,19 @@ public class ResourceController implements ResourceApi {
 
     @Override
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
-        return null;
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<ResourceDTO> companyDTOList = resourceService.selectByCondition(request.getBody().getQuery());
+        List<ResourceListVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,ResourceListVO::new);
+        return buildPageResponse(page,companyVOList);
+    }
+
+    @Override
+    public CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        log.info(page.toString());
+        List<ResourceDTO> positionDTOList = resourceService.selectAll();
+        List<ResourceListVO> positionVOList = PojoUtils.copyListProperties(positionDTOList, ResourceListVO::new);
+        return buildPageResponse(page,positionVOList);
     }
 
     @Override

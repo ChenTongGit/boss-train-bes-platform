@@ -6,10 +6,9 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
+import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
-import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +33,10 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
      *
      */
     @PostMapping("/selectByPage")
-    CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request);
+    CommonResponse<CommonPage<RoleListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request);
+
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<RoleListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
     /**
      * 列出所有
      *
@@ -64,5 +66,25 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
 
     @PostMapping("/getUserIds")
     CommonResponse<List<Long>> getUserIds(@RequestBody @Valid CommonRequest<RoleQueryDTO> dtoCommonRequest);
+
+    /**
+     * 分配资源
+     *
+     * @param request
+     * @return  CommonResponse<Boolean>
+     *
+    */
+    @RequestMapping("/allocateResource")
+    CommonResponse<Boolean> allocateResource(@RequestBody @Valid CommonRequest<List<RoleResourceDTO>> request);
+
+    /**
+     * 分配用户
+     *
+     * @param request
+     * @return  CommonResponse<Boolean>
+     *
+     */
+    @RequestMapping("/allocateUser")
+    CommonResponse<Boolean> allocateUser(@RequestBody @Valid CommonRequest<List<UserRoleDTO>> request);
 
 }

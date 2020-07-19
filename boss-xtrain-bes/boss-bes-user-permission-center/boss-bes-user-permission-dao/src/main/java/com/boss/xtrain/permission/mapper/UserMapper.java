@@ -34,11 +34,11 @@ public interface UserMapper extends CommonMapper<User> {
     */
     int deleteByIds(@Param("ids")List<Long> ids);
     /**
-    * @param userRoleDTO
+    * @param ids
     * @return int
     * @description 删除用户的某一角色
     */
-    int deleteUserRole(UserRoleDTO userRoleDTO);
+    int deleteUserRole(@Param("ids") List<Long> ids);
 
     /**
      *
