@@ -27,6 +27,4 @@ public class ResourceDTO extends BaseDTO {
     private Byte resourceType;
     private Byte leaf;
     private String remark;
-    //
-    private String tenantName;
 }

@@ -34,7 +34,6 @@ public class EntityFields implements Serializable {
      */
     private Long updatedBy;
 
-
     public EntityFields(Long companyId, Long orgId, Long createdBy, Long updatedBy) {
         this.companyId = companyId;
         this.organizationId = orgId;

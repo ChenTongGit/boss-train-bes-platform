@@ -35,6 +35,7 @@ security:
       scope: read
       access-token-uri: http://localhost:4444/oauth/token
     resource:
+      token-info-uri: http://localhost:4444/oauth/check_token
       user-info-uri: http://localhost:4444/user
     authorization:
       check-token-access: http://localhost:4444/oauth/check_token

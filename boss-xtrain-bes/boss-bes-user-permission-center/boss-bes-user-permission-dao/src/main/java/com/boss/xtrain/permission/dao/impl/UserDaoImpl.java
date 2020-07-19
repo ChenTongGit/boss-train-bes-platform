@@ -56,7 +56,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<UserDTO> queryByCondition(UserQueryDTO dto) {
         User user = new User();
-        return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
+        user.setName(dto.getName());
+        user.setId(dto.getId());
+        return PojoUtils.copyListProperties(userMapper.select(user), UserDTO::new);
     }
 
     @Override

@@ -23,7 +23,7 @@
   <resultMap id="ResourceMap" type="com.boss.xtrain.permission.pojo.entity.Resource">
     <id column="id" property="id"/>
       <result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />
-      <result column="tenant_name" property="tenantName" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
       <result column="code" property="code" jdbcType="VARCHAR" />
       <result column="order_index" property="orderIndex" jdbcType="INTEGER" />
       <result column="parent_id" property="parentId" jdbcType="BIGINT" />
@@ -84,7 +84,7 @@
 
   <!--通过RoleId去role_resource表查询相连的resourceId-->
   <select id="getResourcesByRoleId" parameterType="java.lang.Long" resultMap="ResourceMap">
-    select  a.id,a.tenant_name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
+    select  a.id,a.name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
   </select>
 
   <select id="getUsers" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="UserMap">

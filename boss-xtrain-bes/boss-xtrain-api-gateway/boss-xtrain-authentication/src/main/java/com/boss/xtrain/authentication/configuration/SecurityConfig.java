@@ -21,6 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BesUserDetailService userDetailService;
+    @Autowired
+    private Oauth2AuthenticationFailureHandler failureHandler;
+    @Autowired
+    private Oauth2AuthenticationSuccessHandler successHandler;
     /* 加密密码
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -41,15 +45,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/login", "/testFeign")
+            .antMatchers("/login", "/api/userinfo","/api/testFeign")
             .permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .formLogin()
-            .permitAll()
-            .successForwardUrl("/index")
-            
+            .successHandler(successHandler)
+            .failureHandler(failureHandler)
             .and()
             .logout()
             .logoutSuccessUrl("http://127.0.0.1:4444/exit");
