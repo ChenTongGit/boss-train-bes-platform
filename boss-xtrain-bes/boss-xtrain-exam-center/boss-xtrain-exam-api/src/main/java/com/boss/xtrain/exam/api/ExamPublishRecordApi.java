@@ -6,8 +6,10 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,4 +100,7 @@ public interface ExamPublishRecordApi {
      */
     @PostMapping("/paper")
     CommonResponse<ExamPaperPreviewVO> getPaperDetail(CommonRequest<ExamPaperQuery> request);
+
+    @PostMapping("/paperList")
+    CommonResponse<List<ExamPaperInfoListVO>> getPaperList(CommonRequest<ExamPaperInfoQuery> request);
 }

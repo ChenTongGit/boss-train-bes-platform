@@ -8,11 +8,14 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamPublishRecordApi;
 import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import com.boss.xtrain.exam.service.PaperFeign;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
@@ -101,6 +104,22 @@ public class ExamPublishRecordController extends BaseController implements ExamP
         ExamPaperDTO examPaperDTO = this.paperFeign.getExamPaper(request).getData();
         PojoUtils.copyProperties(examPaperDTO, paperPreviewVO);
         return CommonResponseUtil.ok(paperPreviewVO);
+    }
+
+    /**
+     * 获取试卷列表
+     * @author ChenTong
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO>
+     * @date 2020/7/20 6:51
+     */
+    @ApiLog(msg = "获取试卷列表")
+    @ApiOperation(value = "获取试卷列表信息")
+    @Override
+    public CommonResponse<List<ExamPaperInfoListVO>> getPaperList(@RequestBody @Valid CommonRequest<ExamPaperInfoQuery> request) {
+        List<ExamPaperInfoDTO> examPaperInfoDTOS = this.paperFeign.getExamPaperInfoList(request).getData();
+        List<ExamPaperInfoListVO> examPaperInfoListVOS = PojoUtils.copyListProperties(examPaperInfoDTOS, ExamPaperInfoListVO::new);
+        return CommonResponseUtil.ok(examPaperInfoListVOS);
     }
 
     /**

@@ -6,6 +6,7 @@ import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.paper.ExamPaperService;
 import com.boss.xtrain.paper.ExaminationApi;
 import com.boss.xtrain.paper.controller.PaperBaseController;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 
 import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
@@ -31,9 +32,9 @@ public class ExaminationController extends PaperBaseController implements Examin
      */
     @ApiOperation("查询试卷集合")
     @Override
-    public CommonResponse getAllPaper(@RequestBody CommonRequest<PaperQueryVO> commonRequest) {
+    public CommonResponse getAllPaper(@RequestBody CommonRequest<ExamPaperInfoQuery> commonRequest) {
 
-        return CommonResponseUtil.ok("20000","查询试卷成功",queryPaperList(commonRequest.getBody()));
+        return CommonResponseUtil.ok(this.examPaperService.getExamPaperList(commonRequest.getBody()));
     }
 
     /**

@@ -2,6 +2,7 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 
 import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
@@ -18,7 +19,7 @@ public interface ExaminationApi {
      * @return
      */
     @PostMapping(value = "/queryAllPaper")
-    CommonResponse getAllPaper(CommonRequest<PaperQueryVO> commonRequest);
+    CommonResponse getAllPaper(CommonRequest<ExamPaperInfoQuery> commonRequest);
 
     /**获得某一试卷详细信息
      * @return

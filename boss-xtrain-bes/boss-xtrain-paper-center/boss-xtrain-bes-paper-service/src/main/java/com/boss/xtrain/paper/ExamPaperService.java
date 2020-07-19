@@ -1,7 +1,11 @@
 package com.boss.xtrain.paper;
 
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
+
+import java.util.List;
 
 /**
  *
@@ -14,4 +18,6 @@ public interface ExamPaperService {
      * @return
      */
     ExamPaperDTO getExamPaper(ExamPaperQuery examPaperQuery);
+
+    List<ExamPaperInfoDTO> getExamPaperList(ExamPaperInfoQuery examPaperInfoQuery);
 }

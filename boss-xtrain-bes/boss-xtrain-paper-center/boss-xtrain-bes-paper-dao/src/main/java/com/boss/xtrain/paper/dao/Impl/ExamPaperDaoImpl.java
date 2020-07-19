@@ -2,10 +2,7 @@ package com.boss.xtrain.paper.dao.Impl;
 
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.paper.dao.ExamPaperDao;
-import com.boss.xtrain.paper.dto.examservice.ExamAnswerDTO;
-import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
-import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
-import com.boss.xtrain.paper.dto.examservice.ExamSubjectDTO;
+import com.boss.xtrain.paper.dto.examservice.*;
 
 import com.boss.xtrain.paper.entity.Paper;
 import com.boss.xtrain.paper.entity.PaperSubject;
@@ -48,5 +45,10 @@ public class ExamPaperDaoImpl extends PaperBaseDaoImpl implements ExamPaperDao {
 
         examPaperDTO.setSubjects(examSubjectDTOS);
         return examPaperDTO;
+    }
+
+    @Override
+    public List<Paper> getExamPaperInfoList(Paper query) {
+        return paperMapper.select(query);
     }
 }
