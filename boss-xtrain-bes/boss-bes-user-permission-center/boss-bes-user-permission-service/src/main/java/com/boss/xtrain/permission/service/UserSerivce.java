@@ -71,4 +71,13 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return User
      */
     User getStatusById(Long id);
+
+    /**
+     * 查找用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<RoleDTO>
+     *
+    */
+    List<RoleDTO> getRoles(UserQueryDTO queryDTO);
 }

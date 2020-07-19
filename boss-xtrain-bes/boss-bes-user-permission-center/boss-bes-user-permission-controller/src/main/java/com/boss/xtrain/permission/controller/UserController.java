@@ -4,6 +4,7 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.UserApi;
+import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
@@ -82,20 +83,20 @@ public class UserController extends BaseController implements UserApi {
     }
 
     @Override
-    public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request) {
+    public CommonResponse<CommonPage<UserListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<UserDTO> companyDTOList = userSerivce.selectByCondition(request.getBody().getQuery());
-        List<ResourceListVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,ResourceListVO::new);
-        return buildPageResponse(page,companyVOList);
+        List<UserDTO> userDTOS = userSerivce.selectByCondition(request.getBody().getQuery());
+        List<UserListVO> userListVOS = PojoUtils.copyListProperties(userDTOS,UserListVO::new);
+        return buildPageResponse(page,userListVOS);
     }
 
     @Override
-    public CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+    public CommonResponse<CommonPage<UserListVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         log.info(page.toString());
-        List<UserDTO> positionDTOList = userSerivce.selectAll();
-        List<ResourceListVO> positionVOList = PojoUtils.copyListProperties(positionDTOList, ResourceListVO::new);
-        return buildPageResponse(page,positionVOList);
+        List<UserDTO> userDTOList = userSerivce.selectAll();
+        List<UserListVO> userVOList = PojoUtils.copyListProperties(userDTOList, UserListVO::new);
+        return buildPageResponse(page,userVOList);
     }
 
     @Override
@@ -103,5 +104,12 @@ public class UserController extends BaseController implements UserApi {
         List<UserRoleDTO> userRoleDTOS = request.getBody();
         boolean result = userSerivce.allocateRole(userRoleDTOS);
         return CommonResponseUtil.ok(result);
+    }
+
+    @Override
+    public CommonResponse<List<RoleListVO>> getRoles(@Valid CommonRequest<UserQueryDTO> request) {
+        UserQueryDTO queryDTO = request.getBody();
+        List<RoleDTO> roleDTOS = userSerivce.getRoles(queryDTO);
+        return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
 }

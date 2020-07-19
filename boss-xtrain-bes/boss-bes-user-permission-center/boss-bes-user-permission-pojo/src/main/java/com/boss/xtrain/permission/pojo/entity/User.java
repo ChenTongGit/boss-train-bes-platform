@@ -38,7 +38,4 @@ public class User extends BaseSystemEntity {
     private String other;
     @Column(name = "remark")
     private String remark;
-
-    private String updateName;
-
 }

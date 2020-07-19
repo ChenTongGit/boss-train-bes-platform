@@ -98,7 +98,13 @@
         insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
 
-
+    <select id="getRoles" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="RoleMap">
+        SELECT  tr.id,tr.name
+        FROM t_role tr left join t_user_role tur on tr.id = tur.t_r_id
+        <where>
+            tur.t_u_id = #{id}
+        </where>
+    </select>
   <select id="queryCode" parameterType="com.boss.xtrain.permission.pojo.dto.UserDTO" resultType="com.boss.xtrain.permission.pojo.dto.UserDTO">
         select * from t_user where code=#{code}
     </select>

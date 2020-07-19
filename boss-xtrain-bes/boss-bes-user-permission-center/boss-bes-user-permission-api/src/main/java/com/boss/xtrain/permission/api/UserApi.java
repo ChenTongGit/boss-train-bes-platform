@@ -113,10 +113,10 @@ public interface UserApi {
     CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<UserQueryDTO> request);
 
     @PostMapping("/selectByPage")
-    CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request);
+    CommonResponse<CommonPage<UserListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request);
 
     @PostMapping("/selectAllByPage")
-    CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+    CommonResponse<CommonPage<UserListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
     /**
      *
      * 分配角色
@@ -126,6 +126,16 @@ public interface UserApi {
     */
     @RequestMapping("/allocateRole")
     CommonResponse<Boolean> allocateRole(@RequestBody @Valid CommonRequest<List<UserRoleDTO>> request);
+
+    /**
+     * 查询用户的角色列表
+     *
+     * @param response
+     * @return CommonResponse<List<RoleListVO>>
+     *
+    */
+    @RequestMapping("/getRoles")
+    CommonResponse<List<RoleListVO>> getRoles(@RequestBody @Valid CommonRequest<UserQueryDTO> response);
 
 }
 

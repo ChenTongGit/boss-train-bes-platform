@@ -2,8 +2,6 @@ package com.boss.xtrain.permission.dao;
 
 import com.boss.xtrain.common.core.web.dao.IBaseDao;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.entity.Resource;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -103,5 +101,14 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      *
     */
     User selectByKey(Long id);
+
+    /**
+     * 找找该用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<Role>
+     *
+     */
+    List<Role> getRoles(UserQueryDTO queryDTO);
 
 }

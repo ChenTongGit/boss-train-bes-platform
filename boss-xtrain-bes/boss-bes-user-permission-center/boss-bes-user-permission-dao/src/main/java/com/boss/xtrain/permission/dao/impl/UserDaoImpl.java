@@ -134,4 +134,9 @@ public class UserDaoImpl implements UserDao {
     public User selectByKey(Long id) {
         return userMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Role> getRoles(UserQueryDTO queryDTO) {
+        return userMapper.getRoles(queryDTO);
+    }
 }

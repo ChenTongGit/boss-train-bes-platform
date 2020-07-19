@@ -43,6 +43,7 @@ public class ResourceServiceImpl implements ResourceService{
         }
         try {
             dto.setId(worker.nextId());
+            log.info(dto.toString());
             return resourceDao.insert(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_INSERT_ERROR,e);
@@ -104,6 +105,7 @@ public class ResourceServiceImpl implements ResourceService{
         if(isInUse(dto))
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
         try {
+            resourceDao.deleteRoleResource(dto.getId());
             return resourceDao.delete(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
@@ -138,12 +140,8 @@ public class ResourceServiceImpl implements ResourceService{
         return dto;
     }
 
-//    @Override
-//    public List<TreeDTO> getAllResourceTree(ResourceQueryDTO dto) {
-//        return null;
-//    }
 
     private boolean isInUse(ResourceDTO dto){
-        return roleDao.getResourcesByRoleId(dto.getId()).isEmpty();
+        return dto.getStatus() == 1;
     }
 }

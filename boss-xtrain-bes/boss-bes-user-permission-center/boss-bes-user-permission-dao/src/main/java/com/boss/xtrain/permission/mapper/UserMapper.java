@@ -36,7 +36,7 @@ public interface UserMapper extends CommonMapper<User> {
     /**
     * @param ids
     * @return int
-    * @description 删除用户的某一角色
+    * @description 删除用户的角色
     */
     int deleteUserRole(@Param("ids") List<Long> ids);
 
@@ -48,6 +48,15 @@ public interface UserMapper extends CommonMapper<User> {
      *
     */
     int allocateRole(UserRoleDTO userRoleDTO);
+
+    /**
+     * 找找该用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<Role>
+     *
+    */
+    List<Role> getRoles(UserQueryDTO queryDTO);
 
     /**
      * 根据Id获取Status

@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -29,8 +28,10 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public int insert(ResourceDTO dto) {
+        log.info(dto.toString());
         Resource resource = new Resource();
         PojoUtils.copyProperties(dto,resource);
+        log.info(resource.toString());
         return resourceMapper.insert(resource);
     }
 
@@ -87,5 +88,10 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean isExist(Long id) {
         return resourceMapper.existsWithPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteRoleResource(Long resourceId) {
+        return resourceMapper.deleteRoleResource(resourceId);
     }
 }

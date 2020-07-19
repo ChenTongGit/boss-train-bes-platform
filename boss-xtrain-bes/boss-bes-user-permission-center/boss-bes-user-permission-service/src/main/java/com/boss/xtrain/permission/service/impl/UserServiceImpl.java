@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserSerivce {
     public int deleteUserRole(List<UserRoleDTO> userRoleDTOS) {
         List<Long> ids = new ArrayList<>();
         for(UserRoleDTO dto : userRoleDTOS){
-            ids.add(dto.getRoleId());
+            ids.add(dto.getUserId());
         }
         return userDao.deleteUserRole(ids);
     }
@@ -124,10 +124,21 @@ public class UserServiceImpl implements UserSerivce {
     }
 
     @Override
+    public List<RoleDTO> getRoles(UserQueryDTO queryDTO) {
+        try {
+            return PojoUtils.copyListProperties(userDao.getAllRoles(queryDTO),RoleDTO::new);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_QUERY_ERROR,e);
+        }
+    }
+
+    @Override
     public List<UserDTO> selectByCondition(UserQueryDTO query) {
         try {
             List<UserDTO> userDTOS = userDao.queryByCondition(query);
             for(UserDTO userDTO : userDTOS){
+                userDTO.setRoleList(PojoUtils.copyListProperties(userDao.getRoles(query),RoleDTO::new));
                 userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
                 userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
@@ -143,18 +154,30 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public List<UserDTO> selectAll() {
         try {
-            List<User> resources = userDao.selectAll();
-            List<UserDTO> userDTOS = PojoUtils.copyListProperties(resources,UserDTO::new);
+            List<User> users = userDao.selectAll();
+            log.info(users.toString());
+            UserQueryDTO queryDTO = new UserQueryDTO();
+            List<UserDTO> userDTOS = PojoUtils.copyListProperties(users,UserDTO::new);
+            log.info(userDTOS.toString());
             for(UserDTO userDTO : userDTOS){
+                PojoUtils.copyProperties(userDTO,queryDTO);
                 userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
+                log.info(userDTO.getName()+" "+userDTO.getOrganizationId());
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
+                log.info(userDTO.getName()+" "+userDTO.getOrganizationName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
+                log.info(userDTO.getName()+" "+userDTO.getCompanyName());
                 userDTO.setDepartmentName(departmentDao.selectByKey(userDTO.getDepartmentId()).getName());
-                userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
-
+                log.info(userDTO.getName()+" "+userDTO.getDepartmentName());
+                if(userDTO.getUpdatedBy() != null) {
+                    userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+                    log.info(userDTO.getName() + " " + userDTO.getUpdateName());
+                }
+                userDTO.setRoleList(PojoUtils.copyListProperties(userDao.getRoles(queryDTO),RoleDTO::new));
             }
             return userDTOS;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR);
         }
     }
@@ -165,6 +188,9 @@ public class UserServiceImpl implements UserSerivce {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_IN_USE);
         }
         try {
+            List<Long> userIds = new ArrayList<>();
+            userIds.add(dto.getId());
+            userDao.deleteUserRole(userIds);
             return userDao.delete(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_DELETE_ERROR,e);
@@ -180,8 +206,14 @@ public class UserServiceImpl implements UserSerivce {
             ids.add(dto.getId());
         }
         try {
+            List<Long> userIds = new ArrayList<>();
+            for(UserDTO dto : dtoList){
+                userIds.add(dto.getId());
+            }
+            userDao.deleteUserRole(userIds);
             return userDao.deleteByIds(ids);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_DELETE_ERROR,e);
         }
     }

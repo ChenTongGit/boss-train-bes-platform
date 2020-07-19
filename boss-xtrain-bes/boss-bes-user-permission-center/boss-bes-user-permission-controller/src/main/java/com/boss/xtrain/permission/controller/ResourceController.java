@@ -38,6 +38,7 @@ public class ResourceController extends BaseController implements ResourceApi {
     @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<ResourceDTO> request) {
         ResourceDTO dto = request.getBody();
+        log.info(dto.toString());
         return CommonResponseUtil.ok(resourceService.insert(dto));
     }
 
