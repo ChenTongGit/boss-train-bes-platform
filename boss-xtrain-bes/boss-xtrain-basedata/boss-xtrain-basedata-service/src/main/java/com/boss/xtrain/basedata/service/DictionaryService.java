@@ -3,6 +3,8 @@ package com.boss.xtrain.basedata.service;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryIdsDTO;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryQueryDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface DictionaryService{
      * @param dictionaryDTO
      * @return
      */
-    DictionaryDTO insertDictionary(DictionaryDTO dictionaryDTO);
+    int insertDictionary(DictionaryDTO dictionaryDTO);
 
     /**
      * 批量增加数据字典
@@ -52,5 +54,19 @@ public interface DictionaryService{
      * @return
      */
     List<DictionaryDTO> queryDictionary(DictionaryQueryDTO dictionaryQueryDTO);
+
+    /**
+     *获取数据字典下拉表格数据
+     * @param dictionaryDTO
+     * @return
+     */
+    List<DictionaryDTO> selectList(DictionaryDTO dictionaryDTO);
+
+    /**
+     * 根据orgId获取category
+     * @param difficultQueryDTO
+     * @return
+     */
+    List<DifficultQueryDTO> queryCategory(DifficultQueryDTO difficultQueryDTO);
 
 }

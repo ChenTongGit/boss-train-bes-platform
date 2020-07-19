@@ -1,4 +1,4 @@
-package com.boss.xtrain.basedata.api.paper;
+package com.boss.xtrain.basedata.pojo.dto.paper;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import lombok.Data;
@@ -15,5 +15,5 @@ public class ConfigItemDTO extends BaseDTO {
     private BigDecimal score;
     private String categoryName;
     private String typeName;
-    private String difficultName;
+    private String difficultyName;
 }

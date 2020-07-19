@@ -12,7 +12,4 @@ public class SubjectQueryVO{
     private String name;
     private Long orgId;
     private Long companyId;
-    private int pageNum;
-    private int pageSize;
-    private Date updatedTime;
 }

@@ -3,15 +3,18 @@ package com.boss.xtrain.basedata.controller;
 import com.boss.xtrain.basedata.api.DictionaryApi;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryIdsDTO;
+import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryQueryDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import com.boss.xtrain.basedata.pojo.vo.dictionary.*;
 import com.boss.xtrain.basedata.service.DictionaryService;
 import com.boss.xtrain.common.core.exception.error.SystemError;
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.list.AbstractLinkedList;
 import org.bouncycastle.util.Arrays;
@@ -30,7 +33,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @CrossOrigin
-public class DictionaryController implements DictionaryApi {
+public class DictionaryController extends BaseController implements DictionaryApi {
 
     @Autowired
     private DictionaryService dictionaryService;
@@ -42,11 +45,9 @@ public class DictionaryController implements DictionaryApi {
     public CommonResponse<DictionaryVO> insertDictionary(@RequestBody @Validated CommonRequest<DictionaryInsertVO> commonRequest) {
         DictionaryDTO dictionaryDTO = new DictionaryDTO();
         DictionaryInsertVO dictionaryInsertVO = commonRequest.getBody();
-        log.info(commonRequest.toString());
         PojoUtils.copyProperties(dictionaryInsertVO,dictionaryDTO);
-        dictionaryDTO = dictionaryService.insertDictionary(dictionaryDTO);
-
-        PojoUtils.copyProperties(dictionaryDTO,dictionaryInsertVO);
+        log.info(commonRequest.getBody().toString());
+        dictionaryService.insertDictionary(dictionaryDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
     }
 
@@ -94,12 +95,32 @@ public class DictionaryController implements DictionaryApi {
     }
 
     @Override
+    @ApiLog(msg = "分页查询全部字典数据")
     @ResponseBody
-    public CommonResponse<List<DictionaryVO>> queryDictionary(@RequestBody CommonRequest<DictionaryQueryVO> commonRequest) {
-        List<DictionaryDTO> dictionaryDtos = dictionaryService.getDictionary();
-        List<DictionaryVO> dictionaryVos = new ArrayList<>();
-        PojoUtils.copyProperties(dictionaryDtos, dictionaryVos);
-        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
+    public CommonResponse<CommonPage<DictionaryVO>> queryDictionary(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest) {
+        Page<Object> page=this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
+        List<DictionaryDTO> dictionaryDTOS = dictionaryService.getDictionary();
+        List<DictionaryVO> dictionaryVos = PojoUtils.copyListProperties(dictionaryDTOS, DictionaryVO::new);
+        return buildPageResponse(page,dictionaryVos);
 
+    }
+
+    @Override
+    @ApiLog(msg = "分页查询字典")
+    public CommonResponse<CommonPage<DictionaryVO>> queryDictionaryPage(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest) {
+        DictionaryQueryVO dictionaryQueryVO = commonRequest.getBody().getQuery();
+        DictionaryQueryDTO dictionaryQueryDTO= new DictionaryQueryDTO();
+        PojoUtils.copyProperties(dictionaryQueryVO,dictionaryQueryDTO);
+        Page<Object> page=this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
+        List<DictionaryDTO> dictionaryDTOList=dictionaryService.queryDictionary(dictionaryQueryDTO);
+        List<DictionaryVO> dictionaryVOS=PojoUtils.copyListProperties(dictionaryDTOList,DictionaryVO::new);
+        return buildPageResponse(page,dictionaryVOS);
+    }
+
+    @Override
+    @ApiLog(msg = "根据orgId获取category")
+    @ResponseBody
+    public List<DifficultQueryDTO> queryCategory(@RequestBody DifficultQueryDTO difficultQueryDTO) {
+        return dictionaryService.queryCategory(difficultQueryDTO);
     }
 }

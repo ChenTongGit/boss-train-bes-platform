@@ -41,17 +41,17 @@
   </select>
 
   <select id="querySubject" resultMap="BaseResultMap">
-    select a.* from t_subject a where a.category_id = #{categoryId} and
-           a.subject_type_id = #{subjectTypeId} and a.difficulty = #{difficulty}
+    select a.* from t_subject a where a.t_c_id = #{categoryId} and
+           a.t_s_id = #{subjectTypeId} and a.field1 = #{difficulty}
   </select>
 
   <select id="queryByRandom" resultMap="BaseResultMap" >
-    select a.* from t_subject a where a.category_id = #{categoryId} and a.subject_type_id = #{subjectTypeId}
-    and a.difficulty = #{difficulty} ORDER BY rand() limit #{num}
+    select * from t_subject a where a.t_c_id = #{categoryId} and a.t_s_id = #{subjectTypeId}
+    and a.field1 = #{difficulty} ORDER BY rand() limit #{num}
   </select>
 
   <select id="getExamSubject" resultMap="BaseResultMap">
-    select * from t_subject where t_subject.org_id = #{orgId} and t_subject.subject_type_id = #{subjectTypeId}
+    select * from t_subject where t_subject.org_id = #{orgId} and t_subject.t_s_id = #{subjectTypeId}
   </select>
 
   <select id="getSubjectById" resultMap="BaseResultMap">
@@ -59,7 +59,7 @@
   </select>
 
   <select id="queryCategoryById" resultType="java.lang.String">
-    select distinct b.name from t_subject a,t_category b where a.category_id = b.id and a.id in
+    select distinct b.name from t_subject a,t_category b where a.t_c_id = b.id and a.id in
       <foreach collection="subjectIds" index="index" item="item" open="(" separator="," close=")">
           #{item}
       </foreach>

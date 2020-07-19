@@ -1,19 +1,20 @@
 package com.boss.xtrain.basedata.api;
 
-import com.boss.xtrain.basedata.api.paper.CombConfigQueryDTO;
-import com.boss.xtrain.basedata.api.paper.CombConfigVO;
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
-import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
+import com.boss.xtrain.basedata.pojo.dto.paper.CombConfigQueryDTO;
+import com.boss.xtrain.basedata.pojo.vo.paper.CombConfigVO;
+import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemListDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.CombConfigItemQueryDTO;
+import com.boss.xtrain.basedata.pojo.vo.paper.CombConfigItemVO;
 import com.boss.xtrain.basedata.pojo.vo.combexamconfig.*;
 import com.boss.xtrain.basedata.pojo.vo.combexamitem.CombExamItemQueryVO;
 import com.boss.xtrain.basedata.pojo.vo.combexamitem.CombExamItemVO;
 import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface CombExamConfigApi {
      * @return
      */
     @PostMapping("/queryExamConfigPage")
-    CommonResponse<CommonPage<CombExamConfigVO>> queryExamConfig(CommonRequest<CombExamConfigQueryVO> commonRequest);
+    CommonResponse<CommonPage<CombExamConfigVO>> queryExamConfig(CommonRequest<CommonPageRequest<CombExamConfigQueryVO>> commonRequest);
 
     /**
      * 根据配置项id获取组卷配置明细
@@ -84,7 +85,27 @@ public interface CombExamConfigApi {
     @PostMapping("/querySubjectCount")
     CommonResponse<Integer> querySubjectCount(CommonRequest<CombExamItemVO> commonRequest);
 
-
-    @PostMapping("/queryConfig")
+    /**
+     * 获取组卷配置集合，提供给试卷服务
+     * @param combConfigQueryDTO
+     * @return
+     */
+    @PostMapping("/queryCombExamConfiguration")
     PageInfo<CombConfigVO> queryCombExamConfiguration(CombConfigQueryDTO combConfigQueryDTO);
+
+    /**
+     * 获取组卷配置的详细信息，提供给试卷服务
+     * @param combConfigItemQueryDTO
+     * @return
+     */
+    @PostMapping("/queryCombExamConfigItem")
+    List<CombConfigItemVO> queryCombExamConfigItem(CombConfigItemQueryDTO combConfigItemQueryDTO);
+
+    /**
+     * 保存组卷配置详情信息，提供给试卷
+     * @param configItemListDTO
+     * @return
+     */
+    @PostMapping("/saveCombItemList")
+    boolean saveCombItemList(ConfigItemListDTO configItemListDTO);
 }

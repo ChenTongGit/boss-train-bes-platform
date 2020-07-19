@@ -2,6 +2,7 @@ package com.boss.xtrain.basedata.pojo.entity;
 
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import java.util.Date;
 /**
  * 数据字典
  */
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "t_dictionary")
 @Data
 public class Dictionary extends BaseEntity{

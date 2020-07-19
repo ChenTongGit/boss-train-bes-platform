@@ -2,6 +2,8 @@ package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.*;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.*;
 import com.boss.xtrain.basedata.pojo.vo.subject.*;
@@ -231,7 +233,7 @@ public class SubjectServiceImpl implements SubjectService{
             Example.Criteria criteria = example.createCriteria();
             criteria.andEqualTo("categoryId",item.getCategoryId());
             criteria.andEqualTo("subjectTypeId",item.getSubjectTypeId());
-            criteria.andEqualTo("difficultyName",item.getDifficultyName());
+            criteria.andEqualTo("difficulty",item.getDifficultyName());
             Integer actualNum = subjectDao.countSubject(example);
             log.info(actualNum.toString());
 
@@ -243,7 +245,39 @@ public class SubjectServiceImpl implements SubjectService{
                 }else{
                     subjects =  subjectDao.querySubjectRandom(item,num);
                 }
+                log.info(subjects.toString());
                 List<SubjectDTO> subjectDtoList = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
+                List<String> categoryNames = new ArrayList<>();
+                List<String> typeNames = new ArrayList<>();
+                List<String> difficulties = new ArrayList<>();
+
+                int count = 0;
+                for (Subject subject : subjects){
+                    Example example1 = new Example(Category.class);
+                    Example.Criteria criteria1 = example1.createCriteria();
+                    criteria1.andEqualTo("id",subject.getCategoryId());
+                    categoryNames = categoryDao.queryCategoryNameById(example1);
+                    Example example2 = new Example(SubjectType.class);
+                    Example.Criteria criteria2 = example2.createCriteria();
+                    criteria2.andEqualTo("id",subject.getSubjectTypeId());
+                    typeNames = subjectTypeDao.queryTypeNameById(example2);
+                    Example example3 = new Example(Subject.class);
+                    Example.Criteria criteria3 = example3.createCriteria();
+                    criteria3.andEqualTo("difficulty",subject.getId());
+                    difficulties = subjectDao.querySubjectDifficult(example);
+                }
+                if (subjects.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
+                    throw new BusinessException(BusinessError.PAPER_QUICK_MAKE_PAPER_ERROR);
+                }else {
+                    for (SubjectDTO s : subjectDtoList) {
+                        s.setCategoryName(categoryNames.get(count));
+                        s.setSubjectTypeName(typeNames.get(count));
+                        s.setDifficulty(difficulties.get(count));
+                        if (subjectDtoList.size() < count-1) {
+                            count++;
+                        }
+                    }
+                }
                 for(SubjectDTO s : subjectDtoList){
                     List<SubjectAnswer> subjectAnswers = answerDao.queryAnswerList(s.getId());
                     s.setSubjectAnswers(subjectAnswers);
@@ -265,21 +299,22 @@ public class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
-    public List<SubjectDTO> querySubjectByConfig(CombExamItemDTO configItemsDto) {
-        List<CombExamItemDTO> itemList = new ArrayList<>();
-        List<SubjectDTO> subjectDtoList = querySubject(itemList);
+    public List<SubjectDTO> querySubjectByConfig(StandardCombDTO standardCombDTO) {
+        List<ConfigItemDTO> itemList = standardCombDTO.getItemList();
+        List<CombExamItemDTO> itemDTOS = PojoUtils.copyListProperties(itemList,CombExamItemDTO::new);
+        List<SubjectDTO> subjectDtoList = querySubject(itemDTOS);
+        log.info(subjectDtoList.toString());
         if(subjectDtoList.get(0).getId() != null){
             CombExamConfig combExamConfig = new CombExamConfig();
-            PojoUtils.copyProperties(configItemsDto,combExamConfig);
+            PojoUtils.copyProperties(standardCombDTO,combExamConfig);
             combExamConfig.setId(idWorker.nextId());
-            combExamConfig.setName(configItemsDto.getCategoryName());
-            combExamConfig.setRemark(configItemsDto.getSubjectTypeName());
-            combExamConfig.setCreatedBy(configItemsDto.getCombExamConfigId());
+            combExamConfig.setName(standardCombDTO.getCombConfigName());
+            combExamConfig.setRemark(standardCombDTO.getDiscript());
+            combExamConfig.setCreatedBy(standardCombDTO.getCreatedBy());
             combExamConfig.setVersion(1L);
             combExamConfigDao.insertCombExamConfig(combExamConfig);
 
-            List<CombExamItem> configItemList = new ArrayList<>();
-            PojoUtils.copyProperties(itemList,CombExamItem.class);
+            List<CombExamItem> configItemList = PojoUtils.copyListProperties(itemList,CombExamItem::new);
             for(CombExamItem item : configItemList){
                 item.setCategoryId(idWorker.nextId());
                 item.setCombExamConfigId(combExamConfig.getId());

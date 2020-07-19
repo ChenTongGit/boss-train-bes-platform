@@ -1,9 +1,14 @@
 package com.boss.xtrain.basedata.api;
 
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
+import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.vo.dictionary.*;
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,9 +32,13 @@ public interface DictionaryApi {
     CommonResponse<DictionaryVO> updateDictionary(CommonRequest<DictionaryUpdateVO> commonRequest);
 
     @PostMapping("/queryDictionary")
-    CommonResponse<List<DictionaryVO>> queryDictionary(CommonRequest<DictionaryQueryVO> commonRequest);
+    CommonResponse<CommonPage<DictionaryVO>> queryDictionary(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest);
 
+    @PostMapping("/queryDictionaryPage")
+    CommonResponse<CommonPage<DictionaryVO>> queryDictionaryPage(CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest);
 
+    @PostMapping("/queryCategory")
+    List<DifficultQueryDTO> queryCategory(DifficultQueryDTO difficultQueryDTO);
 
 
 }

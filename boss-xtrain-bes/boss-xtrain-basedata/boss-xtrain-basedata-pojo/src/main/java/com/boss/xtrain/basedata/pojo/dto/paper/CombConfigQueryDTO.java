@@ -1,4 +1,5 @@
-package com.boss.xtrain.basedata.api.paper;
+package com.boss.xtrain.basedata.pojo.dto.paper;
+
 
 import lombok.Data;
 

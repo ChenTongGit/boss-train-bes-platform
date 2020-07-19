@@ -1,6 +1,7 @@
 package com.boss.xtrain.basedata.service;
 
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
@@ -36,7 +37,7 @@ public interface SubjectService {
 
     List<SubjectDTO> querySubject(List<CombExamItemDTO> combExamItemDTOS);
 
-    List<SubjectDTO> querySubjectByConfig(CombExamItemDTO combExamItemDTO);
+    List<SubjectDTO> querySubjectByConfig(StandardCombDTO standardCombDTO);
 
     List<SubjectDTO> queryExamSubject(SubjectExamQueryDTO subjectExamQueryDTO);
 

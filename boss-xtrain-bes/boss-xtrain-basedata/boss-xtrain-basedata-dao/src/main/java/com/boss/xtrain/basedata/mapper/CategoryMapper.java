@@ -11,10 +11,6 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
-    List<CategoryDTO> queryCategory();
-
     List<CategoryDTO> queryCategoryByName(CategoryQueryDTO categoryQueryDTO);
-
-    int updateCategory(Category category);
 
 }

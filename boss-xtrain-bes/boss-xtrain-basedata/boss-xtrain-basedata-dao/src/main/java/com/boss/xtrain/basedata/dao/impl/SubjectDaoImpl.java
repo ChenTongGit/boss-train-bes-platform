@@ -150,10 +150,13 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public List<Subject> querySubject(CombExamItemDTO combExamItemDTO) {
-        Long categoryId = combExamItemDTO.getCategoryId();
-        Long subjectTypeId =combExamItemDTO.getSubjectTypeId();
-        Long difficulty = combExamItemDTO.getDifficulty();
-        return subjectMapper.querySubject(categoryId,subjectTypeId,difficulty);
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("categoryId",combExamItemDTO.getCategoryId());
+        criteria.andEqualTo("subjectTypeId",combExamItemDTO.getSubjectTypeId());
+        criteria.andEqualTo("difficulty",combExamItemDTO.getDifficultyName());
+        log.info(subjectMapper.selectByExample(example).toString());
+        return subjectMapper.selectByExample(example);
 
     }
 
@@ -161,16 +164,23 @@ public class SubjectDaoImpl implements SubjectDao {
     public List<Subject> querySubjectRandom(CombExamItemDTO combExamItemDTO, Integer num) {
         Long categoryId = combExamItemDTO.getCategoryId();
         Long subjectTypeId = combExamItemDTO.getSubjectTypeId();
-        Long difficulty = combExamItemDTO.getDifficulty();
-        return subjectMapper.queryByRandom(categoryId,subjectTypeId,difficulty,num);
+        String difficulty = combExamItemDTO.getDifficultyName();
+        log.info(categoryId.toString());
+        log.info(subjectTypeId.toString());
+        log.info(difficulty);
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("categoryId",combExamItemDTO.getCategoryId());
+        criteria.andEqualTo("subjectTypeId",combExamItemDTO.getSubjectTypeId());
+        criteria.andEqualTo("difficulty",combExamItemDTO.getDifficultyName());
+        return subjectMapper.selectByExample(example);//queryByRandom(categoryId,subjectTypeId,difficulty,num);
 
     }
 
     @Override
     public List<SubjectDTO> queryExamSubject(Long orgId, Long subjectTypeId) {
         List<Subject> subjects = subjectMapper.getExamSubject(orgId,subjectTypeId);
-        List<SubjectDTO> subjectDTOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjects,SubjectDTO.class);
+        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         return subjectDTOS;
 
     }

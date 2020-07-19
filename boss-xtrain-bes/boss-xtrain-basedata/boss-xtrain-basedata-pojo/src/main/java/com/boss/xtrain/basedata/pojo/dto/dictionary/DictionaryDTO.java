@@ -1,5 +1,6 @@
 package com.boss.xtrain.basedata.pojo.dto.dictionary;
 
+import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DictionaryDTO extends BaseEntity {
+public class DictionaryDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 

@@ -1,8 +1,6 @@
 package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.basedata.api.CategoryApi;
-import com.boss.xtrain.basedata.api.paper.CombInfoQueryDTO;
-import com.boss.xtrain.basedata.api.paper.SubjectCategoryVO;
 import com.boss.xtrain.basedata.pojo.dto.category.*;
 import com.boss.xtrain.basedata.pojo.vo.category.*;
 import com.boss.xtrain.basedata.service.CategoryService;
@@ -12,9 +10,7 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,8 +34,6 @@ public class CategoryController extends BaseController implements CategoryApi {
     @ResponseBody
     public CommonResponse<CategoryVO> insertCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
-        log.info("request:",commonRequest.getBody().toString());
-        log.info(categoryVO.toString());
         CategoryDTO categoryDTO = new CategoryDTO();
         PojoUtils.copyProperties(categoryVO,categoryDTO);
         categoryService.insertCategory(categoryDTO);
@@ -51,9 +45,9 @@ public class CategoryController extends BaseController implements CategoryApi {
     @ResponseBody
     public CommonResponse<Boolean> deleteCategory(@RequestBody CommonRequest<CategoryDeleteIdsVO> commonRequest) {
         CategoryDeleteIdsVO categoryDeleteIdsVO =  commonRequest.getBody();
-        log.info(categoryDeleteIdsVO.toString());
         CategoryDeleteIdsDTO categoryDeleteIdsDTO = new CategoryDeleteIdsDTO();
-        PojoUtils.copyProperties(categoryDeleteIdsVO,categoryDeleteIdsDTO);
+        List<CategoryDeleteDTO> categoryDeleteDTOS = PojoUtils.copyListProperties(categoryDeleteIdsVO.getIds(),CategoryDeleteDTO::new);
+        categoryDeleteIdsDTO.setIds(categoryDeleteDTOS);
         categoryService.deleteCategory(categoryDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
     }
@@ -85,19 +79,22 @@ public class CategoryController extends BaseController implements CategoryApi {
 
     @Override
     @ApiLog(msg = "分页查询题目类别")
-    public CommonResponse<CommonPage<CategoryVO>> queryCategoryPage(@RequestBody CommonRequest<CategoryQueryVO> commonRequest) {
-        CategoryQueryVO categoryQueryVO = commonRequest.getBody();
-        log.info(categoryQueryVO.toString());
-        Page<Object> objects = doBeforePagination(categoryQueryVO.getPageIndex(),categoryQueryVO.getPageSize(),categoryQueryVO.getOrderBy());
-        CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
-        PojoUtils.copyProperties(categoryQueryVO,categoryQueryDTO);
-        List<CategoryDTO> categoryDTOS = categoryService.queryCategoryPage(categoryQueryDTO);
-        log.info(categoryDTOS.toString());
-        List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS,CategoryVO::new);
-        PageInfo<CategoryVO> pageInfo = new PageInfo<>(categoryVOS);
-        pageInfo.setTotal(objects.getTotal());
-        log.info(categoryVOS.toString());
-        return buildPageResponse(pageInfo,categoryVOS);
+    @ResponseBody
+    public CommonResponse<CommonPage<CategoryVO>> queryCategoryPage(@RequestBody CommonRequest<CommonPageRequest<CategoryQueryVO>> commonRequest) {
+        CategoryQueryVO categoryQueryVO = commonRequest.getBody().getQuery();
+        if (categoryQueryVO.getName().isEmpty()){
+            Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
+            List<CategoryDTO> categoryDTOS  = categoryService.queryAll();
+            List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS,CategoryVO::new);
+            return buildPageResponse(objects,categoryVOS);
+        }else {
+            CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
+            PojoUtils.copyProperties(categoryQueryVO, categoryQueryDTO);
+            Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(), commonRequest.getBody().getPageSize(), commonRequest.getBody().getOrderBy());
+            List<CategoryDTO> categoryDTOS = categoryService.queryCategoryPage(categoryQueryDTO);
+            List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS, CategoryVO::new);
+            return buildPageResponse(objects, categoryVOS);
+        }
     }
 
     @Override
@@ -121,21 +118,14 @@ public class CategoryController extends BaseController implements CategoryApi {
 
     @Override
     @ResponseBody
-    public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CategoryIdsVO> commonRequest) {
+    public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CommonPageRequest<CategoryIdsVO>> commonRequest) {
         CategoryIdsDTO categoryIdListDTO = new CategoryIdsDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryIdListDTO);
-        Page<Object> objects = doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
+        Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         List<CategoryDTO> categoryDtoList = categoryService.queryByIdList(categoryIdListDTO);
         log.info(categoryDtoList.toString());
         List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDtoList,CategoryVO::new);
-        PageInfo<CategoryVO> pageInfo = new PageInfo<>(categoryVOS);
-        pageInfo.setTotal(objects.getTotal());
-        return buildPageResponse(pageInfo,categoryVOS);
+        return buildPageResponse(objects,categoryVOS);
 
-    }
-
-    @Override
-    public List<SubjectCategoryVO> querySubjectCategory(CombInfoQueryDTO combInfoQueryDTO) {
-        return null;
     }
 }
