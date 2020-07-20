@@ -7,6 +7,7 @@ import com.boss.xtrain.permission.api.UserApi;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
@@ -14,7 +15,7 @@ import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.buf.UDecoder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,8 +79,7 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllRoles(request.getBody()),RoleListVO::new));
     }
 
-    @Override
-    public CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<UserQueryDTO> request) {
+    public CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<RoleQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllResource(request.getBody()),ResourceListVO::new));
     }
 

@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+        file-extension: yaml
+  main:
+    allow-bean-definition-overriding: true

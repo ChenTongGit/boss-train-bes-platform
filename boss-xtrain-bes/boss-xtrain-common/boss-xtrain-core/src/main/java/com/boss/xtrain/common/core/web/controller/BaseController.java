@@ -35,7 +35,9 @@ public abstract class BaseController {
      * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.common.core.http.CommonPage<T>>
      * @date 2020/7/7 17:02
      */
+
     protected <T> CommonResponse<CommonPage<T>> buildPageResponse(Page<Object> pageInfo, List<T> list){
+
         CommonPage<T> pageResult = new CommonPage<>();
         pageResult.setPageNum(pageInfo.getPageNum());
         pageResult.setPageSize(pageInfo.getPageSize());

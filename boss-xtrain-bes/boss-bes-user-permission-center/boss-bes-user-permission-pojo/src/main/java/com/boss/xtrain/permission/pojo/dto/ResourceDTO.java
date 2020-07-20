@@ -9,7 +9,6 @@ import lombok.*;
  * @Description :resource的dto对象
  * @Version: 1.0
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

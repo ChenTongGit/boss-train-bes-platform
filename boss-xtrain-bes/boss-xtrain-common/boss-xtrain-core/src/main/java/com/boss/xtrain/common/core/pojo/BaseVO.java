@@ -1,9 +1,21 @@
 package com.boss.xtrain.common.core.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @class BaseVO
+ * @classdesc 抽象界面显示的公用信息
+ *
+ * @author Administrator
+ * @date 2020-6-19  11:01
+ * @version 1.0.0
+ * @see
+ * @since
+ */
 /**
  * @class BaseVO
  * @classdesc 抽象界面显示的公用信息
@@ -20,6 +32,7 @@ public abstract class BaseVO implements Serializable {
     /**
      * 主键id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
@@ -30,38 +43,42 @@ public abstract class BaseVO implements Serializable {
     /**
      * 记录所属公司ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
 
     /**
      * 组织机构ID ，一个组织机构包含多个公司
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long organizationId;
 
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;
 
     /**
      *  创建人ID 初始插入的时候创建后续不变用于追踪记录的操作人
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long createdBy;
 
     /**
      *  更新时间记录便于追踪
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedTime;
 
     /**
      * 更新人id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long updatedBy;
     /**
      * 数据版本号
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long version;
 
 
@@ -149,10 +166,11 @@ public abstract class BaseVO implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-    
+
 
     public BaseVO() {
     }
 
 
 }
+

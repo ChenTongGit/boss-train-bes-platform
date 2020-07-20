@@ -41,7 +41,7 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return List<ResourceDTO>
      *
     */
-    List<ResourceDTO> getAllResource(UserQueryDTO queryDTO);
+    List<ResourceDTO> getAllResource(RoleQueryDTO queryDTO);
 
     /**
      * @param userRoleDTOS

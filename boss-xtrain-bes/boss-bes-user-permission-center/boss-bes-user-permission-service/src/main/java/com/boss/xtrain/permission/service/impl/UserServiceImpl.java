@@ -10,6 +10,7 @@ import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.entity.User;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.service.UserSerivce;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -77,13 +79,8 @@ public class UserServiceImpl implements UserSerivce {
     }
 
     @Override
-    public List<ResourceDTO> getAllResource(UserQueryDTO queryDTO) {
-        List<RoleDTO> roleDTOS = getAllRoles(queryDTO);
-        List<ResourceDTO> resourceDTOS = new ArrayList<>();
-        for(RoleDTO roleDTO : roleDTOS){
-            resourceDTOS.addAll(PojoUtils.copyListProperties(roleDao.getResourcesByRoleId(roleDTO.getId()),ResourceDTO::new));
-        }
-        return resourceDTOS;
+    public List<ResourceDTO> getAllResource(RoleQueryDTO queryDTO) {
+        return PojoUtils.copyListProperties(roleDao.getResourcesByRoleId(queryDTO.getId()), ResourceDTO::new);
     }
 
     @Override

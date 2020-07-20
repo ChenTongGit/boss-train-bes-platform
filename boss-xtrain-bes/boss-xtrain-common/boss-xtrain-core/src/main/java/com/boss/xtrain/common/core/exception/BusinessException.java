@@ -49,4 +49,9 @@ public class BusinessException extends AppException implements Serializable {
     public BusinessException(BusinessError businessError, Throwable cause){
         super(businessError, cause);
     }
+
+
+    public BusinessException(String code, String message, Throwable throwable) {
+        super(code, message, throwable);
+    }
 }

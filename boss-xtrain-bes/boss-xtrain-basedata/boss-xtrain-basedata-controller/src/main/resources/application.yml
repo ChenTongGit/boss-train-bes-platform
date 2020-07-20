@@ -1,0 +1,17 @@
+mybatis:
+  type-aliases-package: com.boss.xtrain.basedata.pojo.entity
+  mapper-locations: classpath:mapper/*.xml
+mapper:
+  mappers: com.boss.xtrain.common.core.web.dao.CommonMapper
+  identity: MYSQL
+spring:
+  datasource:
+    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true
+    username: root
+    password: guoxinrui0622
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
