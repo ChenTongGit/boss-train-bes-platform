@@ -104,10 +104,5 @@ public class SubjectTypeController extends BaseController implements SubjectType
 
     }
 
-    @Override
-    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
-    public List<SubjectTypePaperVO> querySubjectType(@RequestBody @Valid CombInfoQueryDTO combInfoQueryDTO) {
-        return null;
-    }
 
 }

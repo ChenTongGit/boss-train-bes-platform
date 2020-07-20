@@ -61,13 +61,9 @@ public class DepartmentController extends BaseController implements DepartmentAp
      */
     @Override
     @ApiOperation(value = "test")
-<<<<<<< HEAD
-    @ApiLog(msg = "查找公司树节点")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
-=======
     @ApiLog(msg = "查找公司节点")
     @ResponseBody
->>>>>>> dev0.1
     public CommonResponse<List<CompanyQuery>> selectTree() {
         try{
             return CommonResponseUtil.ok(treeService.companyTree());
@@ -80,13 +76,9 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找公司下的部门树节点")
-<<<<<<< HEAD
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
-    public CommonResponse<List<TreeNode>> selectDepartmentTree(@Valid CommonRequest<DepartmentQuery> request) {
-=======
     @ResponseBody
     public CommonResponse<List<CompanyDepartmentNode>> selectDepartmentTree(@Valid CommonRequest<CompanyQuery> request) {
->>>>>>> dev0.1
         try{
             List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(request.getBody());
             return CommonResponseUtil.ok(treeList);
@@ -148,12 +140,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
      */
     @Override
     @ApiOperation(value = "test")
-<<<<<<< HEAD
-    @ApiLog(msg = "查找该组织机构下的公司及部门")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
-=======
     @ApiLog(msg = "无条件查找所有的部门")
->>>>>>> dev0.1
     public CommonResponse<List<DepartmentVO>> selectAll() {
         List<DepartmentDTO> departmentDTOList = service.selectAll();
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);

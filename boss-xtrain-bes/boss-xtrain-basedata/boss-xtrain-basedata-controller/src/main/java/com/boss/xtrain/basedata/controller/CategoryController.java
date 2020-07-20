@@ -10,6 +10,8 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
+import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
@@ -133,11 +135,5 @@ public class CategoryController extends BaseController implements CategoryApi {
         List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDtoList,CategoryVO::new);
         return buildPageResponse(objects,categoryVOS);
 
-    }
-
-    @Override
-    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
-    public List<SubjectCategoryVO> querySubjectCategory(CombInfoQueryDTO combInfoQueryDTO) {
-        return null;
     }
 }

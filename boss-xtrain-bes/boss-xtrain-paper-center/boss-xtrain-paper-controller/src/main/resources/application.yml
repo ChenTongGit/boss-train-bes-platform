@@ -33,6 +33,9 @@ spring:
   nacos-url:
     nacos-host: 123.57.156.184
     nacos-port: 8848
+  security:-url:
+    host: localhost
+    port: 18006
 
 # 配置资源服务器
 security:

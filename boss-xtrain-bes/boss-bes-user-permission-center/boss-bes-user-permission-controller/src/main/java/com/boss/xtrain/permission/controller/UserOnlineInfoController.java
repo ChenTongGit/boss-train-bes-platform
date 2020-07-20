@@ -55,12 +55,9 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
      * @return
      */
     @Override
-<<<<<<< HEAD
     @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
-=======
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页查找所有该管理员所负责的在线用户信息并排序")
->>>>>>> dev0.1
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
