@@ -150,3 +150,4 @@ public class CompanyDaoImpl implements CompanyDao {
         return mapper.existsWithPrimaryKey(companyId);
     }
 }
+

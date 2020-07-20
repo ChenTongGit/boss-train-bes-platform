@@ -58,17 +58,20 @@ public class ResourceServiceImpl implements ResourceService{
         }
 
         try {
+            List<ResourceDTO> resources = selectAll();
             for(int i = 0 ; i<resourceDTOS.size(); i++){
-                Long parentId = resourceDTOS.get(i).getParentId();
-                for(ResourceDTO dto : selectAll()){
-                    if(dto.getParentId() == parentId){
-                        dto.setParentId(null);
-                        update(dto);
+                Long parentId = resourceDTOS.get(i).getId();
+                log.info("parentId  "+parentId);
+                for(int j = 0;j<resources.size();j++){
+                    if(resources.get(j).getParentId() != null && resources.get(j).getParentId().equals(parentId)){
+                        log.info("=="+resources.get(j).getParentId());
+                        resourceDao.updateWithNull(resources.get(j).getId());
                     }
                 }
             }
             return resourceDao.deleteByIds(resourceDTOS);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
         }
     }
@@ -114,16 +117,20 @@ public class ResourceServiceImpl implements ResourceService{
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
         try {
             List<ResourceDTO> resourceDTOList = selectAll();
-            for(ResourceDTO resourceDTO : resourceDTOList){
-                if(resourceDTO.getParentId() == dto.getId()){
-                    resourceDTO.setParentId(null);
-                    update(resourceDTO);
+            log.info("resourceList: " + resourceDTOList.toString());
+            for(int i=0;i<resourceDTOList.size();i++){
+                log.info(resourceDTOList.get(i).getName()+" "+resourceDTOList.get(i).toString());
+                if(resourceDTOList.get(i).getParentId()!= null && resourceDTOList.get(i).getParentId().equals(dto.getId())){
+                    log.info(resourceDTOList.get(i).toString());
+//                    resourceDTOList.get(i).setParentId(null);
+                    resourceDao.updateWithNull(resourceDTOList.get(i).getId());
                 }
             }
             resourceDao.deleteRoleResource(dto.getId());
             return resourceDao.delete(dto);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR,e);
         }
     }
 

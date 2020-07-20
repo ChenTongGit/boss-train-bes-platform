@@ -1,3 +1,4 @@
+
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
