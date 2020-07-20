@@ -13,8 +13,8 @@ spring:
           # 去除前缀
           filters:
             - StripPrefix=1
-        - id: boss-bes-system-center
-          uri: lb://boss-bes-system-center
+        - id: boss-bes-system
+          uri: lb://boss-bes-system
           order: 0
           predicates:
             - Path=/system/**

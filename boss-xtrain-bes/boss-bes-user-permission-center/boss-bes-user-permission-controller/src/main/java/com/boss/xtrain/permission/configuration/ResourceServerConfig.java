@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @Configuration
 @EnableResourceServer
 @Import(FeignClientInterceptor.class)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     // @Value("spring.security.resource.token-info-uri")
@@ -76,7 +76,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                 "/swagger-resources","/swagger-resources/configuration/security",
                 "/swagger-ui.html","/webjars/**","/course/coursepic/list/**", "/education/bes/v1/user/select",
-                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource").permitAll()
+                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource", "/**").permitAll()
             .anyRequest().authenticated();
     }
 }
