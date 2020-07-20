@@ -8,7 +8,7 @@
       This element was generated on Wed Jul 08 10:19:20 CST 2020.
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />
+    <!--<result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />-->
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="order_index" property="orderIndex" jdbcType="INTEGER" />

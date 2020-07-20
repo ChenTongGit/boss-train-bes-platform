@@ -81,7 +81,8 @@ public class PositionServiceImpl implements PositionService {
             }
             return positionDTOS;
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR,e);
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR,e);
         }
     }
 

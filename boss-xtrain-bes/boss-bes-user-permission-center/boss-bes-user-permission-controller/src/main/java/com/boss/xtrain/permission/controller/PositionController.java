@@ -94,9 +94,10 @@ public class PositionController extends BaseController implements PositionApi {
     @Override
     public CommonResponse<CommonPage<PositionListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<PositionQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<PositionDTO> companyDTOList = positionService.selectByCondition(request.getBody().getQuery());
-        List<PositionListVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,PositionListVO::new);
-        return buildPageResponse(page,companyVOList);
+        log.info(request.getBody().getQuery().toString());
+        List<PositionDTO> positionDTOS = positionService.selectByCondition(request.getBody().getQuery());
+        List<PositionListVO> positionListVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
+        return buildPageResponse(page,positionListVOS);
     }
 
     @Override

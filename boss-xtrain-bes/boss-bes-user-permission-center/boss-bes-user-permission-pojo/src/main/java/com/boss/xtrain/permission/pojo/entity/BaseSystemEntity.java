@@ -57,4 +57,10 @@ public class BaseSystemEntity implements Serializable {
     @Column(name = "updated_by")
     private Long updatedBy;
 
+    /**
+     * 版本
+     */
+    @Column(name = "version")
+    private String version;
+
 }

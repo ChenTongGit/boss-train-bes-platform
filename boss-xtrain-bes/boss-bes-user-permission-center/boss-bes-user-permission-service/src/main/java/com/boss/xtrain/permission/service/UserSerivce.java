@@ -20,12 +20,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
-    /**
-     * @param id
-     * @return List<RoleDTO>
-     * @description 通过userid查找用户的角色
-     */
-    List<RoleDTO> getRoleByUserId(Long id);
+
     /**
      * @param query
      * @return List<RoleDTO>

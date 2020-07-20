@@ -27,11 +27,15 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
-    <resultMap id="UserDtoMap" type="com.boss.xtrain.permission.pojo.dto.UserDTO" extends="BaseResultMap">
+    <resultMap id="UserDtoMap" type="com.boss.xtrain.permission.pojo.dto.UserDTO">
         <id column="id" property="id"/>
         <result column="positionId" property="positionId"/>
         <result column="name" property="name"/>
         <result column="userId" property="id"/>
+        <collection property="roleList" ofType="com.boss.xtrain.permission.pojo.entity.Role"
+                    javaType="java.util.ArrayList" select="getRoles"
+                    column="id">
+        </collection>
     </resultMap>
   <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
     <id column="id" property="id"/>
@@ -49,10 +53,7 @@
   </resultMap>
   <resultMap id="UserMap" type="com.boss.xtrain.permission.pojo.entity.User" extends="BaseResultMap">
     <id column="id" property="id"/>
-    <collection property="roleList" ofType="com.boss.xtrain.permission.pojo.entity.Role"
-                javaType="java.util.ArrayList" select="getRolesByUserId"
-                column="id">
-    </collection>
+
   </resultMap>
   <sql id="UserColumns">
         tu.id,
@@ -114,8 +115,6 @@
   <select id="queryCode" parameterType="com.boss.xtrain.permission.pojo.dto.UserDTO" resultType="com.boss.xtrain.permission.pojo.dto.UserDTO">
         select * from t_user where code=#{code}
     </select>
-
-
   <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
     </select>
