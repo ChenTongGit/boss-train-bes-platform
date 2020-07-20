@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class SubjectDeleteIdsVO {
-    private List<Long> ids;
+    private List<SubjectDeleteVO> ids;
 }

@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 public class CategoryQueryVO{
     private String name;
     private Long orgId;
-    private int pageIndex;
-    private int pageSize;
-    private String orderBy;
 
     @JsonProperty(value = "name")
     public String getName() {
@@ -33,35 +30,5 @@ public class CategoryQueryVO{
     @JsonProperty(value = "orgId")
     public void setOrgId(Long orgId) {
         this.orgId = orgId;
-    }
-
-    @JsonProperty(value = "pageIndex")
-    public int getPageIndex() {
-        return pageIndex;
-    }
-
-    @JsonProperty(value = "pageIndex")
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
-
-    @JsonProperty(value = "pageSize")
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    @JsonProperty(value = "pageSize")
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    @JsonProperty(value = "orderBy")
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    @JsonProperty(value = "orderBy")
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
     }
 }

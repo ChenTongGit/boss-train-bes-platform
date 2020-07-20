@@ -27,7 +27,9 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<CategoryDTO> queryCategory() {
-        return categoryMapper.queryCategory();
+        List<Category> categories = categoryMapper.selectAll();
+        List<CategoryDTO> categoryDTOS = PojoUtils.copyListProperties(categories,CategoryDTO::new);
+        return categoryDTOS;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public int updateCategory(Category category) {
-        return categoryMapper.updateCategory(category);
+        return categoryMapper.updateByPrimaryKey(category);
     }
 
     @Override

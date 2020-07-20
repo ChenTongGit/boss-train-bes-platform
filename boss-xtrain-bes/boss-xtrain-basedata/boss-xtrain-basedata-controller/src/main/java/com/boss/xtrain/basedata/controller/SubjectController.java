@@ -1,23 +1,24 @@
 package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.basedata.api.SubjectApi;
+import com.boss.xtrain.basedata.pojo.vo.paper.CombSubjectListVO;
+import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemListDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.CreatePaperDTO;
+import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.basedata.pojo.vo.subject.*;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import com.boss.xtrain.basedata.service.SubjectService;
 import com.boss.xtrain.common.core.exception.error.SystemError;
-import com.boss.xtrain.common.core.http.CommonPage;
-import com.boss.xtrain.common.core.http.CommonRequest;
-import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.http.CommonResponseUtil;
+import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,17 +44,15 @@ public class SubjectController extends BaseController implements SubjectApi {
     @ApiLog(msg = "查询题目(分页)")
     @ResponseBody
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
-    public CommonResponse<CommonPage<SubjectVO>> querySubjectPage(@RequestBody CommonRequest<SubjectQueryVO> commonRequest) {
-        SubjectQueryVO subjectQuery = commonRequest.getBody();
+    public CommonResponse<CommonPage<SubjectVO>> querySubjectPage(@RequestBody CommonRequest<CommonPageRequest<SubjectQueryVO>> commonRequest) {
+        SubjectQueryVO subjectQuery = commonRequest.getBody().getQuery();
         log.info(subjectQuery.toString());
-        Page<Object> objects = doBeforePagination(subjectQuery.getPageNum(),subjectQuery.getPageSize(),null);
+        Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
         PojoUtils.copyProperties(subjectQuery,subjectQueryDTO);
         List<SubjectDTO> subjectDTOS = subjectService.querySubjectByCondition(subjectQueryDTO);
         List<SubjectVO> subjectVOS = PojoUtils.copyListProperties(subjectDTOS,SubjectVO::new);
-        PageInfo<SubjectVO> pageInfo = new PageInfo<>(subjectVOS);
-        pageInfo.setTotal(objects.getTotal());
-        return buildPageResponse(pageInfo,subjectVOS);
+        return buildPageResponse(objects,subjectVOS);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<Boolean> deleteSubjectList(@RequestBody CommonRequest<SubjectDeleteIdsVO> commonRequest) {
         SubjectDeleteIdsDTO subjectDeleteIdsDTO = new SubjectDeleteIdsDTO();
-        List<Long> deleteList = commonRequest.getBody().getIds();
+        List<SubjectDeleteDTO> deleteList = PojoUtils.copyListProperties(commonRequest.getBody().getIds(),SubjectDeleteDTO::new);
         subjectDeleteIdsDTO.setIds(deleteList);
         subjectService.deleteSubjectList(subjectDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
@@ -100,7 +99,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<SubjectVO> insertSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
-        log.info(subjectUpdateDTO.toString());
+        log.info("插入{}",subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.insertSubject(subjectUpdateDTO);
@@ -168,5 +167,38 @@ public class SubjectController extends BaseController implements SubjectApi {
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
     }
 
+
+    @Override
+    @ApiLog(msg = "标准组卷")
+    @ResponseBody
+    public List<CombSubjectListVO> standardCombExam(@RequestBody StandardCombDTO standardCombDTO) {
+        List<SubjectDTO> subjectDTOS = subjectService.querySubjectByConfig(standardCombDTO);
+        return PojoUtils.copyListProperties(subjectDTOS,CombSubjectListVO::new);
+
+    }
+
+    @Override
+    @ApiLog(msg = "快速组卷")
+    @ResponseBody
+    public List<CombSubjectListVO> addPaper(@RequestBody CreatePaperDTO createPaperDTO) {
+        CombExamItemQueryDTO combExamItemQueryDTO = new CombExamItemQueryDTO();
+        PojoUtils.copyProperties(createPaperDTO,combExamItemQueryDTO);
+        log.info(combExamItemQueryDTO.toString());
+        List<CombExamItemDTO> combExamItemDTOS = combExamConfigService.queryItem(combExamItemQueryDTO);
+        log.info(combExamItemDTOS.toString());
+        List<SubjectDTO> subjectDTOS = subjectService.querySubject(combExamItemDTOS);
+        log.info(subjectDTOS.toString());
+        return PojoUtils.copyListProperties(subjectDTOS,CombSubjectListVO::new);
+    }
+
+    @Override
+    @ApiLog(msg = "自定义组卷")
+    @ResponseBody
+    public List<CombSubjectListVO> addPaperByConfigItems(@RequestBody ConfigItemListDTO configItemListDTO) {
+        List<ConfigItemDTO> configItemDTOS = configItemListDTO.getItemList();
+        List<CombExamItemDTO> combExamItemDTOS = PojoUtils.copyListProperties(configItemDTOS,CombExamItemDTO::new);
+        List<SubjectDTO> subjectDTOS = subjectService.querySubject(combExamItemDTOS);
+        return PojoUtils.copyListProperties(subjectDTOS,CombSubjectListVO::new);
+    }
 
 }

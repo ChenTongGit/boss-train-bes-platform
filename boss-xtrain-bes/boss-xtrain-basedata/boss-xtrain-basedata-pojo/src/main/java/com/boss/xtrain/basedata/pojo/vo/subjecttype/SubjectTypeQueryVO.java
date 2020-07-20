@@ -13,7 +13,4 @@ import java.util.Date;
 public class SubjectTypeQueryVO extends BaseQuery {
     private Long orgId;
     private String name;
-    private int pageNum;
-    private int pageSize;
-    private Date updatedTime;
 }

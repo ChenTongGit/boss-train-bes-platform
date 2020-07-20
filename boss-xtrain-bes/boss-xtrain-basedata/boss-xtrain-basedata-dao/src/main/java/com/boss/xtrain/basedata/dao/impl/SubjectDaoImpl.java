@@ -42,6 +42,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public int insertSubject(Subject subject) {
+        log.info(subject.toString());
         return subjectMapper.insert(subject);
     }
 
@@ -66,7 +67,8 @@ public class SubjectDaoImpl implements SubjectDao {
     @Override
     public List<SubjectDTO> queryAll() {
         List<Subject> subjects = subjectMapper.selectAll();
-        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+
         List<Category> categories = new ArrayList<>();
         int count1 = 0;
         int count2 = 0;
@@ -80,15 +82,13 @@ public class SubjectDaoImpl implements SubjectDao {
             subjectTypes.add(count2,subjectTypeMapper.selectByPrimaryKey(subject.getSubjectTypeId()));
             count2++;
         }
-        log.info(subjects.toString());
 
+        subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         for (SubjectDTO subjectDTO : subjectDTOS){
-            subjectDTO.setName(subjects.get(count3).getName());
-            subjectDTO.setCategoryName(categories.get(count3).getName());
-            subjectDTO.setSubjectTypeName(subjectTypes.get(count3).getName());
+            subjectDTOS.get(count3).setCategoryName(categories.get(count3).getName());
+            subjectDTOS.get(count3).setSubjectTypeName(subjectTypes.get(count3).getName());
             count3++;
         }
-
         log.info(subjectDTOS.toString());
         return subjectDTOS;
     }
@@ -102,8 +102,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public List<SubjectDTO> queryByCondition(Long orgId, String subjectName, String categoryName, String typeName) {
-        List<Subject> subjects = subjectMapper.queryByCondition(orgId,subjectName,categoryName,typeName);
+    public List<SubjectDTO> queryByCondition(Example example) {
+        List<Subject> subjects = subjectMapper.selectByExample(example);
         List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         return subjectDTOS;
     }
@@ -150,10 +150,13 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public List<Subject> querySubject(CombExamItemDTO combExamItemDTO) {
-        Long categoryId = combExamItemDTO.getCategoryId();
-        Long subjectTypeId =combExamItemDTO.getSubjectTypeId();
-        Long difficulty = combExamItemDTO.getDifficulty();
-        return subjectMapper.querySubject(categoryId,subjectTypeId,difficulty);
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("categoryId",combExamItemDTO.getCategoryId());
+        criteria.andEqualTo("subjectTypeId",combExamItemDTO.getSubjectTypeId());
+        criteria.andEqualTo("difficulty",combExamItemDTO.getDifficultyName());
+        log.info(subjectMapper.selectByExample(example).toString());
+        return subjectMapper.selectByExample(example);
 
     }
 
@@ -161,16 +164,23 @@ public class SubjectDaoImpl implements SubjectDao {
     public List<Subject> querySubjectRandom(CombExamItemDTO combExamItemDTO, Integer num) {
         Long categoryId = combExamItemDTO.getCategoryId();
         Long subjectTypeId = combExamItemDTO.getSubjectTypeId();
-        Long difficulty = combExamItemDTO.getDifficulty();
-        return subjectMapper.queryByRandom(categoryId,subjectTypeId,difficulty,num);
+        String difficulty = combExamItemDTO.getDifficultyName();
+        log.info(categoryId.toString());
+        log.info(subjectTypeId.toString());
+        log.info(difficulty);
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("categoryId",combExamItemDTO.getCategoryId());
+        criteria.andEqualTo("subjectTypeId",combExamItemDTO.getSubjectTypeId());
+        criteria.andEqualTo("difficulty",combExamItemDTO.getDifficultyName());
+        return subjectMapper.selectByExample(example);//queryByRandom(categoryId,subjectTypeId,difficulty,num);
 
     }
 
     @Override
     public List<SubjectDTO> queryExamSubject(Long orgId, Long subjectTypeId) {
         List<Subject> subjects = subjectMapper.getExamSubject(orgId,subjectTypeId);
-        List<SubjectDTO> subjectDTOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjects,SubjectDTO.class);
+        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         return subjectDTOS;
 
     }
