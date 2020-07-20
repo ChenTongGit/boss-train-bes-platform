@@ -61,6 +61,6 @@ public class BaseSystemEntity implements Serializable {
      * 版本
      */
     @Column(name = "version")
-    private String version;
+    private Long version;
 
 }

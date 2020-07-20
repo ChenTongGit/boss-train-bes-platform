@@ -57,6 +57,9 @@
   <select id="getStateById" parameterType="java.lang.Long" resultType="com.boss.xtrain.permission.pojo.entity.Resource">
     select status from t_resource where id=#{id}
   </select>
+    <update id="updateWithNull" parameterType="java.lang.Long">
+    update t_resource set parent_id = null where id=#{id}
+  </update>
     <delete id="deleteRoleResource" parameterType="java.lang.Long" >
         DELETE FROM t_role_resource
         <where>

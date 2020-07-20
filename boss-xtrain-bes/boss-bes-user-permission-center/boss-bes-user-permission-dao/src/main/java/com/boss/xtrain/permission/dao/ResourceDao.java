@@ -64,4 +64,12 @@ public interface ResourceDao extends IBaseDao<ResourceDTO,ResourceQueryDTO> {
     */
     int deleteRoleResource(Long resourceId);
 
+    /**
+     * 设为null
+     * 将parentId设为null
+     * @param id
+     * @return int
+     *
+    */
+    int updateWithNull(Long id);
 }

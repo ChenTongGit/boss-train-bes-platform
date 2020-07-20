@@ -94,4 +94,9 @@ public class ResourceDaoImpl implements ResourceDao {
     public int deleteRoleResource(Long resourceId) {
         return resourceMapper.deleteRoleResource(resourceId);
     }
+
+    @Override
+    public int updateWithNull(Long id) {
+        return resourceMapper.updateWithNull(id);
+    }
 }
