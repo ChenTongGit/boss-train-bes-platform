@@ -4,6 +4,7 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.UserApi;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
@@ -113,10 +114,17 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
 
+    /**
+     * 考试服务消费接口
+     * @author ChenTong
+     * @param request 
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.util.List<com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO>>
+     * @date 2020/7/20 12:21
+     */
     @Override
-    public CommonResponse<List<UserListVO>> getUserByPosition(@Valid CommonRequest<UserQueryDTO> request) {
+    public CommonResponse<List<ExamServiceUsersDTO>> getUserByPosition(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
-        List<UserDTO> userDTOS = userSerivce.getUserByPosition(queryDTO);
-        return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
+        List<ExamServiceUsersDTO> userDTOS = userSerivce.getUserByPosition(queryDTO);
+        return CommonResponseUtil.ok(userDTOS);
     }
 }

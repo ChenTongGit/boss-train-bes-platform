@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.dao;
 
 import com.boss.xtrain.common.core.web.dao.IBaseDao;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
@@ -118,5 +119,5 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      * @return List<UserDTO>
      *
      */
-    List<UserDTO> getUserByPosition(String positionName);
+    List<ExamServiceUsersDTO> getUserByPosition(String positionName);
 }

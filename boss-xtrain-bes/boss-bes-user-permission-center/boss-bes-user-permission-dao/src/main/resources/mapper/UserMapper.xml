@@ -32,6 +32,8 @@
         <result column="name" property="name"/>
         <result column="userId" property="id"/>
     </resultMap>
+
+
     <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
         <id column="id" property="id"/>
         <result column="t_c_id" property="companyId"/>
@@ -78,6 +80,11 @@
         td.name as departmentName
     </sql>
 
+    <!--通过userId去user_role表查询相连的roleId-->
+    <select id="getRoleByUserId" parameterType="java.lang.Long" resultMap="RoleMap">
+        select  a.id,a.name  from t_role a left join user_role b on a.id = b.role_id  where b.user_id = #{Id}
+    </select>
+
     <delete id="deleteRoleUser">
         DELETE FROM t_user_role
         WHERE t_u_id IN
@@ -110,8 +117,8 @@
     <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
     </select>
-    <select id="getUserByPosition" parameterType="java.lang.String" resultMap="UserDtoMap">
-        select tu.name,tu.id userId,tp.id positionId from position tp ,t_user tu where tp.t_u_id = tu.id and tp.name = #{positionName}
+    <select id="getUserByPosition" parameterType="java.lang.String" resultType="com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO">
+        select tu.name,tu.id userId from position tp ,t_user tu where tp.t_u_id = tu.id and tp.name = #{positionName}
     </select>
 
 

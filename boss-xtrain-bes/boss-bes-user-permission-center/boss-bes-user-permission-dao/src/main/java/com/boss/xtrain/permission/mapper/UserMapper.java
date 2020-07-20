@@ -1,9 +1,8 @@
 package com.boss.xtrain.permission.mapper;
 
 import com.boss.xtrain.common.core.web.dao.CommonMapper;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
@@ -74,6 +73,6 @@ public interface UserMapper extends CommonMapper<User> {
      * @return List<User>
      *
     */
-    List<UserDTO> getUserByPosition(String positionName);
+    List<ExamServiceUsersDTO> getUserByPosition(String positionName);
 
 }

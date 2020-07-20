@@ -1,15 +1,10 @@
 package com.boss.xtrain.permission.dao.impl;
 
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.permission.dao.CompanyDao;
-import com.boss.xtrain.permission.dao.OrganizationDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.mapper.UserMapper;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.entity.Resource;
-import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -18,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -141,7 +135,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<UserDTO> getUserByPosition(String positionName) {
+    public List<ExamServiceUsersDTO> getUserByPosition(String positionName) {
         return userMapper.getUserByPosition(positionName);
     }
 }
