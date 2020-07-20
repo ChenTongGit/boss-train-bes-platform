@@ -5,8 +5,8 @@ import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
-import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
 import org.apache.ibatis.annotations.Param;
@@ -33,7 +33,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return  List<ResourceTreeNode>
      */
 
-    List<ResourceTreeNode> getResources();
+    List<TreeNode> getResources();
     /**
      * 角色下分配用户
      *
@@ -100,7 +100,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return List<String>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
     /**
      * 通过RoleId查询拥有的用户Id
@@ -109,7 +109,7 @@ public interface RoleMapper extends CommonMapper<Role> {
      * @return List<String>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 
     /**

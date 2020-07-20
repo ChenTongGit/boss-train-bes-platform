@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author ChenTong
  * @version 1.0
- * @date 2020/7/8 15:37
+ * @date 2020/7/12 15:37
  * @copyright
  * @modified
  * @see
@@ -37,6 +37,8 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
      */
     @Override
     public int insert(ExamPublishRecord entity) {
+
+        entity.setPublisher(entity.getCreatedBy());
         return mapper.insert(entity);
     }
 
@@ -62,7 +64,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
      */
     @Override
     public int update(ExamPublishRecord entity) {
-        return mapper.updateByPrimaryKeySelective(entity);
+        return mapper.updateByPrimaryKeySelectiveWithVersion(entity);
     }
 
 
@@ -125,6 +127,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     public int updateStatusBatch(List<ExamPublishRecord> records) {
         for (ExamPublishRecord record: records
              ) {
+            record.setStatus(1);
             mapper.updateByPrimaryKeySelectiveWithVersion(record);
         }
         return records.size();

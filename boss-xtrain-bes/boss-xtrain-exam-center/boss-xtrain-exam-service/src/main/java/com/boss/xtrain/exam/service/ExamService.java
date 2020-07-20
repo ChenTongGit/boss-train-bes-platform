@@ -3,6 +3,7 @@ package com.boss.xtrain.exam.service;
 import com.boss.xtrain.exam.pojo.dto.AnswerRecordTempInsertDTO;
 import com.boss.xtrain.exam.pojo.dto.ExamStartAddRecordDTO;
 import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
 
 import java.util.List;
 
@@ -47,8 +48,26 @@ public interface ExamService {
      */
     Integer submitExam(SubmitExamDTO dto);
 
+    /**
+     * 从redis中获取考试剩余时间
+     * @param key
+     * @return
+     */
     Long getLimitTimeFromRedis(String key);
 
+    /**
+     * 设置考试剩余时间
+     * @param key
+     * @param limit
+     */
     void setLimitTimeToRedis(String key, Long limit);
+
+    /**
+     * 获取该考生的试卷如果已经进行考试则会返回已经保存的答案
+     * @param dto
+     * @param queryRedis
+     * @return
+     */
+    PaperSubjectAnswerVO getPaper(SubmitExamDTO dto, boolean queryRedis);
 
 }

@@ -1,10 +1,7 @@
 package com.boss.xtrain.permission.service;
 
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
-import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
-import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
-import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.dto.*;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
@@ -20,12 +17,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
-    /**
-     * @param id
-     * @return List<RoleDTO>
-     * @description 通过userid查找用户的角色
-     */
-    List<RoleDTO> getRoleByUserId(Long id);
+
     /**
      * @param query
      * @return List<RoleDTO>
@@ -49,11 +41,20 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
     List<ResourceDTO> getAllResource(RoleQueryDTO queryDTO);
 
     /**
-     * @param userRoleDTO
+     * @param userRoleDTOS
      * @return int
      * @description 删除用户的某一角色
      */
-    int deleteUserRole(UserRoleDTO userRoleDTO);
+    int deleteRoleUser(List<UserRoleDTO> userRoleDTOS);
+
+    /**
+     * 分配角色
+     *
+     * @param dtos
+     * @return boolean
+     *
+    */
+    boolean allocateRole(List<UserRoleDTO> dtos);
 
     /**
      * 根据Id获取Status
@@ -62,4 +63,22 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return User
      */
     User getStatusById(Long id);
+
+    /**
+     * 查找用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<RoleDTO>
+     *
+    */
+    List<RoleDTO> getRoles(UserQueryDTO queryDTO);
+
+    /**
+     * 通过position信息查找user
+     *
+     * @param queryDTO
+     * @return  List<UserDTO>
+     *
+    */
+    List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO);
 }

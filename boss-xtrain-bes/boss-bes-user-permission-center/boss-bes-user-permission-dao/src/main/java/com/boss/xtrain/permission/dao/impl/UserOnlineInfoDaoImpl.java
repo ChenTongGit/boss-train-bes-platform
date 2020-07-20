@@ -24,8 +24,8 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     private UserOnlineInfoMapper mapper;
 
     /**
-     * 条件查询
-     *
+     * 组合条件查询
+     * 用户工号，用户名，在线时间段
      * @param query
      * @return 结果
      */
@@ -33,17 +33,18 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     public List<UserOnlineInfo> selectByCondition(UserOnlineInfoQuery query) {
         Example example = new Example(UserOnlineInfo.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("code",query.getCode());
-        criteria.andEqualTo("name",query.getName());
-
-        String start = query.getOnlineTime().toString();
-        String off = query.getOfflineTime().toString();
-
-        criteria.andLike("onlineTime",start);
-        if(off!=null){
-            criteria.andLike("offlineTime",off);
+        if(query.getCode()!=null) {
+            criteria.andEqualTo("code", query.getCode());
         }
-
+        if(query.getName()!=null) {
+            criteria.andEqualTo("name", query.getName());
+        }
+        if(query.getOnlineTime()!=null) {
+            criteria.andGreaterThanOrEqualTo("onlineTime",query.getOnlineTime());
+        }
+        if(query.getOfflineTime()!=null){
+            criteria.andLessThanOrEqualTo("offlineTime",query.getOfflineTime());
+        }
         return mapper.selectByExample(example);
     }
 
@@ -141,7 +142,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
 
     /**
      * 批量下线
-     *
+     * 并没有使用
      * @param dtoList T extends BaseDTO 数据传输对象
      * @return int个数
      */
@@ -181,3 +182,4 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         return mapper.existsWithPrimaryKey(id);
     }
 }
+

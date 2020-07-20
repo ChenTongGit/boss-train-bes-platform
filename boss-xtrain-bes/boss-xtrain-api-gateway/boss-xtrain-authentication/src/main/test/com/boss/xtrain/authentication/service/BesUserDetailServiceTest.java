@@ -41,11 +41,23 @@ class BesUserDetailServiceTest {
     void loadUserByUsername() {
         CommonRequest<UserQueryDTO> userQuery = new CommonRequest<>();
         UserQueryDTO userQueryDTO = new UserQueryDTO();
-        userQueryDTO.setName("1111");
+        userQueryDTO.setName("liuxin");
         userQuery.setBody(userQueryDTO);
+        CommonResponse<UserDTO> user = permissonServiceClient.findUserByName(userQuery);
+        UserDTO userDTO = user.getData();
+        log.info(userDTO.toString());
 
-        UserDTO result = permissonServiceClient.findUserByName(userQuery).getData();
-        log.info(result.toString());
+        userQueryDTO.setName("lilei");
+        userQuery.setBody(userQueryDTO);
+        user = permissonServiceClient.findUserByName(userQuery);
+        userDTO = user.getData();
+        log.info(userDTO.toString());
+
+        userQueryDTO.setName("he");
+        userQuery.setBody(userQueryDTO);
+        user = permissonServiceClient.findUserByName(userQuery);
+        userDTO = user.getData();
+        log.info(userDTO.toString());
     }
 
     /*@Test

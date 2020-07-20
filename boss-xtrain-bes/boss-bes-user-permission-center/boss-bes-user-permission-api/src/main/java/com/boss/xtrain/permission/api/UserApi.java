@@ -1,14 +1,22 @@
 package com.boss.xtrain.permission.api;
 
+import com.boss.xtrain.common.core.http.CommonPage;
+import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
+<<<<<<< HEAD
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
+import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+=======
+import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
+>>>>>>> ysq-dev
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.pojo.vo.UserListVO;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -110,6 +118,41 @@ public interface UserApi {
     */
     @PostMapping("/getAllResource")
     CommonResponse<List<ResourceListVO>> getAllResource(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
+
+    @PostMapping("/selectByPage")
+    CommonResponse<CommonPage<UserListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request);
+
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<UserListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+    /**
+     *
+     * 分配角色
+     * @param request
+     * @return boolean
+     *
+    */
+    @RequestMapping("/allocateRole")
+    CommonResponse<Boolean> allocateRole(@RequestBody @Valid CommonRequest<List<UserRoleDTO>> request);
+
+    /**
+     * 查询用户的角色列表
+     *
+     * @param request
+     * @return CommonResponse<List<RoleListVO>>
+     *
+    */
+    @RequestMapping("/getRoles")
+    CommonResponse<List<RoleListVO>> getRoles(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
+
+    /**
+     * 通过position查找用户
+     *
+     * @param request
+     * @return CommonResponse<List<UserListVO>>
+     *
+    */
+    @RequestMapping("/getUserByPosition")
+    CommonResponse<List<ExamServiceUsersDTO>> getUserByPosition(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
 
 }
 

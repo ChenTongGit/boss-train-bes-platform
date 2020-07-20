@@ -1,7 +1,5 @@
 package com.boss.xtrain.common.core.pojo;
 
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -57,12 +55,10 @@ public abstract class BaseDTO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "GMT+8")
     private Date updatedTime;
 
-
     /**
      * 版本
      */
     private Long version;
-
 
     public Long getVersion() {
         return version;

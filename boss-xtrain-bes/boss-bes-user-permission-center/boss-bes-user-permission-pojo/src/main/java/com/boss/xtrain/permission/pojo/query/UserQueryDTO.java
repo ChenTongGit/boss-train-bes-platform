@@ -22,6 +22,7 @@ public class UserQueryDTO extends BaseQuery {
     private String roleId;
     private Long companyId;
     private Long departmentId;
+    private String positionName;
     private Long id;
 
 }

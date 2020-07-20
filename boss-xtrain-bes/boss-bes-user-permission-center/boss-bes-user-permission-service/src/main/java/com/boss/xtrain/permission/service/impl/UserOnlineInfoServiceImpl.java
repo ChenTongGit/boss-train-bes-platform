@@ -51,9 +51,8 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      * @return origin初始化
      */
     @Override
-    public List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query) {
+    public List<UserOnlineInfoDTO> selectAll(Long orgId) {
         //获得所负责的org
-        Long orgId = getOrg(query.getUserId());
         CompanyQuery companyQuery = new CompanyQuery();
         companyQuery.setOrganizationId(orgId);
         List<Company> companyList = companyDao.selectByCondition(companyQuery);
@@ -249,3 +248,4 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }
+

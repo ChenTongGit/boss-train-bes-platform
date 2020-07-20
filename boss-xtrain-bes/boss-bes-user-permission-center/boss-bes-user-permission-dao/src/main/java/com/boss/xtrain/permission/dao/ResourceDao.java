@@ -55,4 +55,21 @@ public interface ResourceDao extends IBaseDao<ResourceDTO,ResourceQueryDTO> {
     */
     boolean isExist(Long id);
 
+    /**
+     * 根据资源Id删除角色资源关系
+     *
+     * @param resourceId
+     * @return int
+     *
+    */
+    int deleteRoleResource(Long resourceId);
+
+    /**
+     * 设为null
+     * 将parentId设为null
+     * @param id
+     * @return int
+     *
+    */
+    int updateWithNull(Long id);
 }

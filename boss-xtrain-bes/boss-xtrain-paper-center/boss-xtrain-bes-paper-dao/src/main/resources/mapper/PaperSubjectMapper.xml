@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boss.xtrain.paper.mapper.PaperSubjectMapper">
+  <resultMap id="BaseResultMap" type="com.boss.xtrain.paper.entity.PaperSubject">
+    <result column="paper_subject_id" jdbcType="BIGINT" property="paperSubjectId" />
+    <result column="paper_id" jdbcType="BIGINT" property="paperId" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="difficult" jdbcType="BIGINT" property="difficult" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="org_id" jdbcType="BIGINT" property="orgId" />
+    <result column="company_id" jdbcType="BIGINT" property="companyId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="field1" jdbcType="VARCHAR" property="field1" />
+    <result column="field2" jdbcType="VARCHAR" property="field2" />
+    <result column="field3" jdbcType="VARCHAR" property="field3" />
+  </resultMap>
+</mapper>

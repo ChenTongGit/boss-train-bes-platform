@@ -41,9 +41,25 @@ public interface PositionDao extends IBaseDao<PositionDTO,PositionQueryDTO> {
     boolean isExist(Long id);
 
     /**
-     * @param dto
+     * @param id
      * @return  Position
      * @description
      */
-    Position selectOne(PositionQueryDTO dto);
+    Position selectByKey(Long id);
+    /**
+     * 避开切面注入 insert
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int positionInsert(PositionDTO dto);
+    /**
+     *
+     * 避开切面注入 update
+     * @param dto
+     * @return int
+     *
+    */
+    int positionUpdate(PositionDTO dto);
 }

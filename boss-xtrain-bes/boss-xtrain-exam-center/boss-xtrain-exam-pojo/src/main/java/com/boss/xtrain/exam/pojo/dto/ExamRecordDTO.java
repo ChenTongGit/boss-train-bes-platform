@@ -2,6 +2,8 @@ package com.boss.xtrain.exam.pojo.dto;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,32 +26,38 @@ public class ExamRecordDTO extends BaseDTO {
     private Long publishId;
 
     /**
+     * 试卷id
+     */
+    private Long paperId;
+
+    /**
      * 考生id
      */
     private Long examPeople;
 
     /**
+     * 考试标题
+     */
+    private String title;
+
+    /**
      * 计划开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date planStartTime;
 
     /**
      * 计划结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date planEndTime;
 
     /**
      * 实际开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date actualStartTime;
 
     /**
      * 实际结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date actualEndTime;
 
     /**
@@ -60,12 +68,18 @@ public class ExamRecordDTO extends BaseDTO {
     /**
      * 阅卷官id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long markUserId;
 
     /**
      * 阅卷官姓名
      */
     private String name;
+
+    /**
+     * 手机号
+     */
+    private String mobile;
 
     /**
      * 客观题得分
@@ -78,6 +92,11 @@ public class ExamRecordDTO extends BaseDTO {
     private Date markingAssignTime;
 
     /**
+     * 考试场次编号
+     */
+    private String examSession;
+
+    /**
      * 总分
      */
     private BigDecimal score;
@@ -86,6 +105,31 @@ public class ExamRecordDTO extends BaseDTO {
      * 能力标签
      */
     private String systemEvaluate;
+
+
+    public Long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getName() {
         return name;
@@ -181,6 +225,14 @@ public class ExamRecordDTO extends BaseDTO {
 
     public void setScore(BigDecimal score) {
         this.score = score;
+    }
+
+    public String getExamSession() {
+        return examSession;
+    }
+
+    public void setExamSession(String examSession) {
+        this.examSession = examSession;
     }
 
     public String getSystemEvaluate() {

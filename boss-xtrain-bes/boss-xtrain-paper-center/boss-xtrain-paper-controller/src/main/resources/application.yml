@@ -1,0 +1,32 @@
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  notEmpty: true
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml # mapper.xml文件所在位置
+  #    config-location: classpath:config/mybatis_config.xml
+  type-aliases-package: com.boss.bes.paper.entity*         #对应实体类的包名
+  configuration:
+    map-underscore-to-camel-case: true  #配置驼峰命名转换 在进行sql查询和初始化实体时mybatis会为我们自动转化
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #mybatis 控制台打印sql
+server:
+  port: 8090
+spring:
+  datasource:
+    url: jdbc:mysql://39.101.178.139:3306/db_paper_center?serverTimezone=Asia/Shanghai&useSSL=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: zzy873190934
+    username: root
+    hikari:
+      max-lifetime: 30000
+  application:
+    name: paper-center # Spring 应用名
+  cloud:
+    nacos:
+      # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
+      discovery:
+        server-addr: 39.97.106.243:8848 # Nacos 服务器地址
+        service: ${spring.application.name} # 注册到 Nacos 的服务名。默认值为 ${spring.application.name}。
+
+pagehelper:
+  helper-dialect: mysql

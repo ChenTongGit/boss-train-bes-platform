@@ -10,6 +10,8 @@ import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.service.ResourceService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Service
+@Slf4j
 public class ResourceServiceImpl implements ResourceService{
 
     @Autowired
@@ -39,6 +42,7 @@ public class ResourceServiceImpl implements ResourceService{
         }
         try {
             dto.setId(worker.nextId());
+            log.info(dto.toString());
             return resourceDao.insert(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_INSERT_ERROR,e);
@@ -54,8 +58,20 @@ public class ResourceServiceImpl implements ResourceService{
         }
 
         try {
+            List<ResourceDTO> resources = selectAll();
+            for(int i = 0 ; i<resourceDTOS.size(); i++){
+                Long parentId = resourceDTOS.get(i).getId();
+                log.info("parentId  "+parentId);
+                for(int j = 0;j<resources.size();j++){
+                    if(resources.get(j).getParentId() != null && resources.get(j).getParentId().equals(parentId)){
+                        log.info("=="+resources.get(j).getParentId());
+                        resourceDao.updateWithNull(resources.get(j).getId());
+                    }
+                }
+            }
             return resourceDao.deleteByIds(resourceDTOS);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
         }
     }
@@ -87,9 +103,11 @@ public class ResourceServiceImpl implements ResourceService{
     public List<ResourceDTO> selectAll() {
         try {
             List<Resource> resources = resourceDao.selectAll();
+            log.info(resources.toString());
             return PojoUtils.copyListProperties(resources,ResourceDTO::new);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR,e);
         }
     }
 
@@ -98,9 +116,21 @@ public class ResourceServiceImpl implements ResourceService{
         if(isInUse(dto))
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_IN_USE);
         try {
+            List<ResourceDTO> resourceDTOList = selectAll();
+            log.info("resourceList: " + resourceDTOList.toString());
+            for(int i=0;i<resourceDTOList.size();i++){
+                log.info(resourceDTOList.get(i).getName()+" "+resourceDTOList.get(i).toString());
+                if(resourceDTOList.get(i).getParentId()!= null && resourceDTOList.get(i).getParentId().equals(dto.getId())){
+                    log.info(resourceDTOList.get(i).toString());
+//                    resourceDTOList.get(i).setParentId(null);
+                    resourceDao.updateWithNull(resourceDTOList.get(i).getId());
+                }
+            }
+            resourceDao.deleteRoleResource(dto.getId());
             return resourceDao.delete(dto);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR);
+            log.error(e.getMessage());
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_DELETE_ERROR,e);
         }
     }
 
@@ -132,7 +162,8 @@ public class ResourceServiceImpl implements ResourceService{
         return dto;
     }
 
+
     private boolean isInUse(ResourceDTO dto){
-        return roleDao.getResourcesByRoleId(dto.getId()).isEmpty();
+        return dto.getStatus() == 1;
     }
 }

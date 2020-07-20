@@ -1,8 +1,8 @@
 package com.boss.xtrain.authentication.configuration;
 
-import com.boss.xtrain.authentication.error.BesWebResponseExceptionTranslator;
+import com.boss.xtrain.authentication.error.BesExceptionTranslator;
 import com.boss.xtrain.authentication.jwt.JwtTokenEnhancer;
-import com.boss.xtrain.authentication.redis.JacksonRedisTokenStoreSerializationStrategy;
+import com.boss.xtrain.authentication.redis.JacksonSerializationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,13 +42,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenStore tokenStore() {
         RedisTokenStore store = new RedisTokenStore(redisConnectionFactory);
-        store.setSerializationStrategy(new JacksonRedisTokenStoreSerializationStrategy());
+        store.setSerializationStrategy(new JacksonSerializationStrategy());
         return store;
     }
 
     /*@Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
+    public JwtTokenStore tokenStore() {
+        return new JwtTokenStore(new JwtAccessTokenConverter());
     }*/
 
     @Override
@@ -54,9 +56,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // 这里只做password认证
         clients.inMemory()
             .withClient("bes")
-            .scopes("read")
+            .scopes("read", "write")
             .secret("12345")
-            .authorizedGrantTypes("password", "authorization_code", "refresh_token");
+            .authorizedGrantTypes("password", "refresh_token");
     }
 
     @Override
@@ -99,7 +101,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public WebResponseExceptionTranslator webResponseExceptionTranslator(){
-        return new BesWebResponseExceptionTranslator();
+        return new BesExceptionTranslator();
     }
 
     @Override

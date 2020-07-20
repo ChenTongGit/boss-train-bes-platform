@@ -1,9 +1,8 @@
 package com.boss.xtrain.permission.dao;
 
 import com.boss.xtrain.common.core.web.dao.IBaseDao;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.entity.Resource;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.Role;
@@ -28,6 +27,22 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
     List<Role> getRoleByUserId(Long id);
 
     /**
+     * 避开切面注入 update
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int userUpdate(UserDTO dto);
+    /**
+     *
+     * 避开切面注入 insert
+     * @param dto
+     * @return int
+     *
+    */
+    int userInsert(UserDTO dto);
+    /**
      * @param queryDTO
      * @return List<Role>
      * @description 所有角色
@@ -41,11 +56,11 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      */
     int deleteByIds(@Param("ids")List<Long> ids);
     /**
-     * @param userRoleDTO
+     * @param ids
      * @return int
-     * @description 删除用户的某一角色
+     * @description 删除用户角色关系
      */
-    int deleteUserRole(UserRoleDTO userRoleDTO);
+    int deleteRoleUser(@Param("ids") List<Long> ids);
     /**
      * 为用户分配角色
      *
@@ -79,5 +94,30 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      *
     */
     List<User> selectAll();
+    /**
+     * 唯一查询
+     *
+     * @param id
+     * @return User
+     *
+    */
+    User selectByKey(Long id);
 
+    /**
+     * 找找该用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<Role>
+     *
+     */
+    List<Role> getRoles(UserQueryDTO queryDTO);
+
+    /**
+     * 通过positionName查User
+     *
+     * @param queryDTO
+     * @return List<UserDTO>
+     *
+     */
+    List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO);
 }

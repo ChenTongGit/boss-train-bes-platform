@@ -1,10 +1,8 @@
 package com.boss.xtrain.permission.controller;
 
-import com.boss.xtrain.common.core.exception.BusinessException;
-import com.boss.xtrain.common.core.exception.ServiceException;
-import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
-import com.boss.xtrain.common.util.IdWorker;
+import com.boss.xtrain.common.core.web.controller.BaseController;
+
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
@@ -12,6 +10,7 @@ import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.PositionListVO;
 import com.boss.xtrain.permission.service.PositionService;
 import com.boss.xtrain.permission.api.PositionApi;
+import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @Author  :yushiqian
@@ -33,7 +31,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @Api(tags = {"职位管理"})
-public class PositionController implements PositionApi {
+public class PositionController extends BaseController implements PositionApi {
 
     @Autowired
     private PositionService positionService;
@@ -47,6 +45,7 @@ public class PositionController implements PositionApi {
     @ApiOperation("新增职位")
     public CommonResponse<Integer> insert(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO body = request.getBody();
+        log.info(body.toString());
         return CommonResponseUtil.ok(positionService.insert(body));
     }
 
@@ -94,8 +93,19 @@ public class PositionController implements PositionApi {
 
     @Override
     public CommonResponse<CommonPage<PositionListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<PositionQueryDTO>> request) {
-        CommonPageRequest<PositionQueryDTO> pageRequest = request.getBody();
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        log.info(request.getBody().getQuery().toString());
+        List<PositionDTO> positionDTOS = positionService.selectByCondition(request.getBody().getQuery());
+        List<PositionListVO> positionListVOS = PojoUtils.copyListProperties(positionDTOS,PositionListVO::new);
+        return buildPageResponse(page,positionListVOS);
+    }
 
-        return null;
+    @Override
+    public CommonResponse<CommonPage<PositionListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request){
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        log.info(page.toString());
+        List<PositionDTO> positionDTOList = positionService.selectAll();
+        List<PositionListVO> positionVOList = PojoUtils.copyListProperties(positionDTOList, PositionListVO::new);
+        return buildPageResponse(page,positionVOList);
     }
 }

@@ -41,14 +41,16 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public List<Department> selectByCondition(DepartmentQuery query) {
         Example example = new Example(Department.class);
         Example.Criteria criteria = example.createCriteria();
-        if(query.getName()!=null){
-            criteria.andEqualTo("name",query.getName());
-            return mapper.selectByExample(example);
-        }else if(query.getCompanyId()!=null){
-            criteria.andEqualTo("companyId",query.getCompanyId());
-            return mapper.selectByExample(example);
+        if(query.getParentId()!=null){
+            criteria.andEqualTo("parentId",query.getParentId());
         }
-        return mapper.selectAll();
+        if(query.getId()!=null){
+            criteria.andEqualTo("id",query.getId());
+        }
+        if(query.getCompanyId()!=null){
+            criteria.andEqualTo("companyId",query.getCompanyId());
+        }
+        return mapper.selectByExample(example);
     }
 
     /**
@@ -151,12 +153,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 更新用户数据
-     *
+     * 不通过统一的aop切面，updatedBy在controller层获取
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
     @Override
-    public int update(DepartmentDTO dto) {
+    public int deptUpdate(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
         return mapper.updateByPrimaryKeySelective(department);
@@ -172,6 +174,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public int add(DepartmentDTO dto) {
         Department department = new Department();
         PojoUtils.copyProperties(dto,department);
+        department.setVersion(0L);
         return mapper.insertSelective(department);
     }
 
@@ -184,3 +187,4 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return mapper.existsWithPrimaryKey(departmentId);
     }
 }
+

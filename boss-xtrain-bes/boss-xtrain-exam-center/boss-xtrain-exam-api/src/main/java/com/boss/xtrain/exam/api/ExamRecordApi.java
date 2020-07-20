@@ -4,8 +4,11 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
+import com.boss.xtrain.exam.pojo.dto.query.ExamRecordDetailQuery;
 import com.boss.xtrain.exam.pojo.dto.query.ExamRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamRecordVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,10 +38,10 @@ public interface ExamRecordApi {
     /**
      * 通过考试记录id获取具体的答卷情况
      * @author ChenTong
-     * @param request 
+     * @param request
      * @return com.boss.xtrain.common.core.http.CommonResponse<AnserPaperDetailsVO>
      * @date 2020/7/11 0:41
      */
-//    @PostMapping("/answerPaperDetail")
-//    CommonResponse<AnserPaperDetailsVO> findAnswerPaperDetail(@RequestBody @Valid CommonRequest<Map<String,Long>> request);
+    @PostMapping("/answerPaperDetail")
+    CommonResponse<PaperSubjectAnswerVO> findAnswerPaperDetail(@RequestBody @Valid CommonRequest<SubmitExamDTO>request);
 }

@@ -1,3 +1,4 @@
+
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.Data;
@@ -88,9 +89,5 @@ public class Department extends BaseSystemEntity {
     @Column(name = "descript")
     private String description;
 
-    /**
-     *  当前行的版初始为0 每次数据变动则加1
-     */
-    @Column(name = "version")
-    private Long version;
+
 }

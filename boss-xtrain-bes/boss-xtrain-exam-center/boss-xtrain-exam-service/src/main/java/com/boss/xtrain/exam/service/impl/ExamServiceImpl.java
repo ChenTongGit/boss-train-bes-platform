@@ -1,9 +1,9 @@
 package com.boss.xtrain.exam.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.redis.api.RedisUtil;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -18,7 +18,15 @@ import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
 import com.boss.xtrain.exam.pojo.entity.AnswerRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamRecord;
+import com.boss.xtrain.exam.pojo.vo.AnswerDetailsVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
+import com.boss.xtrain.exam.pojo.vo.test.SubjectDetailsVO;
 import com.boss.xtrain.exam.service.ExamService;
+import com.boss.xtrain.exam.service.PaperFeign;
+import com.boss.xtrain.paper.dto.examservice.ExamAnswerDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
+import com.boss.xtrain.paper.dto.examservice.ExamSubjectDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +70,13 @@ public class ExamServiceImpl implements ExamService {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private PaperFeign paperFeign;
+
+    private static final String TEMP_ANSWER_REDIS_KEY = "bes:tempAnswerRecord:";
+
+    private static final String RIGHT_ANSWERS_REDIS_KEY = "bes:rightAnswer:";
+
     /**
      * 考试开始 初始化考试记录
      *
@@ -75,6 +90,7 @@ public class ExamServiceImpl implements ExamService {
     public Long insertBasicExamRecord(ExamStartAddRecordDTO dto) {
         if (null == dto)
             throw new BusinessException(BusinessError.EXAM_RECORD_INSERT_FAIL);
+
         ExamPublishRecord examPublishRecord = new ExamPublishRecord();
         examPublishRecord.setId(dto.getPublishId());
         // 获取考试的基本信息
@@ -99,7 +115,6 @@ public class ExamServiceImpl implements ExamService {
         // 分配阅卷官
         examRecord.setMarkUserId(allocateMarkPeople(examPublishRecord.getId(),examPublishRecord.getMarkingMode()));
         // 分配阅卷时间
-        // TODO
         examRecord.setMarkingAssignTime(examRecord.getActualStartTime());
 
         String key = "examLimitTime:"+examRecord.getId();
@@ -128,6 +143,64 @@ public class ExamServiceImpl implements ExamService {
             throw new BusinessException(BusinessError.SET_EXAM_LIMIT_TIME_FAIL,e);
 
         }
+    }
+
+    /**
+     * 获取试卷 可以提供给多个服务使用
+     * @param query 查询试卷id 记录id
+     * @param queryRedis 为了方便复用 是否需要从redis中恢复答案
+     */
+    @Override
+    public PaperSubjectAnswerVO getPaper(SubmitExamDTO query, boolean queryRedis) {
+
+        // 调用试卷服务获取试卷
+        CommonRequest<ExamPaperQuery> request = new CommonRequest<>();
+        ExamPaperQuery examPaperQuery = new ExamPaperQuery();
+        examPaperQuery.setPaperId(query.getPaperId());
+        request.setBody(examPaperQuery);
+        ExamPaperDTO examPaperDTO = this.paperFeign.getExamPaper(request).getData();
+        if (examPaperDTO == null) {
+            // 试卷不存在
+            throw new BusinessException(BusinessError.MOBILE_PAPER_NOT_EXIST);
+        }
+        // 从redis中获取数据
+        Map<Long, String> backAnswerMap = null;
+        if (queryRedis&&redisUtil.hasKay(TEMP_ANSWER_REDIS_KEY+query.getExamRecordId())){
+            backAnswerMap = createBackAnswerMap(query.getExamRecordId());
+        }
+
+        PaperSubjectAnswerVO paperSubjectAnswerVO = new PaperSubjectAnswerVO();
+        PojoUtils.copyProperties(examPaperDTO, paperSubjectAnswerVO);
+        List<SubjectDetailsVO> subjectDetailsVOS = new ArrayList<>();
+        for (ExamSubjectDTO subjectDetailsDto : examPaperDTO.getSubjects()) {
+            // 试题dto转vo
+            SubjectDetailsVO subjectDetailsVO = new SubjectDetailsVO();
+            PojoUtils.copyProperties(subjectDetailsDto, subjectDetailsVO);
+            // 答案列表dto转vo
+            List<AnswerDetailsVO> answerDetailsVOS = new ArrayList<>();
+            // 单选题：1
+            // 多选题：2
+            if (subjectDetailsDto.getSubjectTypeId().equals(1L)
+                    || subjectDetailsDto.getSubjectTypeId().equals(2L)) {
+                answerDetailsVOS = PojoUtils.copyListProperties(subjectDetailsDto.getAnswers(), AnswerDetailsVO::new);
+            }
+            subjectDetailsVO.setAnswers(answerDetailsVOS);
+            // 恢复答案
+            if (queryRedis&&redisUtil.hasKay(TEMP_ANSWER_REDIS_KEY+query.getExamRecordId())) {
+                // redis中保存的答案读取，答案不存在设置的是null
+                subjectDetailsVO.setMyAnswer(backAnswerMap.get(subjectDetailsDto.getPaperSubjectId()));
+            }
+            subjectDetailsVOS.add(subjectDetailsVO);
+        }
+
+        // 处理选择题答案列表保存到redis中 第一次读取
+        if(!redisUtil.hasKay(RIGHT_ANSWERS_REDIS_KEY+query.getPaperId())){
+            this.setRightAnswer(examPaperDTO);
+        }
+        paperSubjectAnswerVO.setSubjects(subjectDetailsVOS);
+
+        return paperSubjectAnswerVO;
+
     }
 
     /**
@@ -161,7 +234,7 @@ public class ExamServiceImpl implements ExamService {
             throw new BusinessException(BusinessError.EXAM_ANSWER_SAVE_FAIL);
         }
         // 设置key
-        String key = "tempAnswerRecord:"+dtos.get(0).getExamRecordId();
+        String key = TEMP_ANSWER_REDIS_KEY+dtos.get(0).getExamRecordId();
         // 保存到redis中 保存三个小时
         long saveTime = 60L*60*3;
         redisUtil.set(key, JSON.toJSONString(dtos), saveTime);
@@ -169,6 +242,22 @@ public class ExamServiceImpl implements ExamService {
         Object re = redisUtil.get(key);
         log.info(re+"");
             return 1;
+    }
+
+    /**
+     * 获取试卷使用，
+     * 取出redis中的答案，并生成subjectId->answer的map
+     *
+     * @param recordId 考试记录id，redis的key
+     * @return 如果redis中不存在答案，返回空的map
+     */
+    private Map<Long, String> createBackAnswerMap(Long recordId) {
+        List<AnswerRecordTempInsertDTO> answerRecordTempInsertDTOS =  this.getRealAnswer(recordId);
+        Map<Long, String> map = new HashMap<>();
+        for (AnswerRecordTempInsertDTO dto : answerRecordTempInsertDTOS) {
+            map.put(dto.getPaperSubjectId(), dto.getMyAnswer());
+        }
+        return map;
     }
 
     /**
@@ -183,7 +272,7 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public Integer submitExam(SubmitExamDTO dto) {
         // 调用试卷微服务，通过试卷id获取考试试题正确答案 为了可以快速查找使用map存储
-        Map<Long, String> rightAns =  getRightAnswers(dto.getPaperId());
+        Map<String, String> rightAns =  getRightAnswers(dto.getPaperId());
         // 从缓存中获取考生作答情况
         List<AnswerRecordTempInsertDTO> realAns = getRealAnswer(dto.getExamRecordId());
         // 1、将考试作答写入数据库 2、计算分数记录到考试记录中 3、修改考试记录中考试结束时间
@@ -194,13 +283,14 @@ public class ExamServiceImpl implements ExamService {
         for (AnswerRecordDTO answer: answerRecordDTOS){
             answer.setId(idWorker.nextId());
             // 写入正确答案
-            answer.setStandardAnswer(rightAns.get(answer.getPaperSubjectId()));
+            answer.setStandardAnswer(rightAns.get(Long.toString(answer.getPaperSubjectId())));
             // 状态
             answer.setStatus(1);
             // 判断该题是否得分并写入
             setSubScore(answer);
             // 计算客观题得分
             totalScore = totalScore.add(answer.getScore());
+            answer.setExamRecordId(dto.getExamRecordId());
 
         }
         ExamRecord examRecord = new ExamRecord();
@@ -208,6 +298,7 @@ public class ExamServiceImpl implements ExamService {
         examRecord.setScore(totalScore);
         examRecord.setObjectiveSubjectScore(totalScore);
         examRecord.setActualEndTime(new Date());
+        examRecord.setStatus(1);
         examRecord.setVersion(0L);
 
         try {
@@ -222,6 +313,14 @@ public class ExamServiceImpl implements ExamService {
         }
     }
 
+
+    /**
+     * 提交试卷自动打出选择题分数
+     * @author ChenTong
+     * @param answer
+     * @return void
+     * @date 2020/7/19 22:30
+     */
     private void setSubScore(AnswerRecordDTO answer) {
         // 获取实际作答情况
         String realAns = answer.getMyAnswer();
@@ -234,11 +333,15 @@ public class ExamServiceImpl implements ExamService {
 
         answer.setScore(new BigDecimal(0));
         switch (subjectType.toString()){
-            case "0":
+            // 单选
+            case "1":
                 if (realAns.equals(standardAns))
                     answer.setScore(score);
                 break;
-            case "1":
+            // 多选
+            case "2":
+                if(answer.getStandardAnswer()==null||answer.getMyAnswer().equals("")||answer.getMyAnswer()==null)
+                    break;
                 Set<String> set = new HashSet<>(Arrays.asList(answer.getStandardAnswer().split(",")));
                 int correctNum = 0; // 选中的题数
                 List<String> myAns = Arrays.asList(realAns.split(","));
@@ -271,16 +374,48 @@ public class ExamServiceImpl implements ExamService {
      */
     private List<AnswerRecordTempInsertDTO> getRealAnswer(Long examRecordId) {
         try {
-            String key = "tempAnswerRecord:"+examRecordId;
-//            String key = "tempAnswerRecord:1281560495890956300";
+            String key = TEMP_ANSWER_REDIS_KEY+examRecordId;
             Object realAnswer =redisUtil.get(key);
-
-            return JSONArray.parseArray(realAnswer.toString(), AnswerRecordTempInsertDTO.class);
-//            return  realAnswer;
+            return JSON.parseArray(realAnswer.toString(), AnswerRecordTempInsertDTO.class);
         }catch (Exception e){
             log.error(e.getMessage() ,e);
-            throw new BusinessException(BusinessError.GET_TMP_ANSWER_FAIL,e);
+            throw new BusinessException(BusinessError.GET_TMP_ANSWER_FAIL, e);
         }
+    }
+
+    /**
+     * 将正确答案保存到redis中
+     * @param examPaperDTO
+     */
+    private void setRightAnswer(ExamPaperDTO examPaperDTO){
+        Map<Long, String> rightAns = new HashMap<>();
+        for (ExamSubjectDTO subject: examPaperDTO.getSubjects()) {
+            // 单选题答案
+            if (subject.getSubjectTypeId() == 1){
+                for (ExamAnswerDTO answer: subject.getAnswers()) {
+                    if (Boolean.TRUE.equals(answer.getRightAnswer())){
+                        rightAns.put(subject.getPaperSubjectId(),Long.toString(answer.getPaperSubjectAnswerId()));
+                        break;
+                    }
+                }
+                // 多选题
+            }else if (subject.getSubjectTypeId() == 2){
+                for (ExamAnswerDTO answer: subject.getAnswers()) {
+                    if (Boolean.TRUE.equals(answer.getRightAnswer())){
+                        if (rightAns.containsKey(subject.getPaperSubjectId())){
+                            String rightAnswers = rightAns.get(subject.getPaperSubjectId())+","+answer.getPaperSubjectAnswerId();
+                            rightAns.put(subject.getPaperSubjectId(), rightAnswers);
+                            continue;
+                        }
+                        rightAns.put(subject.getPaperSubjectId(),Long.toString(answer.getPaperSubjectAnswerId()));
+                    }
+                }
+            }else{
+                rightAns.put(subject.getPaperSubjectId(),subject.getAnswers().get(0).getAnswer());
+            }
+        }
+        // 保存一天
+        redisUtil.set(RIGHT_ANSWERS_REDIS_KEY+examPaperDTO.getPaperId(),rightAns,24L*60*60);
     }
 
     /**
@@ -288,33 +423,14 @@ public class ExamServiceImpl implements ExamService {
      * @param paperId
      * @return
      */
-    private Map<Long, String> getRightAnswers(Long paperId) {
-        // TODO List<AnswerVO> answerVOS = paperService.getAnswer(paperId); // 调用服务获取答案
-        // 将答案放入map中方便数据的查询匹配
-        Map<Long, String> rightAns = new HashMap<>();
-//        for (vo:vos)
-//            rightAns.put(vo.getId, vo.getAns);
+    private Map<String, String> getRightAnswers(Long paperId) {
+        try {
+           return (LinkedHashMap<String, String>) redisUtil.get(RIGHT_ANSWERS_REDIS_KEY+paperId);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new BusinessException(BusinessError.GET_TMP_ANSWER_FAIL);
+        }
 
-        // 通过题型的不同处理答案
-
-        // 假数据 -----start
-        // 主观题 保存答案
-        rightAns.put(1L, "正确答案1");
-        rightAns.put(2L, "正确答案2");
-        rightAns.put(3L, "正确答案3");
-        rightAns.put(4L, "正确答案4");
-        // 选择题 保存正确答案id
-        rightAns.put(5L, "1234");
-        rightAns.put(6L, "1235");
-        rightAns.put(7L, "1236");
-        // 多选题 保存正确答案ids
-
-        rightAns.put(8L, "2345,2346,2347");
-        rightAns.put(9L, "2348,2349,2350");
-        // 假数据 -----end
-
-
-        return rightAns;
     }
 
     /**

@@ -1,5 +1,8 @@
 package com.boss.xtrain.exam.pojo.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -19,6 +22,7 @@ public class ExamPublishDeleteDTO implements Serializable {
      * 删除所需id
      */
     @NotNull(message = "考试发布记录id不能为空")
+    @JsonSerialize(using = ToStringSerializer.class)
     Long id;
 
     /**

@@ -20,11 +20,11 @@ import java.util.List;
 public class RoleDTO extends BaseDTO {
     private List<UserDTO> userList;
     private List<ResourceDTO> resourceList;
-    private String orgName;
+    private String organizationName;
     private String companyName;
     private Long companyId;
     private Long id;
-    private Long orgId;
+    private Long organizationId;
     private String name;
     private String code;
     private String remark;

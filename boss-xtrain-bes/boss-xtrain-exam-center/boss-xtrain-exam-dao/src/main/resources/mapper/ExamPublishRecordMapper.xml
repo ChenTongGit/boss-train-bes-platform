@@ -27,6 +27,7 @@
     <result column="updated_by" property="updatedBy" jdbcType="BIGINT" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="exam_session" property="examSession" jdbcType="VARCHAR"/>
     <result column="field1" property="field1" jdbcType="VARCHAR" />
     <result column="field2" property="field2" jdbcType="VARCHAR" />
   </resultMap>
@@ -82,10 +83,50 @@
 
   <delete id="deleteBatch" parameterType="list">
     delete from t_exam_publish_record
-    where id in 
+    where id in
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
       #{id}
     </foreach>
   </delete>
+
+  <select id="queryReportListByCondition" parameterType="com.boss.xtrain.exam.pojo.dto.query.ExamReportQuery"
+          resultType="com.boss.xtrain.exam.pojo.dto.ReportDataListDTO">
+    <choose>
+      <when test="title">
+        <bind name="ptnTitle" value="'%' + _parameter.title + '%'"/>
+      </when>
+      <otherwise>
+        <bind name="ptnTitle" value="'%%'"/>
+      </otherwise>
+    </choose>
+    SELECT
+    p.id publishRecordId,
+    p.title title,
+    p.end_time endTime,
+    p.plan_people_num planPeopleNum,
+    COUNT(r.id) actualPeopleNum
+    FROM t_exam_publish_record p
+    LEFT JOIN t_exam_record r
+    ON r.t_pr_id = p.id
+    <where>
+      p.status = 1
+      <if test="title != null and title != '' ">
+        AND p.title LIKE #{ptnTitle}
+      </if>
+      <if test="publisher != null and publisher != ''">
+        AND p.publisher = #{ publisher }
+      </if>
+      <if test="actualStartTime != null">
+        AND p.start_time &gt;= #{ actualStartTime }
+      </if>
+      <if test="actualEndTime != null">
+        AND p.end_time &lt;= #{ actualEndTime }
+      </if>
+      <if test="companyId != null">
+        AND p.company_id = #{ companyId }
+      </if>
+    </where>
+    GROUP BY p.id
+  </select>
 
 </mapper>

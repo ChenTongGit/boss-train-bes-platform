@@ -8,12 +8,11 @@
       This element was generated on Wed Jul 08 10:19:20 CST 2020.
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="t_d_id" property="tDId" jdbcType="BIGINT" />
-    <result column="t_c_id" property="tCId" jdbcType="BIGINT" />
+    <result column="t_d_id" property="departmentId" jdbcType="BIGINT" />
+    <result column="t_c_id" property="companyId" jdbcType="BIGINT" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="profile_picture" property="profilePicture" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="TINYINT" />
     <result column="birthday" property="birthday" jdbcType="DATE" />
     <result column="tel" property="tel" jdbcType="VARCHAR" />
@@ -27,10 +26,20 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
+    <resultMap id="UserDtoMap" type="com.boss.xtrain.permission.pojo.dto.UserDTO">
+        <id column="id" property="id"/>
+        <result column="positionId" property="positionId"/>
+        <result column="name" property="name"/>
+        <result column="userId" property="id"/>
+        <collection property="roleList" ofType="com.boss.xtrain.permission.pojo.entity.Role"
+                    javaType="java.util.ArrayList" select="getRoles"
+                    column="id">
+        </collection>
+    </resultMap>
   <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
     <id column="id" property="id"/>
     <result column="t_c_id" property="companyId"/>
-    <result column="t_o_id" property="organizationId"/>
+    <result column="t_o_id" property="orgId"/>
     <result column="name" property="name" />
     <result column="code" property="code" />
     <result column="remark" property="remark" />
@@ -43,10 +52,6 @@
   </resultMap>
   <resultMap id="UserMap" type="com.boss.xtrain.permission.pojo.entity.User" extends="BaseResultMap">
     <id column="id" property="id"/>
-    <collection property="roleList" ofType="com.boss.xtrain.permission.pojo.entity.Role"
-                javaType="java.util.ArrayList" select="getRolesByUserId"
-                column="id">
-    </collection>
   </resultMap>
   <sql id="UserColumns">
         tu.id,
@@ -72,40 +77,72 @@
         tc.name AS companyName,
         td.name as departmentName
     </sql>
-  <!--通过userId去user_role表查询相连的roleId-->
-  <select id="getRolesByUserId" parameterType="java.lang.Long" resultMap="RoleMap">
+
+    <!--通过userId去user_role表查询相连的roleId-->
+    <select id="getRoleByUserId" parameterType="java.lang.Long" resultMap="RoleMap">
         select  a.id,a.name  from t_role a left join user_role b on a.id = b.role_id  where b.user_id = #{Id}
     </select>
-
-  <delete id="deleteUserRole">
-    DELETE FROM user_role
-    WHERE user_id IN
+  <delete id="deleteRoleUser">
+    DELETE FROM t_user_role
+    WHERE t_u_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
   </delete>
 
   <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
-    SELECT tr.*,tr.t_c_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
+    SELECT tr.*,tr.company_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
     <where>
-      tr.t_c_id = tc.id
+      tr.company_id= tc.id
       <if test="companyId != null and companyId != ''">
-        AND tr.t_c_id = #{companyId}
+        AND tr.company_id = #{companyId}
       </if>
     </where>
   </select>
   <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
 
-
-  <select id="queryCode" parameterType="com.boss.xtrain.permission.pojo.dto.UserDTO" resultType="com.boss.xtrain.permission.pojo.dto.UserDTO">
-        select * from t_user where code=#{code}
+    <select id="getRoles" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="RoleMap">
+        SELECT  tr.id,tr.name
+        FROM t_role tr left join t_user_role tur on tr.id = tur.t_r_id
+        <where>
+            tur.t_u_id = #{id}
+        </where>
     </select>
+    <delete id="deleteUserRole">
+        DELETE FROM user_role
+        WHERE user_id IN
+        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 
-
-  <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
+    <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
+        SELECT tr.*,tr.t_c_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
+        <where>
+            tr.t_c_id = tc.id
+            <if test="companyId != null and companyId != ''">
+                AND tr.t_c_id = #{companyId}
+            </if>
+        </where>
+    </select>
+    <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
+        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+    </insert>
+    <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
     </select>
+    <select id="getUserByPosition" resultType="com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO">
+        select tu.name,tu.id userId from position tp ,t_user tu where tp.t_u_id = tu.id
+        <if test="positionName != null and positionName != ''">
+            AND tp.name = #{positionName}
+        </if>
+        <if test="companyId != null and companyId != ''">
+            AND tp.t_c_id = #{companyId}
+        </if>
+
+    </select>
+
 
 </mapper>

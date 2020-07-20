@@ -10,11 +10,14 @@ spring:
 # mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.178.139:3306/db_exam_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://39.101.178.139:3306/db_exam_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useAffectedRows=true
     password: zzy873190934
     username: root
     hikari:
-      connection-timeout: 10000
+      connection-test-query: SELECT 1
+      max-lifetime: 30000
+      minimum-idle: 3
+      maximum-pool-size: 10
   #    url: jdbc:mysql://39.97.106.243:3306/db_exam_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
 #    password: 991018
   redis:
@@ -25,7 +28,6 @@ spring:
 mybatis:
   mapper-locations: mapper/*.xml
   type-aliases-package: com.boss.xtrain.exam.pojo.entity
-
   configuration:
     log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
 
@@ -38,3 +40,7 @@ pagehelper:
 
 server:
   port: 18080 # 服务器端口。默认为 8080
+
+feign:
+  hystrix:
+    enabled: true

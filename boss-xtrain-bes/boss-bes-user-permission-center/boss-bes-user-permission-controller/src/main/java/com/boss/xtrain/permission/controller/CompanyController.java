@@ -60,6 +60,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "初始化下所有的公司")
     @ApiOperation(value = "test")
+    @ResponseBody
     public CommonResponse<List<CompanyVO>> selectAllCompany() {
         List<CompanyDTO> companyDTOList = service.selectAll();
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
@@ -74,6 +75,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "获得所有的org信息以供company添加的时候选择")
     @ApiOperation(value = "test")
+    @ResponseBody
     public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
         try{
             return CommonResponseUtil.ok(treeService.orgTree());
@@ -94,6 +96,16 @@ public class CompanyController extends BaseController implements CompanyApi {
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
         }
+    }
+
+    @ApiLog(msg = "用主键搜索公司信息")
+    @Override
+    @ApiOperation(value = "test")
+    public CommonResponse<CompanyVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
+        CompanyDTO dto = service.selectByPrimaryKey(request.getBody());
+        CompanyVO vo = new CompanyVO();
+        PojoUtils.copyProperties(dto,vo);
+        return CommonResponseUtil.ok(vo);
     }
 
     /**
@@ -133,6 +145,9 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+        //        Long createdBy = token获取userID
+        Long createdBy = null;
+        dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -162,6 +177,8 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+//        Long updateUser = token;从token中获得更新人id
+//        dto.setUpdatedBy(updateUser);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

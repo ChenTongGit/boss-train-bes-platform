@@ -27,11 +27,6 @@ public class SubmitExamDTO {
     @NotNull(message = "试卷id不能为空")
     private Long paperId;
 
-    /**
-     * 考试发布id
-     */
-    @NotNull(message = "考试发布id不能为空")
-    private Long examPublishRecord;
 
     public Long getExamRecordId() {
         return examRecordId;
@@ -49,11 +44,4 @@ public class SubmitExamDTO {
         this.paperId = paperId;
     }
 
-    public Long getExamPublishRecord() {
-        return examPublishRecord;
-    }
-
-    public void setExamPublishRecord(Long examPublishRecord) {
-        this.examPublishRecord = examPublishRecord;
-    }
 }

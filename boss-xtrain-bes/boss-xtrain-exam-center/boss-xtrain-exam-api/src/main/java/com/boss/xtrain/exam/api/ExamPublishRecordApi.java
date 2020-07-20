@@ -4,13 +4,15 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
+import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
+import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
-import io.swagger.annotations.ApiOperation;
+import com.boss.xtrain.exam.pojo.vo.MarkUserListVO;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
+import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
+import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,8 +38,8 @@ public interface ExamPublishRecordApi {
      * @author ChenTong
      * @date 2020/7/7 22:10
      */
-    @PutMapping("/publishRecordChange")
-    CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordDTO> request);
+    @PostMapping("/publishRecordChange")
+    CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordUpdateDTO> request);
     
     /**
      * 发布考试
@@ -79,15 +81,31 @@ public interface ExamPublishRecordApi {
      * @date 2020/7/7 22:09
      */
     @PostMapping("/newPublishRecord")
-    CommonResponse<Integer> insert(@RequestBody @Valid  CommonRequest<ExamPublishRecordDTO> request);
+    CommonResponse<Integer> insert(@RequestBody @Valid  CommonRequest<ExamPublishRecordAddDTO> request);
 
     /**
      * 条件查询并分页
      * @author ChenTong
-     * @param request 
+     * @param request
      * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.common.core.http.CommonPage<com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO>>
      * @date 2020/7/8 21:34
      */
     @PostMapping("/publishRecordList")
     CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request);
+
+    /**
+     * 获取考试预览
+     * @author ChenTong
+     * @param request 
+     * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO>
+     * @date 2020/7/18 19:37
+     */
+    @PostMapping("/paper")
+    CommonResponse<ExamPaperPreviewVO> getPaperDetail(CommonRequest<ExamPaperQuery> request);
+
+    @PostMapping("/paperList")
+    CommonResponse<List<ExamPaperInfoListVO>> getPaperList(CommonRequest<ExamPaperInfoQuery> request);
+
+    @PostMapping("/markingList")
+    CommonResponse<List<MarkUserListVO>> getMarkPeople(CommonRequest<UserQueryDTO> request);
 }

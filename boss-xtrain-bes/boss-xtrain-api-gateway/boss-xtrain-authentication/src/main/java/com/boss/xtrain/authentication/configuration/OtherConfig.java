@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
+@Import(RedisConfig.class)
 public class OtherConfig {
     @Bean
     public FeignClientInterceptor getFeignClientInterceptor(){
@@ -20,5 +21,10 @@ public class OtherConfig {
     @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
+    }
+
+    @Bean
+    public FeignClientInterceptor feignClientInterceptor(){
+        return new FeignClientInterceptor();
     }
 }

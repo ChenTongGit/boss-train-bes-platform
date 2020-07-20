@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "t_resource")
 public class Resource extends BaseSystemEntity {
-    @Column(name = "tenant_name")
-    private String tenantName;
+    @Column(name = "name")
+    private String name;
     @Column(name = "code")
     private String code;
     @Column(name = "order_index")
@@ -27,7 +27,7 @@ public class Resource extends BaseSystemEntity {
     @Column(name = "close_img")
     private String closeImg;
     @Column(name = "resource_type")
-    private String resourceType;
+    private Byte resourceType;
     @Column(name = "leaf")
     private int leaf;
     @Column(name = "action")

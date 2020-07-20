@@ -48,6 +48,9 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
     @PostMapping("/selectCompamyTreeByOrg")
     CommonResponse<List<CompanyQuery>> selectCombineCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
+    @PostMapping("/selectByKey")
+    CommonResponse<CompanyVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<CompanyQuery> request);
+
     /**
      * 分页条件搜索
      * @param request

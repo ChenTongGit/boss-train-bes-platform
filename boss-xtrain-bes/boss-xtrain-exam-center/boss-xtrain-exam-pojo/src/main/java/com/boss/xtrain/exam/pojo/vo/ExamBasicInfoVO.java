@@ -2,6 +2,8 @@ package com.boss.xtrain.exam.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @see
  * @since
  **/
-public class ExamBasicInfoVO extends BaseVO {
+public class ExamBasicInfoVO {
 
     /**
      * 考试标题
@@ -27,18 +29,17 @@ public class ExamBasicInfoVO extends BaseVO {
     /**
      * 试卷id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long paperId;
 
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -47,9 +48,9 @@ public class ExamBasicInfoVO extends BaseVO {
     private String description;
 
     /**
-     * 限制时间
+     * 考试限制时间
      */
-    private Integer limitTime;
+    private Long limitTime;
 
     public Long getPaperId() {
         return paperId;
@@ -91,11 +92,11 @@ public class ExamBasicInfoVO extends BaseVO {
         this.description = description;
     }
 
-    public Integer getLimitTime() {
+    public Long getLimitTime() {
         return limitTime;
     }
 
-    public void setLimitTime(Integer limitTime) {
+    public void setLimitTime(Long limitTime) {
         this.limitTime = limitTime;
     }
 }

@@ -4,6 +4,7 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
+import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.pojo.vo.OrganizationVO;
 import com.boss.xtrain.common.core.http.CommonResponse;
@@ -31,6 +32,9 @@ public interface OrganizationApi extends CommonCRUDApi<OrganizationDTO, Organiza
 
     @GetMapping("/selectAll")
     CommonResponse<List<OrganizationVO>> selectAllOrg();
+
+    @PostMapping("/selectByKey")
+    CommonResponse<OrganizationVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<OrganizationQuery> request);
 
     /**
      * 分页条件搜索

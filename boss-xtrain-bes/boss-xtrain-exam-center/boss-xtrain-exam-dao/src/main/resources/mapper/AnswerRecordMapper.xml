@@ -27,7 +27,7 @@
 
   <insert id="insertBatch" parameterType="list">
     INSERT INTO t_exam_answer_record(id, t_r_id, my_answer, standard_answer
-    ,score,t_s_id, evaluate, org_id, company_id, created_by, created_time, updated_by, updated_time, version)
+    ,score,t_s_id, evaluate, org_id, company_id, created_by, created_time, updated_by, updated_time, version, status)
     VALUES
     <foreach collection="ansList" item="entity" index="index" separator=",">
       (
@@ -44,8 +44,21 @@
       #{entity.createdTime},
       #{entity.updatedBy},
       #{entity.updatedTime},
-      #{entity.version}
+      #{entity.version},
+      #{entity.status}
       )
     </foreach>
   </insert>
+
+  <!--保存批卷记录-->
+  <update id="updateEvaluate" parameterType="com.boss.xtrain.exam.pojo.entity.AnswerRecord">
+        UPDATE t_answer_record
+        SET score        = #{answerRecord.score},
+            evaluate     = #{answerRecord.evaluate},
+            company_id   = #{answerRecord.companyId},
+            updated_by   = #{answerRecord.updatedBy},
+            updated_time = #{answerRecord.updatedTime},
+            version      = #{answerRecord.version}
+        WHERE id = #{answerRecord.id}
+    </update>
 </mapper>

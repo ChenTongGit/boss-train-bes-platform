@@ -10,7 +10,6 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +104,16 @@ public class OrganizationController extends BaseController implements Organizati
         List<OrganizationDTO> organizationDTOList = service.selectAll();
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
         return CommonResponseUtil.ok(organizationVOList);
+    }
+
+    @ApiLog(msg = "用主键搜索组织机构")
+    @Override
+    @ApiOperation(value = "test")
+    public CommonResponse<OrganizationVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
+        OrganizationDTO dto = service.selectByPrimaryKey(request.getBody());
+        OrganizationVO vo = new OrganizationVO();
+        PojoUtils.copyProperties(dto,vo);
+        return CommonResponseUtil.ok(vo);
     }
 
     @Override

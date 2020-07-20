@@ -1,9 +1,7 @@
 package com.boss.xtrain.exam.service;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishDeleteDTO;
-import com.boss.xtrain.exam.pojo.dto.ExamPublishRecordDTO;
+import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,8 +48,6 @@ public interface ExamPublishRecordService{
      * @author ChenTong
      * @date 2020/6/22 7:05
      */
-    List<ExamPublishRecordDTO> selectByCondition(ExamPublishRecordQuery query);
-
     List<ExamPublishRecordDTO> selectByPage(ExamPublishRecordQuery query);
     
     /**
@@ -81,7 +77,7 @@ public interface ExamPublishRecordService{
      * @date 2020/6/22 7:18
      */
     @Transactional
-    Integer update(ExamPublishRecordDTO dto);
+    Integer update(ExamPublishRecordUpdateDTO dto);
 
     /**
      * 插入数据
@@ -91,9 +87,7 @@ public interface ExamPublishRecordService{
      * @date 2020/6/22 8:18
      * @throws BusinessException 考试发布记录创建异常
      */
-    Integer insert(ExamPublishRecordDTO dto);
-
-
+    Integer insert(ExamPublishRecordAddDTO dto);
 
 
 }

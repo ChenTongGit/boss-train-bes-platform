@@ -1,14 +1,17 @@
 package com.boss.xtrain.permission.controller;
 
 import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
+import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
-import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.service.RoleService;
 import com.boss.xtrain.permission.api.RoleApi;
+import com.github.pagehelper.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +26,8 @@ import java.util.List;
  */
 
 @RestController
-public class RoleController implements RoleApi {
+@Slf4j
+public class RoleController extends BaseController implements RoleApi {
 
     @Autowired
     private RoleService roleService;
@@ -36,7 +40,7 @@ public class RoleController implements RoleApi {
 
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<RoleDTO> request) {
-        RoleDTO roleDTO = new RoleDTO();
+        RoleDTO roleDTO = request.getBody();
         return CommonResponseUtil.ok(roleService.delete(roleDTO));
     }
 
@@ -67,13 +71,58 @@ public class RoleController implements RoleApi {
     }
 
     @Override
-    public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request) {
-        return null;
+    public CommonResponse<CommonPage<RoleListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request) {
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        List<RoleDTO> companyDTOList = roleService.selectByCondition(request.getBody().getQuery());
+        log.info(companyDTOList.toString());
+        List<RoleListVO> roleVOList = PojoUtils.copyListProperties(companyDTOList,RoleListVO::new);
+        return buildPageResponse(page,roleVOList);
+    }
+
+    @Override
+    public CommonResponse<CommonPage<RoleListVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
+        Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        log.info(page.toString());
+        List<RoleDTO> positionDTOList = roleService.selectAll();
+        List<RoleListVO> roleListVOS = PojoUtils.copyListProperties(positionDTOList, RoleListVO::new);
+        return buildPageResponse(page,roleListVOS);
     }
 
     @Override
     public CommonResponse<List<RoleListVO>> selectAllRole(){
         List<RoleDTO> roleDTOS = roleService.selectAll();
+        log.info(roleDTOS.toString());
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
     }
+
+    @Override
+    public CommonResponse<List<Long>> getResourceIds(@Valid CommonRequest<RoleQueryDTO> dtoCommonRequest) {
+        RoleQueryDTO body = dtoCommonRequest.getBody();
+        Long id =body.getId();
+        List<Long> resourceIds = roleService.getResourceIdsByRoleId(id);
+        return CommonResponseUtil.ok(resourceIds);
+    }
+
+    @Override
+    public CommonResponse<List<Long>> getUserIds(@Valid CommonRequest<RoleQueryDTO> dtoCommonRequest) {
+        RoleQueryDTO body = dtoCommonRequest.getBody();
+        Long id =body.getId();
+        List<Long> userIds = roleService.getUserIdsByRoleId(id);
+        return CommonResponseUtil.ok(userIds);
+    }
+
+    @Override
+    public CommonResponse<Boolean> allocateResource(@Valid CommonRequest<List<RoleResourceDTO>> request) {
+        List<RoleResourceDTO> roleResourceDTOS = request.getBody();
+        boolean result = roleService.allocateResource(roleResourceDTOS);
+        return CommonResponseUtil.ok(result);
+    }
+
+    @Override
+    public CommonResponse<Boolean> allocateUser(@Valid CommonRequest<List<UserRoleDTO>> request) {
+        List<UserRoleDTO> userRoleDTOS = request.getBody();
+        boolean result = roleService.allocateUser(userRoleDTOS);
+        return CommonResponseUtil.ok(result);
+    }
+
 }

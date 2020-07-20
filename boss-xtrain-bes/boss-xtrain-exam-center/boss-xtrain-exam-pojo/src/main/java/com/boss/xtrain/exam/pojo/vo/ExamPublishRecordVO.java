@@ -1,7 +1,8 @@
 package com.boss.xtrain.exam.pojo.vo;
 
 import com.boss.xtrain.common.core.pojo.BaseVO;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,14 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 发布人ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long publisherID;
+
+    /**
+     * 试卷id
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long paperId;
 
     /**
      * 发布人姓名
@@ -36,14 +44,11 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 考试开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-
     private Date startTime;
 
     /**
      * 考试结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -54,13 +59,19 @@ public class ExamPublishRecordVO extends BaseVO {
     /**
      * 阅卷结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date markStopTime;
+    private Date markingStopTime;
+
+    /**
+     * 阅卷方式
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long markingMode;
 
     /**
      * 分配的阅卷官列表 name,id
      */
-    private List<ExamPublishToUserVO> markPeople;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private List<Long> markPeople;
 
     /**
      * 考试说明
@@ -76,6 +87,35 @@ public class ExamPublishRecordVO extends BaseVO {
      * 考试时间限制
      */
     private Long limitTime;
+
+    /**
+     * 考试发布场次
+     */
+    private String examSession;
+
+    public String getExamSession() {
+        return examSession;
+    }
+
+    public void setExamSession(String examSession) {
+        this.examSession = examSession;
+    }
+
+    public Long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
+    }
+
+    public Long getMarkingMode() {
+        return markingMode;
+    }
+
+    public void setMarkingMode(Long markingMode) {
+        this.markingMode = markingMode;
+    }
 
     public Long getLimitTime() {
         return limitTime;
@@ -137,19 +177,19 @@ public class ExamPublishRecordVO extends BaseVO {
         this.planPeopleNum = planPeopleNum;
     }
 
-    public Date getMarkStopTime() {
-        return markStopTime;
+    public Date getMarkingStopTime() {
+        return markingStopTime;
     }
 
-    public void setMarkStopTime(Date markStopTime) {
-        this.markStopTime = markStopTime;
+    public void setMarkingStopTime(Date markingStopTime) {
+        this.markingStopTime = markingStopTime;
     }
 
-    public List<ExamPublishToUserVO> getMarkPeople() {
+    public List<Long> getMarkPeople() {
         return markPeople;
     }
 
-    public void setMarkPeople(List<ExamPublishToUserVO> markPeople) {
+    public void setMarkPeople(List<Long> markPeople) {
         this.markPeople = markPeople;
     }
 
