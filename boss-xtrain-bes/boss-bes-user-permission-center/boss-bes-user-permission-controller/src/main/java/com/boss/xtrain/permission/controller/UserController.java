@@ -37,6 +37,7 @@ public class UserController extends BaseController implements UserApi {
     @Autowired
     UserSerivce userSerivce;
 
+    @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserDTO> request) {
         UserDTO userDTO = request.getBody();
         log.info(userDTO.toString());
@@ -44,16 +45,19 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(row);
     }
 
+    @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserDTO> request) {
         return CommonResponseUtil.ok(userSerivce.delete(request.getBody()));
     }
 
+    @Override
     public CommonResponse<List<UserListVO>> selectList(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
         List<UserDTO> userDTOS = userSerivce.selectByCondition(queryDTO);
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
 
+    @Override
     public CommonResponse<UserListVO> select(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
         UserDTO userDTO = userSerivce.select(queryDTO);
@@ -62,25 +66,30 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(vo);
     }
 
+    @Override
     public CommonResponse<Integer> update(@Valid CommonRequest<UserDTO> request) {
         log.info(request.getBody().toString());
         return CommonResponseUtil.ok(userSerivce.update(request.getBody()));
     }
 
+    @Override
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserDTO>> request) {
         List<UserDTO> userDTOS  = request.getBody();
         return CommonResponseUtil.ok(userSerivce.delete(userDTOS));
     }
 
+    @Override
     public CommonResponse<List<UserListVO>> selectAllUser(){
         List<UserDTO> userDTOS = userSerivce.selectAll();
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
 
+    @Override
     public CommonResponse<List<RoleListVO>> getAllRole(@Valid CommonRequest<UserQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllRoles(request.getBody()),RoleListVO::new));
     }
 
+    @Override
     public CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<RoleQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllResource(request.getBody()),ResourceListVO::new));
     }
