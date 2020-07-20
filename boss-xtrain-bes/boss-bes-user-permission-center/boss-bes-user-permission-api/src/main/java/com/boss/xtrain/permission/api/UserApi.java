@@ -6,13 +6,8 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
-<<<<<<< HEAD
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
-import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-=======
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
->>>>>>> ysq-dev
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
