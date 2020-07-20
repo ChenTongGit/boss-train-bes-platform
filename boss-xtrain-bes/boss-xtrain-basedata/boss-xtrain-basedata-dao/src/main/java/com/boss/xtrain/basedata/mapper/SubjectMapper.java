@@ -32,7 +32,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @param difficulty
      * @return
      */
-    List<Subject> querySubject(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") Long difficulty);
+    List<Subject> querySubject(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") String difficulty);
 
     /**
      * 随机生成题目
@@ -42,7 +42,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @param num
      * @return
      */
-    List<Subject> queryByRandom(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") Long difficulty,@Param("num") Integer num);
+    List<Subject> queryByRandom(@Param("categoryId") Long categoryId,@Param("subjectTypeId") Long subjectTypeId,@Param("difficulty") String difficulty,@Param("num") Integer num);
 
     /**
      * 根据组织机构ID、题型获取题目
@@ -71,7 +71,5 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @return
      */
     List<Subject> getSubjects();
-
-    int updateSubject(Subject subject);
 
 }

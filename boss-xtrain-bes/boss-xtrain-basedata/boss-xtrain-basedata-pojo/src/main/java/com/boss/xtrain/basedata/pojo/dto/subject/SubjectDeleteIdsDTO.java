@@ -9,6 +9,6 @@ import java.util.List;
 
 @Data
 public class SubjectDeleteIdsDTO  {
-    private List<Long> ids;
+    private List<SubjectDeleteDTO> ids;
 
 }

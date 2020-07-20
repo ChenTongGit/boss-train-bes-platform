@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class DictionaryInsertVO extends BaseVO {
     private String name;
-    private String categoryName;
+    private String category;
     private String value;
 }

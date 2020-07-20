@@ -1,5 +1,6 @@
 package com.boss.xtrain.basedata.pojo.dto.category;
 
+import com.boss.xtrain.common.core.pojo.BaseDTO;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.boss.xtrain.common.core.pojo.BaseVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,10 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(value = "{handler}")
-public class CategoryDTO extends BaseVO {
+public class CategoryDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
-    @NotNull(message = "题目类别名称不能为空")
+    private Integer status;
+    private String remark;
     private String name;
     private Long parentId;
 }

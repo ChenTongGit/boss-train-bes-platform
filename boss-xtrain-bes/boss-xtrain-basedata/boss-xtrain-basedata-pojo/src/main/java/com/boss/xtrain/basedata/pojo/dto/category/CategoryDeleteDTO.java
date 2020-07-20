@@ -10,6 +10,5 @@ import java.util.List;
 public class CategoryDeleteDTO{
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
-    private String name;
     private Long version;
 }
