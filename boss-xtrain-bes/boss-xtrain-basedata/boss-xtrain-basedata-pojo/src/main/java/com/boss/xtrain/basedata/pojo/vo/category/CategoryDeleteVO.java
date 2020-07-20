@@ -8,6 +8,5 @@ import lombok.Data;
 public class CategoryDeleteVO extends BaseVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
-    private String name;
     private Long version;
 }

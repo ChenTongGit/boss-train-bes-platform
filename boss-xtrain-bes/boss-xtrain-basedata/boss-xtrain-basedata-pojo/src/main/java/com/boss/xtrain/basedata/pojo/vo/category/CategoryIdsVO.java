@@ -8,7 +8,4 @@ import java.util.List;
 public class CategoryIdsVO {
     private Long orgId;
     private List<Long> ids;
-    private int PageNum;
-    private int PageSize;
-    private String orderBy;
 }

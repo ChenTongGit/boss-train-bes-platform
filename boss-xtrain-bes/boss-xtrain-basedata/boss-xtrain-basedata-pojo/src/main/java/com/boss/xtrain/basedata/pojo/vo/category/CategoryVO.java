@@ -11,14 +11,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class CategoryVO extends BaseVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private String name;
     private Long parentId;
-    private int pageSize;
-    private int pageIndex;
-    private String orderBy;
+    private String remark;
+    private Integer status;
     private Long version;
 }

@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class DifficultDTO {
     private String value;
+    private String name;
 }

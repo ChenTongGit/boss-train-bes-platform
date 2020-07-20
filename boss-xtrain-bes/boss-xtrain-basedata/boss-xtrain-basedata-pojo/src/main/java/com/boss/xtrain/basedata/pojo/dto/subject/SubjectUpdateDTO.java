@@ -6,9 +6,11 @@ import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SubjectUpdateDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -20,6 +22,7 @@ public class SubjectUpdateDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long categoryId;
     private String difficulty;
+    private Integer status;
     private String name;
     private String imageUrl;
     private String remark;

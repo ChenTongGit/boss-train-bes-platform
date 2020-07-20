@@ -1,12 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boss.xtrain.basedata.mapper.DictionaryMapper">
-
-    <delete id="deleteDictionaryByIds" parameterType="java.util.List">
-        delete from t_dictionary where id in
-        <foreach collection="list" item="ids" open="(" separator="," close=")">
-        #{ids}
-        </foreach>
-    </delete>
+  <resultMap id="BaseResultMap" type="com.boss.xtrain.basedata.pojo.entity.Dictionary">
+    <!--@mbg.generated-->
+    <!--@Table t_dictionary-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="org_id" jdbcType="BIGINT" property="organizationId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="CHAR" property="category" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="BOOLEAN" property="status" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, t_o_id, `name`, category, `value`, remark, `status`, created_by, created_time,
+    updated_by, updated_time, version
+  </sql>
 
 </mapper>

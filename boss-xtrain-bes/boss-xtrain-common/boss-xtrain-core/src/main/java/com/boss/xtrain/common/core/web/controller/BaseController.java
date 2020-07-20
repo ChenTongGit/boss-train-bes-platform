@@ -37,7 +37,6 @@ public abstract class BaseController {
      */
 
     protected <T> CommonResponse<CommonPage<T>> buildPageResponse(Page<Object> pageInfo, List<T> list){
-
         CommonPage<T> pageResult = new CommonPage<>();
         pageResult.setPageNum(pageInfo.getPageNum());
         pageResult.setPageSize(pageInfo.getPageSize());

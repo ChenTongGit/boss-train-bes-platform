@@ -11,5 +11,6 @@ public class DictionaryDeleteVO extends BaseVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private String name;
+    private String category;
     private Long version;
 }

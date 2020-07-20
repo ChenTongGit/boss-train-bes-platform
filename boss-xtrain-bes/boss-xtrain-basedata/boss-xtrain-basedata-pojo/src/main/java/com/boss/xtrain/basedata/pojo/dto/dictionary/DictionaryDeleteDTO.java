@@ -1,24 +1,19 @@
 package com.boss.xtrain.basedata.pojo.dto.dictionary;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
+import com.boss.xtrain.common.core.pojo.BaseVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * @author gxr
- * @description 字典DTO
- * @date 2020/7/1
- */
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Data
-public class DictionaryDTO extends BaseDTO {
+public class DictionaryDeleteDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private String name;
     private String category;
-    private String value;
-    private String remark;
+    private Long version;
 }

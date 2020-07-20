@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class CombExamConfigDapImpl implements CombExamConfigDao {
+public class CombExamConfigDaoImpl implements CombExamConfigDao {
 
     @Autowired
     private CombExamConfigMapper combExamConfigMapper;
@@ -55,7 +55,7 @@ public class CombExamConfigDapImpl implements CombExamConfigDao {
         example.orderBy("updatedTime").desc();
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId",combExamConfigQueryDTO.getOrgId());
-        criteria.andLike("name","%"+combExamConfigQueryDTO.getName()+"%");
+        criteria.andLike("name",combExamConfigQueryDTO.getName());
         return combExamConfigMapper.selectByExample(example);
 
     }

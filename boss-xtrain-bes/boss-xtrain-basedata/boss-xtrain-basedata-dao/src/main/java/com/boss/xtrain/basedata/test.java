@@ -51,6 +51,12 @@ public class test {
     @Autowired
     private CombExamConfigMapper combExamConfigMapper;
 
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
+
+    @Autowired
+    private DictionaryDao dictionaryDao;
+
     @Test
     public void testInsert() {
         String d = "2020-04-05";
@@ -122,7 +128,7 @@ public class test {
                 categoryNames = categoryDao.queryCategoryNameById(example2);
             }*/
 
-            List<Long> idList = new ArrayList<>();
+          /*  List<Long> idList = new ArrayList<>();
             idList.add(1284042158189428736L);
             idList.add(1284042214120472576L);
             Example example = new Example(CombExamConfig.class);
@@ -140,7 +146,13 @@ public class test {
 
             subjectTypeMapper.updateByPrimaryKey(subjectType);
 
-            //categoryMapper.
+            //categoryMapper.*/
+            Example example = new Example(Dictionary.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("name","lisi");
+           // criteria.andEqualTo("category","");
+
+            log.info(dictionaryDao.queryDictionary(example).toString());
 
 
         }catch (ParseException e) {
