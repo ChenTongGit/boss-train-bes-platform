@@ -127,6 +127,7 @@ public class ExamPublishRecordDaoImpl implements ExamPublishRecordDao {
     public int updateStatusBatch(List<ExamPublishRecord> records) {
         for (ExamPublishRecord record: records
              ) {
+            record.setStatus(1);
             mapper.updateByPrimaryKeySelectiveWithVersion(record);
         }
         return records.size();

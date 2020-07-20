@@ -230,6 +230,7 @@ public enum BusinessError {
     PUBLISH_TABLE_UPDATE_FAILED("240312","发布记录更新失败"),
     EXAM_TMP_ANSWER_GET_FAIL("240313","获取缓存中作答数据失败"),
     EXAM_PAPER_PREVIEW_ERR("240314","获取考试试卷失败"),
+    EXAM_PUBLISH_RECORD_GET_MARK_PEOPLE_ERR("240315","获取考试列表失败"),
 
 
     EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),

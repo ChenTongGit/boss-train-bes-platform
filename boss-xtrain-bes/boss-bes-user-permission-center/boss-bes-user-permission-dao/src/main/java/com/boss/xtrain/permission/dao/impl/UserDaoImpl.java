@@ -136,7 +136,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<ExamServiceUsersDTO> getUserByPosition(String positionName) {
-        return userMapper.getUserByPosition(positionName);
+    public List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO) {
+        return userMapper.getUserByPosition(queryDTO);
     }
 }
