@@ -83,9 +83,7 @@
     <select id="getRolesByUserId" parameterType="java.lang.Long" resultMap="RoleMap">
         select  a.id,a.name  from t_role a left join user_role b on a.id = b.role_id  where b.user_id = #{Id}
     </select>
-
-<<<<<<< HEAD
-  <delete id="deleteRoleUser">
+    <delete id="deleteRoleUser">
     DELETE FROM t_user_role
     WHERE t_u_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
@@ -117,36 +115,7 @@
         select * from t_user where code=#{code}
     </select>
   <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
-=======
-    <delete id="deleteUserRole">
-        DELETE FROM user_role
-        WHERE user_id IN
-        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </delete>
 
-    <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
-        SELECT tr.*,tr.t_c_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
-        <where>
-            tr.t_c_id = tc.id
-            <if test="companyId != null and companyId != ''">
-                AND tr.t_c_id = #{companyId}
-            </if>
-        </where>
-    </select>
-    <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
-    </insert>
-
-
-    <select id="queryCode" parameterType="com.boss.xtrain.permission.pojo.dto.UserDTO" resultType="com.boss.xtrain.permission.pojo.dto.UserDTO">
-        select * from t_user where code=#{code}
-    </select>
-
-
-    <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
->>>>>>> dev0.1
         select status from t_user where id=#{id}
     </select>
     <select id="getUserByPosition" parameterType="java.lang.String" resultMap="UserDtoMap">
