@@ -7,7 +7,6 @@ import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
-import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
 import org.apache.ibatis.annotations.Param;

@@ -9,7 +9,6 @@ import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.entity.Department;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +53,18 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentDTOList;
     }
 
+    @Override
+    public DepartmentDTO selectByPrimaryKey(DepartmentQuery query) {
+        try{
+            DepartmentDTO dto = new DepartmentDTO();
+            PojoUtils.copyProperties(departmentDao.selectByKey(query.getId()),dto);
+            return dto;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
+        }
+    }
+
     /**
      * 搜索一个
      *
@@ -65,8 +75,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDTO selectOne(DepartmentQuery query) {
         try{
             DepartmentDTO dto = new DepartmentDTO();
-            PojoUtils.copyProperties(departmentDao.selectOne(query),dto);
-            dto.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
+            Department department = departmentDao.selectOne(query);
+            PojoUtils.copyProperties(department,dto);
+            dto.setCompanyName(companyDao.selectByKey(department.getCompanyId()).getName());
+            if(department.getParentId()!=null){
+                dto.setParentName(departmentDao.selectByKey(department.getParentId()).getName());
+            }
             return dto;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
@@ -88,6 +102,10 @@ public class DepartmentServiceImpl implements DepartmentService {
            List<DepartmentDTO> departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
            for(DepartmentDTO departmentDTO:departmentDTOList){
                departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
+               Department parent = departmentDao.selectByKey(departmentDTO.getParentId());
+               if(parent!=null){
+                   departmentDTO.setParentName(parent.getName());
+               }
            }
            return departmentDTOList;
         }catch (Exception e){
@@ -173,7 +191,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return departmentDao.update(dto);
+            return departmentDao.deptUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_UPDATE_ERROR,e);
@@ -194,17 +212,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         DepartmentQuery query = new DepartmentQuery();
         PojoUtils.copyProperties(dto,query);
         List<Department> list = departmentDao.selectByCondition(query);
-        if(!list.isEmpty()){
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_REPEAT_ERROR);
+        if(list.isEmpty()){
+            try{
+                dto.setId(worker.nextId());
+                dto.setCreatedTime(new Date());
+                return departmentDao.add(dto);
+            }catch (Exception e){
+                log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR.getMessage(),e);
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR,e);
+            }
         }
-        try{
-            dto.setId(worker.nextId());
-            dto.setCreatedTime(new Date());
-            return departmentDao.add(dto);
-        }catch (Exception e){
-            log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR.getMessage(),e);
-            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_INSERT_ERROR,e);
-        }
+        throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_REPEAT_ERROR);
     }
 
     /**

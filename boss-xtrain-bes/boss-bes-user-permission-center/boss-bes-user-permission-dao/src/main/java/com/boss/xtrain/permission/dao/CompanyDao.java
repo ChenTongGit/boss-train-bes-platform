@@ -58,11 +58,11 @@ public interface CompanyDao {
 
     /**
      * 更新用户数据
-     *
+     * 不通过统一的切面，updateBy在controller层通过token获取
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int update(CompanyDTO dto);
+    int companyUpdate(CompanyDTO dto);
 
     /**
      * 插入数据

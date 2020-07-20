@@ -37,7 +37,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         Example example = new Example(Organization.class);
         Example.Criteria criteria = example.createCriteria();
         //模糊查询
-        criteria.andLike("name",query.getName());
+        if(query.getName()!=null){
+            criteria.andLike("name","%"+query.getName()+"%");
+        }
         return mapper.selectByExample(example);
     }
 

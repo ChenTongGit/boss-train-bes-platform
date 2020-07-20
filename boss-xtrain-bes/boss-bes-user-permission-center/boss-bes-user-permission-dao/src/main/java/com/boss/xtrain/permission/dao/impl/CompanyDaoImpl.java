@@ -32,7 +32,15 @@ public class CompanyDaoImpl implements CompanyDao {
         Example example = new Example(Company.class);
         Example.Criteria criteria = example.createCriteria();
         //criteria.andEqualTo("id",query.getId());
-        criteria.andEqualTo("name",query.getName());
+        if(query.getOrganizationId()!=null){
+            criteria.andEqualTo("organizationId",query.getOrganizationId());
+        }
+        if(query.getName()!=null){
+            criteria.andEqualTo("name",query.getName());
+        }
+        if(query.getId()!=null){
+            criteria.andEqualTo("id",query.getId());
+        }
         return mapper.selectByExample(example);
     }
 
@@ -108,12 +116,12 @@ public class CompanyDaoImpl implements CompanyDao {
 
     /**
      * 更新用户数据
-     *
+     * 不通过统一的切面，updateBy在controller层通过token获取
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
     @Override
-    public int update(CompanyDTO dto) {
+    public int companyUpdate(CompanyDTO dto) {
         Company company = new Company();
         PojoUtils.copyProperties(dto,company);
         return mapper.updateByPrimaryKeySelective(company);
@@ -129,6 +137,7 @@ public class CompanyDaoImpl implements CompanyDao {
     public int add(CompanyDTO dto) {
         Company company = new Company();
         PojoUtils.copyProperties(dto,company);
+        company.setVersion(0L);
         return mapper.insertSelective(company);
     }
 

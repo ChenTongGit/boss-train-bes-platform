@@ -68,7 +68,7 @@ public interface DepartmentDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int update(DepartmentDTO dto);
+    int deptUpdate(DepartmentDTO dto);
 
     /**
      * 插入数据

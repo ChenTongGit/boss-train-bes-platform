@@ -8,7 +8,7 @@ import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
 import com.boss.xtrain.permission.pojo.query.SystemParamQuery;
 import com.boss.xtrain.permission.pojo.vo.SystemParamVO;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +44,8 @@ public interface SystemParamApi extends CommonCRUDApi<SystemParamDTO, SystemPara
      */
     @PostMapping("/changeStatus")
     CommonResponse<Integer> changeUse(@RequestBody @Valid CommonRequest<SystemParamDTO> request);
+
+    @DeleteMapping("/deleteBatchByType")
+    CommonResponse<Integer> deleteBatchByType(@RequestBody @Valid CommonRequest<SystemParamDTO> request);
 
 }

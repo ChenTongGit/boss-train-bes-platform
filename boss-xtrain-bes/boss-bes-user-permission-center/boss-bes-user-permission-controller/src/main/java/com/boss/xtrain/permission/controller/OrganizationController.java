@@ -107,6 +107,16 @@ public class OrganizationController extends BaseController implements Organizati
         return CommonResponseUtil.ok(organizationVOList);
     }
 
+    @ApiLog(msg = "用主键搜索组织机构")
+    @Override
+    @ApiOperation(value = "test")
+    public CommonResponse<OrganizationVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
+        OrganizationDTO dto = service.selectByPrimaryKey(request.getBody());
+        OrganizationVO vo = new OrganizationVO();
+        PojoUtils.copyProperties(dto,vo);
+        return CommonResponseUtil.ok(vo);
+    }
+
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页全搜索组织机构并排序")

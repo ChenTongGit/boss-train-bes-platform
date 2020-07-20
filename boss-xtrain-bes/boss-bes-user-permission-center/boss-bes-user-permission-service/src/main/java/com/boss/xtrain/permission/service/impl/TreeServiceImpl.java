@@ -3,12 +3,11 @@ package com.boss.xtrain.permission.service.impl;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.permission.dao.*;
-import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
-import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
+import com.boss.xtrain.permission.dao.CompanyDao;
+import com.boss.xtrain.permission.dao.CompanyDepartmentDao;
+import com.boss.xtrain.permission.dao.OrganizationDao;
+import com.boss.xtrain.permission.dao.RoleDao;
+import com.boss.xtrain.permission.pojo.query.*;
 import com.boss.xtrain.permission.service.TreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,11 @@ public class TreeServiceImpl implements TreeService {
     private CompanyDao companyDao;
 
     @Autowired
-    private DepartmentDao departmentDao;
+    private CompanyDepartmentDao companyDepartmentDao;
 
     @Autowired
     private RoleDao roleDao;
+
 
     @Override
     public List<OrganizationQuery> orgTree() {
@@ -53,24 +53,21 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public List<TreeNode> departmentUnderCompany(Long companyId) {
-        List<TreeNode> nodeList = new ArrayList<>();
-        List<TreeNode> treeNodeList = PojoUtils.copyListProperties(departmentDao.selectByCompany(companyId),TreeNode::new);
-        for(TreeNode treeNode:treeNodeList){
-            treeNode.setCompanyName(companyDao.selectByKey(companyId).getName());
-            TreeNode node = new TreeNode();
-            PojoUtils.copyProperties(treeNode,node);
-            //递归查子树
-            node.setChildList(listToTree(treeNode.getChildList()));
-            nodeList.add(node);
+    public List<CompanyDepartmentNode> departmentUnderCompany(CompanyQuery query) {
+        List<CompanyDepartmentNode> companyDepartmentNodes = new ArrayList<>();
+        List<CompanyDepartmentNode> companyDepartmentNodeList = companyDepartmentDao.query(query);
+        for( CompanyDepartmentNode node:companyDepartmentNodeList){
+            CompanyDepartmentNode treeNode = new CompanyDepartmentNode();
+            PojoUtils.copyProperties(node,treeNode);
+            treeNode.setChildList(listToTree(node.getChildList()));
+            companyDepartmentNodes.add(treeNode);
         }
-        return nodeList;
+        return companyDepartmentNodes;
     }
 
-    private List<TreeNode> listToTree(List<TreeNode> list){
-        log.info(list.toString());
-        List<TreeNode> treeList = new ArrayList<>();
-        for(TreeNode node:list){
+    private List<DepartmentTreeNode> listToTree(List<DepartmentTreeNode> list){
+        List<DepartmentTreeNode> treeList = new ArrayList<>();
+        for(DepartmentTreeNode node:list){
             if(node.getParentId()==null){
                 treeList.add(findChildren(node,list));
             }
@@ -78,9 +75,8 @@ public class TreeServiceImpl implements TreeService {
         return treeList;
     }
 
-    private TreeNode findChildren(TreeNode tree,List<TreeNode> list){
-        for(TreeNode node:list){
-            log.info(node.toString());
+    private DepartmentTreeNode findChildren(DepartmentTreeNode tree, List<DepartmentTreeNode> list){
+        for(DepartmentTreeNode node:list){
             if(tree.getId().equals(node.getParentId())){
                 if(tree.getChildList()==null){
                     tree.setChildList(new ArrayList<>());
@@ -90,15 +86,18 @@ public class TreeServiceImpl implements TreeService {
         }
         return tree;
     }
+
     @Override
     public List<TreeNode> resourceTree() {
         try {
             List<TreeNode> list = listToTree(roleDao.getResources());
             log.info("list:"+list.toString());
             return list;
-            }catch (Exception e){
+        }catch (Exception e){
             log.error(e.getMessage());
-                throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
-            }
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
         }
+    }
+
+
 }

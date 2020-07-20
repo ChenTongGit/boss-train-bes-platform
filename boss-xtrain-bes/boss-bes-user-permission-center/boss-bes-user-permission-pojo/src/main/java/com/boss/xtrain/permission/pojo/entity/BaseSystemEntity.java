@@ -1,6 +1,7 @@
 package com.boss.xtrain.permission.pojo.entity;
 
 import lombok.*;
+import tk.mybatis.mapper.annotation.Version;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -57,5 +58,11 @@ public class BaseSystemEntity implements Serializable {
     @Column(name = "updated_by")
     private Long updatedBy;
 
+    /**
+     *  当前行的版初始为0 每次数据变动则加1
+     */
+    @Version
+    @Column(name = "version")
+    private Long version;
 
 }

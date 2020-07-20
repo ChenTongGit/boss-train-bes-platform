@@ -94,13 +94,20 @@ public class SystemParamController extends BaseController implements SystemParam
      *
      * @param request req
      * @return list page
+     * 通过点击paramType树搜索
      */
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件搜索系统参数信息并排序")
     public CommonResponse<CommonPage<SystemParamVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<SystemParamDTO> systemParamDTOList = service.selectByCondition(request.getBody().getQuery());
+//        paramType，点击树进行搜索，paramType通过基础数据管理的接口获得列表
+//        param 输入具体参数名进行搜索
+//        通过orgId搜索该组织机构下的所有系统参数
+        Long orgId = 5687565568097L;//测试用
+        SystemParamQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+        List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
         return buildPageResponse(page,systemParamVOList);
     }
@@ -114,7 +121,11 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     public CommonResponse<CommonPage<SystemParamVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(request.getBody().getQuery());
+
+//        Long orgId = token;从token中获取到所负责的组织机构
+        //5687565568097是测试用的orgID
+        Long orgId = 5687565568097L;
+        List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(orgId);
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
         return buildPageResponse(page,systemParamVOList);
     }
@@ -139,5 +150,13 @@ public class SystemParamController extends BaseController implements SystemParam
             systemParamDTO.setStatus(0);
         }
         return CommonResponseUtil.ok(service.update(systemParamDTO));
+    }
+
+    @Override
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "使用paramType作为条件，大量删除同类型的系统参数纪录")
+    public CommonResponse<Integer> deleteBatchByType(@Valid CommonRequest<SystemParamDTO> request) {
+        SystemParamDTO dto = request.getBody();
+        return CommonResponseUtil.ok(service.deleteByParamType(dto));
     }
 }

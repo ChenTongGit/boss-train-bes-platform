@@ -24,8 +24,6 @@ public class UserOnlineInfoQuery extends BaseQuery {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date offlineTime;
-    /**
-     * 组织机构管理员登录然后使用的id
-     */
+
     private Long userId;
 }

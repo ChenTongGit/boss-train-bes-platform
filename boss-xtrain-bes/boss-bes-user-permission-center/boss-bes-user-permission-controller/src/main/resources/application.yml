@@ -8,7 +8,7 @@ spring:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai&useAffectedRows=true
     username: root
     password: zzy873190934
     hikari:
