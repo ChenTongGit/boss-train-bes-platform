@@ -79,7 +79,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     @Override
     public CommonResponse<CommonPage<SubjectTypeVO>> querySubjectTypePage(@RequestBody @Valid CommonRequest<CommonPageRequest<SubjectTypeQueryVO>> commonRequest) {
         SubjectTypeQueryVO subjectTypeQueryVO = commonRequest.getBody().getQuery();
-        if (subjectTypeQueryVO.getName() == "" || subjectTypeQueryVO.getName() == null){
+        if (subjectTypeQueryVO == null){
             List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.queryAll();
             Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
             List<SubjectTypeVO> subjectTypeVOS = PojoUtils.copyListProperties(subjectTypeDTOS,SubjectTypeVO::new);

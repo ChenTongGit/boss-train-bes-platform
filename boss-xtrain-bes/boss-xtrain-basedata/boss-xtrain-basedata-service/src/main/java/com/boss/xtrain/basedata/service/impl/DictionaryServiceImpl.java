@@ -7,6 +7,7 @@ import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryQueryDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.MyStringUtils;
@@ -56,19 +57,43 @@ public class DictionaryServiceImpl implements DictionaryService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteDictionary(DictionaryDTO dictionaryDTO) {
         if(!existKey(dictionaryDTO.getId())){
             throw new BusinessException(BusinessError.BASE_DATA_DICTIONARY_NOT_EXIST_ERROR);
         }else {
-            Dictionary dictionary = new Dictionary();
-            PojoUtils.copyProperties(dictionaryDTO,dictionary);
-            dictionaryDao.deleteDictionary(dictionary);
+            Example example = new Example(Dictionary.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("id",dictionaryDTO.getId());
+            dictionaryDao.deleteDictionary(example);
         }
     }
 
     @Override
-    public void deleteDictionaryByIds(DictionaryIdsDTO dictionaryIdsDTO) {
-        dictionaryDao.deleteDictionaryByIds(dictionaryIdsDTO.getIds());
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteDictionaryByIds(List<DictionaryDTO> dictionaryDTOS) {
+        List<Long> ids=new ArrayList<>();
+        if(dictionaryDTOS.isEmpty()){
+            throw new ServiceException(BusinessError.BASE_DATA_DICTIONARY_NOT_EXIST_ERROR);
+        }
+        for (DictionaryDTO dictionaryDTO : dictionaryDTOS) {
+            Example example = new Example(Dictionary.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("id",dictionaryDTO.getId());
+            List<DictionaryDTO> querySize=dictionaryDao.queryDictionary(example);
+            if(querySize.isEmpty()){
+                throw new ServiceException(BusinessError.BASE_DATA_DICTIONARY_NOT_EXIST_ERROR);
+            }
+            ids.add(dictionaryDTO.getId());
+        }
+        int count = 0;
+        try {
+            count =dictionaryDao.deleteDictionaryByIds(ids);
+        }catch (Exception e){
+            throw new ServiceException(BusinessError.BASE_DATA_DICTIONARY_DELETE_ERROR);
+        }
+        return count;
+
     }
 
     @Override
@@ -101,18 +126,16 @@ public class DictionaryServiceImpl implements DictionaryService{
 
     @Override
     public List<DictionaryDTO> selectList(DictionaryDTO dictionaryDTO) {
-       /* Map<Long,String> listMap=getOrgUtil.getAllUser();
-        DirectionaryDTO dto=new DirectionaryDTO();
-        dto.setOrgId(Long.valueOf(listMap.get(directionaryDTO.getUpdatedBy())));
-        List<DirectionaryDTO> selectList=null;
+        List<DictionaryDTO> dictionaryDTOS = new ArrayList<>();
+        Example example = new Example(Dictionary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",dictionaryDTO.getOrganizationId());
         try {
-            selectList=directionaryDao.selectList(dto);
+            dictionaryDTOS = dictionaryDao.selectList(example);
         }catch (BusinessException e){
-            throw new BusinessException(e);
+            throw new BusinessException(BusinessError.BASE_DATA_DICTIONARY_QUERY_ERROR,e);
         }
-
-        return selectList;*/
-        return null;
+        return dictionaryDTOS;
     }
 
     @Override

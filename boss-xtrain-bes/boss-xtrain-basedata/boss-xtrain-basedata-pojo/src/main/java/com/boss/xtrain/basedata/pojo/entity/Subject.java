@@ -3,6 +3,7 @@ package com.boss.xtrain.basedata.pojo.entity;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -10,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "t_subject")
 @Data
 public class Subject extends BaseEntity implements Serializable {
 
+    private Integer status;
     /**
      * 题型ID
      */

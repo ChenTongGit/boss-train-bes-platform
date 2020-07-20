@@ -1,6 +1,5 @@
 package com.boss.xtrain.basedata.pojo.dto.dictionary;
 
-import com.boss.xtrain.common.core.pojo.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 

@@ -42,6 +42,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public int insertSubject(Subject subject) {
+        log.info(subject.toString());
         return subjectMapper.insert(subject);
     }
 
@@ -66,29 +67,23 @@ public class SubjectDaoImpl implements SubjectDao {
     @Override
     public List<SubjectDTO> queryAll() {
         List<Subject> subjects = subjectMapper.selectAll();
-        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
-        List<Category> categories = new ArrayList<>();
-        int count1 = 0;
-        int count2 = 0;
-        int count3 = 0;
+        Category category = new Category();
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
         for (Subject subject : subjects){
-            categories.add(count1,categoryMapper.selectByPrimaryKey(subject.getCategoryId()));
-            count1++;
+            category= categoryMapper.selectByPrimaryKey(subject.getCategoryId());
+            SubjectDTO subjectDTO = new SubjectDTO();
+            PojoUtils.copyProperties(subject,subjectDTO);
+            subjectDTO.setCategoryName(category.getName());
+            subjectDTOS.add(subjectDTO);
         }
-        List<SubjectType> subjectTypes = new ArrayList<>();
         for (Subject subject : subjects){
-            subjectTypes.add(count2,subjectTypeMapper.selectByPrimaryKey(subject.getSubjectTypeId()));
-            count2++;
+            SubjectType subjectType = subjectTypeMapper.selectByPrimaryKey(subject.getSubjectTypeId());
+            SubjectDTO subjectDTO = new SubjectDTO();
+            PojoUtils.copyProperties(subject,subjectDTO);
+            subjectDTO.setSubjectTypeName(subjectType.getName());
+            subjectDTOS.add(subjectDTO);
         }
-        log.info(subjects.toString());
-
-        for (SubjectDTO subjectDTO : subjectDTOS){
-            subjectDTO.setName(subjects.get(count3).getName());
-            subjectDTO.setCategoryName(categories.get(count3).getName());
-            subjectDTO.setSubjectTypeName(subjectTypes.get(count3).getName());
-            count3++;
-        }
-
+        subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         log.info(subjectDTOS.toString());
         return subjectDTOS;
     }
@@ -102,8 +97,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public List<SubjectDTO> queryByCondition(Long orgId, String subjectName, String categoryName, String typeName) {
-        List<Subject> subjects = subjectMapper.queryByCondition(orgId,subjectName,categoryName,typeName);
+    public List<SubjectDTO> queryByCondition(Example example) {
+        List<Subject> subjects = subjectMapper.selectByExample(example);
         List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
         return subjectDTOS;
     }

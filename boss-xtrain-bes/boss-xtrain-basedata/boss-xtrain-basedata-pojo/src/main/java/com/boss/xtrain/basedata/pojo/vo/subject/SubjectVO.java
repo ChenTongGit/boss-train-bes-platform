@@ -8,6 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -82,7 +82,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @ResponseBody
     public CommonResponse<Boolean> deleteSubjectList(@RequestBody CommonRequest<SubjectDeleteIdsVO> commonRequest) {
         SubjectDeleteIdsDTO subjectDeleteIdsDTO = new SubjectDeleteIdsDTO();
-        List<Long> deleteList = commonRequest.getBody().getIds();
+        List<SubjectDeleteDTO> deleteList = PojoUtils.copyListProperties(commonRequest.getBody().getIds(),SubjectDeleteDTO::new);
         subjectDeleteIdsDTO.setIds(deleteList);
         subjectService.deleteSubjectList(subjectDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
@@ -94,7 +94,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<SubjectVO> insertSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
-        log.info(subjectUpdateDTO.toString());
+        log.info("插入{}",subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.insertSubject(subjectUpdateDTO);

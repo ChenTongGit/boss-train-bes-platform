@@ -39,6 +39,10 @@ public interface SubjectService {
 
     List<SubjectDTO> querySubjectByConfig(StandardCombDTO standardCombDTO);
 
+    List<Long> getCategoryIdBy(SubjectUpdateDTO subjectUpdateDTO);
+
+    List<Long> getSubjectTypeIdBy(SubjectUpdateDTO subjectUpdateDTO);
+
     List<SubjectDTO> queryExamSubject(SubjectExamQueryDTO subjectExamQueryDTO);
 
     SubjectExamDTO querySubjectById(List<Long> subjectIds);

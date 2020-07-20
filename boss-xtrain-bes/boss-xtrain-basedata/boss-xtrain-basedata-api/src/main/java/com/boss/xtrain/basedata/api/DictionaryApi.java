@@ -1,6 +1,5 @@
 package com.boss.xtrain.basedata.api;
 
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.vo.dictionary.*;
 import com.boss.xtrain.common.core.http.CommonPage;
@@ -26,13 +25,13 @@ public interface DictionaryApi {
     CommonResponse<Boolean> deleteDictionary(CommonRequest<DictionaryDeleteVO> commonRequest);
 
     @PostMapping("/deleteDictionaryList")
-    CommonResponse<Boolean> deleteDictionaryByIds(CommonRequest<DictionaryVO> commonRequest);
+    CommonResponse<Boolean> deleteDictionaryByIds(CommonRequest<List<DictionaryDeleteVO>> commonRequest);
 
     @PostMapping("/updateDictionary")
     CommonResponse<DictionaryVO> updateDictionary(CommonRequest<DictionaryUpdateVO> commonRequest);
 
     @PostMapping("/queryDictionary")
-    CommonResponse<CommonPage<DictionaryVO>> queryDictionary(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest);
+    CommonResponse<CommonPage<DictionaryVO>> queryDictionary(CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest);
 
     @PostMapping("/queryDictionaryPage")
     CommonResponse<CommonPage<DictionaryVO>> queryDictionaryPage(CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest);
@@ -40,5 +39,7 @@ public interface DictionaryApi {
     @PostMapping("/queryCategory")
     List<DifficultQueryDTO> queryCategory(DifficultQueryDTO difficultQueryDTO);
 
+    @PostMapping("/queryCategoryList")
+    CommonResponse<List<DictionaryVO>> queryCategoryList(CommonRequest<DictionaryVO> commonRequest);
 
 }

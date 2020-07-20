@@ -19,7 +19,7 @@ public interface DictionaryDao{
 
     int insertDictionaryList(List<Dictionary> dictionaries);
 
-    int deleteDictionary(Dictionary dictionary);
+    int deleteDictionary(Example example);
 
     int deleteDictionaryByIds(List<Long> ids);
 
@@ -31,7 +31,7 @@ public interface DictionaryDao{
 
     boolean existId(Long id);
 
-    List<DictionaryDTO> selectList(DictionaryDTO dictionaryDTO);
+    List<DictionaryDTO> selectList(Example example);
 
     List<DifficultQueryDTO> queryCategory(Example example);
 

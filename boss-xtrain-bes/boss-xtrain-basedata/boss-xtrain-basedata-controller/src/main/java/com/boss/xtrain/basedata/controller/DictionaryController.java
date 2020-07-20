@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,7 @@ public class DictionaryController extends BaseController implements DictionaryAp
     @Override
     @ApiLog(msg = "新增字典")
     @ResponseBody
-    public CommonResponse<DictionaryVO> insertDictionary(@RequestBody @Validated CommonRequest<DictionaryInsertVO> commonRequest) {
+    public CommonResponse<DictionaryVO> insertDictionary(@RequestBody @Valid CommonRequest<DictionaryInsertVO> commonRequest) {
         DictionaryDTO dictionaryDTO = new DictionaryDTO();
         DictionaryInsertVO dictionaryInsertVO = commonRequest.getBody();
         PojoUtils.copyProperties(dictionaryInsertVO,dictionaryDTO);
@@ -52,6 +53,7 @@ public class DictionaryController extends BaseController implements DictionaryAp
     }
 
     @Override
+    @ApiLog(msg = "批量插入字典信息")
     @ResponseBody
     public CommonResponse<List<DictionaryVO>> insertDictionaryList(@RequestBody CommonRequest<List<DictionaryInsertVO>> commonRequest) {
         List<DictionaryDTO> dictionaryDTOS = new ArrayList<>();
@@ -64,26 +66,30 @@ public class DictionaryController extends BaseController implements DictionaryAp
     }
 
     @Override
+    @ApiLog(msg = "删除字典信息")
     @ResponseBody
     public CommonResponse<Boolean> deleteDictionary(@RequestBody CommonRequest<DictionaryDeleteVO> commonRequest) {
         DictionaryDTO dictionaryDto = new DictionaryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(), dictionaryDto);
-        dictionaryService.insertDictionary(dictionaryDto);
+        dictionaryService.deleteDictionary(dictionaryDto);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
 
     }
 
     @Override
+    @ApiLog(msg = "批量删除字典")
     @ResponseBody
-    public CommonResponse<Boolean> deleteDictionaryByIds(@RequestBody CommonRequest<DictionaryVO> commonRequest) {
-        DictionaryIdsDTO dictionaryListDto = new DictionaryIdsDTO();
-        PojoUtils.copyProperties(commonRequest.getBody(), dictionaryListDto);
-        dictionaryService.deleteDictionaryByIds(dictionaryListDto);
+    public CommonResponse<Boolean> deleteDictionaryByIds(@RequestBody CommonRequest<List<DictionaryDeleteVO>> commonRequest) {
+        List<DictionaryDeleteVO> dictionaryDeleteVOS = commonRequest.getBody();
+        log.info(commonRequest.getBody().toString());
+        List<DictionaryDTO> dictionaryDTOS  = PojoUtils.copyListProperties(dictionaryDeleteVOS, DictionaryDTO::new);
+        dictionaryService.deleteDictionaryByIds(dictionaryDTOS);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
 
     }
 
     @Override
+    @ApiLog(msg = "更新字典")
     @ResponseBody
     public CommonResponse<DictionaryVO> updateDictionary(@RequestBody CommonRequest<DictionaryUpdateVO> commonRequest) {
         DictionaryDTO dictionaryDto = new DictionaryDTO();
@@ -107,6 +113,7 @@ public class DictionaryController extends BaseController implements DictionaryAp
 
     @Override
     @ApiLog(msg = "分页查询字典")
+    @ResponseBody
     public CommonResponse<CommonPage<DictionaryVO>> queryDictionaryPage(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest) {
         DictionaryQueryVO dictionaryQueryVO = commonRequest.getBody().getQuery();
         DictionaryQueryDTO dictionaryQueryDTO= new DictionaryQueryDTO();
@@ -122,5 +129,16 @@ public class DictionaryController extends BaseController implements DictionaryAp
     @ResponseBody
     public List<DifficultQueryDTO> queryCategory(@RequestBody DifficultQueryDTO difficultQueryDTO) {
         return dictionaryService.queryCategory(difficultQueryDTO);
+    }
+
+    @Override
+    @ApiLog(msg = "获取字典类型列表")
+    @ResponseBody
+    public CommonResponse<List<DictionaryVO>> queryCategoryList(@RequestBody CommonRequest<DictionaryVO> commonRequest) {
+        DictionaryDTO dictionaryDTO =new DictionaryDTO();
+        List<DictionaryDTO> dictionaryDTOS = dictionaryService.selectList(dictionaryDTO);
+        List<DictionaryVO> dictionaryVOS =PojoUtils.copyListProperties(dictionaryDTOS,DictionaryVO::new);
+        log.info(dictionaryDTOS.toString());
+        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),dictionaryVOS);
     }
 }

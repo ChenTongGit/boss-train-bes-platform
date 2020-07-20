@@ -35,13 +35,16 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    public int deleteDictionary(Dictionary dictionary) {
-        return dictionaryMapper.delete(dictionary);
+    public int deleteDictionary(Example example) {
+        return dictionaryMapper.deleteByExample(example);
     }
 
     @Override
     public int deleteDictionaryByIds(List<Long> ids) {
-        return dictionaryMapper.deleteDictionaryByIds(ids);
+        Example example = new Example(Dictionary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id",ids);
+        return dictionaryMapper.deleteByExample(example);
     }
 
     @Override
@@ -69,8 +72,9 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    public List<DictionaryDTO> selectList(DictionaryDTO dictionaryDTO) {
-        List<DictionaryDTO> dictionaryDTOS=  PojoUtils.copyListProperties(dictionaryMapper.selectList(dictionaryDTO),DictionaryDTO::new);
+    public List<DictionaryDTO> selectList(Example example) {
+        List<DictionaryDTO> dictionaryDTOS=  PojoUtils.copyListProperties(dictionaryMapper.selectByExample(example),DictionaryDTO::new);
+        log.info(dictionaryDTOS.toString());
         return dictionaryDTOS;
     }
 

@@ -12,12 +12,15 @@ import java.util.Date;
 
 
 /**
- * 数据字典
+ * @author gxr
+ * @description 数据字典
+ * @date 2020/7/1
  */
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "t_dictionary")
 @Data
 public class Dictionary extends BaseEntity{
+    private Long id;
     /**
      * 字典名称
      */
@@ -41,39 +44,4 @@ public class Dictionary extends BaseEntity{
      */
     @Column(name = "remark")
     private String remark;
-
-    private static final long serialVersionUID = 1L;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
 }

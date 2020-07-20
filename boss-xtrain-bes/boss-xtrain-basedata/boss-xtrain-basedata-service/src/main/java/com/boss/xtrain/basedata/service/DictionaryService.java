@@ -31,9 +31,9 @@ public interface DictionaryService{
 
     /**
      * 根据ids批量删除数据字典
-     * @param dictionaryIdsDTO
+     * @param dictionaryDTOS
      */
-    void deleteDictionaryByIds(DictionaryIdsDTO dictionaryIdsDTO);
+    int deleteDictionaryByIds(List<DictionaryDTO> dictionaryDTOS);
 
     /**
      * 更新数据字典

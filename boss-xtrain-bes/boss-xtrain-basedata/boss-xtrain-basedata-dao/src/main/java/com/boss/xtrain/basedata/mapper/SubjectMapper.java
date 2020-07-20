@@ -72,6 +72,4 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      */
     List<Subject> getSubjects();
 
-    int updateSubject(Subject subject);
-
 }
