@@ -7,26 +7,17 @@ import com.boss.xtrain.permission.api.UserApi;
 import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
-<<<<<<< HEAD
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-=======
-import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
->>>>>>> ysq-dev
+
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
 import com.github.pagehelper.Page;
-=======
-import com.github.pagehelper.Page;
-import lombok.extern.slf4j.Slf4j;
 
->>>>>>> ysq-dev
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
