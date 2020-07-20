@@ -1,18 +1,0 @@
-
-k
-java:S1128"ORemove this unused import 'com.boss.xtrain.permission.pojo.query.RoleQueryDTO'.(Ã¨ª&8·¡×‡´.
-g
-java:S1128"KRemove this unused import 'com.boss.xtrain.permission.dao.OrganizationDao'.(Ó±íj8»îÜ¬µ.
-M
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8õ¿¬…´.
-h
-java:S1128"FRemove this unused import 'com.boss.xtrain.permission.dao.CompanyDao'.(è‰Š½úÿÿÿÿ8»îÜ¬µ.
-l
-java:S1128
-"ORemove this unused import 'com.boss.xtrain.permission.pojo.query.CompanyQuery'.(ÌçüÊ8»îÜ¬µ.
-X	java:S125)"<This block of commented-out lines of code should be removed.(ÖÇ¨Ñ8ò‹‘Òµ.
-p
-java:S1128"TRemove this unused import 'com.boss.xtrain.permission.pojo.query.OrganizationQuery'.(¸úïj8»îÜ¬µ.
-X	java:S125?"<This block of commented-out lines of code should be removed.(…‡ÇŠ8ýð‚Òµ.
-i
-java:S1128	"LRemove this unused import 'com.boss.xtrain.permission.pojo.entity.Resource'.(ÚžÅ‚8»îÜ¬µ.
