@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.api;
 
+
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
