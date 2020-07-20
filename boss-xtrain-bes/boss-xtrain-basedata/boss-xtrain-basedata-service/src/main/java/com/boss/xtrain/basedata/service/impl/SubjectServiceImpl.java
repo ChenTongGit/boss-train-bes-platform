@@ -6,9 +6,9 @@ import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.*;
-import com.boss.xtrain.basedata.pojo.vo.subject.*;
+
 import com.boss.xtrain.common.core.exception.BusinessException;
-import com.boss.xtrain.common.core.exception.ServiceException;
+
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -18,7 +18,6 @@ import com.boss.xtrain.basedata.service.SubjectService;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.lang.invoke.LambdaConversionException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -199,7 +198,7 @@ public class SubjectServiceImpl implements SubjectService{
             answerDao.deleteAnswerList(ids);
             return subjectDao.deleteSubject(ids);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.PAPER_PAPER_DELETE_ERROR);
+            throw new BusinessException(BusinessError.BASE_DATA_SUBJECT_DELETE_ERROR);
         }
     }
 
