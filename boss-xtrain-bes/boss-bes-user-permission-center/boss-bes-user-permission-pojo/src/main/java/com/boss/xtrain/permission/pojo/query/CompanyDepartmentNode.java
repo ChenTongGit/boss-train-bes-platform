@@ -15,5 +15,5 @@ public class CompanyDepartmentNode{
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
     private String name;
-    private List<DepartmentTreeNode> childList;
+    private List<TreeNode> childList;
 }

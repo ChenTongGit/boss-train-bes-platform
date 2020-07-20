@@ -65,9 +65,9 @@ public class TreeServiceImpl implements TreeService {
         return companyDepartmentNodes;
     }
 
-    private List<DepartmentTreeNode> listToTree(List<DepartmentTreeNode> list){
-        List<DepartmentTreeNode> treeList = new ArrayList<>();
-        for(DepartmentTreeNode node:list){
+    private List<TreeNode> listToTree(List<TreeNode> list){
+        List<TreeNode> treeList = new ArrayList<>();
+        for(TreeNode node:list){
             if(node.getParentId()==null){
                 treeList.add(findChildren(node,list));
             }
@@ -75,8 +75,8 @@ public class TreeServiceImpl implements TreeService {
         return treeList;
     }
 
-    private DepartmentTreeNode findChildren(DepartmentTreeNode tree, List<DepartmentTreeNode> list){
-        for(DepartmentTreeNode node:list){
+    private TreeNode findChildren(TreeNode tree, List<TreeNode> list){
+        for(TreeNode node:list){
             if(tree.getId().equals(node.getParentId())){
                 if(tree.getChildList()==null){
                     tree.setChildList(new ArrayList<>());

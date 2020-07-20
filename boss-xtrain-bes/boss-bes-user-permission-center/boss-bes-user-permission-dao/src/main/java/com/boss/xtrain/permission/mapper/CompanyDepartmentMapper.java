@@ -2,9 +2,8 @@ package com.boss.xtrain.permission.mapper;
 
 import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentTreeNode;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -25,5 +24,5 @@ public interface CompanyDepartmentMapper {
      * @return List<DepartmentTreeDTO>
      */
 
-    List<DepartmentTreeNode> getDepartments(Long companyId);
+    List<TreeNode> getDepartments(Long companyId);
 }

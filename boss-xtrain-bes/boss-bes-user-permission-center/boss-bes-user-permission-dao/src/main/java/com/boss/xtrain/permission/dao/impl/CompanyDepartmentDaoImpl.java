@@ -4,7 +4,7 @@ import com.boss.xtrain.permission.dao.CompanyDepartmentDao;
 import com.boss.xtrain.permission.mapper.CompanyDepartmentMapper;
 import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentTreeNode;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +25,7 @@ public class CompanyDepartmentDaoImpl implements CompanyDepartmentDao {
     }
 
     @Override
-    public List<DepartmentTreeNode> getDepartments(Long companyId) {
+    public List<TreeNode> getDepartments(Long companyId) {
         return companyDepartmentMapper.getDepartments(companyId);
     }
 }

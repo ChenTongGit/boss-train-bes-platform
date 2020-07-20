@@ -4,10 +4,10 @@
     <resultMap id="CompanyMap" type="com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
-        <collection property="childList" ofType="com.boss.xtrain.permission.pojo.query.DepartmentTreeNode"
+        <collection property="childList" ofType="com.boss.xtrain.permission.pojo.query.TreeNode"
                     javaType="java.util.ArrayList" select="getDepartments" column="id"></collection>
     </resultMap>
-    <resultMap id="DepartmentMap" type="com.boss.xtrain.permission.pojo.query.DepartmentTreeNode">
+    <resultMap id="DepartmentMap" type="com.boss.xtrain.permission.pojo.query.TreeNode">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="t_c_id" jdbcType="BIGINT" property="companyId" />

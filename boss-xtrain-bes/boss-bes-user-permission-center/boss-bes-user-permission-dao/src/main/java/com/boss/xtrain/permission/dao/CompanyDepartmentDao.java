@@ -2,7 +2,7 @@ package com.boss.xtrain.permission.dao;
 
 import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentTreeNode;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 
 import java.util.List;
 
@@ -27,5 +27,5 @@ public interface CompanyDepartmentDao {
      * @return List<DepartmentTreeDTO>
      */
 
-    List<DepartmentTreeNode> getDepartments(Long companyId);
+    List<TreeNode> getDepartments(Long companyId);
 }

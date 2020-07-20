@@ -10,7 +10,6 @@ import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentTreeNode;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
 import com.boss.xtrain.permission.service.DepartmentService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
