@@ -6,6 +6,4 @@ import lombok.Data;
 public class CombExamConfigQueryVO{
     private Long orgId;
     private String name;
-    private int pageIndex;
-    private int pageSize;
 }

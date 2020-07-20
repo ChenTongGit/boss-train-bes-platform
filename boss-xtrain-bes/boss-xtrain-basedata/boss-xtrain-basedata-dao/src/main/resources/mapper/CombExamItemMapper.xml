@@ -9,12 +9,12 @@
     <result column="t_c_id" jdbcType="BIGINT" property="combExamConfigId" />
     <result column="t_c_id2" jdbcType="BIGINT" property="categoryId" />
     <result column="num" jdbcType="INTEGER" property="num" />
-    <result column="difficult" jdbcType="BIGINT" property="difficult" />
+    <result column="difficult" jdbcType="BIGINT" property="difficulty" />
     <result column="score" jdbcType="DECIMAL" property="score" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, t_s_id, t_c_id, t_c_id2, num, difficult, score
+    id, t_s_id, t_c_id, t_c_id2, num, difficulty, score
   </sql>
  <select id="getItemInfo" resultMap="BaseResultMap">
     select * from t_comb_exam_config_item where t_comb_exam_config_item.t_c_id = #{combExamConfigId}
@@ -25,7 +25,7 @@
     (id,t_c_id,t_c_id2,t_s_id,num,difficult,score)
     values
     <foreach collection ="itemList" item="item" separator =",">
-      (#{item.id}, #{item.combExamConfigId}, #{item.categoryId}, #{item.subjectTypeId}, #{item.num}, #{item.difficult}, #{item.score})
+      (#{item.id}, #{item.combExamConfigId}, #{item.categoryId}, #{item.subjectTypeId}, #{item.num}, #{item.difficulty}, #{item.score})
     </foreach >
   </insert>
 
@@ -42,8 +42,8 @@
         <if test="item.num != null">
           num = #{item.num},
         </if>
-        <if test="item.difficult != null">
-          difficulty = #{item.difficult},
+        <if test="item.difficulty != null">
+          difficulty = #{item.difficulty},
         </if>
         <if test="item.score != null">
           score = #{item.score},

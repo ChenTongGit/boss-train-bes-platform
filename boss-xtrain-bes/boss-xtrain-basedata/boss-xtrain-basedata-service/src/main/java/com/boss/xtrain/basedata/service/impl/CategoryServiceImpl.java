@@ -3,6 +3,8 @@ package com.boss.xtrain.basedata.service.impl;
 import com.boss.xtrain.basedata.dao.CategoryDao;
 import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.*;
+import com.boss.xtrain.basedata.pojo.vo.category.CategoryDeleteIdsVO;
+import com.boss.xtrain.basedata.pojo.vo.category.CategoryDeleteVO;
 import com.boss.xtrain.basedata.pojo.vo.category.CategoryVO;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.basedata.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -47,18 +50,23 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteCategory(CategoryDeleteIdsDTO categoryDeleteIds) {
-        List<Long> ids = categoryDeleteIds.getIds();
-        for (Long id: ids){
+        List<CategoryDeleteDTO> categoryDeleteDTOS = categoryDeleteIds.getIds();
+        for (CategoryDeleteDTO categoryDeleteDTO : categoryDeleteDTOS) {
+
             Example example = new Example(Category.class);
             Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("id",id);
-            Category category = categoryDao.queryCategoryById(id);
-            criteria.andEqualTo("name",category.getName());
-            criteria.andEqualTo("version", category.getVersion());
+            criteria.andEqualTo("id", categoryDeleteDTO.getId());
+            criteria.andEqualTo("version", categoryDeleteDTO.getVersion());
             categoryDao.deleteCategory(example);
         }
         return 0;
+    }
+
+    @Override
+    public List<CategoryDTO> queryAll() {
+        return categoryDao.queryCategory();
     }
 
     @Override

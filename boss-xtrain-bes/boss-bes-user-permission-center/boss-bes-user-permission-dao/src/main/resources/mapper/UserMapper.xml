@@ -39,7 +39,7 @@
   <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
     <id column="id" property="id"/>
     <result column="t_c_id" property="companyId"/>
-    <result column="t_o_id" property="orgId"/>
+    <result column="t_o_id" property="organizationId"/>
     <result column="name" property="name" />
     <result column="code" property="code" />
     <result column="remark" property="remark" />
@@ -90,18 +90,18 @@
     </foreach>
   </delete>
 
-  <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
-    SELECT tr.*,tr.company_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
-    <where>
-      tr.company_id= tc.id
-      <if test="companyId != null and companyId != ''">
-        AND tr.company_id = #{companyId}
-      </if>
-    </where>
-  </select>
-  <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
-    </insert>
+<!--  <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">-->
+<!--    SELECT tr.*,tr.company_id as companyId,tc.name as companyName FROM t_role tr,t_company tc-->
+<!--    <where>-->
+<!--      tr.company_id= tc.id-->
+<!--      <if test="companyId != null and companyId != ''">-->
+<!--        AND tr.company_id = #{companyId}-->
+<!--      </if>-->
+<!--    </where>-->
+<!--  </select>-->
+<!--  <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">-->
+<!--        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})-->
+<!--    </insert>-->
 
     <select id="getRoles" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="RoleMap">
         SELECT  tr.id,tr.name

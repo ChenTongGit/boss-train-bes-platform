@@ -1,3 +1,4 @@
+package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;

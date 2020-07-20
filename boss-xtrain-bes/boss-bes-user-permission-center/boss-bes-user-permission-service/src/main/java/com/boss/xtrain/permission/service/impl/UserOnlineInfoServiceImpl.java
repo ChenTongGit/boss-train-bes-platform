@@ -7,7 +7,6 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.User;
