@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO) {
         try {
-            return userDao.getUserByPosition(queryDTO.getPositionName());
+            return userDao.getUserByPosition(queryDTO);
         }catch (Exception e){
             log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);

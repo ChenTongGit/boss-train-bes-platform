@@ -117,8 +117,15 @@
     <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
     </select>
-    <select id="getUserByPosition" parameterType="java.lang.String" resultType="com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO">
-        select tu.name,tu.id userId from position tp ,t_user tu where tp.t_u_id = tu.id and tp.name = #{positionName}
+    <select id="getUserByPosition" resultType="com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO">
+        select tu.name,tu.id userId from position tp ,t_user tu where tp.t_u_id = tu.id
+        <if test="positionName != null and positionName != ''">
+            AND tp.name = #{positionName}
+        </if>
+        <if test="companyId != null and companyId != ''">
+            AND tp.t_c_id = #{companyId}
+        </if>
+
     </select>
 
 

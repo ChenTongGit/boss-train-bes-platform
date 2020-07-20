@@ -103,6 +103,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-bes-user-permission-pojo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>

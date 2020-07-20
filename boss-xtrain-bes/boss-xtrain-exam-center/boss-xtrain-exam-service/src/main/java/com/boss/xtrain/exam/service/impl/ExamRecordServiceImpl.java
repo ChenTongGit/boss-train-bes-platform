@@ -58,8 +58,6 @@ public class ExamRecordServiceImpl implements ExamRecordService {
     @Autowired
     private ExamService examService;
 
-    @Autowired
-    private RedisUtil redisUtil;
     /**
      * 考试记录条件查询
      *
@@ -114,7 +112,7 @@ public class ExamRecordServiceImpl implements ExamRecordService {
                     subjectDetailsVO.setMyScore(ans.getScore());
                     subjectDetailsVO.setEvaluate(ans.getEvaluate());
                     // 合并redis保存的答案
-                    MarkingDataItemVO markingVO = backEvaluateMap.get(subjectDetailsVO.getPaperSubjectId());
+                    MarkingDataItemVO markingVO = backEvaluateMap.get(Long.toString(subjectDetailsVO.getPaperSubjectId()));
                     if (markingVO != null) {
                         subjectDetailsVO.setMyScore(markingVO.getScore());
                         subjectDetailsVO.setEvaluate(markingVO.getEvaluate());
