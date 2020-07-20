@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.pojo.entity;
 
+import com.boss.xtrain.permission.pojo.entity.BaseSystemEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -51,10 +51,6 @@ public class UserServiceImpl implements UserSerivce {
     private boolean isInUse(UserDTO dto){
         return dto.getStatus() == 1;
     }
-    @Override
-    public List<RoleDTO> getRoleByUserId(Long id) {
-        return PojoUtils.copyListProperties(userDao.getRoleByUserId(id),RoleDTO::new);
-    }
 
     @Override
     public UserDTO select(UserQueryDTO query) {

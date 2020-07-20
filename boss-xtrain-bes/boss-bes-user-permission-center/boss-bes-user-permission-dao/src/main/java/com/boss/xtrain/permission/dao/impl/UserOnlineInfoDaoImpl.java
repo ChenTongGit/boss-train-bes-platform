@@ -182,3 +182,4 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         return mapper.existsWithPrimaryKey(id);
     }
 }
+

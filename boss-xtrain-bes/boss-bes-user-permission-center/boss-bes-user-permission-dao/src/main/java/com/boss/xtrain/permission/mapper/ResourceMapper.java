@@ -40,4 +40,13 @@ public interface ResourceMapper extends CommonMapper<Resource> {
      *
     */
     int deleteRoleResource( @Param("id") Long resourceId);
+
+    /**
+     * 将parentId设为null
+     *
+     * @param id
+     * @return int
+     *
+    */
+    int updateWithNull( @Param("id") Long id);
 }

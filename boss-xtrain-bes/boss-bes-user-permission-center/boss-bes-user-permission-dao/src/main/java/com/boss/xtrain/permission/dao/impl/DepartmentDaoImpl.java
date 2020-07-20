@@ -187,3 +187,4 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return mapper.existsWithPrimaryKey(departmentId);
     }
 }
+
