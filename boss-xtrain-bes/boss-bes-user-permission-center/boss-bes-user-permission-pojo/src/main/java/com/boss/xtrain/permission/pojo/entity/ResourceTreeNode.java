@@ -20,5 +20,6 @@ import java.util.List;
 
 public class ResourceTreeNode  extends TreeEntity {
     private String name;
+    private Long parentId;
     private List<ResourceTreeNode> children;
 }

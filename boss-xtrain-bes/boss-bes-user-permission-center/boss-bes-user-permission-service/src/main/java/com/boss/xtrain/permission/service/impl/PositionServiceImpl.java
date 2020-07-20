@@ -5,6 +5,7 @@ import com.boss.xtrain.common.core.exception.DaoException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.PositionDao;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
@@ -31,6 +32,9 @@ public class PositionServiceImpl implements PositionService {
     @Autowired
     private PositionDao positionDao;
 
+    @Autowired
+    private CompanyDao companyDao;
+
     private IdWorker worker = new IdWorker();
 
     @Override
@@ -39,12 +43,16 @@ public class PositionServiceImpl implements PositionService {
         PositionQueryDTO query = new PositionQueryDTO();
         PojoUtils.copyProperties(dto,query);
         List<PositionDTO> list = positionDao.queryByCondition(query);
+        log.info("query"+query.toString());
         if(!list.isEmpty()){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_REPEAT_ERROR);
         }
         try {
             dto.setId(worker.nextId());
-            return positionDao.insert(dto);
+//            return positionDao.insert(dto);
+            log.info(dto.toString());
+            return positionDao.positionInsert(dto);
+
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_INSERT_ERROR,e);
         }
@@ -56,7 +64,8 @@ public class PositionServiceImpl implements PositionService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_NOT_EXIST_ERROR);
         }
         try {
-            return positionDao.update(dto);
+//            return positionDao.update(dto);
+            return positionDao.positionUpdate(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR,e);
         }
@@ -65,7 +74,11 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public List<PositionDTO> selectByCondition(PositionQueryDTO dto) {
         try {
-            return positionDao.queryByCondition(dto);
+            List<PositionDTO> positionDTOS = positionDao.queryByCondition(dto);
+            for(PositionDTO positionDTO : positionDTOS){
+                positionDTO.setCompanyName(companyDao.selectByKey(positionDTO.getCompanyId()).getName());
+            }
+            return positionDTOS;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_UPDATE_ERROR,e);
         }
@@ -103,7 +116,11 @@ public class PositionServiceImpl implements PositionService {
     public List<PositionDTO> selectAll() {
         try {
             List<Position> positions = positionDao.selectAll();
-            return PojoUtils.copyListProperties(positions,PositionDTO::new);
+            List<PositionDTO> positionDTOS = PojoUtils.copyListProperties(positions,PositionDTO::new);
+            for(PositionDTO positionDTO : positionDTOS){
+                positionDTO.setCompanyName(companyDao.selectByKey(positionDTO.getCompanyId()).getName());
+            }
+            return positionDTOS;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR,e);
         }
@@ -117,7 +134,8 @@ public class PositionServiceImpl implements PositionService {
     public PositionDTO selectOne(PositionQueryDTO dto) {
         try {
             PositionDTO positionDTO = new PositionDTO();
-            PojoUtils.copyProperties(positionDao.selectOne(dto),positionDTO);
+            PojoUtils.copyProperties(positionDao.selectByKey(dto.getId()),positionDTO);
+            positionDTO.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
             return positionDTO;
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_POSITION_QUERY_ERROR,e);

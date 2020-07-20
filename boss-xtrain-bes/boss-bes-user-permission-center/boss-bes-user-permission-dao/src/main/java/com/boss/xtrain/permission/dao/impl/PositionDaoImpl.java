@@ -31,7 +31,9 @@ public class PositionDaoImpl implements PositionDao {
     @Override
     public List<PositionDTO> queryByCondition(PositionQueryDTO dto) {
         Position position = new Position();
+        log.info("query:",dto.toString());
         PojoUtils.copyProperties(dto,position);
+        log.info("position:",position.toString());
         return PojoUtils.copyListProperties(positionMapper.select(position),PositionDTO::new);
     }
 
@@ -47,9 +49,10 @@ public class PositionDaoImpl implements PositionDao {
 
     @Override
     public int insert(PositionDTO dto) {
-        Position position = new Position();
-        BeanUtils.copyProperties(dto,position);
-        return positionMapper.insert(position);
+//        Position position = new Position();
+//        BeanUtils.copyProperties(dto,position);
+//        return positionMapper.insert(position);
+        return 0;
     }
 
     @Override
@@ -59,9 +62,10 @@ public class PositionDaoImpl implements PositionDao {
 
     @Override
     public int update(PositionDTO dto) {
-        Position position = new Position();
-        BeanUtils.copyProperties(dto,position);
-        return positionMapper.updateByPrimaryKeySelective(position);
+//        Position position = new Position();
+//        BeanUtils.copyProperties(dto,position);
+//        return positionMapper.updateByPrimaryKeySelective(position);
+        return 0;
     }
 
     @Override
@@ -76,10 +80,24 @@ public class PositionDaoImpl implements PositionDao {
     }
 
     @Override
-    public Position selectOne(PositionQueryDTO dto) {
+    public Position selectByKey(Long id) {
+        return positionMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int positionInsert(PositionDTO dto) {
+        log.info(dto.toString());
         Position position = new Position();
         PojoUtils.copyProperties(dto,position);
-        return positionMapper.selectOne(position);
+        log.info(position.toString());
+        return positionMapper.insert(position);
+    }
+
+    @Override
+    public int positionUpdate(PositionDTO dto) {
+        Position position = new Position();
+        BeanUtils.copyProperties(dto,position);
+        return positionMapper.updateByPrimaryKeySelective(position);
     }
 
 }

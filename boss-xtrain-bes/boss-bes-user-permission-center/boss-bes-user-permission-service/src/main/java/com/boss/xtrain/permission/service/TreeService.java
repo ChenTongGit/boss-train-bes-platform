@@ -1,9 +1,7 @@
 package com.boss.xtrain.permission.service;
 
-import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
-import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
+import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
+import com.boss.xtrain.permission.pojo.query.*;
 
 import java.util.List;
 
@@ -36,4 +34,13 @@ public interface TreeService {
      * @return
      */
     List<TreeNode> departmentUnderCompany(Long companyId);
+
+    /**
+     * 获取资源树
+     *
+     * @param
+     * @return List<ResourceQueryDTO>
+     *
+    */
+    List<TreeNode> resourceTree();
 }

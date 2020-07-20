@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="boss-bes-user-permission-api" />
+        <module name="boss-bes-user-permission-controller" />
+        <module name="boss-bes-user-permission-dao" />
+        <module name="boss-bes-user-permission-pojo" />
+        <module name="boss-bes-user-permission-service" />
+        <module name="boss-bes-user-permission-utils" />
+        <module name="boss-xtrain-authentication" />
+        <module name="boss-xtrain-basedata-api" />
+        <module name="boss-xtrain-basedata-controller" />
+        <module name="boss-xtrain-basedata-dao" />
+        <module name="boss-xtrain-basedata-pojo" />
+        <module name="boss-xtrain-basedata-service" />
+        <module name="boss-xtrain-basedata-utils" />
+        <module name="boss-xtrain-cache-redis" />
+        <module name="boss-xtrain-config" />
+        <module name="boss-xtrain-core" />
+        <module name="boss-xtrain-db-transaction" />
+        <module name="boss-xtrain-exam-api" />
+        <module name="boss-xtrain-exam-controller" />
+        <module name="boss-xtrain-exam-dao" />
+        <module name="boss-xtrain-exam-pojo" />
+        <module name="boss-xtrain-exam-service" />
+        <module name="boss-xtrain-exam-utils" />
+        <module name="boss-xtrain-gateway" />
+        <module name="boss-xtrain-log" />
+        <module name="boss-xtrain-util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="boss-bes-user-permission-api" target="1.8" />
+      <module name="boss-bes-user-permission-center" target="1.8" />
+      <module name="boss-bes-user-permission-controller" target="1.8" />
+      <module name="boss-bes-user-permission-dao" target="1.8" />
+      <module name="boss-bes-user-permission-pojo" target="1.8" />
+      <module name="boss-bes-user-permission-service" target="1.8" />
+      <module name="boss-bes-user-permission-utils" target="1.8" />
+      <module name="boss-xtrain-api-gateway" target="1.8" />
+      <module name="boss-xtrain-authentication" target="1.8" />
+      <module name="boss-xtrain-basedata" target="1.8" />
+      <module name="boss-xtrain-basedata-api" target="1.8" />
+      <module name="boss-xtrain-basedata-controller" target="1.8" />
+      <module name="boss-xtrain-basedata-dao" target="1.8" />
+      <module name="boss-xtrain-basedata-pojo" target="1.8" />
+      <module name="boss-xtrain-basedata-service" target="1.8" />
+      <module name="boss-xtrain-basedata-utils" target="1.8" />
+      <module name="boss-xtrain-bes" target="1.8" />
+      <module name="boss-xtrain-cache-redis" target="1.8" />
+      <module name="boss-xtrain-common" target="1.8" />
+      <module name="boss-xtrain-config" target="1.8" />
+      <module name="boss-xtrain-core" target="1.8" />
+      <module name="boss-xtrain-db-transaction" target="1.8" />
+      <module name="boss-xtrain-exam-api" target="1.8" />
+      <module name="boss-xtrain-exam-center" target="1.8" />
+      <module name="boss-xtrain-exam-controller" target="1.8" />
+      <module name="boss-xtrain-exam-dao" target="1.8" />
+      <module name="boss-xtrain-exam-pojo" target="1.8" />
+      <module name="boss-xtrain-exam-service" target="1.8" />
+      <module name="boss-xtrain-exam-utils" target="1.8" />
+      <module name="boss-xtrain-gateway" target="1.8" />
+      <module name="boss-xtrain-log" target="1.8" />
+      <module name="boss-xtrain-util" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

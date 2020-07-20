@@ -6,8 +6,8 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
-import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,19 +29,21 @@ public interface ResourceApi extends CommonCRUDApi<ResourceDTO,ResourceQueryDTO,
      * 列出所有
      *
      * @param
-     * @return CommonResponse<List<PositionListVO>>
-     *
+     * @return CommonResponse<List < PositionListVO>>
      */
     @RequestMapping("/selectAll")
     CommonResponse<List<ResourceListVO>> selectAllResource();
 
     /**
-     *
-     *
      * @param request
-     * @return CommonResponse<CommonPage<PositionListVO>>
-     *
+     * @return CommonResponse<CommonPage < PositionListVO>>
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<ResourceListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request);
+
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
+
+    @PostMapping("selectResourceTree")
+    CommonResponse<List<TreeNode>> selectResourceTree(@RequestBody CommonRequest<ResourceQueryDTO> request);
 }

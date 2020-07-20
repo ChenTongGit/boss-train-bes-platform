@@ -27,7 +27,7 @@ public class Resource extends BaseSystemEntity {
     @Column(name = "close_img")
     private String closeImg;
     @Column(name = "resource_type")
-    private String resourceType;
+    private Byte resourceType;
     @Column(name = "leaf")
     private int leaf;
     @Column(name = "action")

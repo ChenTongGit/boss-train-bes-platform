@@ -20,5 +20,5 @@ public class ResourceQueryDTO extends BaseQuery {
     private Long parentId;
     private String parentName;
     private Long id;
-
+    private boolean searchChild = false;
 }

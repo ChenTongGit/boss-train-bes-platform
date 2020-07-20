@@ -8,6 +8,7 @@ import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,6 +20,22 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
+    /**
+     * 避开切面注入 role insert
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int roleInsert(RoleDTO dto);
+    /**
+     * 避开切面注入 role update
+     *
+     * @param dto
+     * @return int
+     *
+    */
+    int roleUpdate(RoleDTO dto);
     /**
      *
      * 查询全部
@@ -52,8 +69,16 @@ public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
      * @return  List<ResourceTreeNode>
      */
 
-    List<ResourceTreeNode> getResources();
+    List<TreeNode> getResources();
 
+    /**
+     * 唯一查询
+     *
+     * @param id
+     * @return RoleDto
+     *
+    */
+    RoleDTO selectByKey(Long id);
     /**
      * 角色下分配用户
      *
@@ -116,19 +141,19 @@ public interface RoleDao extends IBaseDao<RoleDTO,RoleQueryDTO> {
      * 通过RoleId查询拥有的资源Id
      *
      * @param id
-     * @return List<String>
+     * @return List<long>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
     /**
      * 通过RoleId查询拥有的用户Id
      *
      * @param id
-     * @return List<String>
+     * @return List<long>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 
     /**

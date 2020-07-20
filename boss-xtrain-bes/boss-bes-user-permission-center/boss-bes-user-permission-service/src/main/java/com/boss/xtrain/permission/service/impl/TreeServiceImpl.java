@@ -1,13 +1,16 @@
 package com.boss.xtrain.permission.service.impl;
 
+import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.permission.dao.CompanyDao;
-import com.boss.xtrain.permission.dao.DepartmentDao;
-import com.boss.xtrain.permission.dao.OrganizationDao;
+import com.boss.xtrain.permission.dao.*;
+import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
+import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.service.TreeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import java.util.List;
  * @date 2020.07.12
  */
 @Service
+@Slf4j
 public class TreeServiceImpl implements TreeService {
 
     @Autowired
@@ -29,6 +33,9 @@ public class TreeServiceImpl implements TreeService {
 
     @Autowired
     private DepartmentDao departmentDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public List<OrganizationQuery> orgTree() {
@@ -51,7 +58,6 @@ public class TreeServiceImpl implements TreeService {
         List<TreeNode> treeNodeList = PojoUtils.copyListProperties(departmentDao.selectByCompany(companyId),TreeNode::new);
         for(TreeNode treeNode:treeNodeList){
             treeNode.setCompanyName(companyDao.selectByKey(companyId).getName());
-
             TreeNode node = new TreeNode();
             PojoUtils.copyProperties(treeNode,node);
             //递归查子树
@@ -62,6 +68,7 @@ public class TreeServiceImpl implements TreeService {
     }
 
     private List<TreeNode> listToTree(List<TreeNode> list){
+        log.info(list.toString());
         List<TreeNode> treeList = new ArrayList<>();
         for(TreeNode node:list){
             if(node.getParentId()==null){
@@ -73,6 +80,7 @@ public class TreeServiceImpl implements TreeService {
 
     private TreeNode findChildren(TreeNode tree,List<TreeNode> list){
         for(TreeNode node:list){
+            log.info(node.toString());
             if(tree.getId().equals(node.getParentId())){
                 if(tree.getChildList()==null){
                     tree.setChildList(new ArrayList<>());
@@ -82,4 +90,15 @@ public class TreeServiceImpl implements TreeService {
         }
         return tree;
     }
+    @Override
+    public List<TreeNode> resourceTree() {
+        try {
+            List<TreeNode> list = listToTree(roleDao.getResources());
+            log.info("list:"+list.toString());
+            return list;
+            }catch (Exception e){
+            log.error(e.getMessage());
+                throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
+            }
+        }
 }

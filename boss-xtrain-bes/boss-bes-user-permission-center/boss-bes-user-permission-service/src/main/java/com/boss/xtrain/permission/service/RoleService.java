@@ -5,7 +5,6 @@ import com.boss.xtrain.permission.pojo.dto.RoleResourceDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
 import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
-import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 
 import java.util.List;
 
@@ -54,13 +53,6 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      */
     int deleteRoleResource(List<RoleResourceDTO> roleResourceDTOS);
 
-    /**
-     * 获取资源树
-     *
-     * @param
-     * @return  List<ResourceTreeNode>
-     */
-    List<ResourceTreeNode> getResources();
 
     /**
      * 通过RoleId查询拥有的资源Id
@@ -69,7 +61,7 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      * @return List<String>
      */
 
-    List<String> getResourceIdsByRoleId(Long id);
+    List<Long> getResourceIdsByRoleId(Long id);
 
 
     /**
@@ -79,6 +71,6 @@ public interface RoleService extends CommonCurdService<RoleDTO,RoleQueryDTO> {
      * @return List<String>
      */
 
-    List<String> getUserIdsByRoleId(Long id);
+    List<Long> getUserIdsByRoleId(Long id);
 
 }

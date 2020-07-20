@@ -49,11 +49,20 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
     List<ResourceDTO> getAllResource(RoleQueryDTO queryDTO);
 
     /**
-     * @param userRoleDTO
+     * @param userRoleDTOS
      * @return int
      * @description 删除用户的某一角色
      */
-    int deleteUserRole(UserRoleDTO userRoleDTO);
+    int deleteRoleUser(List<UserRoleDTO> userRoleDTOS);
+
+    /**
+     * 分配角色
+     *
+     * @param dtos
+     * @return boolean
+     *
+    */
+    boolean allocateRole(List<UserRoleDTO> dtos);
 
     /**
      * 根据Id获取Status
@@ -62,4 +71,22 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return User
      */
     User getStatusById(Long id);
+
+    /**
+     * 查找用户的角色列表
+     *
+     * @param queryDTO
+     * @return List<RoleDTO>
+     *
+    */
+    List<RoleDTO> getRoles(UserQueryDTO queryDTO);
+
+    /**
+     * 通过position信息查找user
+     *
+     * @param queryDTO
+     * @return  List<UserDTO>
+     *
+    */
+    List<UserDTO> getUserByPosition(UserQueryDTO queryDTO);
 }

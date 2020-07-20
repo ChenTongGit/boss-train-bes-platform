@@ -10,6 +10,8 @@ import com.boss.xtrain.permission.pojo.entity.Resource;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.entity.ResourceTreeNode;
 import com.boss.xtrain.permission.pojo.entity.Role;
+import com.boss.xtrain.permission.pojo.query.TreeNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,7 @@ import java.util.List;
  */
 
 @Component
+@Slf4j
 public class RoleDaoImpl implements RoleDao {
 
     @Autowired
@@ -30,9 +33,10 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public int insert(RoleDTO dto) {
-        Role role = new Role();
-        PojoUtils.copyProperties(dto,role);
-        return roleMapper.insert(role);
+//        Role role = new Role();
+//        PojoUtils.copyProperties(dto,role);
+//        return roleMapper.insert(role);
+        return 0;
     }
 
     @Override
@@ -42,9 +46,10 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public int update(RoleDTO dto) {
-        Role role = new Role();
-        PojoUtils.copyProperties(dto,role);
-        return roleMapper.updateByPrimaryKeySelective(role);
+//        Role role = new Role();
+//        PojoUtils.copyProperties(dto,role);
+//        return roleMapper.updateByPrimaryKeySelective(role);
+        return 0;
     }
 
     @Override
@@ -55,8 +60,24 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
+    public int roleInsert(RoleDTO dto) {
+        Role role = new Role();
+        PojoUtils.copyProperties(dto,role);
+        return roleMapper.insert(role);
+    }
+
+    @Override
+    public int roleUpdate(RoleDTO dto) {
+        Role role = new Role();
+        PojoUtils.copyProperties(dto,role);
+        return roleMapper.updateByPrimaryKeySelective(role);
+    }
+
+    @Override
     public List<Role> selectAll() {
-        return roleMapper.selectAll();
+        List<Role> roles = roleMapper.selectAll();
+        log.info(roles.toString());
+        return roles;
     }
 
     @Override
@@ -75,8 +96,16 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<ResourceTreeNode> getResources() {
+    public List<TreeNode> getResources() {
         return roleMapper.getResources();
+    }
+
+    @Override
+    public RoleDTO selectByKey(Long id) {
+        Role role = roleMapper.selectByPrimaryKey(id);
+        RoleDTO dto = new RoleDTO();
+        PojoUtils.copyProperties(role,dto);
+        return dto;
     }
 
     @Override
@@ -115,12 +144,12 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<String> getResourceIdsByRoleId(Long id) {
+    public List<Long> getResourceIdsByRoleId(Long id) {
         return roleMapper.getResourceIdsByRoleId(id);
     }
 
     @Override
-    public List<String> getUserIdsByRoleId(Long id) {
+    public List<Long> getUserIdsByRoleId(Long id) {
         return roleMapper.getUserIdsByRoleId(id);
     }
 

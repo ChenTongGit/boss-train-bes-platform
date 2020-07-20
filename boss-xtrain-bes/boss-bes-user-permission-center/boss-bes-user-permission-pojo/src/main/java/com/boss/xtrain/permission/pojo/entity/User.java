@@ -1,6 +1,5 @@
 package com.boss.xtrain.permission.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -38,5 +37,4 @@ public class User extends BaseSystemEntity {
     private String other;
     @Column(name = "remark")
     private String remark;
-
 }
