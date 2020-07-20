@@ -130,12 +130,22 @@ public interface UserApi {
     /**
      * 查询用户的角色列表
      *
-     * @param response
+     * @param request
      * @return CommonResponse<List<RoleListVO>>
      *
     */
     @RequestMapping("/getRoles")
-    CommonResponse<List<RoleListVO>> getRoles(@RequestBody @Valid CommonRequest<UserQueryDTO> response);
+    CommonResponse<List<RoleListVO>> getRoles(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
+
+    /**
+     * 通过position查找用户
+     *
+     * @param request
+     * @return CommonResponse<List<UserListVO>>
+     *
+    */
+    @RequestMapping("/getUserByPosition")
+    CommonResponse<List<UserListVO>> getUserByPosition(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
 
 }
 

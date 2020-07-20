@@ -27,6 +27,12 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
   </resultMap>
+    <resultMap id="UserDtoMap" type="com.boss.xtrain.permission.pojo.dto.UserDTO" extends="BaseResultMap">
+        <id column="id" property="id"/>
+        <result column="positionId" property="positionId"/>
+        <result column="name" property="name"/>
+        <result column="userId" property="id"/>
+    </resultMap>
   <resultMap id="RoleMap" type="com.boss.xtrain.permission.pojo.entity.Role">
     <id column="id" property="id"/>
     <result column="t_c_id" property="companyId"/>
@@ -113,5 +119,9 @@
   <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
     </select>
+    <select id="getUserByPosition" parameterType="java.lang.String" resultMap="UserDtoMap">
+        select tu.name,tu.id userId,tp.id positionId from position tp ,t_user tu where tp.t_u_id = tu.id and tp.name = #{positionName}
+    </select>
+
 
 </mapper>

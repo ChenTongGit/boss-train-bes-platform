@@ -14,6 +14,7 @@ import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.buf.UDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -111,5 +112,12 @@ public class UserController extends BaseController implements UserApi {
         UserQueryDTO queryDTO = request.getBody();
         List<RoleDTO> roleDTOS = userSerivce.getRoles(queryDTO);
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(roleDTOS,RoleListVO::new));
+    }
+
+    @Override
+    public CommonResponse<List<UserListVO>> getUserByPosition(@Valid CommonRequest<UserQueryDTO> request) {
+        UserQueryDTO queryDTO = request.getBody();
+        List<UserDTO> userDTOS = userSerivce.getUserByPosition(queryDTO);
+        return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
 }

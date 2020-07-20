@@ -139,4 +139,9 @@ public class UserDaoImpl implements UserDao {
     public List<Role> getRoles(UserQueryDTO queryDTO) {
         return userMapper.getRoles(queryDTO);
     }
+
+    @Override
+    public List<UserDTO> getUserByPosition(String positionName) {
+        return userMapper.getUserByPosition(positionName);
+    }
 }

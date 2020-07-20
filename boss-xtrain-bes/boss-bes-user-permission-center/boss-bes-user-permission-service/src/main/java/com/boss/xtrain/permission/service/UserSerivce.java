@@ -80,4 +80,13 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      *
     */
     List<RoleDTO> getRoles(UserQueryDTO queryDTO);
+
+    /**
+     * 通过position信息查找user
+     *
+     * @param queryDTO
+     * @return  List<UserDTO>
+     *
+    */
+    List<UserDTO> getUserByPosition(UserQueryDTO queryDTO);
 }

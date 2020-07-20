@@ -111,4 +111,12 @@ public interface UserDao extends IBaseDao<UserDTO,UserQueryDTO> {
      */
     List<Role> getRoles(UserQueryDTO queryDTO);
 
+    /**
+     * 通过positionName查User
+     *
+     * @param positionName
+     * @return List<UserDTO>
+     *
+     */
+    List<UserDTO> getUserByPosition(String positionName);
 }
