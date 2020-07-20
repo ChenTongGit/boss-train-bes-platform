@@ -1,3 +1,10 @@
+application:
+  name: base-data
+cloud:
+  nacos:
+    discovery:
+      server-addr: 39.97.106.243:8848
+      service: ${spring.application.name}
 mybatis:
   type-aliases-package: com.boss.xtrain.basedata.pojo.entity
   mapper-locations: classpath:mapper/*.xml
@@ -15,3 +22,8 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
+pagehelper:
+  auto-runtime-dialect: true
+  support-methods-arguments: true
+  reasonable: true
+  params: count=countSql

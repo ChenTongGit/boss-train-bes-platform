@@ -199,7 +199,7 @@ public class SubjectServiceImpl implements SubjectService{
             answerDao.deleteAnswerList(ids);
             return subjectDao.deleteSubject(ids);
         }catch (Exception e){
-            throw new BusinessException(BusinessError.PAPER_PAPER_DELETE_ERROR);
+            throw new BusinessException(BusinessError.BASE_DATA_SUBJECT_DELETE_ERROR);
         }
     }
 
@@ -349,7 +349,7 @@ public class SubjectServiceImpl implements SubjectService{
                     difficulties = subjectDao.querySubjectDifficult(example);
                 }
                 if (subjects.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
-                    throw new BusinessException(BusinessError.PAPER_QUICK_MAKE_PAPER_ERROR);
+                    throw new BusinessException(BusinessError.MAINTAIN_PAPER_DELETE_ERROR);
                 }else {
                     for (SubjectDTO s : subjectDtoList) {
                         s.setCategoryName(categoryNames.get(count));
