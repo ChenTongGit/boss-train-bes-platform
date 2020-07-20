@@ -74,7 +74,7 @@ public interface SystemParamDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int add(SystemParamDTO dto);
+    int insert(SystemParamDTO dto);
 
     /**
      * 批量添加

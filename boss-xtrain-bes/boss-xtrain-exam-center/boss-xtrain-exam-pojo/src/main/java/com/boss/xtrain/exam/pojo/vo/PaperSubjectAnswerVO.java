@@ -1,4 +1,8 @@
-package com.boss.xtrain.exam.pojo.vo.test;
+package com.boss.xtrain.exam.pojo.vo;
+
+import com.boss.xtrain.exam.pojo.vo.test.SubjectDetailsVO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,21 +21,25 @@ public class PaperSubjectAnswerVO {
     /**
      * 试卷id
      */
-    private Long id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long paperId;
 
     /**
      * 试卷名
      */
-    private String name;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private String paperName;
 
     /**
      * 试卷总分
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private BigDecimal score;
 
     /**
      * 试卷类型
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private String paperType;
 
     /**
@@ -42,7 +50,7 @@ public class PaperSubjectAnswerVO {
     /**
      * 试卷描述
      */
-    private String description;
+    private String discript;
 
     /**
      * 下载次数
@@ -59,25 +67,26 @@ public class PaperSubjectAnswerVO {
      */
     private String version;
 
+
     /**
      * 题目列表
      */
-    private List<SubjectDetailsVO> subjectList;
+    private List<SubjectDetailsVO> subjects;
 
-    public Long getId() {
-        return id;
+    public Long getPaperId() {
+        return paperId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaperId(Long paperId) {
+        this.paperId = paperId;
     }
 
-    public String getName() {
-        return name;
+    public String getPaperName() {
+        return paperName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPaperName(String paperName) {
+        this.paperName = paperName;
     }
 
     public BigDecimal getScore() {
@@ -104,12 +113,12 @@ public class PaperSubjectAnswerVO {
         this.difficulty = difficulty;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDiscript() {
+        return discript;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDiscript(String discript) {
+        this.discript = discript;
     }
 
     public Integer getDownloadTimes() {
@@ -136,11 +145,11 @@ public class PaperSubjectAnswerVO {
         this.version = version;
     }
 
-    public List<SubjectDetailsVO> getSubjectList() {
-        return subjectList;
+    public List<SubjectDetailsVO> getSubjects() {
+        return subjects;
     }
 
-    public void setSubjectList(List<SubjectDetailsVO> subjectList) {
-        this.subjectList = subjectList;
+    public void setSubjects(List<SubjectDetailsVO> subjects) {
+        this.subjects = subjects;
     }
 }

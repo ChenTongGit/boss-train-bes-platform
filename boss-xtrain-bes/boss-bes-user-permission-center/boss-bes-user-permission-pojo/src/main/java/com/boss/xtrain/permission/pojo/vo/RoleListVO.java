@@ -24,7 +24,7 @@ public class RoleListVO extends BaseVO {
     private List<ResourceListVO> resourceList;
     private List<UserListVO> userList;
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long orgId;
+    private Long organizationId;
     @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
     @JsonSerialize(using = ToStringSerializer.class)
@@ -32,6 +32,6 @@ public class RoleListVO extends BaseVO {
     private String name;
     private String code;
     private String companyName;
-    private String orgName;
+    private String organizationName;
 
 }

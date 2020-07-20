@@ -3,7 +3,6 @@ package com.boss.xtrain.paper.controller;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
-import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.paper.ConditionQueryApi;
 import com.boss.xtrain.paper.ConditionQueryPaperService;
@@ -12,7 +11,6 @@ import com.boss.xtrain.paper.dto.conditionquerypaper.QueryPaperNameListDTO;
 import com.boss.xtrain.paper.vo.conditionquerypaper.PaperNameVO;
 import com.boss.xtrain.paper.vo.conditionquerypaper.PaperVO;
 import com.boss.xtrain.paper.vo.conditionquerypaper.QueryPaperNameListVO;
-import com.boss.xtrain.paper.vo.conditionquerypaper.QueryPaperVO;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -23,7 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+
 import java.util.List;
 
 /**

@@ -35,4 +35,13 @@ public interface ResourceService extends CommonCurdService<ResourceDTO,ResourceQ
      * @return Resource
      */
     ResourceDTO getStatusById(Long id);
+
+    /**
+     * 
+     * 
+     * @param dto
+     * @return List<TreeDTO>
+     * 
+    */
+//    List<TreeDTO> getAllResourceTree(ResourceQueryDTO dto);
 }

@@ -32,6 +32,7 @@ public class PaperSubject {
     private Long updatedBy;
 
     private Date updatedTime;
+
     @Version
     private Long version;
 

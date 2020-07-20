@@ -5,7 +5,7 @@ import lombok.*;
 
 /**
  * @version: V1.0
- * @className: AnswerDTO
+ * @className: ExamAnswerDTO
  * @packageName: com.boss.bes.paper.pojo.dto.papermanage
  * @description: 答案对象
  * @data: 11:00 2020/1/6

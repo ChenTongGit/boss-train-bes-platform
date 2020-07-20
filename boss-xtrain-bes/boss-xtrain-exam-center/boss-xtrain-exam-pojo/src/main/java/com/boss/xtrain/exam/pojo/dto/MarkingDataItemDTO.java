@@ -40,7 +40,6 @@ public class MarkingDataItemDTO {
     /**
      * 版本号
      */
-    @NotNull(message = "更新版本号不能为空")
     private Long version;
 
     public Long getId() {

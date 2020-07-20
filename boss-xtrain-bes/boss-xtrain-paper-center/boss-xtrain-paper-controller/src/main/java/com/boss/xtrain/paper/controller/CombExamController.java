@@ -12,7 +12,6 @@ import com.boss.xtrain.paper.dto.fastcomb.CombConfigQueryDTO;
 import com.boss.xtrain.paper.dto.fastcomb.CombExamDTO;
 import com.boss.xtrain.paper.dto.standardcomb.StandardCombDTO;
 import com.boss.xtrain.paper.dto.templatecomb.TemplateCombDTO;
-import com.boss.xtrain.paper.vo.downloadtemplate.TemplateCombExamVO;
 import com.boss.xtrain.paper.vo.fastcomb.*;
 
 import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;

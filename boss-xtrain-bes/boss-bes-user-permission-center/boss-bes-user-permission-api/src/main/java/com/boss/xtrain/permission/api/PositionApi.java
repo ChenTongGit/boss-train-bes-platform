@@ -6,12 +6,13 @@ import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.web.controller.CommonCRUDApi;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
+import com.boss.xtrain.permission.pojo.entity.Position;
 import com.boss.xtrain.permission.pojo.query.PositionQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.PositionListVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,7 +37,7 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
     CommonResponse<List<PositionListVO>> selectAllPosition();
 
     /**
-     *
+     *分页条件搜索
      *
      * @param request
      * @return CommonResponse<CommonPage<PositionListVO>>
@@ -44,5 +45,14 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
     */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<PositionListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<PositionQueryDTO>> request);
+
+
+    /**
+     * 分页全搜索
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectAllByPage")
+    CommonResponse<CommonPage<PositionListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
 
     }

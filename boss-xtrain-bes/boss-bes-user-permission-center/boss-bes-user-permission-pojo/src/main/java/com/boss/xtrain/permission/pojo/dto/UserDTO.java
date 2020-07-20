@@ -39,5 +39,6 @@ public class UserDTO extends BaseDTO {
     private String positionName;
     private String companyName;
     private String departmentName;
+    private String updateName;
     private List<RoleDTO> roleList;
 }

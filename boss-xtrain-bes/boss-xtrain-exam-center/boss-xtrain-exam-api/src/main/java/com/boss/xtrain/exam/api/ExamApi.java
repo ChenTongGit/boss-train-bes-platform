@@ -8,12 +8,12 @@ import com.boss.xtrain.exam.pojo.dto.SubmitExamDTO;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPaperInfoQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamBasicInfoVO;
 import com.boss.xtrain.exam.pojo.vo.ExamRecordIdVO;
+import com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 手机答卷考试api
@@ -59,7 +59,14 @@ public interface ExamApi {
     @PostMapping("/submit")
     CommonResponse<Integer>submitExam(@RequestBody @Valid CommonRequest<SubmitExamDTO> dto);
 
-
+    /**
+     * 获取考试格式的试卷（没有正确答案标识，以免拦截请求泄露信息）
+     * 如果redis存在，同时取出redis中的答案并合并
+     *
+     * @param request
+     * @return
+     */
+    CommonResponse<PaperSubjectAnswerVO> getExamPaper(CommonRequest<SubmitExamDTO> request);
 
 
 }

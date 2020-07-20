@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.pojo.entity;
 
+import com.boss.xtrain.permission.pojo.entity.BaseSystemEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -121,10 +122,5 @@ public class Company extends BaseSystemEntity {
     @Column(name = "website")
     private String website;
 
-    /**
-     *  当前行的版初始为0 每次数据变动则加1
-     */
-    @Column(name = "version")
-    private Long version;
 
 }

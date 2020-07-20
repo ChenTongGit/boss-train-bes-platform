@@ -1,5 +1,8 @@
 package com.boss.xtrain.exam.pojo.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,11 +21,13 @@ public class MarkingDataListVO {
     /**
      * 考试记录Id，用于操作
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long examRecordId;
 
     /**
      * 试卷id，用于批卷界面查询试卷
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long paperId;
 
     /**
@@ -78,6 +83,7 @@ public class MarkingDataListVO {
     /**
      * 版本号
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long version;
 
     /**

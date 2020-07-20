@@ -8,8 +8,8 @@
       This element was generated on Wed Jul 08 10:19:20 CST 2020.
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="t_c_id" property="tCId" jdbcType="BIGINT" />
-    <result column="t_o_id" property="tOId" jdbcType="BIGINT" />
+    <result column="t_c_id" property="companyId" jdbcType="BIGINT" />
+    <result column="t_o_id" property="organizationId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -22,24 +22,22 @@
   </resultMap>
   <resultMap id="ResourceMap" type="com.boss.xtrain.permission.pojo.entity.Resource">
     <id column="id" property="id"/>
-      <result column="module_detail_id" property="moduleDetailId" jdbcType="BIGINT" />
-      <result column="name" property="name" jdbcType="VARCHAR" />
-      <result column="code" property="code" jdbcType="VARCHAR" />
-      <result column="order_index" property="orderIndex" jdbcType="INTEGER" />
-      <result column="parent_id" property="parentId" jdbcType="BIGINT" />
-      <result column="url" property="url" jdbcType="VARCHAR" />
-      <result column="open_img" property="openImg" jdbcType="VARCHAR" />
-      <result column="close_img" property="closeImg" jdbcType="VARCHAR" />
-      <result column="resource_type" property="resourceType" jdbcType="TINYINT" />
-      <result column="leaf" property="leaf" jdbcType="TINYINT" />
-      <result column="action" property="action" jdbcType="TINYINT" />
-      <result column="remark" property="remark" jdbcType="VARCHAR" />
-      <result column="status" property="status" jdbcType="TINYINT" />
-      <result column="created_by" property="createdBy" jdbcType="BIGINT" />
-      <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
-      <result column="updated_by" property="updatedBy" jdbcType="BIGINT" />
-      <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
-      <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="status" property="status" />
+    <result column="created_by" property="createdBy" />
+    <result column="created_time" property="createdTime" />
+    <result column="updated_by" property="updatedBy" />
+    <result column="updated_time" property="updatedTime" />
+    <result column="version" property="version" />
+    <result column="code" property="code" />
+    <result column="name" property="name" />
+    <result column="order_index" property="orderIndex" />
+    <result column="parent_id" property="parentId" />
+    <result column="url" property="url" />
+    <result column="open_img" property="openImg" />
+    <result column="close_img" property="closeImg" />
+    <result column="resource_type" property="resourceType" />
+    <result column="leaf" property="leaf" />
+    <result column="remark" property="remark" />
   </resultMap>
 
   <resultMap id="UserMap" type="com.boss.xtrain.permission.pojo.entity.User">
@@ -55,7 +53,6 @@
     <result column="code" property="code" />
     <result column="password" property="password" />
     <result column="name" property="name" />
-    <result column="profile_picture" property="profilePicture" />
     <result column="password" property="password" />
     <result column="sex" property="sex" />
     <result column="birthday" property="birthday" />
@@ -84,14 +81,18 @@
 
   <!--通过RoleId去role_resource表查询相连的resourceId-->
   <select id="getResourcesByRoleId" parameterType="java.lang.Long" resultMap="ResourceMap">
-    select  a.id,a.name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
-  </select>
+        select  a.id,a.name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
+    </select>
+<<<<<<< HEAD
+=======
+
+>>>>>>> ysq-dev
 
   <select id="getUsers" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="UserMap">
     SELECT  tu.id,tu.name,tu.code,tu.company_id as companyId, tc.name as companyName
     FROM t_user tu,t_company tc
     <where>
-      tu.company_id = tc.id
+      tu.t_c_id = tc.id
       <if test="companyId != null and companyId != ''">
         AND tu.company_id = #{companyId}
       </if>
@@ -103,26 +104,26 @@
       </if>
     </where>
   </select>
-  <select id="getResources" resultType="com.boss.xtrain.permission.pojo.entity.ResourceTreeNode">
+  <select id="getResources" resultType="com.boss.xtrain.permission.pojo.query.TreeNode">
         SELECT id,name,order_index,parent_id as parentId from t_resource order by order_index
     </select>
   <insert id="allocateUser" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
   <delete id="deleteUserRole">
-    DELETE FROM user_role
-    WHERE role_id IN
+    DELETE FROM t_user_role
+    WHERE t_r_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
   </delete>
 
   <insert id="allocateResource" parameterType="com.boss.xtrain.permission.pojo.dto.RoleResourceDTO">
-        insert into role_resource (id,role_id,resource_id) VALUES (#{id},#{roleId},#{resourceId})
+        insert into t_role_resource (t_r_id,t_rs_id) VALUES (#{roleId},#{resourceId})
     </insert>
   <delete id="deleteRoleResource">
-    DELETE FROM role_resource
-    WHERE role_id IN
+    DELETE FROM t_role_resource
+    WHERE t_r_id IN
     <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
@@ -135,15 +136,15 @@
   <select id="getStatusById" parameterType="java.lang.Long" resultMap="RoleMap">
         select status from t_role where id=#{id}
     </select>
-  <select id="getResourceIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
+  <select id="getResourceIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
         select  a.id  from t_resource a left join role_resource b on a.id = b.resource_id  where b.role_id = #{id}
     </select>
   <select id="queryName" parameterType="com.boss.xtrain.permission.pojo.dto.RoleDTO" resultType="com.boss.xtrain.permission.pojo.dto.RoleDTO">
         select * from t_role where name=#{name}
     </select>
 
-  <select id="getUserIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
-        select distinct a.id  from t_user a left join user_role b on a.id = b.user_id  where b.role_id = #{id}
+  <select id="getUserIdsByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select distinct a.id  from t_user a left join t_user_role b on a.id = b.t_u_id  where b.t_r_id = #{id}
     </select>
 
 </mapper>

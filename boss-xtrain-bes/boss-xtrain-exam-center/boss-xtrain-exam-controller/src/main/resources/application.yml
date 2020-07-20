@@ -64,3 +64,6 @@ pagehelper:
 
 server:
   port: 18003 # 服务器端口。默认为 8080
+feign:
+  hystrix:
+    enabled: true

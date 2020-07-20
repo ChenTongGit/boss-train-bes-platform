@@ -19,13 +19,13 @@ public class AnswerDetailsVO {
      * 试卷试题答案id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    private Long paperSubjectAnswerId;
 
     /**
      * 对应的试题id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long paperSubjectId;
+    private Long subjectId;
 
     /**
      * 答案内容
@@ -37,20 +37,34 @@ public class AnswerDetailsVO {
      */
     private String imageUrl;
 
-    public Long getId() {
-        return id;
+    /**
+     * 是否为正确答案
+     */
+    private Boolean rightAnswer;
+
+
+    public Boolean getRightAnswer() {
+        return rightAnswer;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRightAnswer(Boolean rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
-    public Long getPaperSubjectId() {
-        return paperSubjectId;
+    public Long getPaperSubjectAnswerId() {
+        return paperSubjectAnswerId;
     }
 
-    public void setPaperSubjectId(Long paperSubjectId) {
-        this.paperSubjectId = paperSubjectId;
+    public void setPaperSubjectAnswerId(Long paperSubjectAnswerId) {
+        this.paperSubjectAnswerId = paperSubjectAnswerId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getAnswer() {

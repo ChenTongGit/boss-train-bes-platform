@@ -4,6 +4,7 @@ import com.boss.xtrain.exam.pojo.dto.MarkingDataItemDTO;
 import com.boss.xtrain.exam.pojo.dto.MarkingDataListDto;
 import com.boss.xtrain.exam.pojo.dto.MarkingSubmitDTO;
 import com.boss.xtrain.exam.pojo.dto.query.MarkingQuery;
+import com.boss.xtrain.exam.pojo.vo.MarkingDataItemVO;
 
 import java.util.List;
 import java.util.Map;
@@ -56,5 +57,5 @@ public interface ExamEvaluateService {
    * @return java.util.Map<java.lang.String,com.boss.xtrain.exam.pojo.dto.MarkingDataItemDTO>
    * @date 2020/7/16 15:08
    */
-    Map<String, MarkingDataItemDTO> getTempEvaluateResultMap(Long examRecordId);
+    Map<String, MarkingDataItemVO> getTempEvaluateResultMap(Long examRecordId);
 }

@@ -154,6 +154,7 @@ public enum BusinessError {
     SYSTEM_MANAGER_USER_QUERY_ERROR("220705","查询用户失败"),
     SYSTEM_MANAGER_USER_IN_USE("220706","该用户正在使用，无法编辑"),
     SYSTEM_MANAGER_USER_NOT_EXIST_ERROR("220707","该用户不存在"),
+    SYSTEM_MANAGER_USER_ALLOCATE_ROLE_ERROR("220708","用户分配角色失败"),
 
     /**
      * 系统管理 系统参数模块异常码
@@ -228,6 +229,8 @@ public enum BusinessError {
     PUBLISH_UPDATE_IS_PUBLISHED("240311","已发布"),
     PUBLISH_TABLE_UPDATE_FAILED("240312","发布记录更新失败"),
     EXAM_TMP_ANSWER_GET_FAIL("240313","获取缓存中作答数据失败"),
+    EXAM_PAPER_PREVIEW_ERR("240314","获取考试试卷失败"),
+    EXAM_PUBLISH_RECORD_GET_MARK_PEOPLE_ERR("240315","获取考试列表失败"),
 
 
     EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),
@@ -248,7 +251,8 @@ public enum BusinessError {
     EXAM_EVALUATE_QUERY_FAIL("260201","获取阅卷所需考试记录失败"),
     EXAM_EVALUATE_SET_TMP_MARKING_FAIL("260202","将阅卷的回传结果存储到redis失败"),
     EXAM_EVALUATE_GET_TMP_MARKING_FAIL("260203","从redis中获取阅卷的回传结果失败"),
-    MARKING_ANSWER_TABLE_QUERY_FAILED("260204","阅卷状态更新失败")
+    MARKING_ANSWER_TABLE_QUERY_FAILED("260204","阅卷状态更新失败"),
+    MARKING_GET_REDIS_FAILED("260204","从redis中获取阅卷记录失败")
     ;
 
     /**

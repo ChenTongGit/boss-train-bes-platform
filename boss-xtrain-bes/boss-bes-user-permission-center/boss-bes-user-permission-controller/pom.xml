@@ -46,6 +46,16 @@
         </dependency>
         <dependency>
             <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-bes-user-permission-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-bes-user-permission-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
             <artifactId>boss-xtrain-log</artifactId>
             <version>${project.version}</version>
         </dependency>
