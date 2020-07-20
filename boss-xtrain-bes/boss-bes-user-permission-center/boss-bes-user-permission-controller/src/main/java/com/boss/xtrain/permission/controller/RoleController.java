@@ -74,6 +74,7 @@ public class RoleController extends BaseController implements RoleApi {
     public CommonResponse<CommonPage<RoleListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<RoleDTO> companyDTOList = roleService.selectByCondition(request.getBody().getQuery());
+        log.info(companyDTOList.toString());
         List<RoleListVO> roleVOList = PojoUtils.copyListProperties(companyDTOList,RoleListVO::new);
         return buildPageResponse(page,roleVOList);
     }

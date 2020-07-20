@@ -20,3 +20,4 @@ public interface OrganizationService extends CommonCurdService<OrganizationDTO, 
      */
     OrganizationDTO selectOne(OrganizationQuery query);
 }
+

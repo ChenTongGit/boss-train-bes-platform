@@ -11,7 +11,6 @@ import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.vo.UserOnlineInfoVO;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

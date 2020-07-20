@@ -27,3 +27,4 @@ public class UserOnlineInfoQuery extends BaseQuery {
 
     private Long userId;
 }
+

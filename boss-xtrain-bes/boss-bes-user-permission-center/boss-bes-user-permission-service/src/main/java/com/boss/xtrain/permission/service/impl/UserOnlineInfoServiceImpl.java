@@ -248,3 +248,4 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }
+

@@ -69,10 +69,10 @@ public interface UserMapper extends CommonMapper<User> {
     /**
      * 通过positionName查User
      *
-     * @param positionName
+     * @param user
      * @return List<User>
      *
     */
-    List<ExamServiceUsersDTO> getUserByPosition(String positionName);
+    List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO user);
 
 }

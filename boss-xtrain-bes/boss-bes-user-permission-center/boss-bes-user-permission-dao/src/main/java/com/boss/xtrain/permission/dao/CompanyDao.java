@@ -79,3 +79,4 @@ public interface CompanyDao {
      */
     boolean existsByKey(Long companyId);
 }
+

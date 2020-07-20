@@ -265,3 +265,4 @@ public class CompanyServiceImpl implements CompanyService {
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }
+

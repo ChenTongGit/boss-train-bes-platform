@@ -76,6 +76,7 @@ public class UserDaoImpl implements UserDao {
         PojoUtils.copyProperties(dto,user);
         log.info("queryByCondition:",user.toString());
         return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
+
     }
 
     @Override
@@ -135,7 +136,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<ExamServiceUsersDTO> getUserByPosition(String positionName) {
-        return userMapper.getUserByPosition(positionName);
+    public List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO) {
+        return userMapper.getUserByPosition(queryDTO);
     }
 }

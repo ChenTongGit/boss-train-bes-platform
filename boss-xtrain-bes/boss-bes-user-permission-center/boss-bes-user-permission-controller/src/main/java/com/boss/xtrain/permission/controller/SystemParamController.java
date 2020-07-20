@@ -10,7 +10,6 @@ import com.boss.xtrain.permission.pojo.vo.SystemParamVO;
 import com.boss.xtrain.permission.service.SystemParamService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

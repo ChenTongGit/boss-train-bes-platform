@@ -28,3 +28,4 @@ public interface DepartmentService extends CommonCurdService<DepartmentDTO, Depa
     DepartmentDTO selectOne(DepartmentQuery query);
 
 }
+
