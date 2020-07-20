@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +40,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "批量删除系统参数")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<SystemParamDTO>> request) {
         List<SystemParamDTO> dtoList = request.getBody();
         return CommonResponseUtil.ok(service.delete(dtoList));
@@ -47,6 +49,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "添加系统参数信息")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.insert(dto));
@@ -55,6 +58,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "获取系统参数目录")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<List<SystemParamVO>> selectList(@Valid CommonRequest<SystemParamQuery> request) {
         SystemParamQuery query = request.getBody();
         List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
@@ -65,6 +69,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "搜索一个系统参数")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<SystemParamVO> select(@Valid CommonRequest<SystemParamQuery> request) {
         SystemParamQuery query = request.getBody();
         SystemParamDTO systemParamDTO = service.selectOne(query);
@@ -76,6 +81,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "更新系统参数信息")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.update(dto));
@@ -84,6 +90,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "删除一条系统参数信息")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));
@@ -98,6 +105,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件搜索系统参数信息并排序")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<CommonPage<SystemParamVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<SystemParamDTO> systemParamDTOList = service.selectByCondition(request.getBody().getQuery());
@@ -112,6 +120,7 @@ public class SystemParamController extends BaseController implements SystemParam
      * @return
      */
     @Override
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<CommonPage<SystemParamVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest<SystemParamQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(request.getBody().getQuery());
@@ -128,6 +137,7 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "禁用/启用 该条系统参数")
+    @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> changeUse(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO systemParamDTO = request.getBody();
         Integer status = systemParamDTO.getStatus();

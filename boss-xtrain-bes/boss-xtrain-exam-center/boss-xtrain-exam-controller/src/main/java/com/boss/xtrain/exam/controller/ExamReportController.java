@@ -19,6 +19,7 @@ import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ public class ExamReportController extends BaseController implements ExamReportAp
 
     @ApiOperation(value = "获取报表细节")
     @PostMapping("/examReportDetail")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_report_admin')")
     @Override
     public CommonResponse<CommonPage<ReportDataItemVO>> queryExamReport(@RequestBody @Valid CommonRequest<CommonPageRequest<ReportDetailQuery>> request) {
         Page<Object> page =doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
@@ -56,6 +58,7 @@ public class ExamReportController extends BaseController implements ExamReportAp
 
     @PostMapping("/examReport")
     @ApiOperation(value = "获取报表信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_report_admin')")
     @Override
     public CommonResponse<CommonPage<ReportDataListVO>> doQueryExamReport(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamReportQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());

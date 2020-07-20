@@ -1,5 +1,6 @@
-package com.boss.xtrain.permission;
+package com.boss.xtrain.authentication.configuration;
 
+import com.boss.xtrain.authentication.filter.UserInfoInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;

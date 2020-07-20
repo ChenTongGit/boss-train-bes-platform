@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @RequestMapping("/combExamConfig")
-@CrossOrigin
 public interface CombExamConfigApi {
     /**
      * 获取组卷配置（分页）

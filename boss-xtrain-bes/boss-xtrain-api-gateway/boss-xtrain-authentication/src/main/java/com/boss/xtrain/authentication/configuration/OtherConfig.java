@@ -6,11 +6,10 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Import(RedisConfig.class)
+@Import({RedisConfig.class})
 public class OtherConfig {
     @Bean
     public FeignClientInterceptor getFeignClientInterceptor(){

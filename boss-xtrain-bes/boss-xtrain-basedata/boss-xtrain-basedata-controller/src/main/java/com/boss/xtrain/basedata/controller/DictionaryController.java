@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.list.AbstractLinkedList;
 import org.bouncycastle.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +30,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class DictionaryController implements DictionaryApi {
 
     @Autowired
@@ -39,6 +39,7 @@ public class DictionaryController implements DictionaryApi {
     @Override
     @ApiLog(msg = "新增字典")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<DictionaryVO> insertDictionary(@RequestBody @Validated CommonRequest<DictionaryInsertVO> commonRequest) {
         DictionaryDTO dictionaryDTO = new DictionaryDTO();
         DictionaryInsertVO dictionaryInsertVO = commonRequest.getBody();
@@ -52,6 +53,7 @@ public class DictionaryController implements DictionaryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<List<DictionaryVO>> insertDictionaryList(@RequestBody CommonRequest<List<DictionaryInsertVO>> commonRequest) {
         List<DictionaryDTO> dictionaryDTOS = new ArrayList<>();
         PojoUtils.copyProperties(commonRequest.getBody(), dictionaryDTOS);
@@ -64,6 +66,7 @@ public class DictionaryController implements DictionaryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<Boolean> deleteDictionary(@RequestBody CommonRequest<DictionaryDeleteVO> commonRequest) {
         DictionaryDTO dictionaryDto = new DictionaryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(), dictionaryDto);
@@ -74,6 +77,7 @@ public class DictionaryController implements DictionaryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<Boolean> deleteDictionaryByIds(@RequestBody CommonRequest<DictionaryVO> commonRequest) {
         DictionaryIdsDTO dictionaryListDto = new DictionaryIdsDTO();
         PojoUtils.copyProperties(commonRequest.getBody(), dictionaryListDto);
@@ -84,6 +88,7 @@ public class DictionaryController implements DictionaryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<DictionaryVO> updateDictionary(@RequestBody CommonRequest<DictionaryUpdateVO> commonRequest) {
         DictionaryDTO dictionaryDto = new DictionaryDTO();
         DictionaryUpdateVO dictionaryVo = commonRequest.getBody();
@@ -95,6 +100,7 @@ public class DictionaryController implements DictionaryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<List<DictionaryVO>> queryDictionary(@RequestBody CommonRequest<DictionaryQueryVO> commonRequest) {
         List<DictionaryDTO> dictionaryDtos = dictionaryService.getDictionary();
         List<DictionaryVO> dictionaryVos = new ArrayList<>();

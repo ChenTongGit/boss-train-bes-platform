@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.service.ResourceService;
 import com.boss.xtrain.permission.api.ResourceApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -28,18 +29,21 @@ public class ResourceController implements ResourceApi {
     private ResourceService resourceService;
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<ResourceDTO> request) {
         ResourceDTO dto = request.getBody();
         return CommonResponseUtil.ok(resourceService.insert(dto));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<ResourceDTO> request) {
         ResourceDTO dto = request.getBody();
         return CommonResponseUtil.ok(resourceService.delete(dto));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<List<ResourceListVO>> selectList(@Valid CommonRequest<ResourceQueryDTO> request) {
         ResourceQueryDTO dto = request.getBody();
         List<ResourceDTO> dtos = resourceService.selectByCondition(dto);
@@ -47,29 +51,34 @@ public class ResourceController implements ResourceApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<ResourceListVO> select(@Valid CommonRequest<ResourceQueryDTO> request) {
         return null;
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<ResourceDTO> request) {
         ResourceDTO dto = request.getBody();
         return CommonResponseUtil.ok(resourceService.update(dto));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<ResourceDTO>> request) {
         List<ResourceDTO> resourceDTOS = request.getBody();
         return CommonResponseUtil.ok(resourceService.delete(resourceDTOS));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<List<ResourceListVO>> selectAllResource() {
         List<ResourceDTO> dtos = resourceService.selectAll();
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(dtos,ResourceListVO::new));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
         return null;
     }

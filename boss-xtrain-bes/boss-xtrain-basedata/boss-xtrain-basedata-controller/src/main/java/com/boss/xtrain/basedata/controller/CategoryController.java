@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +28,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class CategoryController extends BaseController implements CategoryApi {
 
     @Autowired
@@ -36,6 +36,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "新增题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CategoryVO> insertCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         log.info("request:",commonRequest.getBody().toString());
@@ -49,6 +50,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "删除题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<Boolean> deleteCategory(@RequestBody CommonRequest<CategoryDeleteIdsVO> commonRequest) {
         CategoryDeleteIdsVO categoryDeleteIdsVO =  commonRequest.getBody();
         log.info(categoryDeleteIdsVO.toString());
@@ -61,6 +63,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "修改题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CategoryVO> updateCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -72,6 +75,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "获取所有题目类别（不分页）")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public List<CategoryVO> getCategoryList(@RequestBody CategoryQueryVO categoryQueryVo) {
         log.info(categoryQueryVo.toString());
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
@@ -85,6 +89,7 @@ public class CategoryController extends BaseController implements CategoryApi {
 
     @Override
     @ApiLog(msg = "分页查询题目类别")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CommonPage<CategoryVO>> queryCategoryPage(@RequestBody CommonRequest<CategoryQueryVO> commonRequest) {
         CategoryQueryVO categoryQueryVO = commonRequest.getBody();
         log.info(categoryQueryVO.toString());
@@ -103,6 +108,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "树状获取题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<List<CategoryTreeVO>> getCategoryTree(@RequestBody CommonRequest<CategoryQueryVO> commonRequest) {
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryQueryDTO);
@@ -121,6 +127,7 @@ public class CategoryController extends BaseController implements CategoryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CategoryIdsVO> commonRequest) {
         CategoryIdsDTO categoryIdListDTO = new CategoryIdsDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryIdListDTO);
@@ -135,6 +142,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public List<SubjectCategoryVO> querySubjectCategory(CombInfoQueryDTO combInfoQueryDTO) {
         return null;
     }

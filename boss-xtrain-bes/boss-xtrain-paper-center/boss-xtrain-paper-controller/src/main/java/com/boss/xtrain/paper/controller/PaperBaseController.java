@@ -23,6 +23,7 @@ import com.boss.xtrain.paper.vo.templatecomb.TemplateVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -36,6 +37,8 @@ import java.util.List;
 public class PaperBaseController extends BaseController {
     @Autowired
     protected CreatePaperService createPaperService;
+
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('paper_base_admin')")
     PageInfo queryTemplateList(TemplateQueryVO templateQueryVo){
         TemplateQueryDTO templateQueryDto = new TemplateQueryDTO();
         //分页
@@ -46,6 +49,7 @@ public class PaperBaseController extends BaseController {
         pageInfo.setTotal(objects.getTotal());
         return pageInfo;
     }
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('paper_base_admin')")
     protected PageInfo queryPaperList(PaperQueryVO paperQueryVo){
         PaperQueryDTO paperQueryDto = new PaperQueryDTO();
         BeanCopierUtil.copy(paperQueryVo,paperQueryDto,new BasicConverter());
@@ -56,7 +60,7 @@ public class PaperBaseController extends BaseController {
         pageInfo.setTotal(objects.getTotal());
         return pageInfo;
     }
-
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('paper_base_admin')")
     CommonResponse downloadTemplatePaper(TemplateCombDTO templateCombDto){
         try{
             createPaperService.downLoadTemplate(templateCombDto);

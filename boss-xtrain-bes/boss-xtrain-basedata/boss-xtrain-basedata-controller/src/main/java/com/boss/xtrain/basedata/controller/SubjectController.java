@@ -19,6 +19,7 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +31,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class SubjectController extends BaseController implements SubjectApi {
 
     @Resource
@@ -42,6 +42,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "查询题目(分页)")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<CommonPage<SubjectVO>> querySubjectPage(@RequestBody CommonRequest<SubjectQueryVO> commonRequest) {
         SubjectQueryVO subjectQuery = commonRequest.getBody();
         log.info(subjectQuery.toString());
@@ -58,6 +59,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "查询题目(不分页)")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<List<SubjectVO>> querySubjectList(@RequestBody CommonRequest<SubjectQueryVO> commonRequest) {
         SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectQueryDTO);
@@ -70,6 +72,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "删除题目")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<Boolean> deleteSubject(@RequestBody CommonRequest<SubjectDeleteVO> commonRequest) {
         SubjectDeleteDTO subjectDeleteDTO = new SubjectDeleteDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectDeleteDTO);
@@ -81,6 +84,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "批量删除题目")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<Boolean> deleteSubjectList(@RequestBody CommonRequest<SubjectDeleteIdsVO> commonRequest) {
         SubjectDeleteIdsDTO subjectDeleteIdsDTO = new SubjectDeleteIdsDTO();
         List<Long> deleteList = commonRequest.getBody().getIds();
@@ -92,6 +96,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "插入题目")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<SubjectVO> insertSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
@@ -106,6 +111,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "更新题目")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<SubjectVO> updateSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
@@ -119,6 +125,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "获取题目答案")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<List<SubjectAnswerVO>> queryAnswer(@RequestBody CommonRequest<SubjectAnswerQueryVO> commonRequest) {
         SubjectAnswerQueryDTO answerQueryDTO = new SubjectAnswerQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),answerQueryDTO);
@@ -137,6 +144,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "获取题目难度")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<List<DifficultVO>> queryDifficult(@RequestBody CommonRequest<DifficultQueryVO> commonRequest) {
         DifficultQueryDTO difficultQueryDTO = new DifficultQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),difficultQueryDTO);
@@ -148,6 +156,7 @@ public class SubjectController extends BaseController implements SubjectApi {
     @Override
     @ApiLog(msg = "批量插入题目")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<SubjectVO> insertSubjectList(@RequestBody CommonRequest<List<SubjectUpdateVO>> commonRequest) {
         List<SubjectUpdateDTO> subjectUpdateDTOS = new ArrayList<>();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTOS);

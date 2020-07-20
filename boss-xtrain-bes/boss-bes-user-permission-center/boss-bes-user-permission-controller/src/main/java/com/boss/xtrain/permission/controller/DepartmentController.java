@@ -18,6 +18,7 @@ import com.github.pagehelper.Page;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,6 +47,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiLog(msg = "批量删除部门信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<DepartmentDTO>> request) {
         List<DepartmentDTO> dtoList = request.getBody();
         return CommonResponseUtil.ok(service.delete(dtoList));
@@ -60,6 +62,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找公司树节点")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<CompanyQuery>> selectTree() {
         try{
             return CommonResponseUtil.ok(treeService.companyTree());
@@ -72,6 +75,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找公司下的部门树节点")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<TreeNode>> selectDepartmentTree(@Valid CommonRequest<DepartmentQuery> request) {
         try{
             Long companyId = request.getBody().getCompanyId();
@@ -93,6 +97,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页搜索所有部门信息并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<DepartmentDTO> companyDTOList = service.selectAll();
@@ -108,6 +113,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件搜索部门信息并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<DepartmentDTO> departmentDTOList = service.selectByCondition(request.getBody().getQuery());
@@ -124,6 +130,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找该组织机构下的公司及部门")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<DepartmentVO>> selectAll() {
         //至少userId信息不为空
         List<DepartmentDTO> departmentDTOList = service.selectAll();
@@ -135,6 +142,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "添加部门信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.insert(dto));
@@ -143,6 +151,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "获取部门目录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
         DepartmentQuery query = request.getBody();
         List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
@@ -153,6 +162,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "获取一个部门信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<DepartmentVO> select(@Valid CommonRequest<DepartmentQuery> request) {
         DepartmentQuery query = request.getBody();
         DepartmentDTO organizationDTO = service.selectOne(query);
@@ -164,6 +174,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "更新部门信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.update(dto));
@@ -172,6 +183,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "删除一条部门信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));

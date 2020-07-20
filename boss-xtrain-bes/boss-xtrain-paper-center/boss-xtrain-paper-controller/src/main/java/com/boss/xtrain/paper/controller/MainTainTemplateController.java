@@ -13,6 +13,7 @@ import com.boss.xtrain.paper.vo.templatemanage.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,7 @@ public class MainTainTemplateController extends PaperBaseController implements M
      * @throws:
      */
     @ApiOperation("查询模板集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_template_admin')")
     @Override
     public CommonResponse getTemplate(@RequestBody CommonRequest<TemplateQueryVO> commonRequest) {
         return CommonResponseUtil.ok("20000","查询模板成功",queryTemplateList(commonRequest.getBody()));
@@ -49,6 +51,7 @@ public class MainTainTemplateController extends PaperBaseController implements M
      * @throws:
      */
     @ApiOperation("查询某个模板的题目集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_template_admin')")
     @Override
     public CommonResponse queryPaperDetail(@RequestBody CommonRequest<SubjectQueryDTO> commonRequest) {
         SubjectQueryDTO subjectQueryDto = commonRequest.getBody();
@@ -65,6 +68,7 @@ public class MainTainTemplateController extends PaperBaseController implements M
      * @throws:
      */
     @ApiOperation("删除单个模板")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_template_admin')")
     @Override
     public CommonResponse deleteOnePaper(@RequestBody CommonRequest<DeleteTemplateDTO> commonRequest) {
         DeleteTemplateDTO deleteTemplateDto = commonRequest.getBody();
@@ -82,6 +86,7 @@ public class MainTainTemplateController extends PaperBaseController implements M
      * @throws:
      */
     @ApiOperation("删除模板集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_template_admin')")
     @Override
     public CommonResponse deleteSomePaper(@RequestBody CommonRequest<TemplateListDTO> commonRequest) {
         TemplateListDTO templateListDto = commonRequest.getBody();
@@ -99,6 +104,7 @@ public class MainTainTemplateController extends PaperBaseController implements M
      * @throws:
      */
     @ApiOperation("更新模板")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_template_admin')")
     @Override
     public CommonResponse updateSubjectList(@RequestBody CommonRequest<TemplateUpdateDTO> commonRequest) {
         TemplateUpdateDTO templateUpdateDto = commonRequest.getBody();

@@ -3,6 +3,7 @@ package com.boss.xtrain.basedata.controller;
 import com.boss.xtrain.common.core.constant.CommonConstant;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@CrossOrigin
 public class LoginController {
 
     @ApiLog(msg = "test")

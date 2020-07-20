@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,6 +48,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "批量删除公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<CompanyDTO>> request) {
         List<CompanyDTO> dtoList = request.getBody();
         return CommonResponseUtil.ok(service.delete(dtoList));
@@ -60,6 +62,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "初始化下所有的公司")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<List<CompanyVO>> selectAllCompany() {
         List<CompanyDTO> companyDTOList = service.selectAll();
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
@@ -74,6 +77,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "获得所有的org信息以供company添加的时候选择")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
         try{
             return CommonResponseUtil.ok(treeService.orgTree());
@@ -86,6 +90,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "根据点击的org获得Company树的列表")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<List<CompanyQuery>> selectCombineCompany(@Valid CommonRequest<CompanyQuery> request) {
         try {
             CompanyQuery query = request.getBody();
@@ -105,6 +110,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "分页条件搜索公司信息并排序")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<CompanyDTO> companyDTOList = service.selectByCondition(request.getBody().getQuery());
@@ -121,6 +127,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "分页搜索全部公司信息并排序")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<CommonPage<CompanyVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<CompanyDTO> companyDTOList = service.selectAll();
@@ -131,6 +138,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "添加公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.insert(dto));
@@ -139,6 +147,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "获取公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<List<CompanyVO>> selectList(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
         List<CompanyDTO> companyDTOList = service.selectByCondition(query);
@@ -149,6 +158,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "搜索一条公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<CompanyVO> select(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
         CompanyQuery query = request.getBody();
         CompanyDTO companyDTO = service.selectOne(query);
@@ -160,6 +170,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "更新公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.update(dto));
@@ -168,6 +179,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "删除一条公司信息")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('company_admin')")
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));

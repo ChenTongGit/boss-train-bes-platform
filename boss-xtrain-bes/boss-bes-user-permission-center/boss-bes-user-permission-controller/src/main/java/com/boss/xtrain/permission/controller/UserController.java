@@ -33,22 +33,26 @@ public class UserController implements UserApi {
     @Autowired
     UserSerivce userSerivce;
 
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserDTO> request) {
         UserDTO userDTO = request.getBody();
         int row = userSerivce.insert(userDTO);
         return CommonResponseUtil.ok(row);
     }
-
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserDTO> request) {
         return CommonResponseUtil.ok(userSerivce.delete(request.getBody()));
     }
-
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<List<UserListVO>> selectList(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
         List<UserDTO> userDTOS = userSerivce.selectByCondition(queryDTO);
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
-
+    @Override
     public CommonResponse<UserListVO> select(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
         UserDTO userDTO = userSerivce.select(queryDTO);
@@ -56,25 +60,28 @@ public class UserController implements UserApi {
         PojoUtils.copyProperties(userDTO,vo);
         return CommonResponseUtil.ok(vo);
     }
-
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<UserDTO> request) {
         return CommonResponseUtil.ok(userSerivce.update(request.getBody()));
     }
-
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserDTO>> request) {
         List<UserDTO> userDTOS  = request.getBody();
         return CommonResponseUtil.ok(userSerivce.delete(userDTOS));
     }
-
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<List<UserListVO>> selectAllUser(){
         List<UserDTO> userDTOS = userSerivce.selectAll();
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
-
+    @Override
     public CommonResponse<List<RoleListVO>> getAllRole(@Valid CommonRequest<UserQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllRoles(request.getBody()),RoleListVO::new));
     }
-
+    @Override
     public CommonResponse<List<ResourceListVO>> getAllResource(@Valid CommonRequest<RoleQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllResource(request.getBody()),ResourceListVO::new));
     }

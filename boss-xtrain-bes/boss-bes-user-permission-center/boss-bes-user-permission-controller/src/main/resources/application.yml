@@ -1,5 +1,5 @@
 server:
-  port: 8882
+  port: 18001
 
 spring:
   cloud:
@@ -16,7 +16,7 @@ spring:
       minimum-idle: 5
 
   application:
-    name: boss-bes-system-center
+    name: boss-bes-system
   redis:
     host: 39.97.106.243
     password: 991018
@@ -30,15 +30,15 @@ security:
     client:
       clientId: bes
       clientSecret: 12345
-      userAuthorizationUri: http://localhost:4444/oauth/authorize
+      userAuthorizationUri: http://localhost:18006/oauth/authorize
       grant-type: password
       scope: read
-      access-token-uri: http://localhost:4444/oauth/token
+      access-token-uri: http://localhost:18006/oauth/token
     resource:
-      token-info-uri: http://localhost:4444/oauth/check_token
-      user-info-uri: http://localhost:4444/user
+      token-info-uri: http://localhost:18006/oauth/check_token
+      user-info-uri: http://localhost:18006/user
     authorization:
-      check-token-access: http://localhost:4444/oauth/check_token
+      check-token-access: http://localhost:18006/oauth/check_token
   #cloud:
     #nacos:
       # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类

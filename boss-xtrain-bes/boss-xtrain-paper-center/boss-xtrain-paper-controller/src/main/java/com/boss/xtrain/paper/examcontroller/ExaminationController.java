@@ -13,6 +13,7 @@ import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,7 @@ public class ExaminationController extends PaperBaseController implements Examin
      *
      * @return
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @ApiOperation("查询试卷集合")
     @Override
     public CommonResponse getAllPaper(@RequestBody CommonRequest<PaperQueryVO> commonRequest) {
@@ -42,12 +44,14 @@ public class ExaminationController extends PaperBaseController implements Examin
      * @return
      */
     @ApiOperation("查询某一试卷信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @Override
     public CommonResponse getOnePaperWithSubject(@RequestBody CommonRequest<ExamServiceQueryPaperDTO> commonRequest) {
         PaperAllMsgDTO paperAllMsgDTO= examService.getOnePaperMsg(commonRequest.getBody());
         return CommonResponseUtil.ok("20000","查询信息成功",paperAllMsgDTO);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @Override
     public CommonResponse getOnePaperAnswer(CommonRequest<ExamServiceQueryPaperDTO> commonRequest) {
         return null;

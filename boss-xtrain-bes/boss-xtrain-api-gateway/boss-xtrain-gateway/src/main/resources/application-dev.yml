@@ -21,6 +21,30 @@ spring:
           # 去除前缀
           filters:
             - StripPrefix=1
+        - id: boss-bes-exam
+          uri: lb://boss-bes-exam
+          order: 0
+          predicates:
+            - Path=/exam/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-basedata
+          uri: lb://boss-bes-basedata
+          order: 0
+          predicates:
+            - Path=/basedata/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-paper
+          uri: lb://boss-bes-paper
+          order: 0
+          predicates:
+            - Path=/paper/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
     #sentinel:
         #transport:
         # dashboard: localhost:8080 #配置sentinel dashboard地址

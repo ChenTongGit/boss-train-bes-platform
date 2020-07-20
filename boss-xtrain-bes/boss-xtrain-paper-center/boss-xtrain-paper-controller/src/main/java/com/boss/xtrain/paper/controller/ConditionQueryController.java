@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +48,7 @@ public class ConditionQueryController extends BaseController implements Conditio
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('condition_query_admin')")
     @ApiOperation("查询热门试卷名集合")
     @Override
     public CommonResponse queryPaperNameTip(@RequestBody CommonRequest<QueryPaperNameListVO> commonRequest) {
@@ -58,6 +60,7 @@ public class ConditionQueryController extends BaseController implements Conditio
 
     }
 
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('condition_query_admin')")
     @Override
     public String testfirst() {
         return "hello springboot";
@@ -72,6 +75,7 @@ public class ConditionQueryController extends BaseController implements Conditio
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('condition_query_admin')")
     @ApiOperation("条件查询试卷")
     @Override
     public CommonResponse conditionQueryPaper(@RequestBody CommonRequest<QueryPaperDTO> commonRequest) {

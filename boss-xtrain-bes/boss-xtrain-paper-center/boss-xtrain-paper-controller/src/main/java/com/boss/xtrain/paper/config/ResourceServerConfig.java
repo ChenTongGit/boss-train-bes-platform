@@ -1,4 +1,4 @@
-package com.boss.xtrain.permission.configuration;
+package com.boss.xtrain.paper.config;
 
 import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @Configuration
 @EnableResourceServer
 @Import(FeignClientInterceptor.class)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     // @Value("spring.security.resource.token-info-uri")
@@ -73,10 +73,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         //所有请求必须认证通过
         http.authorizeRequests()
             //下边的路径放行
-            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
-                "/swagger-resources","/swagger-resources/configuration/security",
-                "/swagger-ui.html","/webjars/**","/course/coursepic/list/**", "/education/bes/v1/user/select",
-                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource").permitAll()
-            .anyRequest().authenticated();
+            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
+                "/swagger-resources/configuration/security", "/swagger-ui.html","/webjars/**",
+                "/course/coursepic/list/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated();
     }
 }
