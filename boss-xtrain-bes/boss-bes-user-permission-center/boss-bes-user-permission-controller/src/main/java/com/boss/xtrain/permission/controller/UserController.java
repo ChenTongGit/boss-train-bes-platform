@@ -9,7 +9,6 @@ import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
-
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
@@ -17,11 +16,9 @@ import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
 import lombok.extern.slf4j.Slf4j;
 import com.github.pagehelper.Page;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,6 +43,7 @@ public class UserController extends BaseController implements UserApi {
         int row = userSerivce.insert(userDTO);
         return CommonResponseUtil.ok(row);
     }
+
     @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserDTO> request) {
@@ -59,14 +57,18 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
 
+
     @Override
     public CommonResponse<UserListVO> select(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
+        log.info(queryDTO.toString());
         UserDTO userDTO = userSerivce.select(queryDTO);
+        log.info(userDTO.toString());
         UserListVO vo = new UserListVO();
         PojoUtils.copyProperties(userDTO,vo);
         return CommonResponseUtil.ok(vo);
     }
+
 
     @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
