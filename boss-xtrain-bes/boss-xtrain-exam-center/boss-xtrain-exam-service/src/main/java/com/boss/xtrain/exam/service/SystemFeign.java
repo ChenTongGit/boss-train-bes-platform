@@ -24,7 +24,7 @@ import java.util.List;
  * @see
  * @since
  **/
-@FeignClient(name = "boss-bes-system-center", fallback = SystemFallBack.class)
+@FeignClient(name = "boss-bes-system", fallback = SystemFallBack.class)
 @Component
 public interface SystemFeign {
 

@@ -164,8 +164,12 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "使用paramType作为条件，大量删除同类型的系统参数纪录")
-    public CommonResponse<Integer> deleteBatchByType(@Valid CommonRequest<SystemParamDTO> request) {
-        SystemParamDTO dto = request.getBody();
-        return CommonResponseUtil.ok(service.deleteByParamType(dto));
+    public CommonResponse<Integer> deleteBatchByType(@Valid CommonRequest<SystemParamQuery> request) {
+        SystemParamQuery query = request.getBody();
+        //        Long orgId = token;从token中获取到所负责的组织机构
+        //5687565568097是测试用的orgID
+        Long orgId = 5687565568097L;
+        query.setOrganizationId(orgId);
+        return CommonResponseUtil.ok(service.deleteByParamType(query));
     }
 }

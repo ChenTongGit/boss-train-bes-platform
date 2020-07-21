@@ -1,5 +1,5 @@
 server:
-  port: 8883
+  port: 18001
 
 spring:
   cloud:
@@ -18,10 +18,10 @@ spring:
       maximum-pool-size: 10
 
   application:
-    name: boss-bes-system-ysqtest
+    name: boss-bes-system-qyqtest
   redis:
-    host: 39.97.106.243
-    password: 991018
+    host: 39.97.106.243 #123.57.156.184:6379
+    password: 991018 #bosstrain@14
 
   nacos-url:
 #    nacos-host: 39.97.106.243
