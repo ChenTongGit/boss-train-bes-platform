@@ -5,6 +5,8 @@ mapper:
   mappers: com.boss.xtrain.common.core.web.dao.CommonMapper
   identity: MYSQL
 spring:
+  application:
+    name: boss-bes-basedata
   datasource:
     url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true&autoReconnect=true&failOverReadOnly=false
     username: root
