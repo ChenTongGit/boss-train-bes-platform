@@ -48,7 +48,7 @@ public interface MainTainPaperDao {
      * @return: java.lang.Integer
      * @throws:
      */
-    void updateSubjectList(List<PaperSubject> tPaperSubjects);
+    Integer insertSubjectList(List<PaperSubject> tPaperSubjects);
     /**
      * @methodsName: queryPaperList
      * @description: 查询试卷查询试卷
@@ -72,7 +72,7 @@ public interface MainTainPaperDao {
      * @return: java.lang.Integer
      * @throws:
      */
-    Integer updateVersion(Paper tPaper);
+    Integer updatePaper(Paper tPaper);
     /**
      * @methodsName: updatePaperScore
      * @description: 更新试卷总分
@@ -102,6 +102,6 @@ public interface MainTainPaperDao {
      * @return: java.lang.Integer
      * @throws:
      */
-    Integer updateAnswerList(List<PaperSubjectAnswer> paperSubjectAnswers);
+    Integer insertAnswerList(List<PaperSubjectAnswer> paperSubjectAnswers);
 }
 

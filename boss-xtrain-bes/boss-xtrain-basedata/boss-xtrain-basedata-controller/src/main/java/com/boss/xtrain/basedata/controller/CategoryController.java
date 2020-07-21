@@ -26,6 +26,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class CategoryController extends BaseController implements CategoryApi {
 
     @Autowired
