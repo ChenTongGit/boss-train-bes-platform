@@ -100,7 +100,6 @@ public class UserServiceImpl implements UserSerivce {
         }else {
             try {
                 for(UserRoleDTO userRoleDTO :dtos){
-                    userRoleDTO.setId(worker.nextId());
                     userDao.allocateRole(userRoleDTO);
                 }
             }catch (Exception e){
