@@ -54,7 +54,8 @@ spring:
 
   # 组nacos和seata服务地址
   nacos-url:
-    nacos-host: 123.57.156.184
+    nacos-host: localhost
+    #123.57.156.184
     nacos-port: 8848
   seata-url:
     seata-host: 123.57.156.184

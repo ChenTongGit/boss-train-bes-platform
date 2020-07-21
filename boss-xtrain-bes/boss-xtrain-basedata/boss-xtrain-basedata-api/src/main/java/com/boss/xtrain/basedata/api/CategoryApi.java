@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/category")
+@RequestMapping("/basedata/category")
 public interface CategoryApi {
 
     /**
