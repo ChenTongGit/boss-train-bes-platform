@@ -33,6 +33,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
     public List<UserOnlineInfo> selectByCondition(UserOnlineInfoQuery query) {
         Example example = new Example(UserOnlineInfo.class);
         Example.Criteria criteria = example.createCriteria();
+        // 多条件查询
         if(query.getCode()!=null) {
             criteria.andEqualTo("code", query.getCode());
         }
@@ -44,6 +45,10 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         }
         if(query.getOfflineTime()!=null){
             criteria.andLessThanOrEqualTo("offlineTime",query.getOfflineTime());
+        }
+        //初始化查询
+        if(query.getUserId()!=null) {
+            criteria.andEqualTo("userId", query.getUserId());
         }
         return mapper.selectByExample(example);
     }

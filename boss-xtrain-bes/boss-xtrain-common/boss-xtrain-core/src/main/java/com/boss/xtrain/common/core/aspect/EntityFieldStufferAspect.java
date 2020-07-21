@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +84,12 @@ public class EntityFieldStufferAspect {
 	@Around("daoUpdate()")
     public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("update");
+		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		if (attributes == null) {
+			return pjp.proceed();
+		}
+		HttpServletRequest request = attributes.getRequest();
+		String token = request.getHeader("token");
 		EntityFields entityFields = getEntityFields();
 		if (entityFields == null) return pjp.proceed();
 
