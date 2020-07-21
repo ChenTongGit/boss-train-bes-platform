@@ -115,8 +115,7 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
             List<ExamPublishRecord> examPublishRecords = examPublishRecordDao.queryByCondition(query);
             // 获取所有发布人及其id的map
             UserQueryDTO userQueryDTO = new UserQueryDTO();
-            userQueryDTO.setPositionName("考试发布人");
-
+//            userQueryDTO.setPositionName("考试发布人");
             CommonRequest<UserQueryDTO> request = new CommonRequest<>();
             request.setBody(userQueryDTO);
             List<ExamServiceUsersDTO> examServiceUsersDTOS = systemFeign.getUserByPosition(request).getData();
