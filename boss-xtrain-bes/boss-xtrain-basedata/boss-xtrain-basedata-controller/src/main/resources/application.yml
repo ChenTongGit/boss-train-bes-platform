@@ -6,7 +6,7 @@ mapper:
   identity: MYSQL
 spring:
   datasource:
-    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true
+    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: guoxinrui0622
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,6 +15,8 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
+  application:
+      name: basedata
   cloud:
     nacos:
       discovery:
@@ -22,7 +24,7 @@ spring:
 
   # 组nacos和seata服务地址
   nacos-url:
-    nacos-host: 123.57.156.184
+    nacos-host: localhost
     nacos-port: 8848
   security:-url:
     host: localhost
