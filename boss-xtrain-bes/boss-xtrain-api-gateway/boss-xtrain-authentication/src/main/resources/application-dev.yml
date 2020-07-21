@@ -46,7 +46,7 @@ security:
       user-authorization-uri: http://localhost:${server.port}/auth/oauth/authorize
       client-id: web
     resource:
-      user-info-uri:  http://localhost:4445/api/user
+      user-info-uri:  http://localhost:${server.port}/user
       prefer-token-info: false
 # feign调用超时时间配置
 feign:

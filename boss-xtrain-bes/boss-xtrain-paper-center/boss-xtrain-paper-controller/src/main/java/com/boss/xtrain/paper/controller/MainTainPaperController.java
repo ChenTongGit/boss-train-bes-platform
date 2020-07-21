@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +47,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("查询试卷集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_paper_admin')")
     @Override
     public CommonResponse getPaper(@RequestBody CommonRequest<PaperQueryDTO> commonRequest) {
         List<PaperVO> list = mainTainPaperService.getPaper(commonRequest.getBody());
@@ -66,6 +68,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("删除单个试卷")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_paper_admin')")
     @Override
     public CommonResponse deleteOnePaper(@RequestBody CommonRequest<DeletePaperDTO> commonRequest) {
         DeletePaperDTO deletePaperDto = commonRequest.getBody();
@@ -87,6 +90,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("删除试卷集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_paper_admin')")
     @ApiLog
     @Override
     public CommonResponse deleteSomePaper(@RequestBody CommonRequest<PaperListDTO> commonRequest) {
@@ -109,6 +113,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("查询某个试卷题目集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_paper_admin')")
     @Override
     public CommonResponse queryPaperDetail(@RequestBody CommonRequest<SubjectQueryDTO> commonRequest) {
         SubjectQueryDTO subjectQueryDto = commonRequest.getBody();
@@ -125,6 +130,7 @@ public class MainTainPaperController extends PaperBaseController implements Main
      * @throws:
      */
     @ApiOperation("更新试卷")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('main_tain_paper_admin')")
     @Override
     public CommonResponse updateSubjectList(@RequestBody CommonRequest<PaperUpdateDTO> commonRequest) {
         PaperUpdateDTO paperUpdateDto = commonRequest.getBody();

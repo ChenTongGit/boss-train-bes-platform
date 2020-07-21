@@ -13,6 +13,7 @@ import com.boss.xtrain.paper.vo.templatecomb.TemplateQueryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,7 @@ public class DownloadTemplateController extends PaperBaseController implements D
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('download_template_admin')")
     @ApiOperation("查询模板集合")
     @Override
     public CommonResponse getTemplate(@RequestBody CommonRequest<TemplateQueryVO> commonRequest) {
@@ -50,6 +52,7 @@ public class DownloadTemplateController extends PaperBaseController implements D
      */
     @Override
     @ApiOperation("下载模板")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('download_template_admin')")
     public CommonResponse downLoadTemplate(@RequestBody CommonRequest<TemplateCombDTO> commonRequest) {
         return downloadTemplatePaper(commonRequest.getBody());
     }

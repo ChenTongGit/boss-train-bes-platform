@@ -110,6 +110,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             .allowFormAuthenticationForClients()
             .passwordEncoder(new NoEncryptPasswordEncoder())
             .tokenKeyAccess("permitAll()")
-            .checkTokenAccess("isAuthenticated()");
+            .checkTokenAccess("permitAll()");
     }
 }

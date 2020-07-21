@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,7 @@ public class ExamRecordController extends BaseController implements ExamRecordAp
      * @date 2020/7/11 0:37
      */
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_record_admin')")
     @ApiOperation(value = "获取答卷列表")
     public CommonResponse<CommonPage<ExamRecordVO>> findExamRecordByPage(@Valid CommonRequest<CommonPageRequest<ExamRecordQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
@@ -65,9 +67,9 @@ public class ExamRecordController extends BaseController implements ExamRecordAp
      * @date 2020/7/11 0:41
      */
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_record_admin')")
     @ApiOperation(value = "获取答卷详情")
     public CommonResponse<PaperSubjectAnswerVO> findAnswerPaperDetail(@Valid CommonRequest<SubmitExamDTO> request) {
-
         return CommonResponseUtil.ok(this.examRecordService.getCompletePaper(request.getBody(), false));
     }
 }

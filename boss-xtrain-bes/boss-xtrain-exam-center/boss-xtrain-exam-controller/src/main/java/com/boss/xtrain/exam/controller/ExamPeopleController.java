@@ -17,6 +17,7 @@ import com.boss.xtrain.exam.service.ExamPeopleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +51,7 @@ public class ExamPeopleController extends BaseController implements ExamPeopleAp
      */
     @ApiLog(msg = "考生注册")
     @ApiOperation(value = "考生注册")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_people_admin')")
     @Override
     public CommonResponse<Integer> examRegister(@Valid CommonRequest<ExamPeopleRegisterDTO> request) {
         return CommonResponseUtil.ok(examPeopleService.register(request.getBody()));
@@ -65,6 +67,7 @@ public class ExamPeopleController extends BaseController implements ExamPeopleAp
      */
     @ApiLog(msg = "考生上传照片->oos")
     @ApiOperation(value = "考生上传照片")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_people_admin')")
     @Override
     public CommonResponse<String> uploadPhoto(@Valid CommonRequest<ExamPeoplePhotoDTO> request) {
         return null;
@@ -94,6 +97,7 @@ public class ExamPeopleController extends BaseController implements ExamPeopleAp
      */
     @ApiLog(msg = "考生登录 -  手机验证码")
     @ApiOperation(value = "考生通过手机验证码登录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_people_admin')")
     @Override
     public CommonResponse<ExamPeopleInfoVO> loginWithMsg(@Valid CommonRequest<String> mobile) {
         // 考生登录并获取考生信息

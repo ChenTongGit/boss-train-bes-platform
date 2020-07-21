@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,10 +40,9 @@ public class PositionController extends BaseController implements PositionApi {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
-
     @Override
     @ApiOperation("新增职位")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO body = request.getBody();
         log.info(body.toString());
@@ -50,12 +50,14 @@ public class PositionController extends BaseController implements PositionApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO body = request.getBody();
         return CommonResponseUtil.ok(positionService.delete(body));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<List<PositionListVO>> selectList(@Valid CommonRequest<PositionQueryDTO> request) {
         PositionQueryDTO query = request.getBody();
         List<PositionDTO> positionDTOS = positionService.selectByCondition(query);
@@ -64,17 +66,20 @@ public class PositionController extends BaseController implements PositionApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<PositionListVO> select(@Valid CommonRequest<PositionQueryDTO> request) {
         return null;
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO dto = request.getBody();
         return CommonResponseUtil.ok(positionService.update(dto));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<PositionDTO>> request) {
         List<PositionDTO> body = request.getBody();
         return CommonResponseUtil.ok(positionService.delete(body));
@@ -82,6 +87,7 @@ public class PositionController extends BaseController implements PositionApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<List<PositionListVO>> selectAllPosition() {
 //       PositionQueryDTO query = request.getBody();
 //       List<PositionDTO> positionDTOS = positionService.selectAll(query);
@@ -92,6 +98,7 @@ public class PositionController extends BaseController implements PositionApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<CommonPage<PositionListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<PositionQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         log.info(request.getBody().getQuery().toString());

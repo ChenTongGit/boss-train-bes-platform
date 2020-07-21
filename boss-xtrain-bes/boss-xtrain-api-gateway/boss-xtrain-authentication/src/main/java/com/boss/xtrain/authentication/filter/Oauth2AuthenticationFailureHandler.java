@@ -1,4 +1,4 @@
-package com.boss.xtrain.authentication.configuration;
+package com.boss.xtrain.authentication.filter;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.security.core.AuthenticationException;

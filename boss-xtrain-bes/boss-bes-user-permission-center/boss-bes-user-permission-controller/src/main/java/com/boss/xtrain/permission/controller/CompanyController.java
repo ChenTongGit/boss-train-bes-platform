@@ -187,5 +187,4 @@ public class CompanyController extends BaseController implements CompanyApi {
         CompanyDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));
     }
-
 }

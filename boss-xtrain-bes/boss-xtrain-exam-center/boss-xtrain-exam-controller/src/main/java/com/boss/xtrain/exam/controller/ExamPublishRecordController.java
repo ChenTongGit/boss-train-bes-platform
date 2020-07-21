@@ -26,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +78,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @date 2020/7/7 22:09
      */
     @ApiOperation(value = "添加考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<ExamPublishRecordAddDTO> request) {
         return CommonResponseUtil.ok(examPublishRecordService.insert(request.getBody()));
@@ -90,6 +92,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     @ApiLog(msg = "查询考试发布记录")
     @PostMapping("/records")
     @ApiOperation(value = "查询考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     public CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request){
         // 设置分页区间 index size
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
@@ -157,6 +160,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      */
     @ApiLog(msg = "删除考试发布记录")
     @ApiOperation(value = "删除考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<ExamPublishDeleteDTO>> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.delete(request.getBody()));
@@ -171,6 +175,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      */
     @ApiLog(msg = "查询考试发布记录")
     @ApiOperation(value = "更新考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordUpdateDTO> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.update(request.getBody()));
@@ -185,6 +190,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @date 2020/7/7 22:18
      */
     @ApiOperation(value = "发布考试")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Boolean> publishExam(@RequestBody @Valid CommonRequest<ExamPublishDTO> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.publishExam(request.getBody()));
@@ -201,6 +207,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
 
     @Override
     @ApiOperation(value = "批量发布考试")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     public CommonResponse<Boolean> publishExamBatch(@RequestBody @Valid CommonRequest<List<ExamPublishDTO>> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.publishExamBatch(request.getBody()));
     }
