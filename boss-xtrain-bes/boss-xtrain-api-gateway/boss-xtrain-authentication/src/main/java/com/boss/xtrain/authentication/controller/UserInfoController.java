@@ -1,6 +1,7 @@
 package com.boss.xtrain.authentication.controller;
 
 
+import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.util.JwtUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class UserInfoController {
      * @return 解析后的数据
      */
     @GetMapping("/token_parse")
-    public String user(@RequestParam String token) {
-        return JwtUtils.getParseToken(token);
+    public String user(@RequestParam CommonRequest<String> token) {
+        return JwtUtils.getParseToken(token.getBody());
     }
 }
