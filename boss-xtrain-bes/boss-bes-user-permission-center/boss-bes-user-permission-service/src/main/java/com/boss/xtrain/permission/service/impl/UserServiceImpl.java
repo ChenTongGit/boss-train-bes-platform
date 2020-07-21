@@ -55,16 +55,17 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public UserDTO select(UserQueryDTO query) {
         try {
-            User user = userDao.selectByKey(query.getId());
-            UserDTO dto = new UserDTO();
-            PojoUtils.copyProperties(user,dto);
-            dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
+            UserDTO dto = userDao.queryByCondition(query).get(0);
+            if(dto.getUpdatedBy()!=null) {
+                dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
+            }
             dto.setOrganizationId(companyDao.selectByKey(dto.getCompanyId()).getOrganizationId());
             dto.setOrganizationName(organizationDao.selectByPrimaryKey(dto.getOrganizationId()).getName());
             dto.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
             dto.setDepartmentName(departmentDao.selectByKey(dto.getDepartmentId()).getName());
             return dto;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);
         }
     }
@@ -149,6 +150,7 @@ public class UserServiceImpl implements UserSerivce {
             }
             return userDTOS;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR);
         }
     }

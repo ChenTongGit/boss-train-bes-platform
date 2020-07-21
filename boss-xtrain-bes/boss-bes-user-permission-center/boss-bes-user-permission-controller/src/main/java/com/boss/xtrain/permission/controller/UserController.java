@@ -61,7 +61,9 @@ public class UserController extends BaseController implements UserApi {
     @Override
     public CommonResponse<UserListVO> select(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
+        log.info(queryDTO.toString());
         UserDTO userDTO = userSerivce.select(queryDTO);
+        log.info(userDTO.toString());
         UserListVO vo = new UserListVO();
         PojoUtils.copyProperties(userDTO,vo);
         return CommonResponseUtil.ok(vo);
