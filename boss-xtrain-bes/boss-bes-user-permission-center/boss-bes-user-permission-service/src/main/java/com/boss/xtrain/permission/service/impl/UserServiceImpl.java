@@ -55,10 +55,10 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public UserDTO select(UserQueryDTO query) {
         try {
-            User user = userDao.selectByKey(query.getId());
-            UserDTO dto = new UserDTO();
-            PojoUtils.copyProperties(user,dto);
-            dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
+            UserDTO dto = userDao.queryByCondition(query).get(0);
+            if(dto.getUpdatedBy()!=null){
+                dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
+            }
             dto.setOrganizationId(companyDao.selectByKey(dto.getCompanyId()).getOrganizationId());
             dto.setOrganizationName(organizationDao.selectByPrimaryKey(dto.getOrganizationId()).getName());
             dto.setCompanyName(companyDao.selectByKey(dto.getCompanyId()).getName());
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserSerivce {
         }else {
             try {
                 for(UserRoleDTO userRoleDTO :dtos){
-                    userRoleDTO.setId(worker.nextId());
+//                    userRoleDTO.setId(worker.nextId());
                     userDao.allocateRole(userRoleDTO);
                 }
             }catch (Exception e){
@@ -141,7 +141,9 @@ public class UserServiceImpl implements UserSerivce {
             List<UserDTO> userDTOS = userDao.queryByCondition(query);
             for(UserDTO userDTO : userDTOS){
                 userDTO.setRoleList(PojoUtils.copyListProperties(userDao.getRoles(query),RoleDTO::new));
-                userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+                if(userDTO.getUpdatedBy()!=null){
+                    userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+                }
                 userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
@@ -228,6 +230,7 @@ public class UserServiceImpl implements UserSerivce {
         try {
             log.info(dto.toString());
 //            return userDao.update(dto);
+            dto.setVersion(userDao.selectByKey(dto.getId()).getVersion());
             return userDao.userUpdate(dto);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -248,6 +251,7 @@ public class UserServiceImpl implements UserSerivce {
         }
         try {
             dto.setId(worker.nextId());
+            dto.setVersion(0L);
 //            return userDao.insert(dto);
             return userDao.userInsert(dto);
         }catch (Exception e){

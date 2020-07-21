@@ -51,6 +51,7 @@ public class RoleServiceImpl implements RoleService {
         try {
             dto.setId(worker.nextId());
             log.info(dto.toString());
+            dto.setVersion(0L);
             return roleDao.roleInsert(dto);
 //            return roleDao.insert(dto);
         }catch (Exception e){
@@ -65,6 +66,7 @@ public class RoleServiceImpl implements RoleService {
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ROLE_NOT_EXIST_ERROR);
         try {
 //            return roleDao.update(dto);
+            dto.setVersion(roleDao.selectByKey(dto.getId()).getVersion());
             return roleDao.roleUpdate(dto);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -136,7 +138,7 @@ public class RoleServiceImpl implements RoleService {
             return false;
         }else {
             for (UserRoleDTO userRoleDTO :userRoleDTOS){
-                userRoleDTO.setId(worker.nextId());
+//                userRoleDTO.setId(worker.nextId());
                 try {
                     roleDao.allocateUser(userRoleDTO);
                 }catch (Exception e){

@@ -91,7 +91,7 @@ public class ResourceController extends BaseController implements ResourceApi {
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<ResourceDTO> companyDTOList = resourceService.selectByCondition(request.getBody().getQuery());
-        log.info(companyDTOList.toString());
+        log.info("resource:"+companyDTOList.toString());
         if (request.getBody().getQuery().isSearchChild()) {
             ResourceQueryDTO d = new ResourceQueryDTO();
             d.setParentId(companyDTOList.get(0).getId());
@@ -107,7 +107,7 @@ public class ResourceController extends BaseController implements ResourceApi {
     @Override
     public CommonResponse<CommonPage<ResourceListVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        log.info(page.toString());
+        log.info("controller:"+page.toString());
         List<ResourceDTO> positionDTOList = resourceService.selectAll();
         List<ResourceListVO> positionVOList = PojoUtils.copyListProperties(positionDTOList, ResourceListVO::new);
         return buildPageResponse(page,positionVOList);

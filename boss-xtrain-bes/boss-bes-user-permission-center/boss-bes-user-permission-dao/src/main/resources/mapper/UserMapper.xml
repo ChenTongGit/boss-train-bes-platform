@@ -109,7 +109,7 @@
         </where>
     </select>
     <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
     <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
