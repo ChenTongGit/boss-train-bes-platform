@@ -1,9 +1,11 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
@@ -144,7 +146,9 @@ public class CompanyController extends BaseController implements CompanyApi {
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
         //        Long createdBy = token获取userID
-        Long createdBy = null;
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long createdBy = (Long) JSONObject.parseObject(json).get("id");
         dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
@@ -177,6 +181,11 @@ public class CompanyController extends BaseController implements CompanyApi {
         CompanyDTO dto = request.getBody();
 //        Long updateUser = token;从token中获得更新人id
 //        dto.setUpdatedBy(updateUser);
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long updatedBy = (Long) JSONObject.parseObject(json).get("id");
+
+        dto.setUpdatedBy(updatedBy);
         return CommonResponseUtil.ok(service.update(dto));
     }
 
