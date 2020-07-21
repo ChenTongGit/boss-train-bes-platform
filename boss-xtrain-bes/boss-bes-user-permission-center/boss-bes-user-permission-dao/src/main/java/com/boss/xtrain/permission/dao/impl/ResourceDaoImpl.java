@@ -63,12 +63,8 @@ public class ResourceDaoImpl implements ResourceDao {
         Example example = new Example(Resource.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("name","%"+dto.getName()+"%");
-//        Resource resource = new Resource();
-//        PojoUtils.copyProperties(dto,resource);
-//        List<Resource> resources = resourceMapper.select(resource);
-//        log.info("entity:"+resources.toString());
-//        List<ResourceDTO> dtos = PojoUtils.copyListProperties(resources,ResourceDTO::new);
-//        log.info("dto:"+dtos.toString());
+
+        example.or().andEqualTo("parentId",dto.getParentId());
         return PojoUtils.copyListProperties(resourceMapper.selectByExample(example),ResourceDTO::new);
     }
 

@@ -90,6 +90,7 @@ public class ResourceController extends BaseController implements ResourceApi {
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('resource_admin')")
     public CommonResponse<CommonPage<ResourceListVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<ResourceQueryDTO>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        log.info("query:"+request.getBody().getQuery());
         List<ResourceDTO> companyDTOList = resourceService.selectByCondition(request.getBody().getQuery());
         log.info("resource:"+companyDTOList.toString());
         if (request.getBody().getQuery().isSearchChild()) {
