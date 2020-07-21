@@ -37,10 +37,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     // @Value("spring.security.resource.token-info
     private static final String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
-    @Autowired
+/*    @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;
     @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;*/
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
@@ -85,13 +85,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                 "/swagger-resources","/swagger-resources/configuration/security",
                 "/swagger-ui.html","/webjars/**","/course/coursepic/list/**", "/education/bes/v1/user/select",
-                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource","*/**").permitAll()
+                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource","/**").permitAll()
             .anyRequest().authenticated();
     }
 
-    @Override
+/*    @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(authExceptionEntryPoint)
             .accessDeniedHandler(customAccessDeniedHandler);
-    }
+    }*/
 }
