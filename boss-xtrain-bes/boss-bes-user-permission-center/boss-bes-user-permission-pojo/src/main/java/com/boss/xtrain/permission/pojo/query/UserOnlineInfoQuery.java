@@ -19,6 +19,8 @@ public class UserOnlineInfoQuery extends BaseQuery {
     private String code;
     private String name;
 
+    private Long organizationId;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date onlineTime;
 
