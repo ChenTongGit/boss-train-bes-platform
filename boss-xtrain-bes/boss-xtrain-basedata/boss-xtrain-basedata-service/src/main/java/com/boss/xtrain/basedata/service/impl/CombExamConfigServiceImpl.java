@@ -1,13 +1,10 @@
 package com.boss.xtrain.basedata.service.impl;
 
-import com.boss.xtrain.basedata.dao.CombExamConfigDao;
-import com.boss.xtrain.basedata.dao.CombExamItemDao;
-import com.boss.xtrain.basedata.dao.SubjectDao;
+import com.boss.xtrain.basedata.dao.*;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.*;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
-import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
-import com.boss.xtrain.basedata.pojo.entity.Dictionary;
+import com.boss.xtrain.basedata.pojo.entity.*;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
@@ -17,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
+
 import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import tk.mybatis.mapper.entity.Example;
@@ -40,6 +37,12 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Autowired
     private SubjectDao subjectDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
+    private SubjectTypeDao subjectTypeDao;
 
     @Autowired
     private IdWorker idWorker;
@@ -130,6 +133,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     @Override
     public List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
         List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfig(combExamConfigQueryDTO);
+        log.info(combExamConfigs.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
         log.info(combExamConfigDtoList.toString());
         for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
@@ -170,7 +174,32 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
             combExamItemDTO.setDifficultyName(difficultyVOS.get(count).getValue());
             count++;
         }
+        int count1 = 0;
+        List<String> categories = new ArrayList<>();
+        for (CombExamItemDTO combExamItemDTO : configItemDtoList){
+            Example example1 = new Example(Category.class);
+            Example.Criteria criteria1 = example1.createCriteria();
+            criteria1.andEqualTo("id",combExamItemDTO.getCategoryId());
+            categories = categoryDao.queryCategoryNameById(example1);
+            combExamItemDTO.setCategoryName(categories.get(count1));
+            if (categories.size() > count1+1){
+                count1++;
+            }
 
+        }
+
+        int count2 = 0;
+        List<String> types = new ArrayList<>();
+        for (CombExamItemDTO combExamItemDTO : configItemDtoList){
+            Example example2 = new Example(SubjectType.class);
+            Example.Criteria criteria2 = example2.createCriteria();
+            criteria2.andEqualTo("id",combExamItemDTO.getSubjectTypeId());
+            types = subjectTypeDao.queryTypeNameById(example2);
+            combExamItemDTO.setSubjectTypeName(types.get(count2));
+            if (types.size() > count2+1){
+                count2++;
+            }
+        }
         return configItemDtoList;
 
     }
@@ -191,8 +220,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
         combExamConfigDelDto.setId(combExamConfigId);
         combExamItemDao.deleteItem(combExamConfigDelDto);
 
-        List<CombExamItem> configItemList = new ArrayList<>();
-        PojoUtils.copyProperties(itemList,configItemList);
+        List<CombExamItem> configItemList = PojoUtils.copyListProperties(itemList,CombExamItem::new);
         for(CombExamItem c : configItemList){
             c.setId(idWorker.nextId());
         }

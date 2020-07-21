@@ -5,10 +5,7 @@ import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.*;
-import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
-import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
-import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.dto.*;
 import com.boss.xtrain.permission.pojo.entity.User;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /*
@@ -130,9 +126,9 @@ public class UserServiceImpl implements UserSerivce {
     }
 
     @Override
-    public List<UserDTO> getUserByPosition(UserQueryDTO queryDTO) {
+    public List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO) {
         try {
-            return userDao.getUserByPosition(queryDTO.getPositionName());
+            return userDao.getUserByPosition(queryDTO);
         }catch (Exception e){
             log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);

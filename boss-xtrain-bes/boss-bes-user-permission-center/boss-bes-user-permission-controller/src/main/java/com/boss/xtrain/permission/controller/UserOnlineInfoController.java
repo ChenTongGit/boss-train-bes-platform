@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
@@ -10,12 +11,13 @@ import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.vo.UserOnlineInfoVO;
 import com.boss.xtrain.permission.service.UserOnlineInfoService;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,18 +39,30 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件查找在线用户信息并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        //token获得该管理员所负责的org
+        Long orgId = null;
         List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(request.getBody().getQuery());
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
         return buildPageResponse(page,userOnlineInfoVOList);
     }
 
+    /**
+     * 应该不会使用
+     * @param request
+     * @return
+     */
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
+    @ApiOperation(value = "test")
+    @ApiLog(msg = "分页查找所有该管理员所负责的在线用户信息并排序")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        //传入登录的userId，获得该管理员所负责的org
-        List<UserOnlineInfoDTO> infoDTOList = service.selectAll(request.getBody().getQuery());
+        //token获得该管理员所负责的org
+        Long orgId = null;
+        List<UserOnlineInfoDTO> infoDTOList = service.selectAll(orgId);
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
         return buildPageResponse(page,userOnlineInfoVOList);
     }
@@ -62,8 +76,16 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "批量强制下线")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> updateList(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
-        return null;
+        WebSocket socket = new WebSocket();
+        List<String> userIds = new ArrayList<>();
+        List<UserOnlineInfoDTO> infoDTOList = request.getBody();
+        for(UserOnlineInfoDTO infoDTO:infoDTOList){
+            userIds.add(infoDTO.getId().toString());
+        }
+        socket.sendMessageToList(CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR),userIds);
+        return CommonResponseUtil.ok(service.updateList(request.getBody()));
     }
 
     /**
@@ -77,6 +99,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "登录，添加用户在线信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserOnlineInfoDTO> request) {
         UserOnlineInfoDTO infoDTO = request.getBody();
         return CommonResponseUtil.ok(service.insert(infoDTO));
@@ -93,6 +116,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "模糊查询指定条件信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<List<UserOnlineInfoVO>> selectList(@Valid CommonRequest<UserOnlineInfoQuery> request) {
         UserOnlineInfoQuery infoQuery = request.getBody();
         List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(infoQuery);
@@ -111,6 +135,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找一个指定条件的数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<UserOnlineInfoVO> select(@Valid CommonRequest<UserOnlineInfoQuery> request) {
         UserOnlineInfoQuery infoQuery = request.getBody();
         UserOnlineInfoDTO infoDTO = service.selectOne(infoQuery);
@@ -130,6 +155,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "删除一个已经下线的不需要的多余数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserOnlineInfoDTO> request) {
         UserOnlineInfoDTO infoDTO = request.getBody();
         return CommonResponseUtil.ok(service.delete(infoDTO));
@@ -146,6 +172,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "批量删除已经下线的不需要的多余数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
         List<UserOnlineInfoDTO> infoDTOList = request.getBody();
         return CommonResponseUtil.ok(service.delete(infoDTOList));
@@ -163,6 +190,8 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @ApiLog(msg = "强制下线")
     @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@Valid CommonRequest<UserOnlineInfoDTO> request) {
-        return null;
+        WebSocket socket = new WebSocket();
+        socket.sendMessageTo(CommonResponseUtil.error(BusinessError.SYSTEM_MANAGER_ONLINE_ISOFFLINE_ERROR),request.getBody().getId().toString());
+        return CommonResponseUtil.ok(service.update(request.getBody()));
     }
 }

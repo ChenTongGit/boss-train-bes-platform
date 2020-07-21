@@ -1,4 +1,3 @@
-
 package com.boss.xtrain.permission.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
@@ -8,7 +7,6 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.dao.CompanyDao;
 import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.dao.UserOnlineInfoDao;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.entity.User;
@@ -52,9 +50,8 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
      * @return origin初始化
      */
     @Override
-    public List<UserOnlineInfoDTO> selectAll(UserOnlineInfoQuery query) {
+    public List<UserOnlineInfoDTO> selectAll(Long orgId) {
         //获得所负责的org
-        Long orgId = getOrg(query.getUserId());
         CompanyQuery companyQuery = new CompanyQuery();
         companyQuery.setOrganizationId(orgId);
         List<Company> companyList = companyDao.selectByCondition(companyQuery);
@@ -250,3 +247,4 @@ public class UserOnlineInfoServiceImpl implements UserOnlineInfoService {
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }
+

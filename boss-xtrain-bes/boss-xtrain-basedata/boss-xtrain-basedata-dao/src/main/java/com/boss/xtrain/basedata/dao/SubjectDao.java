@@ -22,7 +22,7 @@ public interface SubjectDao{
 
     List<SubjectDTO> querySubjectOtherInfo(Example example);
 
-    List<SubjectDTO> queryByCondition(Long orgId,String subjectName,String categoryName,String typeName);
+    List<SubjectDTO> queryByCondition(Example example);
 
     List<DifficultDTO> queryDifficult(Example example);
 

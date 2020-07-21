@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface CompanyService extends CommonCurdService<CompanyDTO, CompanyQuery> {
 
+    CompanyDTO selectByPrimaryKey(CompanyQuery query);
+
     /**
      * 搜索一个
      * @param query query

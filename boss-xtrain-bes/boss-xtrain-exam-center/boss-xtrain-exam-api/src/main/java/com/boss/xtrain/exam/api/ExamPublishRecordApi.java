@@ -9,8 +9,10 @@ import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
+import com.boss.xtrain.exam.pojo.vo.MarkUserListVO;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
+import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -103,4 +105,7 @@ public interface ExamPublishRecordApi {
 
     @PostMapping("/paperList")
     CommonResponse<List<ExamPaperInfoListVO>> getPaperList(CommonRequest<ExamPaperInfoQuery> request);
+
+    @PostMapping("/markingList")
+    CommonResponse<List<MarkUserListVO>> getMarkPeople(CommonRequest<UserQueryDTO> request);
 }

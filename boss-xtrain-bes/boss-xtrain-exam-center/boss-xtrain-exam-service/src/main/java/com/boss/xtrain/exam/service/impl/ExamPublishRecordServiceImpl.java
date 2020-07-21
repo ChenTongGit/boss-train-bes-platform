@@ -2,6 +2,7 @@ package com.boss.xtrain.exam.service.impl;
 
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
+import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.dao.ExamPublishRecordDao;
@@ -11,6 +12,9 @@ import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishRecord;
 import com.boss.xtrain.exam.pojo.entity.ExamPublishToUser;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
+import com.boss.xtrain.exam.service.SystemFeign;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
+import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +48,9 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
 
     @Autowired
     private ExamPublishToUserDao examPublishToUserDao;
+    
+    @Autowired
+    private SystemFeign systemFeign;
 
     /**
      * 发布考试
@@ -84,7 +91,6 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
 
         // 批量更新发布
         int result = this.examPublishRecordDao.updateStatusBatch(records);
-        // TODO 调用接口修改试卷发布次数 状态
         // 批量删除失败
         if (result != records.size())
             throw new BusinessException(BusinessError.EXAM_PUBLISH_FAIL);
@@ -115,24 +121,17 @@ public class ExamPublishRecordServiceImpl implements ExamPublishRecordService {
              map.put(String,Long)
              }
              **/
+            
+            // 获取发布人姓名以及id的map
+            UserQueryDTO userQueryDTO = new UserQueryDTO();
+            userQueryDTO.setPositionName("考试发布人");
+            CommonRequest<UserQueryDTO> request = new CommonRequest<>();
+            request.setBody(userQueryDTO);
+            List<ExamServiceUsersDTO> examServiceUsersDTOS = systemFeign.getUserByPosition(request).getData();
             Map<Long, String> publisherMap= new HashMap<>();
-
-            // --------假数据 start
-            publisherMap.put(0L, "张三");
-            publisherMap.put(1L, "李四");
-            publisherMap.put(11L,"王五");
-            publisherMap.put(12L,"赵六");
-            // --------假数据 end
-
-            /**
-             *  List<UserVO> markPeople = systemService.geMarkPeople();
-              * Map<Long, String> markPeople = new HashMap<>();
-              * // --------假数据 -start
-              * markPeople.put(1L, "阅卷人1");
-              * markPeople.put(2L, "阅卷人2");
-              * markPeople.put(3L, "阅卷人3");
-            // --------假数据 end
-             **/
+            for (ExamServiceUsersDTO dto: examServiceUsersDTOS) {
+                publisherMap.put(dto.getUserId(), dto.getName());
+            }
 
             // 相关人名以及id的关系查询
             for (ExamPublishRecord item:examPublishRecords) {

@@ -13,6 +13,7 @@ import com.boss.xtrain.paper.vo.uploadexam.UploadPaperVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,7 @@ public class UploadPaperController extends PaperBaseController implements Upload
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('upload_paper_admin')")
     @ApiOperation("查询试卷集合")
     @Override
     public CommonResponse getPaper(@RequestBody CommonRequest<PaperQueryVO> commonRequest) {
@@ -46,6 +48,7 @@ public class UploadPaperController extends PaperBaseController implements Upload
      * @throws:
      */
     @ApiOperation("上传试卷")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('upload_paper_admin')")
     @Override
     public CommonResponse uploadPaper(@RequestBody CommonRequest<UploadPaperDTO> commonRequest) {
         UploadPaperDTO uploadPaperDto = commonRequest.getBody();

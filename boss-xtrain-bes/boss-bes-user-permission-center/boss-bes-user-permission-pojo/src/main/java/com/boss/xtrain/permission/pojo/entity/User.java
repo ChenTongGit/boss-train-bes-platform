@@ -1,6 +1,5 @@
 package com.boss.xtrain.permission.pojo.entity;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;

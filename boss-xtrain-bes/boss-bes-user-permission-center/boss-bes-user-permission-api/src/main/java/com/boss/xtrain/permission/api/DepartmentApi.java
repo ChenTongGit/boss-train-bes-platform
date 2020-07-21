@@ -3,9 +3,9 @@ package com.boss.xtrain.permission.api;
 import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
+import com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
 import com.boss.xtrain.permission.pojo.vo.DepartmentVO;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
@@ -40,7 +40,7 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @PostMapping("/treeDepartment")
-    CommonResponse<List<TreeNode>> selectDepartmentTree(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+    CommonResponse<List<CompanyDepartmentNode>> selectDepartmentTree(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
     /**
      * 初始化所有分页
@@ -51,12 +51,22 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
     @PostMapping("/AllByPage")
     CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
 
+    @PostMapping("/selectByKey")
+    CommonResponse<DepartmentVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<DepartmentQuery> request);
+
     /**
      * 初始化所有不分页
      * @return
      */
     @GetMapping("/selectAll")
     CommonResponse<List<DepartmentVO>> selectAll();
+
+//    /**
+//     * 通过确认的公司加载这个公司下的部门
+//     * @return
+//     */
+//    @GetMapping("/selectAll")
+//    CommonResponse<List<DepartmentQuery>> selectByCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
     /**
      * 分页条件搜索
@@ -65,5 +75,4 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request);
-
 }

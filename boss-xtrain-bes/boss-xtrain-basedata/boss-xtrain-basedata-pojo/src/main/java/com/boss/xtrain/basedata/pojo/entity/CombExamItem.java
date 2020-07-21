@@ -54,7 +54,7 @@ public class CombExamItem implements Serializable {
      * 难度
      */
     @Column(name = "difficult")
-    private Long difficult;
+    private Long difficulty;
 
     /**
      * 分值

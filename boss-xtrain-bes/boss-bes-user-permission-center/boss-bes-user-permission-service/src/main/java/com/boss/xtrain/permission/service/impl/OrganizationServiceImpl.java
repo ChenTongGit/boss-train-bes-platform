@@ -155,6 +155,18 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
     }
 
+    @Override
+    public OrganizationDTO selectByPrimaryKey(OrganizationQuery query) {
+        try{
+            OrganizationDTO dto = new OrganizationDTO();
+            PojoUtils.copyProperties(organizationDao.selectByPrimaryKey(query.getId()),dto);
+            return dto;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_QUERY_ERROR,e);
+        }
+    }
+
     /**
      * 只查一个
      * @param query query

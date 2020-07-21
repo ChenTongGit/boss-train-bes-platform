@@ -9,7 +9,6 @@ import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.util.IdWorker;
@@ -31,7 +30,7 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
-    private CompanyDao companyDao;
+    private CompanyDao  companyDao;
 
     @Autowired
     private DepartmentDao departmentDao;
@@ -57,6 +56,18 @@ public class CompanyServiceImpl implements CompanyService {
                 companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
             }
             return companyDTOList;
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
+        }
+    }
+
+    @Override
+    public CompanyDTO selectByPrimaryKey(CompanyQuery query) {
+        try{
+            CompanyDTO dto = new CompanyDTO();
+            PojoUtils.copyProperties(companyDao.selectByKey(query.getId()),dto);
+            return dto;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -130,7 +141,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> selectByCondition(CompanyQuery query) {
         try{
-            List<CompanyDTO>companyDTOList = PojoUtils.copyListProperties(companyDao.selectByCondition(query),CompanyDTO::new);
+            List<CompanyDTO>companyDTOList = PojoUtils.copyListProperties(companyDao.selectByOrg(query.getOrganizationId()),CompanyDTO::new);
             //加orgName
             for(CompanyDTO companyDTO:companyDTOList){
                 companyDTO.setOrgName(organizationDao.selectByPrimaryKey(companyDTO.getOrganizationId()).getName());
@@ -205,7 +216,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return companyDao.update(dto);
+            return companyDao.companyUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_UPDATE_ERROR,e);
@@ -231,8 +242,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         try{
             dto.setId(worker.nextId());
-            Long orgId = dto.getOrganizationId();
-            dto.setOrganizationId(orgId);
             dto.setCreatedTime(new Date());
             return companyDao.add(dto);
         }catch (Exception e){
@@ -255,3 +264,4 @@ public class CompanyServiceImpl implements CompanyService {
         return userDao.getRoleByUserId(userId).get(0).getOrganizationId();
     }
 }
+

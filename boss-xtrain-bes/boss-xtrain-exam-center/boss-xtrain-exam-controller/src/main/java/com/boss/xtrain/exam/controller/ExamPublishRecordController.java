@@ -11,17 +11,22 @@ import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperPreviewVO;
 import com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO;
+import com.boss.xtrain.exam.pojo.vo.MarkUserListVO;
 import com.boss.xtrain.exam.service.ExamPublishRecordService;
 import com.boss.xtrain.exam.service.PaperFeign;
+import com.boss.xtrain.exam.service.SystemFeign;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoDTO;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperQuery;
+import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
+import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +65,12 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     private PaperFeign paperFeign;
 
     /**
+     * 系统服务调用
+     */
+    @Autowired
+    private SystemFeign systemFeign;
+
+    /**
      * 添加新的数据
      * @param request 请求报文对象，传递dto
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
@@ -67,6 +78,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @date 2020/7/7 22:09
      */
     @ApiOperation(value = "添加考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Integer> insert(@Valid CommonRequest<ExamPublishRecordAddDTO> request) {
         return CommonResponseUtil.ok(examPublishRecordService.insert(request.getBody()));
@@ -80,6 +92,7 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     @ApiLog(msg = "查询考试发布记录")
     @PostMapping("/records")
     @ApiOperation(value = "查询考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     public CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request){
         // 设置分页区间 index size
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
@@ -123,6 +136,22 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     }
 
     /**
+     * 获取考试阅卷人列表
+     * @author ChenTong
+     * @param request
+     * @return com.boss.xtrain.common.core.http.CommonResponse<java.util.List<com.boss.xtrain.exam.pojo.vo.MarkUserListVO>>
+     * @date 2020/7/20 13:23
+     */
+    @ApiLog(msg = "查询阅卷人列表")
+    @ApiOperation(value = "查询阅卷人列表")
+    @Override
+    public CommonResponse<List<MarkUserListVO>> getMarkPeople(@RequestBody @Valid CommonRequest<UserQueryDTO> request) {
+        List<ExamServiceUsersDTO> examServiceUsersDTOS = this.systemFeign.getUserByPosition(request).getData();
+        List<MarkUserListVO> markUserListVOS = PojoUtils.copyListProperties(examServiceUsersDTOS, MarkUserListVO::new);
+        return CommonResponseUtil.ok(markUserListVOS);
+    }
+
+    /**
      * 批量删除数据
      * @param request 请求报文对象，body为dto
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
@@ -131,8 +160,9 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      */
     @ApiLog(msg = "删除考试发布记录")
     @ApiOperation(value = "删除考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
-    public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<ExamPublishDeleteDTO>> request) {
+    public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<ExamPublishDeleteDTO>> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.delete(request.getBody()));
     }
 
@@ -145,9 +175,9 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      */
     @ApiLog(msg = "查询考试发布记录")
     @ApiOperation(value = "更新考试发布记录")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
     public CommonResponse<Integer> update(@Valid @RequestBody CommonRequest<ExamPublishRecordUpdateDTO> request) {
-        log.info("test update");
         return CommonResponseUtil.ok(this.examPublishRecordService.update(request.getBody()));
     }
 
@@ -160,8 +190,9 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @date 2020/7/7 22:18
      */
     @ApiOperation(value = "发布考试")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     @Override
-    public CommonResponse<Boolean> publishExam(CommonRequest<ExamPublishDTO> request) {
+    public CommonResponse<Boolean> publishExam(@RequestBody @Valid CommonRequest<ExamPublishDTO> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.publishExam(request.getBody()));
     }
 
@@ -173,9 +204,11 @@ public class ExamPublishRecordController extends BaseController implements ExamP
      * @author ChenTong
      * @date 2020/7/7 22:22
      */
+
     @Override
     @ApiOperation(value = "批量发布考试")
-    public CommonResponse<Boolean> publishExamBatch(CommonRequest<List<ExamPublishDTO>> request) {
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
+    public CommonResponse<Boolean> publishExamBatch(@RequestBody @Valid CommonRequest<List<ExamPublishDTO>> request) {
         return CommonResponseUtil.ok(this.examPublishRecordService.publishExamBatch(request.getBody()));
     }
 

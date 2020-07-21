@@ -13,7 +13,7 @@ public class DictionaryVO extends BaseVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private String name;
-    private String categoryName;
+    private String category;
     private String value;
     private Date updateTime;
     private Long version;

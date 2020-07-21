@@ -7,7 +7,6 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
-import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.pojo.vo.CompanyVO;
@@ -15,7 +14,6 @@ import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.permission.service.TreeService;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +58,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "初始化下所有的公司")
     @ApiOperation(value = "test")
+    @ResponseBody
     public CommonResponse<List<CompanyVO>> selectAllCompany() {
         List<CompanyDTO> companyDTOList = service.selectAll();
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
@@ -74,6 +73,7 @@ public class CompanyController extends BaseController implements CompanyApi {
     @Override
     @ApiLog(msg = "获得所有的org信息以供company添加的时候选择")
     @ApiOperation(value = "test")
+    @ResponseBody
     public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
         try{
             return CommonResponseUtil.ok(treeService.orgTree());
@@ -94,6 +94,16 @@ public class CompanyController extends BaseController implements CompanyApi {
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
         }
+    }
+
+    @ApiLog(msg = "用主键搜索公司信息")
+    @Override
+    @ApiOperation(value = "test")
+    public CommonResponse<CompanyVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<CompanyQuery> request) {
+        CompanyDTO dto = service.selectByPrimaryKey(request.getBody());
+        CompanyVO vo = new CompanyVO();
+        PojoUtils.copyProperties(dto,vo);
+        return CommonResponseUtil.ok(vo);
     }
 
     /**
@@ -133,6 +143,9 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+        //        Long createdBy = token获取userID
+        Long createdBy = null;
+        dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -162,6 +175,8 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
+//        Long updateUser = token;从token中获得更新人id
+//        dto.setUpdatedBy(updateUser);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

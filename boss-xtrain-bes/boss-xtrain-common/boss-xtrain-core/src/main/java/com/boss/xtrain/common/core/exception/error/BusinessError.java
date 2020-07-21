@@ -63,6 +63,8 @@ public enum BusinessError {
     BASE_DATA_COMB_STOP_ERROR("200508","停用组卷配置失败"),
     BASE_DATA_COMB_INUSE_ERROR("200509","删除的组卷配置正在使用"),
 
+    PAPER_QUICK_MAKE_PAPER_ERROR("200510", "快速组卷失败"),
+
     /**
      * 基础数据服务 数据字典错误
      */
@@ -230,6 +232,7 @@ public enum BusinessError {
     PUBLISH_TABLE_UPDATE_FAILED("240312","发布记录更新失败"),
     EXAM_TMP_ANSWER_GET_FAIL("240313","获取缓存中作答数据失败"),
     EXAM_PAPER_PREVIEW_ERR("240314","获取考试试卷失败"),
+    EXAM_PUBLISH_RECORD_GET_MARK_PEOPLE_ERR("240315","获取考试列表失败"),
 
 
     EXAM_PEOPLE_REG_FAIL("250301","考生注册失败"),

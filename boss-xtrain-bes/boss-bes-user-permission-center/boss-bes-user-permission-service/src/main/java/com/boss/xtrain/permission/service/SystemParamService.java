@@ -32,5 +32,13 @@ public interface SystemParamService extends CommonCurdService<SystemParamDTO, Sy
      *
      * @return LIST
      */
-    List<SystemParamDTO> selectAllUnderOrg(SystemParamQuery query);
+    List<SystemParamDTO> selectAllUnderOrg(Long orgId);
+
+    /**
+     * 通过 paramType 删除符合条件的值。
+     * @param dto
+     * @return
+     */
+    int deleteByParamType(SystemParamDTO dto);
+
 }

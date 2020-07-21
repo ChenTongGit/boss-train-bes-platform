@@ -47,15 +47,14 @@
         tr.close_img as closeImg,
         r.name AS parentName
   </sql>
+
   <select id="queryParent" resultType="com.boss.xtrain.permission.pojo.entity.Resource">
     select * from t_resource where leaf = 0
   </select>
+
   <select id="loadResourceByRoleId" parameterType="java.lang.String" resultType="java.lang.String">
     select a.url from t_resource a,t_role_resource b
     where a.id = b.t_rs_id and b.t_r_id = #{roleId} and a.resource_type = 0
-  </select>
-  <select id="getStateById" parameterType="java.lang.Long" resultType="com.boss.xtrain.permission.pojo.entity.Resource">
-    select status from t_resource where id=#{id}
   </select>
     <update id="updateWithNull" parameterType="java.lang.Long">
     update t_resource set parent_id = null where id=#{id}

@@ -3,7 +3,6 @@ package com.boss.xtrain.permission.service;
 import com.boss.xtrain.permission.pojo.dto.DepartmentDTO;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
-import com.boss.xtrain.permission.pojo.query.TreeNode;
 
 import java.util.List;
 
@@ -19,6 +18,8 @@ public interface DepartmentService extends CommonCurdService<DepartmentDTO, Depa
      */
     List<DepartmentDTO> selectAll(DepartmentQuery query);
 
+    DepartmentDTO selectByPrimaryKey(DepartmentQuery query);
+
     /**
      * 搜索一个
      * @param query query
@@ -27,3 +28,4 @@ public interface DepartmentService extends CommonCurdService<DepartmentDTO, Depa
     DepartmentDTO selectOne(DepartmentQuery query);
 
 }
+

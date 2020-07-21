@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
 import com.boss.xtrain.permission.pojo.query.UserOnlineInfoQuery;
 import com.boss.xtrain.permission.pojo.vo.UserOnlineInfoVO;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,6 +43,6 @@ public interface UserOnlineInfoApi extends CommonCRUDApi<UserOnlineInfoDTO, User
      * @param request
      * @return
      */
-    @PostMapping("/updatePatch")
+    @PutMapping("/updateBatch")
     CommonResponse<Integer> updateList(@RequestBody @Valid CommonRequest<List<UserOnlineInfoDTO>> request);
 }

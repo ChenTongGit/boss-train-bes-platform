@@ -1,5 +1,5 @@
 server:
-  port: 8882
+  port: 18001
 
 spring:
   cloud:
@@ -8,20 +8,23 @@ spring:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai&useAffectedRows=true&characterEncoding=utf8
     username: root
     password: zzy873190934
     hikari:
-      max-lifetime: 10000
-      minimum-idle: 5
+      connection-test-query: SELECT 1
+      max-lifetime: 30000
+      minimum-idle: 3
+      maximum-pool-size: 10
 
   application:
-    name: boss-bes-system-center
+    name: boss-bes-system
   redis:
     host: 39.97.106.243
     password: 991018
 
   nacos-url:
+#    nacos-host: 39.97.106.243
     nacos-host: 123.57.156.184
     nacos-port: 8848
 
@@ -30,15 +33,15 @@ security:
     client:
       clientId: bes
       clientSecret: 12345
-      userAuthorizationUri: http://localhost:4444/oauth/authorize
+      userAuthorizationUri: http://localhost:18006/oauth/authorize
       grant-type: password
       scope: read
-      access-token-uri: http://localhost:4444/oauth/token
+      access-token-uri: http://localhost:18006/oauth/token
     resource:
-      token-info-uri: http://localhost:4444/oauth/check_token
-      user-info-uri: http://localhost:4444/user
+      token-info-uri: http://localhost:18006/oauth/check_token
+      user-info-uri: http://localhost:18006/user
     authorization:
-      check-token-access: http://localhost:4444/oauth/check_token
+      check-token-access: http://localhost:18006/oauth/check_token
   #cloud:
     #nacos:
       # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类

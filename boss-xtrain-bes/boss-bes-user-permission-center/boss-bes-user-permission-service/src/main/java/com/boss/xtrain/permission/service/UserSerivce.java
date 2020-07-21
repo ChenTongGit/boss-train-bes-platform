@@ -1,10 +1,7 @@
 package com.boss.xtrain.permission.service;
 
 import com.boss.xtrain.common.core.web.service.CommonCurdService;
-import com.boss.xtrain.permission.pojo.dto.ResourceDTO;
-import com.boss.xtrain.permission.pojo.dto.RoleDTO;
-import com.boss.xtrain.permission.pojo.dto.UserDTO;
-import com.boss.xtrain.permission.pojo.dto.UserRoleDTO;
+import com.boss.xtrain.permission.pojo.dto.*;
 import com.boss.xtrain.permission.pojo.entity.Role;
 import com.boss.xtrain.permission.pojo.entity.User;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
@@ -83,5 +80,5 @@ public interface UserSerivce extends CommonCurdService<UserDTO,UserQueryDTO> {
      * @return  List<UserDTO>
      *
     */
-    List<UserDTO> getUserByPosition(UserQueryDTO queryDTO);
+    List<ExamServiceUsersDTO> getUserByPosition(UserQueryDTO queryDTO);
 }
