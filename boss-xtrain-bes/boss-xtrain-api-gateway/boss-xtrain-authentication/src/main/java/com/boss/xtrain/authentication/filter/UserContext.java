@@ -1,4 +1,4 @@
-package com.boss.xtrain.permission;
+package com.boss.xtrain.authentication.filter;
 
 import com.boss.xtrain.common.core.aspect.EntityFields;
 

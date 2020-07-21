@@ -10,7 +10,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@MapperScan(basePackages = "com.boss.xtrain.authentication.dao")
 @ComponentScan(basePackages = "com.boss.xtrain")
 public class AuthenticationApplication {
     public static void main(String[] args){
