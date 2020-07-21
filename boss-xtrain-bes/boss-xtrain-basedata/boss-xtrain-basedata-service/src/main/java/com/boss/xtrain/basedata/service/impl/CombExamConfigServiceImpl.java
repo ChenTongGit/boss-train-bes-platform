@@ -161,8 +161,8 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Override
     public List<CombExamItemDTO> queryItem(CombExamItemQueryDTO combExamItemQueryDTO) {
+        log.info(combExamItemQueryDTO.toString());
         List<CombExamItemDTO> configItemDtoList = combExamItemDao.queryItemById(combExamItemQueryDTO);
-
         log.info(configItemDtoList.toString());
         int count = 0;
         Example example = new Example(Dictionary.class);
@@ -200,6 +200,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
                 count2++;
             }
         }
+
         return configItemDtoList;
 
     }

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -159,8 +160,15 @@ public class CombExamConfigController extends BaseController implements CombExam
         log.info(combExamConfigQueryDTO.toString());
         Page<Object> objects = this.doBeforePagination(combConfigQueryDTO.getPageNum(),combConfigQueryDTO.getPageSize(),null);
         List<CombExamConfigDTO> combExamConfigDtoList = combExamConfigService.queryConfig(combExamConfigQueryDTO);
-        List<CombConfigVO> combConfigVOS = PojoUtils.copyListProperties(combExamConfigDtoList,CombConfigVO::new);
-
+        List<CombConfigVO> combConfigVOS = new ArrayList<>();
+        for (CombExamConfigDTO combExamConfigDTO:
+             combExamConfigDtoList) {
+            CombConfigVO combConfigVO = new CombConfigVO();
+            combConfigVO.setId(combExamConfigDTO.getId());
+            combConfigVO.setName(combExamConfigDTO.getName());
+            combConfigVO.setCombExamConfigId(String.valueOf(combExamConfigDTO.getId()));
+            combConfigVOS.add(combConfigVO);
+        }
         log.info(combConfigVOS.toString());
         PageInfo<CombConfigVO> pageInfo = new PageInfo<>(combConfigVOS);
         pageInfo.setTotal(objects.getTotal());
@@ -173,7 +181,10 @@ public class CombExamConfigController extends BaseController implements CombExam
     @ResponseBody
     public List<CombConfigItemVO> queryCombExamConfigItem(@RequestBody CombConfigItemQueryDTO combConfigItemQueryDTO) {
         CombExamItemQueryDTO combExamItemQueryDTO = new CombExamItemQueryDTO();
-        PojoUtils.copyProperties(combConfigItemQueryDTO,combExamItemQueryDTO);
+        // PojoUtils.copyProperties(combConfigItemQueryDTO,combExamItemQueryDTO);
+        combExamItemQueryDTO.setId(combConfigItemQueryDTO.getConfigId());
+        combExamItemQueryDTO.setOrgId(1L);
+        System.out.println(combExamItemQueryDTO.getId());
         List<CombExamItemDTO> combExamItemDTOS = combExamConfigService.queryItem(combExamItemQueryDTO);
         return PojoUtils.copyListProperties(combExamItemDTOS,CombConfigItemVO::new);
 

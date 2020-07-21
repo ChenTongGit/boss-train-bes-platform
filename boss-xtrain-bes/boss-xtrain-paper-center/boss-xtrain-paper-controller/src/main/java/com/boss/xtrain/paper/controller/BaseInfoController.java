@@ -7,6 +7,7 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.paper.BaseInfoApi;
 import com.boss.xtrain.paper.BaseServiceApi;
 import com.boss.xtrain.paper.BaseServiceApiImpl;
+import com.boss.xtrain.paper.BaseServiceTestApi;
 import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
 import com.boss.xtrain.paper.vo.baseinfo.CombInfoQueryVO;
 import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
@@ -27,6 +28,8 @@ import java.util.List;
 public class BaseInfoController extends BaseController implements BaseInfoApi {
     @Autowired
     private BaseServiceApiImpl baseServiceApi;
+    @Autowired
+    private BaseServiceTestApi baseServiceTestApi;
 
     @ApiOperation("查询题目类型集合")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('base_info_admin')")

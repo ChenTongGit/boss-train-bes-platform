@@ -9,6 +9,7 @@ import com.boss.xtrain.papaer.utils.BasicConverter;
 import com.boss.xtrain.papaer.utils.BeanCopierUtil;
 import com.boss.xtrain.papaer.utils.SomeParamChange;
 import com.boss.xtrain.paper.BaseServiceApi;
+import com.boss.xtrain.paper.BaseServiceTestApi;
 import com.boss.xtrain.paper.CreatePaperService;
 import com.boss.xtrain.paper.dao.CombPaperDao;
 import com.boss.xtrain.paper.dto.fastcomb.*;
@@ -46,7 +47,8 @@ public class CreatePaperServiceImpl implements CreatePaperService {
     private CombPaperDao combPaperDao;
     @Autowired
     private BaseServiceApi baseServiceApi;
-
+    @Autowired
+    private BaseServiceTestApi baseServiceTestApi;
     /**
      * @param paperQueryDto
      * @methodsName: queryPaperName
@@ -196,7 +198,7 @@ public class CreatePaperServiceImpl implements CreatePaperService {
         //将组卷明细集合传给基础数据服务，获取组卷后的试题和答案
         ConfigItemListDTO configItemListDTO = new ConfigItemListDTO();
         configItemListDTO.setItemList(combExamDTO.getItemList());
-        List<CombSubjectListVO> list = baseServiceApi.addPaperByConfigItems(configItemListDTO);
+        List<CombSubjectListVO> list = baseServiceTestApi.addPaperByConfigItems(configItemListDTO);
         CombExamCopyDTO combExamCopyDTO = new CombExamCopyDTO();
         BeanCopierUtil.copy(combExamDTO,combExamCopyDTO);
         createPaper(combExamCopyDTO, list);
@@ -221,11 +223,18 @@ public class CreatePaperServiceImpl implements CreatePaperService {
             throw new BusinessException(COMBEXAM_PAPER_NAMEEXIST_ERROR);
         }
         //将组卷明细集合传给基础数据服务，获取组卷后的试题和答案
-        List<CombSubjectListVO> list = baseServiceApi.standardCombExam(standardCombDTO);
+        List<CombSubjectListVO> list = baseServiceTestApi.standardCombExam(standardCombDTO);
         CombExamCopyDTO combExamCopyDTO = new CombExamCopyDTO();
         BeanCopierUtil.copy(standardCombDTO,combExamCopyDTO);
         createPaper(combExamCopyDTO,list);
     }
+
+    @Override
+    public boolean saveCombItemList(ConfigItemListDTO configItemListDTO) {
+
+        return baseServiceTestApi.saveCombItemList(configItemListDTO);
+    }
+
     @TryCatch
     boolean createPaper(CombExamCopyDTO combExamCopyDTO, List<CombSubjectListVO> list){
         Paper paper = new Paper();
@@ -238,6 +247,7 @@ public class CreatePaperServiceImpl implements CreatePaperService {
         paper.setPublishTimes(0);
         paper.setOrgId(combExamCopyDTO.getOrganizationId());
         paper.setTemplate(true);
+        paper.setStatus(false);
         BigDecimal score = new BigDecimal(0);
         for (CombSubjectListVO combSubjectListVO:
              list) {
@@ -255,7 +265,7 @@ public class CreatePaperServiceImpl implements CreatePaperService {
             Long subjectId = idWorker.nextId();
             paperSubject.setPaperSubjectId(subjectId);
             paperSubject.setSubject(combSubjectListVO.getSubjectName());
-            paperSubject.setDifficult(SomeParamChange.difficultyChange(combSubjectListVO.getDifficuty()));
+            // paperSubject.setDifficult(Long.valueOf(combSubjectListVO.getDifficuty()));
             paperSubject.setStatus(true);
             paperSubject.setOrgId(combExamCopyDTO.getOrganizationId());
             paperSubject.setCompanyId(combExamCopyDTO.getCompanyId());
@@ -263,20 +273,21 @@ public class CreatePaperServiceImpl implements CreatePaperService {
             paperSubject.setUpdatedTime(new Date());
             paperSubject.setVersion(0L);
             List<AnswerVO> answerVOList = combSubjectListVO.getAnswerList();
-
-            for (AnswerVO answerVO:
-                 answerVOList) {
-                PaperSubjectAnswer paperSubjectAnswer = new PaperSubjectAnswer();
-                System.out.println(answerVO.toString());
-                BeanCopierUtil.copy(answerVO,paperSubjectAnswer,new BasicConverter());
-                paperSubjectAnswer.setSubjectId(subjectId);
-                paperSubjectAnswer.setPaperSubjectAnswerId(idWorker.nextId());
-                paperSubjectAnswer.setStatus(true);
-                paperSubjectAnswer.setOrgId(combExamCopyDTO.getOrganizationId());
-                paperSubjectAnswer.setCompanyId(combExamCopyDTO.getCompanyId());
-                paperSubjectAnswer.setCreatedTime(new Date());
-                paperSubjectAnswer.setUpdatedTime(new Date());
-                paperSubjectAnswerList.add(paperSubjectAnswer);
+            if(null!=answerVOList){
+                for (AnswerVO answerVO:
+                        answerVOList) {
+                    PaperSubjectAnswer paperSubjectAnswer = new PaperSubjectAnswer();
+                    System.out.println(answerVO.toString());
+                    BeanCopierUtil.copy(answerVO,paperSubjectAnswer,new BasicConverter());
+                    paperSubjectAnswer.setSubjectId(subjectId);
+                    paperSubjectAnswer.setPaperSubjectAnswerId(idWorker.nextId());
+                    paperSubjectAnswer.setStatus(true);
+                    paperSubjectAnswer.setOrgId(combExamCopyDTO.getOrganizationId());
+                    paperSubjectAnswer.setCompanyId(combExamCopyDTO.getCompanyId());
+                    paperSubjectAnswer.setCreatedTime(new Date());
+                    paperSubjectAnswer.setUpdatedTime(new Date());
+                    paperSubjectAnswerList.add(paperSubjectAnswer);
+                }
             }
             paperSubjectList.add(paperSubject);
         }

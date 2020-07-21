@@ -19,7 +19,7 @@ spring:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
-
+        service: boss-bes-basedata
   # 组nacos和seata服务地址
   nacos-url:
     nacos-host: 123.57.156.184

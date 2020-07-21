@@ -10,10 +10,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class CombInfoQueryDTO extends BaseDTO {
-    /**
-     * Description: 字段名
-     */
-    @NotBlank(message = "字段名不能为空")
+
     private String category;
 }
 

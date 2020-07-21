@@ -69,7 +69,7 @@ public interface CombExamApi {
      * @throws:
      */
     @PostMapping(value = "/queryConfigItemsList")
-    CommonResponse queryConfigItemsList(@Valid CommonRequest<CombConfigItemQueryVO> commonRequest);
+    CommonResponse queryConfigItemsList(@Valid CommonRequest<CombConfigItemQueryDTO> commonRequest);
     /**
      * @methodsName: fastCombExam
      * @description: 查看组卷配置信息界面快速组卷

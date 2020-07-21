@@ -6,6 +6,7 @@ import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.paper.BaseServiceApi;
+import com.boss.xtrain.paper.BaseServiceTestApi;
 import com.boss.xtrain.paper.CombExamApi;
 import com.boss.xtrain.paper.dto.fastcomb.CombConfigItemQueryDTO;
 import com.boss.xtrain.paper.dto.fastcomb.CombConfigQueryDTO;
@@ -42,7 +43,8 @@ import java.util.List;
 public class CombExamController extends PaperBaseController implements CombExamApi {
     @Autowired
     private BaseServiceApi baseServiceApi;
-
+    @Autowired
+    private BaseServiceTestApi baseServiceTestApi;
     /**
      * @param commonRequest
      * @methodsName: getPaper
@@ -101,8 +103,11 @@ public class CombExamController extends PaperBaseController implements CombExamA
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse queryCombExamConfiguration(@RequestBody CommonRequest<CombConfigQueryDTO> commonRequest) {
-        PageInfo<CombConfigVO> pageInfo = baseServiceApi.queryCombExamConfiguration(commonRequest.getBody());
-        return CommonResponseUtil.ok("20000","成功查询配置信息集合",buildPageResponse(pageInfo));
+        PageInfo<CombConfigVO> pageInfo = baseServiceTestApi.queryCombExamConfiguration(commonRequest.getBody());
+        System.out.println(pageInfo.getList());
+        List<CombConfigVO> list = pageInfo.getList();
+        System.out.println(list);
+        return CommonResponseUtil.ok("20000","成功查询配置信息集合",list);
     }
 
     /**
@@ -115,8 +120,9 @@ public class CombExamController extends PaperBaseController implements CombExamA
      */
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
-    public CommonResponse queryConfigItemsList(@RequestBody CommonRequest<CombConfigItemQueryVO> commonRequest) {
-        return null;
+    public CommonResponse queryConfigItemsList(@RequestBody CommonRequest<CombConfigItemQueryDTO> commonRequest) {
+        List<CombConfigItemVO> list  =baseServiceTestApi.queryCombExamConfigItem(commonRequest.getBody());
+        return CommonResponseUtil.ok("20000","获取组卷配置的配置信息成功",list);
     }
 
     /**
@@ -147,7 +153,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse saveCombExamItemList(@RequestBody CommonRequest<List<ConfigItemVO>> commonRequest) {
-        return null;
+        return CommonResponseUtil.ok("20000","保存配置明细集合成功");
     }
 
     /**

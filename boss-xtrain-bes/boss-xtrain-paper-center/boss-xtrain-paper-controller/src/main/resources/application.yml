@@ -37,6 +37,10 @@ spring:
     host: localhost
     port: 18006
 
+
+feign:
+  httpclient:
+    enabled: true
 # 配置资源服务器
 security:
   oauth2:

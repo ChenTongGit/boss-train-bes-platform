@@ -11,7 +11,7 @@ public class CombConfigVO extends BaseVO {
     /**
      * 组卷配置ID
      */
-    private Long combExamConfigId;
+    private String combExamConfigId;
     /**
      * 组卷配置名
      */
