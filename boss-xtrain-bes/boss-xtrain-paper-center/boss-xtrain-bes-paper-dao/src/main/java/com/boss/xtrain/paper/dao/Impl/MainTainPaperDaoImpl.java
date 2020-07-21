@@ -44,7 +44,7 @@ public class MainTainPaperDaoImpl extends PaperBaseDaoImpl implements MainTainPa
     @Override
     public void deletePaperByList(List<Paper> papers) {
         for (Paper paper:
-             papers) {
+                papers) {
             paperMapper.deleteByPrimaryKey(paper.getPaperId());
         }
     }
@@ -71,8 +71,13 @@ public class MainTainPaperDaoImpl extends PaperBaseDaoImpl implements MainTainPa
      * @throws:
      */
     @Override
-    public void updateSubjectList(List<PaperSubject> tPaperSubjects) {
-        paperSubjectMapper.insertList(tPaperSubjects);
+    public Integer insertSubjectList(List<PaperSubject> tPaperSubjects) {
+        int count = 0;
+        for (PaperSubject paperSubject:
+                tPaperSubjects) {
+            count+=paperSubjectMapper.insert(paperSubject);
+        }
+        return count;
     }
 
     /**
@@ -115,11 +120,10 @@ public class MainTainPaperDaoImpl extends PaperBaseDaoImpl implements MainTainPa
      * @throws:
      */
     @Override
-    public Integer updateVersion(Paper tPaper) {
+    public Integer updatePaper(Paper tPaper) {
         Example example = new Example(Paper.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("version",tPaper.getVersion()-1)
-                .andEqualTo(PAPER_ID,tPaper.getPaperId());
+        criteria.andEqualTo(PAPER_ID,tPaper.getPaperId());
         return paperMapper.updateByExampleSelective(tPaper,example);
 
     }
@@ -154,6 +158,14 @@ public class MainTainPaperDaoImpl extends PaperBaseDaoImpl implements MainTainPa
         Example example = new Example(PaperSubject.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PAPER_ID,paperId);
+        List<PaperSubject> paperSubjectList = paperSubjectMapper.selectByExample(example);
+        for (PaperSubject paperSubject:
+                paperSubjectList) {
+            Example example1 = new Example(PaperSubjectAnswer.class);
+            Example.Criteria criteria1 = example1.createCriteria();
+            criteria1.andEqualTo("subjectId",paperSubject.getPaperSubjectId());
+            paperSubjectAnswerMapper.deleteByExample(example1);
+        }
         return paperSubjectMapper.deleteByExample(example);
 
     }
@@ -167,7 +179,12 @@ public class MainTainPaperDaoImpl extends PaperBaseDaoImpl implements MainTainPa
      * @throws:
      */
     @Override
-    public Integer updateAnswerList(List<PaperSubjectAnswer> paperSubjectAnswers) {
-        return paperSubjectAnswerMapper.insertList(paperSubjectAnswers);
+    public Integer insertAnswerList(List<PaperSubjectAnswer> paperSubjectAnswers) {
+        int count = 0;
+        for (PaperSubjectAnswer paperSubjectAnswer:
+                paperSubjectAnswers) {
+            count += paperSubjectAnswerMapper.insert(paperSubjectAnswer);
+        }
+        return count;
     }
 }

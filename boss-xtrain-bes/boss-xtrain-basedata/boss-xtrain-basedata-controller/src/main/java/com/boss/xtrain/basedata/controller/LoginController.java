@@ -13,6 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@CrossOrigin
 public class LoginController {
 
     @ApiLog(msg = "test")

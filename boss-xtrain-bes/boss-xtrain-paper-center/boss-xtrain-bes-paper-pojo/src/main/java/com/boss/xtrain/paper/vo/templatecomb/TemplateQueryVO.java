@@ -13,7 +13,6 @@ public class TemplateQueryVO extends BaseQuery {
     /**
      * 组织id
      */
-    @NotBlank(message = "组织机构ID不能为空")
     private Long orgId;
     protected int pageNum;
     protected int pageSize;

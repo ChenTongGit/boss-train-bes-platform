@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.dto.papermanage;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
-import com.boss.xtrain.paper.dto.templatemanage.SubjectDTO;
+
 import lombok.Data;
 
 import java.util.List;

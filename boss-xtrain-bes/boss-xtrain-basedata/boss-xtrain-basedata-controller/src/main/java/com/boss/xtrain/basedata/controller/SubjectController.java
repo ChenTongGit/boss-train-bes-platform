@@ -21,6 +21,7 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class SubjectController extends BaseController implements SubjectApi {
 
     @Resource
@@ -47,9 +49,9 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<CommonPage<SubjectVO>> querySubjectPage(@RequestBody CommonRequest<CommonPageRequest<SubjectQueryVO>> commonRequest) {
         SubjectQueryVO subjectQuery = commonRequest.getBody().getQuery();
         log.info(subjectQuery.toString());
-        Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
         PojoUtils.copyProperties(subjectQuery,subjectQueryDTO);
+        Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         List<SubjectDTO> subjectDTOS = subjectService.querySubjectByCondition(subjectQueryDTO);
         List<SubjectVO> subjectVOS = PojoUtils.copyListProperties(subjectDTOS,SubjectVO::new);
         return buildPageResponse(objects,subjectVOS);
@@ -63,8 +65,7 @@ public class SubjectController extends BaseController implements SubjectApi {
         SubjectQueryDTO subjectQueryDTO = new SubjectQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectQueryDTO);
         List<SubjectDTO> subjectListDto = subjectService.querySubjectByCondition(subjectQueryDTO);
-        List<SubjectVO> subjectVOS = new ArrayList<>();
-        PojoUtils.copyProperties(subjectListDto,subjectVOS);
+        List<SubjectVO> subjectVOS = PojoUtils.copyListProperties(subjectListDto,SubjectVO::new);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),subjectVOS);
     }
 
@@ -157,12 +158,13 @@ public class SubjectController extends BaseController implements SubjectApi {
     @ResponseBody
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<SubjectVO> insertSubjectList(@RequestBody CommonRequest<List<SubjectUpdateVO>> commonRequest) {
-        List<SubjectUpdateDTO> subjectUpdateDTOS = new ArrayList<>();
-        PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTOS);
+        List<SubjectUpdateDTO> subjectUpdateDTOS = PojoUtils.copyListProperties(commonRequest.getBody(),SubjectUpdateDTO::new);
+        log.info(commonRequest.getBody().toString());
         for(SubjectUpdateDTO s : subjectUpdateDTOS){
             List<SubjectAnswer> answers = s.getSubjectAnswers();
             s.setSubjectAnswers(answers);
         }
+        log.info(subjectUpdateDTOS.toString());
         subjectService.insertSubjectList(subjectUpdateDTOS);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
     }

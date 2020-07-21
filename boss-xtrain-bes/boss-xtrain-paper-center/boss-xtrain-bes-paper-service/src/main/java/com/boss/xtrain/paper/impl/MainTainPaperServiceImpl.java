@@ -1,26 +1,25 @@
 package com.boss.xtrain.paper.impl;
 
-import com.boss.xtrain.common.core.exception.BusinessException;
+import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.papaer.annotation.TryCatch;
 import com.boss.xtrain.paper.MainTainPaperService;
 import com.boss.xtrain.paper.dao.MainTainPaperDao;
 import com.boss.xtrain.paper.dto.paperdetail.PaperQueryDTO;
-import com.boss.xtrain.paper.dto.papermanage.DeletePaperDTO;
-import com.boss.xtrain.paper.dto.papermanage.PaperListDTO;
-import com.boss.xtrain.paper.dto.papermanage.PaperUpdateDTO;
+import com.boss.xtrain.paper.dto.papermanage.*;
 import com.boss.xtrain.paper.dto.templatemanage.SubjectQueryDTO;
 import com.boss.xtrain.paper.entity.Paper;
+import com.boss.xtrain.paper.entity.PaperSubject;
+import com.boss.xtrain.paper.entity.PaperSubjectAnswer;
 import com.boss.xtrain.paper.vo.papermanage.PaperVO;
 import com.boss.xtrain.paper.vo.papermanage.SubjectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.boss.xtrain.common.core.exception.error.BusinessError.MAINTAIN_PAPER_DELETE_ERROR;
 
 /**
  * 维护试卷Service实现类
@@ -83,14 +82,6 @@ public class MainTainPaperServiceImpl implements MainTainPaperService {
     public List<SubjectVO> querySubject(SubjectQueryDTO subjectQueryDto) {
         //查询试卷题目前，查询试卷的version
         Long paperId = subjectQueryDto.getPaperId();
-        version = mainTainPaperDao.queryPaperVersion(paperId);
-        if (version == null) {
-            version = 1L;
-            Paper tPaper = new Paper();
-            tPaper.setPaperId(paperId);
-            tPaper.setVersion(version);
-            mainTainPaperDao.updateVersion(tPaper);
-        }
 
         return mainTainPaperDao.querySubjectList(subjectQueryDto.getPaperId());
 
@@ -105,8 +96,42 @@ public class MainTainPaperServiceImpl implements MainTainPaperService {
      * @throws:
      */
     @Override
-    public void updateSubejctList(PaperUpdateDTO paperUpdateDto) {
-        // TODO 调用考试服务后再来完成
+    public boolean updateSubejctList(PaperUpdateDTO paperUpdateDto) {
+        Paper paper = new Paper();
+        PojoUtils.copyProperties(paperUpdateDto,paper);
+        mainTainPaperDao.deleteSubjects(paper.getPaperId());
+        IdWorker idWorker = new IdWorker();
+        List<SubjectDTO> subjectDTOS = paperUpdateDto.getSubjectList();
+        List<PaperSubject> paperSubjectList = new ArrayList<>();
+        List<PaperSubjectAnswer> paperSubjectAnswerList = new ArrayList<>();
+        for (SubjectDTO subjectDTO:
+                subjectDTOS) {
+            PaperSubject paperSubject = new PaperSubject();
+            PojoUtils.copyProperties(subjectDTO,paperSubject);
+            paperSubject.setPaperSubjectId(idWorker.nextId());
+            paperSubject.setPaperId(paper.getPaperId());
+            List<AnswerDTO> answerDTOS = subjectDTO.getAnswers();
+            for (AnswerDTO answerDTO:
+                    answerDTOS) {
+                PaperSubjectAnswer paperSubjectAnswer = new PaperSubjectAnswer();
+                PojoUtils.copyProperties(answerDTO,paperSubjectAnswer);
+                paperSubjectAnswer.setPaperSubjectAnswerId(idWorker.nextId());
+                paperSubjectAnswer.setSubjectId(paperSubject.getPaperSubjectId());
+                paperSubjectAnswerList.add(paperSubjectAnswer);
+            }
+            paperSubjectList.add(paperSubject);
+        }
+        mainTainPaperDao.insertSubjectList(paperSubjectList);
+        BigDecimal score = new BigDecimal(0);
+        for (PaperSubject paperSubject:
+                paperSubjectList) {
+            score = score.add(paperSubject.getScore());
+        }
+        mainTainPaperDao.insertAnswerList(paperSubjectAnswerList);
+        paper.setScore(score);
+        mainTainPaperDao.updatePaper(paper);
+
+        return true;
     }
 
     /**
