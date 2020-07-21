@@ -14,6 +14,7 @@ import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,7 @@ public class ExaminationController extends PaperBaseController implements Examin
      *
      * @return
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @ApiOperation("查询试卷集合")
     @Override
     public CommonResponse getAllPaper(@RequestBody CommonRequest<ExamPaperInfoQuery> commonRequest) {
@@ -44,12 +46,14 @@ public class ExaminationController extends PaperBaseController implements Examin
      * @return
      */
     @ApiOperation("查询某一试卷信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @Override
     public CommonResponse<ExamPaperDTO> getOnePaperWithSubject(@RequestBody @Valid CommonRequest<ExamPaperQuery> request) {
         ExamPaperDTO examPaperDTO = examPaperService.getExamPaper(request.getBody());
         return CommonResponseUtil.ok(examPaperDTO);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('examination_admin')")
     @Override
     public CommonResponse getOnePaperAnswer(CommonRequest<ExamPaperQuery> commonRequest) {
         return null;

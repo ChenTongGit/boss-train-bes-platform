@@ -5,13 +5,14 @@ import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
+import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
+import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
 import org.springframework.web.bind.annotation.*;
 ;
 
 import java.util.List;
 
 @RequestMapping("/category")
-@CrossOrigin
 public interface CategoryApi {
 
     /**

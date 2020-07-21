@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @throws:
      */
     @ApiOperation("查询试卷集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse getPaper(@RequestBody CommonRequest<PaperQueryVO> commonRequest) {
         return CommonResponseUtil.ok("20000","成功查询试卷集合",queryPaperList(commonRequest.getBody()));
@@ -65,6 +67,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @throws:
      */
     @ApiOperation("查询模板集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse getTemplate(@RequestBody CommonRequest<TemplateQueryVO> commonRequest) {
         return  CommonResponseUtil.ok("20000","成功查询模板集合",queryTemplateList(commonRequest.getBody()));
@@ -80,6 +83,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      */
     @ApiLog
     @ApiOperation("模板组卷")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse downLoadTemplate(@RequestBody CommonRequest<TemplateCombDTO> commonRequest) {
         return  downloadTemplatePaper(commonRequest.getBody());
@@ -94,6 +98,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @throws:
      */
     @ApiOperation("查询组卷配置集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse queryCombExamConfiguration(@RequestBody CommonRequest<CombConfigQueryDTO> commonRequest) {
         PageInfo<CombConfigVO> pageInfo = baseServiceApi.queryCombExamConfiguration(commonRequest.getBody());
@@ -108,6 +113,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse queryConfigItemsList(@RequestBody CommonRequest<CombConfigItemQueryVO> commonRequest) {
         return null;
@@ -121,6 +127,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @ApiOperation("自定义组卷配置快速组卷")
     @Override
     public CommonResponse fastCombExam(@RequestBody CommonRequest<CombExamDTO> commonRequest) {
@@ -137,6 +144,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @Override
     public CommonResponse saveCombExamItemList(@RequestBody CommonRequest<List<ConfigItemVO>> commonRequest) {
         return null;
@@ -150,6 +158,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @ApiOperation("组卷配置快速组卷")
     @Override
     public CommonResponse fastCombExamById(@RequestBody CommonRequest<CombConfigItemQueryDTO> commonRequest) {
@@ -166,6 +175,7 @@ public class CombExamController extends PaperBaseController implements CombExamA
      * @return: com.boss.xtrain.core.data.common.CommonResponse
      * @throws:
      */
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @ApiOperation("标准组卷")
     @Override
     public CommonResponse standardCombExam(@RequestBody CommonRequest<StandardCombDTO> commonRequest) {

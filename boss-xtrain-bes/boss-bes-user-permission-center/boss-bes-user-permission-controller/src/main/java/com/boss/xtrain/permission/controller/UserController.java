@@ -16,10 +16,9 @@ import com.boss.xtrain.permission.pojo.vo.UserListVO;
 import com.boss.xtrain.permission.service.UserSerivce;
 import lombok.extern.slf4j.Slf4j;
 import com.github.pagehelper.Page;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,6 +36,7 @@ public class UserController extends BaseController implements UserApi {
     UserSerivce userSerivce;
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserDTO> request) {
         UserDTO userDTO = request.getBody();
         log.info(userDTO.toString());
@@ -44,6 +44,7 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(row);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserDTO> request) {
         return CommonResponseUtil.ok(userSerivce.delete(request.getBody()));
@@ -56,28 +57,33 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
 
+
     @Override
     public CommonResponse<UserListVO> select(@Valid CommonRequest<UserQueryDTO> request) {
         UserQueryDTO queryDTO = request.getBody();
+        log.info(queryDTO.toString());
         UserDTO userDTO = userSerivce.select(queryDTO);
+        log.info(userDTO.toString());
         UserListVO vo = new UserListVO();
         PojoUtils.copyProperties(userDTO,vo);
         return CommonResponseUtil.ok(vo);
     }
 
+
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
     public CommonResponse<Integer> update(@Valid CommonRequest<UserDTO> request) {
         log.info(request.getBody().toString());
         return CommonResponseUtil.ok(userSerivce.update(request.getBody()));
     }
-
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserDTO>> request) {
         List<UserDTO> userDTOS  = request.getBody();
         return CommonResponseUtil.ok(userSerivce.delete(userDTOS));
     }
-
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     public CommonResponse<List<UserListVO>> selectAllUser(){
         List<UserDTO> userDTOS = userSerivce.selectAll();
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));

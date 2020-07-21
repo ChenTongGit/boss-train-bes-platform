@@ -75,5 +75,4 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request);
-
 }

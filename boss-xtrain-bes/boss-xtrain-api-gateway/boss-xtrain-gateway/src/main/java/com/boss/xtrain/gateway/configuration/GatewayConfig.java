@@ -1,16 +1,18 @@
 package com.boss.xtrain.gateway.configuration;
 
-import com.alibaba.csp.sentinel.adapter.gateway.sc.SentinelGatewayFilter;
-import com.alibaba.csp.sentinel.adapter.gateway.sc.exception.SentinelGatewayBlockExceptionHandler;
-import com.alibaba.csp.sentinel.adapter.servlet.callback.WebCallbackManager;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.result.view.ViewResolver;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @Configuration
 public class GatewayConfig {
-    private final List<ViewResolver> viewResolvers;
+    /*private final List<ViewResolver> viewResolvers;
     private final ServerCodecConfigurer serverCodecConfigurer;
 
     public GatewayConfig(ObjectProvider<List<ViewResolver>> viewResolversProvider,
@@ -44,5 +46,5 @@ public class GatewayConfig {
     public void init(){
         //黑白名单
         WebCallbackManager.setRequestOriginParser(new IpRequestOriginParser());
-    }
+    }*/
 }

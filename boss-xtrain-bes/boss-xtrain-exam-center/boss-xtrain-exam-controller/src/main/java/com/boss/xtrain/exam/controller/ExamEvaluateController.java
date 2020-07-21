@@ -19,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,7 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
      */
     @ApiOperation(value = "获取评卷列表")
     @PostMapping("/list")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_evalute_admin')")
     @Override
     public CommonResponse<CommonPage<MarkingDataListVO>> doQueryExamRecord(@Valid @RequestBody CommonRequest<CommonPageRequest<MarkingQuery>> request) {
         Page<Object> page = this.doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
@@ -78,6 +80,7 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
      */
     @ApiOperation(value = "回传阅卷结果临时存储")
     @PostMapping("/tempMarkingResult")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_evalute_admin')")
     @Override
     public CommonResponse<Boolean> tempMarkingRecord(@Valid @RequestBody CommonRequest<MarkingTempListDTO> request) {
         this.examEvaluateService.tempEvaluateResult(request.getBody().getList(),request.getBody().getExamRecordId());
@@ -91,6 +94,7 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
      */
     @ApiOperation(value = "提交保存阅卷信息")
     @PostMapping("/submit")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_evalute_admin')")
     @Override
     public CommonResponse<Boolean> submitEvaluate(@Valid @RequestBody CommonRequest<MarkingSubmitDTO> request) {
         Boolean result = this.examEvaluateService.submitEvaluate(request.getBody());

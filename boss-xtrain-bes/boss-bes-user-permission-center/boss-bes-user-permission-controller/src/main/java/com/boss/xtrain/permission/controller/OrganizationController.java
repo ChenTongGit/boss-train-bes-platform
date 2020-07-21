@@ -13,6 +13,7 @@ import com.github.pagehelper.Page;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "添加新的组织机构")
     @Override
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.insert(dto));
@@ -40,6 +42,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "模糊查询组织机构")
     @Override
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<List<OrganizationVO>> selectList(@RequestBody @Valid CommonRequest<OrganizationQuery> request) {
         OrganizationQuery query = request.getBody();
         List<OrganizationDTO> organizationDTOList = service.selectByCondition(query);
@@ -50,6 +53,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiLog(msg = "搜索一个组织机构")
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<OrganizationVO> select(@Valid CommonRequest<OrganizationQuery> request) {
         OrganizationQuery query = request.getBody();
         OrganizationDTO organizationDTO = service.selectOne(query);
@@ -61,6 +65,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiOperation(value = "test")
     @ApiLog(msg = "更新组织机构信息")
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.update(dto));
@@ -74,6 +79,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiOperation(value = "test")
     @ApiLog(msg = "删除一个组织机构")
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));
@@ -87,6 +93,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "批量删除组织机构")
     @ApiOperation(value = "test")
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<OrganizationDTO>> request) {
         List<OrganizationDTO> dtoList = request.getBody();
         return CommonResponseUtil.ok(service.delete(dtoList));
@@ -100,6 +107,7 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiLog(msg = "搜索所有的组织机构")
     @Override
     @ApiOperation(value = "test")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<List<OrganizationVO>> selectAllOrg() {
         List<OrganizationDTO> organizationDTOList = service.selectAll();
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);
@@ -119,6 +127,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页全搜索组织机构并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<CommonPage<OrganizationVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<OrganizationDTO> organizationDTOList = service.selectByCondition(request.getBody().getQuery());
@@ -129,6 +138,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件(模糊)搜索组织机构并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         List<OrganizationDTO> organizationDTOList = service.selectAll();

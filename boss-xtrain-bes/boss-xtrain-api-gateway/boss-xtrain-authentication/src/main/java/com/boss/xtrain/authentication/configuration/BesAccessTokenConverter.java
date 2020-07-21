@@ -26,7 +26,6 @@ public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
     }
 
     private class BesUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
-
         @Override
         public Map<String, ?> convertUserAuthentication(Authentication authentication) {
             LinkedHashMap response = new LinkedHashMap();

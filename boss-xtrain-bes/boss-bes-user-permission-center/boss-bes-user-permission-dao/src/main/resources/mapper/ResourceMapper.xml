@@ -56,11 +56,9 @@
     select a.url from t_resource a,t_role_resource b
     where a.id = b.t_rs_id and b.t_r_id = #{roleId} and a.resource_type = 0
   </select>
-
     <update id="updateWithNull" parameterType="java.lang.Long">
     update t_resource set parent_id = null where id=#{id}
   </update>
-
     <delete id="deleteRoleResource" parameterType="java.lang.Long" >
         DELETE FROM t_role_resource
         <where>
