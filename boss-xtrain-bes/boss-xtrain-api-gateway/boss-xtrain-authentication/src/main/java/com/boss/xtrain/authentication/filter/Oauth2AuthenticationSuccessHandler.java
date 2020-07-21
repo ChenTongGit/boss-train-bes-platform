@@ -1,4 +1,4 @@
-package com.boss.xtrain.authentication.configuration;
+package com.boss.xtrain.authentication.filter;
 
 import com.boss.xtrain.authentication.jwt.UserJwt;
 import com.boss.xtrain.authentication.service.BesUserDetailService;
@@ -29,7 +29,6 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-
         log.info("认证成功");
         UserJwt userJwt = (UserJwt) authentication.getPrincipal();
         redisUtil.set("bes:effectentity:" + userJwt.getId(), userJwt);

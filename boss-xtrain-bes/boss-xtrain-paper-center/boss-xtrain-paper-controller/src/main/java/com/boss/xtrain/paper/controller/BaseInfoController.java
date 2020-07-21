@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,7 @@ public class BaseInfoController extends BaseController implements BaseInfoApi {
     private BaseServiceApiImpl baseServiceApi;
 
     @ApiOperation("查询题目类型集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('base_info_admin')")
     @Override
     public CommonResponse querySubjectCategoryList(@RequestBody CommonRequest<CombInfoQueryDTO> commonRequest) {
         CombInfoQueryDTO combInfoQueryDTO = commonRequest.getBody();
@@ -36,6 +38,7 @@ public class BaseInfoController extends BaseController implements BaseInfoApi {
     }
 
     @ApiOperation("查询题型集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('base_info_admin')")
     @Override
     public CommonResponse querySubjectTypeList(@RequestBody CommonRequest<CombInfoQueryDTO> commonRequest) {
         CombInfoQueryDTO combInfoQueryDTO = commonRequest.getBody();
@@ -44,6 +47,7 @@ public class BaseInfoController extends BaseController implements BaseInfoApi {
     }
 
     @ApiOperation("查询试卷类型、试卷难度、题目难度集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('base_info_admin')")
     @Override
     public CommonResponse queryPaperInfo(@RequestBody CommonRequest<CombInfoQueryDTO> commonRequest) {
         CombInfoQueryDTO combInfoQueryDTO = commonRequest.getBody();
@@ -52,6 +56,7 @@ public class BaseInfoController extends BaseController implements BaseInfoApi {
     }
 
     @ApiOperation("查询公司集合")
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('base_info_admin')")
     @Override
     public CommonResponse queryCompanyList(@RequestBody CommonRequest<CombInfoQueryVO> commonRequest) {
         return null;

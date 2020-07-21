@@ -66,5 +66,6 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
      */
     @PostMapping("/selectAllByPage")
     CommonResponse<CommonPage<CompanyVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
-
 }
+
+

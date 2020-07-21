@@ -1,14 +1,15 @@
 package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.*;
+import com.boss.xtrain.basedata.mapper.SubjectTypeMapper;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.*;
-import com.boss.xtrain.basedata.pojo.vo.subject.*;
+
 import com.boss.xtrain.common.core.exception.BusinessException;
-import com.boss.xtrain.common.core.exception.ServiceException;
+
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -18,7 +19,6 @@ import com.boss.xtrain.basedata.service.SubjectService;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.lang.invoke.LambdaConversionException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +50,13 @@ public class SubjectServiceImpl implements SubjectService{
     @Autowired
     private IdWorker idWorker;
 
+    @Autowired
+    private SubjectTypeMapper subjectTypeMapper;
+
 
     @Override
     public List<SubjectDTO> querySubjectByCondition(SubjectQueryDTO subjectQueryDTO) {
-        //List<SubjectDTO> subjectDTOS = new ArrayList<>();
+        List<SubjectDTO> subjectDTOList = new ArrayList<>();
         Long orgId = subjectQueryDTO.getOrgId();
         String name= subjectQueryDTO.getName();
         String subjectTypeName = subjectQueryDTO.getSubjectTypeName();
@@ -130,10 +133,18 @@ public class SubjectServiceImpl implements SubjectService{
                 return subjectDTOS;
             }
 
+            SubjectType subjectType = new SubjectType();
             criteria.andEqualTo("organizationId",orgId);
             criteria.andLike("name","%"+name+"%");
-            log.info(subjectDao.queryByCondition(example).toString());
-            return subjectDao.queryByCondition(example);
+            subjectDTOList = subjectDao.queryByCondition(example);
+            log.info(subjectDTOList.toString());
+            for (SubjectDTO subjectDTO : subjectDTOList){
+                category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
+                subjectType = subjectTypeMapper.selectByPrimaryKey(subjectDTO.getSubjectTypeId());
+                subjectDTO.setCategoryName(category.getName());
+                subjectDTO.setSubjectTypeName(subjectType.getName());
+            }
+            return subjectDTOList;
         }else {
             return subjectDao.queryAll();
         }
@@ -467,6 +478,7 @@ public class SubjectServiceImpl implements SubjectService{
             criteria.andEqualTo("organizationId",subjectUpdateDTO.getOrganizationId());
         }
         criteria.andEqualTo("name",subjectUpdateDTO.getName());
+        log.info(subjectUpdateDTO.getName());
         int count = subjectDao.queryNameCount(example);
         log.info(String.valueOf(count));
         if(count != 0){

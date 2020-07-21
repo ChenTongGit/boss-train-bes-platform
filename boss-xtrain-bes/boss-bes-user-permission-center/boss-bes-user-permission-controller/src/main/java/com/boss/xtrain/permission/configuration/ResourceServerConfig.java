@@ -1,64 +1,73 @@
 package com.boss.xtrain.permission.configuration;
 
+import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.provider.token.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
+/**
+ * <p> 配置资源服务器，对服务器的资源进行保护
+ *
+ * <p> 主要包含的功能配置：配置远程认证服务的地址、client id、client密码
+ *
+ * @author lzx
+ * @version 0.0.1
+ */
 @Configuration
 @EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true)//激活方法上的PreAuthorize注解
+@Import(FeignClientInterceptor.class)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    // @Value("spring.security.resource.token-info-uri")
+    private static final String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
 
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
-    //公钥
-    private static final String PUBLIC_KEY = "public.cert";
-
+    /**
+     * 使用远程的认证服务，设置客户端信息，设置TokenConverter
+     * @return ResourceServerTokenServices
+     */
     @Primary
     @Bean
     public ResourceServerTokenServices tokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:4444/oauth/check_token");
+        remoteTokenServices.setCheckTokenEndpointUrl(tokenEndpointUrl);
         remoteTokenServices.setClientId(oAuth2ClientProperties.getClientId());
         remoteTokenServices.setClientSecret(oAuth2ClientProperties.getClientSecret());
         remoteTokenServices.setAccessTokenConverter(accessTokenConverter());
         return remoteTokenServices;
     }
 
+    /**
+     * 配置默认的token翻译器
+     * @return DefaultAccessTokenConverter
+     */
     @Bean
     public AccessTokenConverter accessTokenConverter() {
         return new DefaultAccessTokenConverter();
     }
 
     /**
-     * 获取非对称加密公钥 Key
-     * @return 公钥 Key
+     * Http安全配置，对每http请求链接进行校验
+     *
+     * 对 swagger等链接则不进行过滤
+     * @param http HttpSecurity
      */
-    private String getPubKey() {
-        Resource resource = new ClassPathResource(PUBLIC_KEY);
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream());
-            BufferedReader br = new BufferedReader(inputStreamReader);
-            return br.lines().collect(Collectors.joining("\n"));
-        } catch (IOException ioe) {
-            return null;
-        }
-    }
-    //Http安全配置，对每个到达系统的http请求链接进行校验
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //所有请求必须认证通过
@@ -70,5 +79,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource", "/**").permitAll()
             .anyRequest().authenticated();
     }
-
 }

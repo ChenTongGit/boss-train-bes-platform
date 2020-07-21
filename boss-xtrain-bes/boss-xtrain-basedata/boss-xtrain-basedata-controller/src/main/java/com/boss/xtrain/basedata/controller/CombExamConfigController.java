@@ -22,6 +22,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class CombExamConfigController extends BaseController implements CombExamConfigApi {
 
     @Autowired
@@ -43,6 +46,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "查询组卷配置（分页）")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<CommonPage<CombExamConfigVO>> queryExamConfig(@RequestBody CommonRequest<CommonPageRequest<CombExamConfigQueryVO>> commonRequest) {
         CombExamConfigQueryVO combExamConfigQueryVO = commonRequest.getBody().getQuery();
         Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
@@ -56,6 +60,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "通过组卷id查询组卷明细")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<List<CombExamItemVO>> queryExamItemById(@RequestBody CommonRequest<CombExamItemQueryVO> commonRequest) {
         CombExamItemQueryDTO configItemQueryDto = new CombExamItemQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),configItemQueryDto);
@@ -69,6 +74,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "删除组卷")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<Boolean> deleteExamConfig(@RequestBody CommonRequest<CombExamConfigDeleteVO> commonRequest) {
         CombExamConfigDeleteDTO combExamConfigDelDto = new CombExamConfigDeleteDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),combExamConfigDelDto);
@@ -80,6 +86,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "批量删除组卷")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<Boolean> deleteExamConfigs(@RequestBody CommonRequest<CombExamConfigDeleteIdsVO> commonRequest) {
         CombExamConfigDeleteIdsDTO combExamConfigDeleteIdsDTO = new CombExamConfigDeleteIdsDTO();
         List<CombExamConfigDeleteDTO> combExamConfigDeleteDTOS = PojoUtils.copyListProperties(commonRequest.getBody().getDeleteList(),CombExamConfigDeleteDTO::new);
@@ -92,6 +99,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "插入组卷")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<CombExamConfigVO> insertExamConfig(@RequestBody @Valid CommonRequest<CombExamConfigVO> commonRequest) {
         CombExamConfigVO combExamConfigVO = commonRequest.getBody();
         CombExamConfigDTO combExamConfigDto = new CombExamConfigDTO();
@@ -106,6 +114,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "更新组卷")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<CombExamConfigUpdateVO> updateExamConfig(@RequestBody CommonRequest<CombExamConfigUpdateVO> commonRequest) {
         CombExamConfigUpdateVO combExamConfigUpdateVO = commonRequest.getBody();
         CombExamConfigUpdateDTO combExamConfigUpdateDTO = new CombExamConfigUpdateDTO();
@@ -121,6 +130,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "插入组卷明细")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<List<CombExamItemVO>> insertExamItem(@RequestBody CommonRequest<List<CombExamItemVO>> commonRequest) {
         List<CombExamItemDTO> itemList = PojoUtils.copyListProperties(commonRequest.getBody(),CombExamItemDTO::new);
         log.info(itemList.toString());
@@ -132,6 +142,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     @Override
     @ApiLog(msg = "查询题目数量")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<Integer> querySubjectCount(@RequestBody CommonRequest<CombExamItemVO> commonRequest) {
         CombExamItemDTO configItemDto = new CombExamItemDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),configItemDto);
@@ -141,6 +152,7 @@ public class CombExamConfigController extends BaseController implements CombExam
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     @ApiLog(msg = "获取所有组卷配置")
     @ResponseBody
     public PageInfo<CombConfigVO> queryCombExamConfiguration(@RequestBody CombConfigQueryDTO combConfigQueryDTO) {

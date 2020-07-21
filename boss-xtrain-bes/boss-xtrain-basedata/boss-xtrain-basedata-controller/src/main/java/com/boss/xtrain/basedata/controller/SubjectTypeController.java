@@ -17,6 +17,8 @@ import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +38,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     @Override
     @ApiLog(msg = "新增题型")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<SubjectTypeVO> insertSubjectType(@RequestBody @Valid CommonRequest<SubjectTypeVO> commonRequest) {
         SubjectTypeVO subjectTypeVO = commonRequest.getBody();
         SubjectTypeDTO subjectTypeDTO = new SubjectTypeDTO();
@@ -47,6 +50,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     @Override
     @ApiLog(msg = "删除题型")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<Boolean> deleteSubjectType(@RequestBody CommonRequest<SubjectDeleteVO> commonRequest) {
         SubjectTypeDeleteDTO subjectTypeDelDto = new SubjectTypeDeleteDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectTypeDelDto);
@@ -58,6 +62,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     @Override
     @ApiLog(msg = "批量删除题型")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<Boolean> deleteSubjectTypeList(@RequestBody CommonRequest<SubjectTypeDeleteIdsVO> commonRequest) {
         SubjectTypeDeleteIdsVO subjectTypeDeleteIdsVO = commonRequest.getBody();
         SubjectTypeDeleteIdsDTO subjectTypeDeleteIdsDTO = new SubjectTypeDeleteIdsDTO();
@@ -68,6 +73,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<SubjectTypeVO> updateSubjectType(@RequestBody @Valid CommonRequest<SubjectTypeVO> commonRequest) {
         SubjectTypeVO subjectTypeVO = commonRequest.getBody();
         SubjectTypeDTO subjectTypeDTO = new SubjectTypeDTO();
@@ -77,6 +83,7 @@ public class SubjectTypeController extends BaseController implements SubjectType
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<CommonPage<SubjectTypeVO>> querySubjectTypePage(@RequestBody @Valid CommonRequest<CommonPageRequest<SubjectTypeQueryVO>> commonRequest) {
         SubjectTypeQueryVO subjectTypeQueryVO = commonRequest.getBody().getQuery();
         if (subjectTypeQueryVO == null){

@@ -83,10 +83,6 @@
   <select id="getResourcesByRoleId" parameterType="java.lang.Long" resultMap="ResourceMap">
         select  a.id,a.name  from t_resource a left join t_role_resource b on a.id = b.t_rs_id  where b.t_r_id = #{id}
     </select>
-<<<<<<< HEAD
-=======
-
->>>>>>> ysq-dev
 
   <select id="getUsers" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="UserMap">
     SELECT  tu.id,tu.name,tu.code,tu.company_id as companyId, tc.name as companyName

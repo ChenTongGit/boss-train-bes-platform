@@ -1,6 +1,9 @@
 package com.boss.xtrain.authentication.configuration;
 
 
+import com.boss.xtrain.authentication.filter.HttpServletRequestCrossFilter;
+import com.boss.xtrain.authentication.filter.Oauth2AuthenticationFailureHandler;
+import com.boss.xtrain.authentication.filter.Oauth2AuthenticationSuccessHandler;
 import com.boss.xtrain.authentication.service.BesUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -44,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+            .cors().and()
             .authorizeRequests()
-            .antMatchers("/login", "/api/userinfo","/api/testFeign")
+            .antMatchers("/login", "/api/userinfo","/api/testFeign", "/oauth/logout")
             .permitAll()
             .anyRequest()
             .authenticated()
@@ -54,8 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .successHandler(successHandler)
             .failureHandler(failureHandler)
             .and()
-            .logout()
-            .logoutSuccessUrl("http://127.0.0.1:4444/exit");
+            .logout();
     }
 
     @Override

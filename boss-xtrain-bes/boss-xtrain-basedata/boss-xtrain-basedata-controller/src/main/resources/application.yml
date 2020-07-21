@@ -1,10 +1,3 @@
-application:
-  name: base-data
-cloud:
-  nacos:
-    discovery:
-      server-addr: 39.97.106.243:8848
-      service: ${spring.application.name}
 mybatis:
   type-aliases-package: com.boss.xtrain.basedata.pojo.entity
   mapper-locations: classpath:mapper/*.xml
@@ -12,8 +5,10 @@ mapper:
   mappers: com.boss.xtrain.common.core.web.dao.CommonMapper
   identity: MYSQL
 spring:
+  application:
+    name: base-data
   datasource:
-    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true
+    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: guoxinrui0622
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,8 +17,33 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
-pagehelper:
-  auto-runtime-dialect: true
-  support-methods-arguments: true
-  reasonable: true
-  params: count=countSql
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+
+  # 组nacos和seata服务地址
+  nacos-url:
+    nacos-host: 123.57.156.184
+    nacos-port: 8848
+  security:-url:
+    host: localhost
+    port: 18006
+
+# 配置资源服务器
+security:
+  oauth2:
+    client:
+      clientId: bes
+      clientSecret: 12345
+      userAuthorizationUri: http://${spring.security-url.host}:${spring.security-url.port}/oauth/authorize
+      grant-type: password
+      scope: read
+      access-token-uri: http://${spring.security-url.host}:${spring.security-url.port}/oauth/token
+    resource:
+      token-info-uri: http://${spring.security-url.host}:${spring.security-url.port}/oauth/check_token
+      user-info-uri: http://${spring.security-url.host}:${spring.security-url.port}/user
+    authorization:
+      check-token-access: http://${spring.security-url.host}:${spring.security-url.port}/check_token
+server:
+  port: 18002

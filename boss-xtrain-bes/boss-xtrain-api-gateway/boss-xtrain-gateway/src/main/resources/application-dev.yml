@@ -13,11 +13,35 @@ spring:
           # 去除前缀
           filters:
             - StripPrefix=1
-        - id: boss-bes-system-center
-          uri: lb://boss-bes-system-center
+        - id: boss-bes-system
+          uri: lb://boss-bes-system
           order: 0
           predicates:
             - Path=/system/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-exam
+          uri: lb://boss-bes-exam
+          order: 0
+          predicates:
+            - Path=/exam/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-basedata
+          uri: lb://boss-bes-basedata
+          order: 0
+          predicates:
+            - Path=/basedata/**
+          # 去除前缀
+          filters:
+            - StripPrefix=1
+        - id: boss-bes-paper
+          uri: lb://boss-bes-paper
+          order: 0
+          predicates:
+            - Path=/paper/**
           # 去除前缀
           filters:
             - StripPrefix=1

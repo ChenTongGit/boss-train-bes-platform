@@ -10,9 +10,12 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
+import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
+import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +35,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "新增题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CategoryVO> insertCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -43,6 +47,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "删除题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<Boolean> deleteCategory(@RequestBody CommonRequest<CategoryDeleteIdsVO> commonRequest) {
         CategoryDeleteIdsVO categoryDeleteIdsVO =  commonRequest.getBody();
         CategoryDeleteIdsDTO categoryDeleteIdsDTO = new CategoryDeleteIdsDTO();
@@ -55,6 +60,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "修改题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CategoryVO> updateCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -66,6 +72,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "获取所有题目类别（不分页）")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public List<CategoryVO> getCategoryList(@RequestBody CategoryQueryVO categoryQueryVo) {
         log.info(categoryQueryVo.toString());
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
@@ -100,6 +107,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     @Override
     @ApiLog(msg = "树状获取题目类别")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<List<CategoryTreeVO>> getCategoryTree(@RequestBody CommonRequest<CategoryQueryVO> commonRequest) {
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryQueryDTO);
@@ -118,6 +126,7 @@ public class CategoryController extends BaseController implements CategoryApi {
 
     @Override
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CommonPageRequest<CategoryIdsVO>> commonRequest) {
         CategoryIdsDTO categoryIdListDTO = new CategoryIdsDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryIdListDTO);

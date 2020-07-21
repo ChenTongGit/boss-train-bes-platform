@@ -286,7 +286,7 @@ public class MyStringUtils extends StringUtils {
      * @return
      */
     public static Boolean isJwtStr(String str) {
-        String[] strings = str.split(".");
+        String[] strings = str.split("\\.");
         log.info(String.valueOf(strings.length));
         return strings.length == 3;
     }

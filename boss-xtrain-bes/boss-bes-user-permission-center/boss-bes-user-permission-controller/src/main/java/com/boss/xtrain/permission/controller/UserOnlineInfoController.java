@@ -13,6 +13,7 @@ import com.boss.xtrain.permission.service.UserOnlineInfoService;
 import com.github.pagehelper.Page;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页条件查找在线用户信息并排序")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
@@ -53,6 +55,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
      * @return
      */
     @Override
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页查找所有该管理员所负责的在线用户信息并排序")
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
@@ -73,6 +76,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "批量强制下线")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> updateList(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
         WebSocket socket = new WebSocket();
         List<String> userIds = new ArrayList<>();
@@ -95,6 +99,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "登录，添加用户在线信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<UserOnlineInfoDTO> request) {
         UserOnlineInfoDTO infoDTO = request.getBody();
         return CommonResponseUtil.ok(service.insert(infoDTO));
@@ -111,6 +116,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "模糊查询指定条件信息")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<List<UserOnlineInfoVO>> selectList(@Valid CommonRequest<UserOnlineInfoQuery> request) {
         UserOnlineInfoQuery infoQuery = request.getBody();
         List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(infoQuery);
@@ -129,6 +135,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "查找一个指定条件的数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<UserOnlineInfoVO> select(@Valid CommonRequest<UserOnlineInfoQuery> request) {
         UserOnlineInfoQuery infoQuery = request.getBody();
         UserOnlineInfoDTO infoDTO = service.selectOne(infoQuery);
@@ -148,6 +155,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "删除一个已经下线的不需要的多余数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserOnlineInfoDTO> request) {
         UserOnlineInfoDTO infoDTO = request.getBody();
         return CommonResponseUtil.ok(service.delete(infoDTO));
@@ -164,6 +172,7 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "批量删除已经下线的不需要的多余数据")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_online_admin')")
     public CommonResponse<Integer> deleteBatch(@Valid CommonRequest<List<UserOnlineInfoDTO>> request) {
         List<UserOnlineInfoDTO> infoDTOList = request.getBody();
         return CommonResponseUtil.ok(service.delete(infoDTOList));

@@ -9,7 +9,6 @@ import com.boss.xtrain.permission.dao.UserDao;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
 import com.boss.xtrain.permission.pojo.entity.Company;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
-import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
 import com.boss.xtrain.permission.service.CompanyService;
 import com.boss.xtrain.common.util.IdWorker;
@@ -31,7 +30,7 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
-    private CompanyDao companyDao;
+    private CompanyDao  companyDao;
 
     @Autowired
     private DepartmentDao departmentDao;

@@ -99,7 +99,7 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         Boolean enabled = readValue(mapper, json.get("enabled"), Boolean.class);
 
         Set<SimpleGrantedAuthority> grantedAuthorities = parseSimpleGrantedAuthorities(mapper, json.get("authorities"));
-        UserJwt userJwt = new UserJwt(username, "12345", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
+        UserJwt userJwt = new UserJwt(username, "123456", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
         userJwt.setId(id);
         userJwt.setCompanyName(companyName);
         userJwt.setDepartmentName(departmentName);

@@ -4,6 +4,7 @@ package com.boss.xtrain.permission.controller;
 import com.boss.xtrain.common.core.constant.CommonConstant;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class TestController {
 
     @ApiOperation(value = "test")
     @PostMapping("/login")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('ROLE_user_online_admin')")
     public Map<String,Object> login(){
         Map<String, Object> login = new HashMap<>();
         Map<String, String> data = new HashMap<>();
@@ -42,6 +44,7 @@ public class TestController {
 
     @ApiOperation("test")
     @GetMapping("/getInfo")
+    @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('ROLE_user_online_admin')")
     public Map<String,Object> getInfo(String token){
         log.info(token);
         Map<String,Object> res = new HashMap<>();
