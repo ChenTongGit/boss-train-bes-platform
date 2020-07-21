@@ -13,7 +13,6 @@ public class QueryPaperNameListVO extends BaseVO {
     /**
      * 试卷模板标识
      */
-    @NotBlank(message = "模板标记不能为空")
     private Boolean template;
 }
 
