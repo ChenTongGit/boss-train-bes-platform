@@ -91,8 +91,9 @@ public class SystemParamServiceImpl implements SystemParamService {
     @Override
     public int deleteByParamType(SystemParamDTO dto) {
         SystemParamQuery query = new SystemParamQuery();
-        //获取到所有参数类型为传入至的纪录
+        //获取到组织机构下所有参数类型为传入值的纪录
         query.setParamType(dto.getParamType());
+        query.setOrganizationId(dto.getOrganizationId());
         List<SystemParamDTO> systemParamDTOList = PojoUtils.copyListProperties(systemParamDao.selectByCondition(query),SystemParamDTO::new);
         for(SystemParamDTO systemParamDTO:systemParamDTOList){
             if(systemParamDTO.getStatus()!=0){
