@@ -40,7 +40,7 @@ public class PaperBaseDaoImplTest {
         List<Paper> list = paperBaseDao.getTemplateList(templateQueryDTO);
         System.out.println(list);
         for (Paper paper:
-        list) {
+                list) {
             System.out.println(paper.toString());
         }
     }
@@ -50,8 +50,9 @@ public class PaperBaseDaoImplTest {
         Long paperId = 1L;
         List<SubjectVO> list = paperBaseDao.getSubjectList(paperId);
         for (SubjectVO subjectVO:
-             list) {
+                list) {
             System.out.println(subjectVO.toString());
         }
     }
 }
+
