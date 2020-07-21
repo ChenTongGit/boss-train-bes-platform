@@ -43,12 +43,12 @@ public class UserController extends BaseController implements UserApi {
         int row = userSerivce.insert(userDTO);
         return CommonResponseUtil.ok(row);
     }
-
     @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
     public CommonResponse<Integer> delete(@Valid CommonRequest<UserDTO> request) {
         return CommonResponseUtil.ok(userSerivce.delete(request.getBody()));
     }
+
 
     @Override
     public CommonResponse<List<UserListVO>> selectList(@Valid CommonRequest<UserQueryDTO> request) {
@@ -69,7 +69,6 @@ public class UserController extends BaseController implements UserApi {
         return CommonResponseUtil.ok(vo);
     }
 
-
     @PreAuthorize("hasAuthority('ROLE_admin') OR hasAuthority('user_admin')")
     @Override
     public CommonResponse<Integer> update(@Valid CommonRequest<UserDTO> request) {
@@ -88,7 +87,6 @@ public class UserController extends BaseController implements UserApi {
         List<UserDTO> userDTOS = userSerivce.selectAll();
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userDTOS,UserListVO::new));
     }
-
     @Override
     public CommonResponse<List<RoleListVO>> getAllRole(@Valid CommonRequest<UserQueryDTO> request) {
         return CommonResponseUtil.ok(PojoUtils.copyListProperties(userSerivce.getAllRoles(request.getBody()),RoleListVO::new));

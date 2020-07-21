@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -31,11 +32,15 @@ public class PositionDaoImpl implements PositionDao {
 
     @Override
     public List<PositionDTO> queryByCondition(PositionQueryDTO dto) {
-        Position position = new Position();
-        log.info("query:",dto.toString());
-        PojoUtils.copyProperties(dto,position);
-        log.info("position:",position.toString());
-        return PojoUtils.copyListProperties(positionMapper.select(position),PositionDTO::new);
+        Example example = new Example(Position.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andLike("name","%"+dto.getName()+"%");
+//        Position position = new Position();
+//        log.info("query:",dto.toString());
+//        PojoUtils.copyProperties(dto,position);
+//        log.info("position:",position.toString());
+//        return PojoUtils.copyListProperties(positionMapper.select(position),PositionDTO::new);
+        return PojoUtils.copyListProperties(positionMapper.selectByExample(example),PositionDTO::new);
     }
 
     @Override
@@ -98,6 +103,7 @@ public class PositionDaoImpl implements PositionDao {
     public int positionUpdate(PositionDTO dto) {
         Position position = new Position();
         BeanUtils.copyProperties(dto,position);
+        log.info(position.toString());
         return positionMapper.updateByPrimaryKeySelective(position);
     }
 

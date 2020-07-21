@@ -82,6 +82,7 @@
     <select id="getRoleByUserId" parameterType="java.lang.Long" resultMap="RoleMap">
         select  a.id,a.name  from t_role a left join user_role b on a.id = b.role_id  where b.user_id = #{Id}
     </select>
+
   <delete id="deleteRoleUser">
     DELETE FROM t_user_role
     WHERE t_u_id IN
@@ -90,19 +91,6 @@
     </foreach>
   </delete>
 
-<!--  <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">-->
-<!--    SELECT tr.*,tr.company_id as companyId,tc.name as companyName FROM t_role tr,t_company tc-->
-<!--    <where>-->
-<!--      tr.company_id= tc.id-->
-<!--      <if test="companyId != null and companyId != ''">-->
-<!--        AND tr.company_id = #{companyId}-->
-<!--      </if>-->
-<!--    </where>-->
-<!--  </select>-->
-<!--  <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">-->
-<!--        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})-->
-<!--    </insert>-->
-
     <select id="getRoles" parameterType="com.boss.xtrain.permission.pojo.query.UserQueryDTO" resultMap="RoleMap">
         SELECT  tr.id,tr.name
         FROM t_role tr left join t_user_role tur on tr.id = tur.t_r_id
@@ -110,13 +98,6 @@
             tur.t_u_id = #{id}
         </where>
     </select>
-    <delete id="deleteUserRole">
-        DELETE FROM user_role
-        WHERE user_id IN
-        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </delete>
 
     <select id="getAllRoles"  parameterType="com.boss.xtrain.permission.pojo.query.RoleQueryDTO" resultMap="RoleMap">
         SELECT tr.*,tr.t_c_id as companyId,tc.name as companyName FROM t_role tr,t_company tc
@@ -128,7 +109,7 @@
         </where>
     </select>
     <insert id="allocateRole" parameterType="com.boss.xtrain.permission.pojo.dto.UserRoleDTO">
-        insert into user_role (id,role_id,user_id) VALUES (#{id},#{roleId},#{userId})
+        insert into t_user_role (t_r_id,t_u_id) VALUES (#{roleId},#{userId})
     </insert>
     <select id="getStatusById" parameterType="java.lang.Long" resultMap="UserMap">
         select status from t_user where id=#{id}
