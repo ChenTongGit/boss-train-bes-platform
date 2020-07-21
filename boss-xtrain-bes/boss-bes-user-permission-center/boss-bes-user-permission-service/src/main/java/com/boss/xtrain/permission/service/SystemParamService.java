@@ -36,9 +36,9 @@ public interface SystemParamService extends CommonCurdService<SystemParamDTO, Sy
 
     /**
      * 通过 paramType 删除符合条件的值。
-     * @param dto
+     * @param queryDTO
      * @return
      */
-    int deleteByParamType(SystemParamDTO dto);
+    int deleteByParamType(SystemParamQuery queryDTO);
 
 }
