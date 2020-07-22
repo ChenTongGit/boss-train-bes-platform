@@ -42,6 +42,7 @@ public class ResourceServiceImpl implements ResourceService{
         }
         try {
             dto.setId(worker.nextId());
+            dto.setVersion(0L);
             log.info(dto.toString());
             return resourceDao.insert(dto);
         }catch (Exception e){
@@ -82,6 +83,7 @@ public class ResourceServiceImpl implements ResourceService{
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_NOT_EXIST_ERROR);
         }
         try {
+            dto.setVersion(resourceDao.selectByKey(dto.getId()).getVersion());
             return resourceDao.update(dto);
         }catch (Exception e){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_UPDATE_ERROR);
@@ -92,9 +94,12 @@ public class ResourceServiceImpl implements ResourceService{
     public List<ResourceDTO> selectByCondition(ResourceQueryDTO dto) {
 
         try {
+            log.info("query:"+dto.toString());
             List<ResourceDTO> resources = resourceDao.queryByCondition(dto);
+            log.info("dto:"+resources.toString());
             return PojoUtils.copyListProperties(resources,ResourceDTO::new);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_QUERY_ERROR);
         }
     }

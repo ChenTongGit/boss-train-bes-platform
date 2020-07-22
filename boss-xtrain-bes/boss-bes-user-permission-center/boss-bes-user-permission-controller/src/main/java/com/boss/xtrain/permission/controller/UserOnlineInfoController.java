@@ -1,9 +1,11 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.UserOnlineInfoApi;
 import com.boss.xtrain.permission.pojo.dto.UserOnlineInfoDTO;
@@ -43,7 +45,13 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
-        Long orgId = null;
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+
+        UserOnlineInfoQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+
         List<UserOnlineInfoDTO> infoDTOList = service.selectByCondition(request.getBody().getQuery());
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
         return buildPageResponse(page,userOnlineInfoVOList);
@@ -61,7 +69,10 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
-        Long orgId = null;
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+
         List<UserOnlineInfoDTO> infoDTOList = service.selectAll(orgId);
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);
         return buildPageResponse(page,userOnlineInfoVOList);

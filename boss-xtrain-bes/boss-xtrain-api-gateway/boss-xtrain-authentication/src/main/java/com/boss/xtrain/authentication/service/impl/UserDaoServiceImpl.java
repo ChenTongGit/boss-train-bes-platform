@@ -30,7 +30,9 @@ public class UserDaoServiceImpl implements UserDaoService {
         UserQueryDTO userQueryDTO = new UserQueryDTO();
         userQueryDTO.setName(userName);
         userQuery.setBody(userQueryDTO);
+        log.info(userQueryDTO.toString());
         CommonResponse<UserDTO> user = permissonServiceClient.findUserByName(userQuery);
+        log.info(user.toString());
         UserDTO userDTO = user.getData();
 
         CommonResponse<List<RoleListVO>> roles = permissonServiceClient.findRoleByName(userQuery);
