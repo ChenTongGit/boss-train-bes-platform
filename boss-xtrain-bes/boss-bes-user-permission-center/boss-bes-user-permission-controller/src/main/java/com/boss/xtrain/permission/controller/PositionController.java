@@ -1,8 +1,10 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.pojo.dto.PositionDTO;
 import com.boss.xtrain.permission.pojo.entity.Position;
@@ -18,7 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -44,9 +50,20 @@ public class PositionController extends BaseController implements PositionApi {
     @ApiOperation("新增职位")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<PositionDTO> request) {
-        PositionDTO body = request.getBody();
-        log.info(body.toString());
-        return CommonResponseUtil.ok(positionService.insert(body));
+        PositionDTO dto = request.getBody();
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+        //String token = request.getHeader().getToken();
+        String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
+        String json = JwtUtils.getParseToken(parseToken);
+        Long createdBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        log.info("createBy:"+createdBy.toString());
+        dto.setCreatedBy(createdBy);
+        log.info(dto.toString());
+        return CommonResponseUtil.ok(positionService.insert(dto));
     }
 
     @Override
@@ -75,6 +92,18 @@ public class PositionController extends BaseController implements PositionApi {
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('position_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<PositionDTO> request) {
         PositionDTO dto = request.getBody();
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+        //String token = request.getHeader().getToken();
+        String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
+        String json = JwtUtils.getParseToken(parseToken);
+        Long updateBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        log.info("updateBy:"+updateBy.toString());
+        dto.setUpdatedBy(updateBy);
+        log.info(dto.toString());
         return CommonResponseUtil.ok(positionService.update(dto));
     }
 
