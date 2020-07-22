@@ -39,6 +39,7 @@ public class OrganizationController extends BaseController implements Organizati
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
+
     @ApiLog(msg = "模糊查询组织机构")
     @Override
     @ApiOperation(value = "test")
