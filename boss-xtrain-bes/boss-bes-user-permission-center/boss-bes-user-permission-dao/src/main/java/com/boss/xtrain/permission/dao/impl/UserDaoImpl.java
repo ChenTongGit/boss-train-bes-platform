@@ -75,7 +75,12 @@ public class UserDaoImpl implements UserDao {
     public List<UserDTO> queryByCondition(UserQueryDTO dto) {
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andLike("name","%"+dto.getName()+"%");
+        if(dto.getName()!=null) {
+            criteria.andLike("name", "%" + dto.getName() + "%");
+        }
+        if(dto.getCompanyId()!=null){
+            criteria.andEqualTo("companyId",dto.getCompanyId());
+        }
         return PojoUtils.copyListProperties(userMapper.selectByExample(example),UserDTO::new);
 
     }
