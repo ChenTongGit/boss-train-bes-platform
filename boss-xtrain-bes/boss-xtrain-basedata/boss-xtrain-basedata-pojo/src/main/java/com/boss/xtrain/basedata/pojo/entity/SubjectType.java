@@ -17,8 +17,6 @@ import java.util.Date;
 @Table(name = "t_subject_type")
 @Data
 public class SubjectType extends BaseEntity implements Serializable {
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long id;
     /**
      * 题型名称
      */

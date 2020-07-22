@@ -26,7 +26,7 @@ spring:
     password: 991018
   # nacos链接和密码
   nacos-url:
-    nacos-host: 39.97.106.243
+    nacos-host: 123.57.156.184
 #    nacos-host: 39.97.106.243
     nacos-port: 8848
   security:-url:
@@ -68,9 +68,3 @@ server:
 feign:
   hystrix:
     enabled: true
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          strategy: SEMAPHORE

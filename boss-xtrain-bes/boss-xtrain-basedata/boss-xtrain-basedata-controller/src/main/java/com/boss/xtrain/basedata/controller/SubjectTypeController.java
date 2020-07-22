@@ -29,7 +29,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class SubjectTypeController extends BaseController implements SubjectTypeApi {
 
     @Resource

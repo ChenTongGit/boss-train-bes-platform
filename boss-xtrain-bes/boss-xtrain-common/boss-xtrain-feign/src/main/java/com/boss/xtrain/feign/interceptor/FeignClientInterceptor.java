@@ -3,32 +3,22 @@ package com.boss.xtrain.feign.interceptor;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 @Configuration
 public class FeignClientInterceptor  implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (requestAttributes != null){
-            HttpServletRequest request = requestAttributes.getRequest();
-            //取出当前请求的header,找到jwt令牌
-            Enumeration<String> headerNames = request.getHeaderNames();
-            if (headerNames!=null){
-                while (headerNames.hasMoreElements()){
-                    String headerName = headerNames.nextElement();
-                    System.out.println(headerName);
-                    String headerValue = request.getHeader(headerName);
-                    System.out.println(headerValue);
-                    //将header向下传递
-                    template.header(headerName, headerValue);
-                }
-            }
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
+            OAuth2AuthenticationDetails dateils = (OAuth2AuthenticationDetails) authentication.getDetails();
+            template.header(HttpHeaders.AUTHORIZATION,
+                String.format("%s %s", "Bearer", dateils.getTokenValue()));
         }
     }
 }

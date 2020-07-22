@@ -360,7 +360,7 @@ public class SubjectServiceImpl implements SubjectService{
                     difficulties = subjectDao.querySubjectDifficult(example);
                 }
                 if (subjects.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
-                    throw new BusinessException(BusinessError.PAPER_QUICK_MAKE_PAPER_ERROR);
+                    throw new BusinessException(BusinessError.MAINTAIN_PAPER_DELETE_ERROR);
                 }else {
                     for (SubjectDTO s : subjectDtoList) {
                         s.setCategoryName(categoryNames.get(count));

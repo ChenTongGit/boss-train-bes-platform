@@ -13,7 +13,7 @@ import java.util.List;
  **/
 
 @Data
-public class PaperUpdateDTO extends BaseDTO {
+public class PaperUpdateDTO {
     /**
      * 试卷id
      */
@@ -33,7 +33,7 @@ public class PaperUpdateDTO extends BaseDTO {
     /**
      * 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 试卷描述
      */

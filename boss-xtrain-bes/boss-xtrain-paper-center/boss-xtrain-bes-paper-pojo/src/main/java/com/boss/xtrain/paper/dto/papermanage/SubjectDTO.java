@@ -10,7 +10,7 @@ import java.util.List;
  * @author lenovo
  */
 @Data
-public class SubjectDTO extends BaseDTO {
+public class SubjectDTO{
     /**
      * 试卷ID
      */
@@ -38,7 +38,7 @@ public class SubjectDTO extends BaseDTO {
     /**
      * 题目难度
      */
-    private Long difficulty;
+    private Long difficult;
     /**
      * 题目类别
      */
