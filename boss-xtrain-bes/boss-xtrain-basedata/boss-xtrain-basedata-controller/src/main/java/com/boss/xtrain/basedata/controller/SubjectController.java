@@ -33,7 +33,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class SubjectController extends BaseController implements SubjectApi {
 
     @Resource

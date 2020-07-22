@@ -34,7 +34,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class CombExamConfigController extends BaseController implements CombExamConfigApi {
 
     @Autowired
