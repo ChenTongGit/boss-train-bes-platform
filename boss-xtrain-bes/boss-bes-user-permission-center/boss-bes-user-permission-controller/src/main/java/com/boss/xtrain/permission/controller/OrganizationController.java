@@ -17,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,8 +41,20 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiOperation(value = "test")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
+//        OrganizationDTO dto = request.getBody();
+//        String token = request.getHeader().getToken();
+//        String json = JwtUtils.getParseToken(token);
+//        Long createdBy = (Long) JSONObject.parseObject(json).get("id");
+//        dto.setCreatedBy(createdBy);
+//        return CommonResponseUtil.ok(service.insert(dto));
         OrganizationDTO dto = request.getBody();
-        String token = request.getHeader().getToken();
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        //String token = request.getHeader().getToken();
         String json = JwtUtils.getParseToken(token);
         Long createdBy = (Long) JSONObject.parseObject(json).get("id");
         dto.setCreatedBy(createdBy);
