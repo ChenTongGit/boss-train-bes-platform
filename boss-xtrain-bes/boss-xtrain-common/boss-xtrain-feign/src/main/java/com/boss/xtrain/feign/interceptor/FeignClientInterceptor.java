@@ -2,12 +2,15 @@ package com.boss.xtrain.feign.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
+@Configuration
 public class FeignClientInterceptor  implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
@@ -19,7 +22,9 @@ public class FeignClientInterceptor  implements RequestInterceptor {
             if (headerNames!=null){
                 while (headerNames.hasMoreElements()){
                     String headerName = headerNames.nextElement();
+                    System.out.println(headerName);
                     String headerValue = request.getHeader(headerName);
+                    System.out.println(headerValue);
                     //将header向下传递
                     template.header(headerName, headerValue);
                 }

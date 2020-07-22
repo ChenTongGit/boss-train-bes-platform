@@ -3,6 +3,8 @@ package com.boss.xtrain.exam.service;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.exam.service.impl.PaperFallBack;
+import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
+import com.boss.xtrain.feign.interceptor.FeignConfiguration;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperDTO;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoDTO;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoQuery;
@@ -25,7 +27,7 @@ import java.util.List;
  * @see
  * @since
  **/
-@FeignClient(name = "boss-bes-paper", fallback = PaperFallBack.class)
+@FeignClient(name = "boss-bes-paper", fallback = PaperFallBack.class, configuration = FeignClientInterceptor.class)
 @Component
 public interface PaperFeign {
 

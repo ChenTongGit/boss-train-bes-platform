@@ -30,7 +30,6 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
  */
 @Configuration
 @EnableResourceServer
-@Import(FeignClientInterceptor.class)
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
@@ -84,7 +83,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             //下边的路径放行
             .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
                 "/swagger-resources/configuration/security", "/swagger-ui.html","/webjars/**",
-                "/course/coursepic/list/**", "/**")
+                "/course/coursepic/list/**")
             .permitAll()
             .anyRequest()
             .authenticated();
