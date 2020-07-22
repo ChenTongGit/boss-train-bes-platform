@@ -19,6 +19,7 @@ import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import tk.mybatis.mapper.entity.Example;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -161,13 +162,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
                 }
                 updateByIds.add(combExamConfigDTO.getUpdatedBy());
             }
-            for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList) {
-                combExamConfigDTO.setDifficultyName(difficultyMap.get(combExamConfigDTO.getDifficulty().toString()));
-                List<CombExamItemDTO> itemList = combExamConfigDTO.getCombExamItems();
-                for (CombExamItemDTO item : itemList) {
-                    item.setDifficultyName(difficultyMap.get(item.getDifficulty().toString()));
-                }
-            }
+
         }
         return combExamConfigDtoList;
 

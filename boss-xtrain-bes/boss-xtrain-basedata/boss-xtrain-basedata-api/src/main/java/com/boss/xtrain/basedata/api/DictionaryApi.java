@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RequestMapping("/basedata/dictionary")
+@RequestMapping("/dictionary")
 public interface DictionaryApi {
 
     @PostMapping("/insertDictionary")

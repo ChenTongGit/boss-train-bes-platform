@@ -18,7 +18,7 @@ import java.util.List;
  * @description 题目管理接口
  * @date 2020/7/11
  */
-@RequestMapping("/basedata/subject")
+@RequestMapping("/subject")
 public interface SubjectApi {
     /**
      * 查询题目（分页）
