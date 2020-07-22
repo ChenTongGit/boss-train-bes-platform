@@ -9,6 +9,7 @@ import com.boss.xtrain.permission.pojo.entity.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -59,9 +60,12 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<ResourceDTO> queryByCondition(ResourceQueryDTO dto) {
-        Resource resource = new Resource();
-        PojoUtils.copyProperties(dto,resource);
-        return PojoUtils.copyListProperties(resourceMapper.select(resource),ResourceDTO::new);
+        Example example = new Example(Resource.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andLike("name","%"+dto.getName()+"%");
+
+        example.or().andEqualTo("parentId",dto.getParentId());
+        return PojoUtils.copyListProperties(resourceMapper.selectByExample(example),ResourceDTO::new);
     }
 
     @Override
@@ -98,5 +102,10 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public int updateWithNull(Long id) {
         return resourceMapper.updateWithNull(id);
+    }
+
+    @Override
+    public Resource selectByKey(Long id) {
+        return resourceMapper.selectByPrimaryKey(id);
     }
 }

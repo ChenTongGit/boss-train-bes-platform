@@ -100,7 +100,6 @@ public class UserServiceImpl implements UserSerivce {
         }else {
             try {
                 for(UserRoleDTO userRoleDTO :dtos){
-                    userRoleDTO.setId(worker.nextId());
                     userDao.allocateRole(userRoleDTO);
                 }
             }catch (Exception e){
@@ -142,7 +141,9 @@ public class UserServiceImpl implements UserSerivce {
             List<UserDTO> userDTOS = userDao.queryByCondition(query);
             for(UserDTO userDTO : userDTOS){
                 userDTO.setRoleList(PojoUtils.copyListProperties(userDao.getRoles(query),RoleDTO::new));
-                userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+                if(userDTO.getUpdatedBy()!=null){
+                    userDTO.setUpdateName(userDao.selectByKey(userDTO.getUpdatedBy()).getName());
+                }
                 userDTO.setOrganizationId(companyDao.selectByKey(userDTO.getCompanyId()).getOrganizationId());
                 userDTO.setOrganizationName(organizationDao.selectByPrimaryKey(userDTO.getOrganizationId()).getName());
                 userDTO.setCompanyName(companyDao.selectByKey(userDTO.getCompanyId()).getName());
@@ -229,6 +230,7 @@ public class UserServiceImpl implements UserSerivce {
         }
         try {
             log.info(dto.toString());
+            dto.setVersion(userDao.selectByKey(dto.getId()).getVersion());
 //            return userDao.update(dto);
             return userDao.userUpdate(dto);
         }catch (Exception e){
@@ -251,6 +253,7 @@ public class UserServiceImpl implements UserSerivce {
         try {
             dto.setId(worker.nextId());
 //            return userDao.insert(dto);
+            dto.setVersion(0L);
             return userDao.userInsert(dto);
         }catch (Exception e){
             log.error(e.getMessage());

@@ -13,6 +13,7 @@ import com.boss.xtrain.permission.pojo.query.TreeNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -53,9 +54,13 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<RoleDTO> queryByCondition(RoleQueryDTO dto) {
-        Role role = new Role();
-        PojoUtils.copyProperties(dto,role);
-        return PojoUtils.copyListProperties(roleMapper.select(role),RoleDTO::new);
+        Example example = new Example(Role.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(dto.getName() != null) {
+            criteria.andLike("name", "%" + dto.getName() + "%");
+        }
+        example.or().andEqualTo("companyId",dto.getCompanyId());
+        return PojoUtils.copyListProperties(roleMapper.selectByExample(example),RoleDTO::new);
     }
 
     @Override

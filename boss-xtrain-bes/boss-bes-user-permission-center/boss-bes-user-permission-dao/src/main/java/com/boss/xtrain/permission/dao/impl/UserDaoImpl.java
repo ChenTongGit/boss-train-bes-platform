@@ -12,6 +12,7 @@ import com.boss.xtrain.permission.pojo.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -72,10 +73,15 @@ public class UserDaoImpl implements UserDao {
     }
     @Override
     public List<UserDTO> queryByCondition(UserQueryDTO dto) {
-        User user = new User();
-        PojoUtils.copyProperties(dto,user);
-        log.info("queryByCondition:",user.toString());
-        return PojoUtils.copyListProperties(userMapper.select(user),UserDTO::new);
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(dto.getName()!=null) {
+            criteria.andLike("name", "%" + dto.getName() + "%");
+        }
+        if(dto.getCompanyId()!=null){
+            criteria.andEqualTo("companyId",dto.getCompanyId());
+        }
+        return PojoUtils.copyListProperties(userMapper.selectByExample(example),UserDTO::new);
 
     }
 

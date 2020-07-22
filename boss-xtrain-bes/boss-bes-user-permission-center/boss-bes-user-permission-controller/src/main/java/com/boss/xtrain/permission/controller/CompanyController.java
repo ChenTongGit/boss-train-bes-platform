@@ -1,9 +1,11 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.CompanyApi;
 import com.boss.xtrain.permission.pojo.dto.CompanyDTO;
@@ -18,7 +20,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -76,7 +82,16 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ResponseBody
     public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
         try{
-            return CommonResponseUtil.ok(treeService.orgTree());
+            RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+            HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+            String token = servletRequest.getHeader("Authorization");
+
+            String parseToken = token.split(" ")[1];
+            String json = JwtUtils.getParseToken(parseToken);
+            Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+            return CommonResponseUtil.ok(treeService.orgTree(orgId));
         }catch (Exception e){
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -117,7 +132,20 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<CompanyDTO> companyDTOList = service.selectByCondition(request.getBody().getQuery());
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        CompanyQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+
+        List<CompanyDTO> companyDTOList = service.selectByCondition(query);
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
         return buildPageResponse(page,companyVOList);
     }
@@ -144,7 +172,14 @@ public class CompanyController extends BaseController implements CompanyApi {
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<CompanyDTO> request) {
         CompanyDTO dto = request.getBody();
         //        Long createdBy = token获取userID
-        Long createdBy = null;
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long createdBy = ((Number) JSONObject.parseObject(json).get("id")).longValue();
         dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
@@ -177,6 +212,16 @@ public class CompanyController extends BaseController implements CompanyApi {
         CompanyDTO dto = request.getBody();
 //        Long updateUser = token;从token中获得更新人id
 //        dto.setUpdatedBy(updateUser);
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long updatedBy = ((Number) JSONObject.parseObject(json).get("id")).longValue();
+
+        dto.setUpdatedBy(updatedBy);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

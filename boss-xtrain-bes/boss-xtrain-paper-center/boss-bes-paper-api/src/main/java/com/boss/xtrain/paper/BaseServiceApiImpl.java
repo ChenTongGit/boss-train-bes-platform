@@ -230,6 +230,8 @@ public class BaseServiceApiImpl implements BaseServiceApi {
         for (int i = 0; i <baseData.getTypeName().length ; i++) {
             SubjectTypeVO subjectTypeVO = new SubjectTypeVO();
             subjectTypeVO.setTypeName(baseData.getTypeName()[i]);
+            subjectTypeVO.setSubjectId(String.valueOf(i));
+            subjectTypeVO.setAttribute("题型集合");
             list.add(subjectTypeVO);
         }
         return list;

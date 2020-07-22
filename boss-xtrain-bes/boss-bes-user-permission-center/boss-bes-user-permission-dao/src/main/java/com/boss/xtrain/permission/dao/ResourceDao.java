@@ -72,4 +72,12 @@ public interface ResourceDao extends IBaseDao<ResourceDTO,ResourceQueryDTO> {
      *
     */
     int updateWithNull(Long id);
+
+    /**
+     * 唯一查询
+     * @param id
+     * @return  Resource
+     * @description
+     */
+    Resource selectByKey(Long id);
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
-public class UserController {
+public class UserInfoController {
 
     @Autowired
     PermissonServiceClient client;

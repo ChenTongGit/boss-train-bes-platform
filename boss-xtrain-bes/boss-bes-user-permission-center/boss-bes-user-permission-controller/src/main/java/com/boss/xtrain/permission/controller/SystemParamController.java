@@ -1,7 +1,10 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.SystemParamApi;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
@@ -15,7 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -111,7 +118,16 @@ public class SystemParamController extends BaseController implements SystemParam
 //        paramType，点击树进行搜索，paramType通过基础数据管理的接口获得列表
 //        param 输入具体参数名进行搜索
 //        通过orgId搜索该组织机构下的所有系统参数
-        Long orgId = 5687565568097L;//测试用
+//        Long orgId = 5687565568097L;//测试用
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
         SystemParamQuery query = request.getBody().getQuery();
         query.setOrganizationId(orgId);
         List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
@@ -121,7 +137,7 @@ public class SystemParamController extends BaseController implements SystemParam
 
     /**
      * 分页全搜索
-     *
+     * 不会用的
      * @param request
      * @return
      */
@@ -132,7 +148,15 @@ public class SystemParamController extends BaseController implements SystemParam
 
 //        Long orgId = token;从token中获取到所负责的组织机构
         //5687565568097是测试用的orgID
-        Long orgId = 5687565568097L;
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
         List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(orgId);
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
         return buildPageResponse(page,systemParamVOList);
