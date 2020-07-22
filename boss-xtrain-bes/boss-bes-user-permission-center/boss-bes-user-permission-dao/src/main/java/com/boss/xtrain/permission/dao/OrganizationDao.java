@@ -60,7 +60,7 @@ public interface OrganizationDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int update(OrganizationDTO dto);
+    int orgUpdate(OrganizationDTO dto);
 
     /**
      * 插入数据
@@ -68,7 +68,7 @@ public interface OrganizationDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int insert(OrganizationDTO dto);
+    int orgInsert(OrganizationDTO dto);
 
     /**
      * 是否存在
