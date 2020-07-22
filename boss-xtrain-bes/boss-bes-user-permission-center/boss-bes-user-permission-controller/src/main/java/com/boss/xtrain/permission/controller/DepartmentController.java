@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
@@ -124,6 +126,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页搜索所有部门信息并排序")
+    @SentinelResource(value = "selectAllByPage", blockHandler = "exceptionHandler", fallback = "fallbackHandler")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
@@ -245,5 +248,22 @@ public class DepartmentController extends BaseController implements DepartmentAp
     public CommonResponse<Integer> delete(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));
+    }
+
+    /**
+     * 对限流与阻塞处理
+     *
+     * @param request 与资源点的入参一致
+     * @param ex 阻塞异常
+     */
+    public void exceptionHandler(CommonRequest<CommonPageRequest> request, BlockException ex) {
+        log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+    }
+
+    /**
+     *
+     */
+    public void  fallbackHandler(CommonRequest<CommonPageRequest> request) {
+        log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
     }
 }
