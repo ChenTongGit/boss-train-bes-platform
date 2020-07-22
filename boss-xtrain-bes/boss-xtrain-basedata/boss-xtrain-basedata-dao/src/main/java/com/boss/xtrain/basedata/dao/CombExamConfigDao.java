@@ -21,6 +21,7 @@ public interface CombExamConfigDao {
 
     List<CombExamConfig> queryCombExamConfig(CombExamConfigQueryDTO combExamConfigQueryDTO);
 
+    List<CombExamConfig> queryCombExamConfigTest(CombExamConfigQueryDTO combExamConfigQueryDTO);
     int checkRepeatName(Example example);
 
 }

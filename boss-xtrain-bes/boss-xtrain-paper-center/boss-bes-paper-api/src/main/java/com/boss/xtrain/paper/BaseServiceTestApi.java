@@ -1,5 +1,6 @@
 package com.boss.xtrain.paper;
 
+import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
 import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
 import com.boss.xtrain.paper.dto.fastcomb.CombConfigItemQueryDTO;
 import com.boss.xtrain.paper.dto.fastcomb.CombConfigQueryDTO;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.util.List;
 
-@FeignClient(value = "boss-bes-basedata")
+@FeignClient(value = "boss-bes-basedata", configuration = FeignClientInterceptor.class)
 public interface BaseServiceTestApi {
 //    @PostMapping("/education/bes/v1/basedata/subjectType/querySubjectType")
 //    List<SubjectTypeVO> querySubjectType(@Valid CombInfoQueryDTO combInfoQueryDTO);
