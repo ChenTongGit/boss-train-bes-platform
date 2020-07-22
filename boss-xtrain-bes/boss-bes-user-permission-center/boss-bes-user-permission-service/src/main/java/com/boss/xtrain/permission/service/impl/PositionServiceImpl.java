@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -50,6 +51,7 @@ public class PositionServiceImpl implements PositionService {
         try {
             dto.setId(worker.nextId());
             dto.setVersion(0L);
+            dto.setCreatedTime(new Date());
 //            return positionDao.insert(dto);
             log.info(dto.toString());
             return positionDao.positionInsert(dto);
