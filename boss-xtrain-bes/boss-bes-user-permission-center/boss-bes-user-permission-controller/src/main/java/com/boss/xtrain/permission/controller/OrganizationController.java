@@ -42,15 +42,16 @@ public class OrganizationController extends BaseController implements Organizati
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-
         RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
         HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
         String token = servletRequest.getHeader("Authorization");
-
+        //String token = request.getHeader().getToken();
         String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
         String json = JwtUtils.getParseToken(parseToken);
-        Long createdBy = ((Number) JSONObject.parseObject(json).get("id")).longValue();
+        Long createdBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        log.info("createBy:"+createdBy.toString());
         dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
@@ -89,12 +90,12 @@ public class OrganizationController extends BaseController implements Organizati
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
         HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
         String token = servletRequest.getHeader("Authorization");
-
+        //String token = request.getHeader().getToken();
         String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
         String json = JwtUtils.getParseToken(parseToken);
-        Long updatedBy = ((Number) JSONObject.parseObject(json).get("id")).longValue();
-
-        dto.setUpdatedBy(updatedBy);
+        Long updateBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        dto.setUpdatedBy(updateBy);
         return CommonResponseUtil.ok(service.update(dto));
     }
 
