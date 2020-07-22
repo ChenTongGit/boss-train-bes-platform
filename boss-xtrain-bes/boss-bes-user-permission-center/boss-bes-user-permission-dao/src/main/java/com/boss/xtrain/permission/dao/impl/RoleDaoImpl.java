@@ -59,7 +59,7 @@ public class RoleDaoImpl implements RoleDao {
         if(dto.getName() != null) {
             criteria.andLike("name", "%" + dto.getName() + "%");
         }
-        example.or().andEqualTo("id",dto.getId());
+        example.or().andEqualTo("companyId",dto.getCompanyId());
         return PojoUtils.copyListProperties(roleMapper.selectByExample(example),RoleDTO::new);
     }
 
