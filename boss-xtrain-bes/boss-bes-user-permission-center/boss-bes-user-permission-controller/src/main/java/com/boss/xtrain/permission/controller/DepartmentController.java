@@ -106,6 +106,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
             CompanyQuery query = request.getBody();
             query.setOrganizationId(orgId);
+            //Long companyId = ((Number) JSONObject.parseObject(json).get("companyId")).longValue();
+            //query.setId(companyId);
             List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(query);
             return CommonResponseUtil.ok(treeList);
         }catch (Exception e){
@@ -153,7 +155,20 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(request.getBody().getQuery());
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        DepartmentQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+
+        List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return buildPageResponse(page,departmentVOList);
     }

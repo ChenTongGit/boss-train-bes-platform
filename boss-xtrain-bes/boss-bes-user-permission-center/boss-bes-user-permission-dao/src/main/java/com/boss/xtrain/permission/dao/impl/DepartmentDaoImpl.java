@@ -77,6 +77,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
                     all.addAll(mapper.selectByExample(departmentExample));
                 }
             }
+        }else{
+            all = mapper.selectAll();
         }
         return all;
     }

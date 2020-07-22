@@ -141,9 +141,11 @@ public class CompanyController extends BaseController implements CompanyApi {
         String parseToken = token.split(" ")[1];
         String json = JwtUtils.getParseToken(parseToken);
         Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+        //Long companyId = ((Number) JSONObject.parseObject(json).get("companyId")).longValue();
 
         CompanyQuery query = request.getBody().getQuery();
         query.setOrganizationId(orgId);
+        //query.setId(companyId);
 
         List<CompanyDTO> companyDTOList = service.selectByCondition(query);
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
