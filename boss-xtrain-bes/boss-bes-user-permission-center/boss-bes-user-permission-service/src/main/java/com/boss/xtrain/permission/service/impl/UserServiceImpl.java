@@ -230,6 +230,7 @@ public class UserServiceImpl implements UserSerivce {
         }
         try {
             log.info(dto.toString());
+            dto.setVersion(userDao.selectByKey(dto.getId()).getVersion());
 //            return userDao.update(dto);
             return userDao.userUpdate(dto);
         }catch (Exception e){
@@ -252,6 +253,7 @@ public class UserServiceImpl implements UserSerivce {
         try {
             dto.setId(worker.nextId());
 //            return userDao.insert(dto);
+            dto.setVersion(0L);
             return userDao.userInsert(dto);
         }catch (Exception e){
             log.error(e.getMessage());

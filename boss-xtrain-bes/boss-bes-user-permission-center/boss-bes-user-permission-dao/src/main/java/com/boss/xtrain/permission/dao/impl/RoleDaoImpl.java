@@ -56,9 +56,10 @@ public class RoleDaoImpl implements RoleDao {
     public List<RoleDTO> queryByCondition(RoleQueryDTO dto) {
         Example example = new Example(Role.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andLike("name","%"+dto.getName()+"%");
-//        Role role = new Role();
-//        PojoUtils.copyProperties(dto,role);
+        if(dto.getName() != null) {
+            criteria.andLike("name", "%" + dto.getName() + "%");
+        }
+        example.or().andEqualTo("id",dto.getId());
         return PojoUtils.copyListProperties(roleMapper.selectByExample(example),RoleDTO::new);
     }
 
