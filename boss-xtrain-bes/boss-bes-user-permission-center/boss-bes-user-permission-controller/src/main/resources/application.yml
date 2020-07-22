@@ -25,8 +25,7 @@ spring:
 
   nacos-url:
 #    nacos-host: 39.97.106.243
-    nacos-host: localhost
-    #123.57.156.184
+    nacos-host: 123.57.156.184
     nacos-port: 8848
 
 security:
