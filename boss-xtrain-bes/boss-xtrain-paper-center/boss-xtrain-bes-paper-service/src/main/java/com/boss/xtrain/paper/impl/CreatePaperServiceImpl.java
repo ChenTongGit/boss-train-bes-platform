@@ -249,48 +249,53 @@ public class CreatePaperServiceImpl implements CreatePaperService {
         paper.setTemplate(true);
         paper.setStatus(false);
         BigDecimal score = new BigDecimal(0);
-        for (CombSubjectListVO combSubjectListVO:
-             list) {
-            score=score.add(combSubjectListVO.getScore());
-        }
-        paper.setScore(score);
         List<PaperSubject> paperSubjectList = new ArrayList<>();
         List<PaperSubjectAnswer> paperSubjectAnswerList = new ArrayList<>();
-        for (CombSubjectListVO combSubjectListVO:
-            list) {
-            PaperSubject paperSubject = new PaperSubject();
-            System.out.println(combSubjectListVO.toString());
-            BeanCopierUtil.copy(combSubjectListVO,paperSubject,new BasicConverter());
-            paperSubject.setPaperId(paperId);
-            Long subjectId = idWorker.nextId();
-            paperSubject.setPaperSubjectId(subjectId);
-            paperSubject.setSubject(combSubjectListVO.getSubjectName());
-            // paperSubject.setDifficult(Long.valueOf(combSubjectListVO.getDifficuty()));
-            paperSubject.setStatus(true);
-            paperSubject.setOrgId(combExamCopyDTO.getOrganizationId());
-            paperSubject.setCompanyId(combExamCopyDTO.getCompanyId());
-            paperSubject.setCreatedTime(new Date());
-            paperSubject.setUpdatedTime(new Date());
-            paperSubject.setVersion(0L);
-            List<AnswerVO> answerVOList = combSubjectListVO.getAnswerList();
-            if(null!=answerVOList){
-                for (AnswerVO answerVO:
-                        answerVOList) {
-                    PaperSubjectAnswer paperSubjectAnswer = new PaperSubjectAnswer();
-                    System.out.println(answerVO.toString());
-                    BeanCopierUtil.copy(answerVO,paperSubjectAnswer,new BasicConverter());
-                    paperSubjectAnswer.setSubjectId(subjectId);
-                    paperSubjectAnswer.setPaperSubjectAnswerId(idWorker.nextId());
-                    paperSubjectAnswer.setStatus(true);
-                    paperSubjectAnswer.setOrgId(combExamCopyDTO.getOrganizationId());
-                    paperSubjectAnswer.setCompanyId(combExamCopyDTO.getCompanyId());
-                    paperSubjectAnswer.setCreatedTime(new Date());
-                    paperSubjectAnswer.setUpdatedTime(new Date());
-                    paperSubjectAnswerList.add(paperSubjectAnswer);
-                }
+        if(null!=list){
+            for (CombSubjectListVO combSubjectListVO:
+                    list) {
+                score=score.add(combSubjectListVO.getScore());
             }
-            paperSubjectList.add(paperSubject);
+            paper.setScore(score);
+
+            for (CombSubjectListVO combSubjectListVO:
+                    list) {
+                PaperSubject paperSubject = new PaperSubject();
+                System.out.println(combSubjectListVO.toString());
+                BeanCopierUtil.copy(combSubjectListVO,paperSubject,new BasicConverter());
+                paperSubject.setPaperId(paperId);
+                Long subjectId = idWorker.nextId();
+                paperSubject.setPaperSubjectId(subjectId);
+                paperSubject.setSubject(combSubjectListVO.getSubjectName());
+                // paperSubject.setDifficult(Long.valueOf(combSubjectListVO.getDifficuty()));
+                paperSubject.setStatus(true);
+                paperSubject.setOrgId(combExamCopyDTO.getOrganizationId());
+                paperSubject.setCompanyId(combExamCopyDTO.getCompanyId());
+                paperSubject.setCreatedTime(new Date());
+                paperSubject.setUpdatedTime(new Date());
+                paperSubject.setVersion(0L);
+                List<AnswerVO> answerVOList = combSubjectListVO.getAnswerList();
+                if(null!=answerVOList){
+                    for (AnswerVO answerVO:
+                            answerVOList) {
+                        PaperSubjectAnswer paperSubjectAnswer = new PaperSubjectAnswer();
+                        System.out.println(answerVO.toString());
+                        BeanCopierUtil.copy(answerVO,paperSubjectAnswer,new BasicConverter());
+                        paperSubjectAnswer.setSubjectId(subjectId);
+                        paperSubjectAnswer.setPaperSubjectAnswerId(idWorker.nextId());
+                        paperSubjectAnswer.setStatus(true);
+                        paperSubjectAnswer.setOrgId(combExamCopyDTO.getOrganizationId());
+                        paperSubjectAnswer.setCompanyId(combExamCopyDTO.getCompanyId());
+                        paperSubjectAnswer.setCreatedTime(new Date());
+                        paperSubjectAnswer.setUpdatedTime(new Date());
+                        paperSubjectAnswerList.add(paperSubjectAnswer);
+                    }
+                }
+                paperSubjectList.add(paperSubject);
+            }
         }
+
+
         Integer insertPaperCount = combPaperDao.insertPaper(paper);
         Integer insertSubjectCount = combPaperDao.insertSubjectList(paperSubjectList);
         Integer insertAnswerCount = combPaperDao.insertAnswerList(paperSubjectAnswerList);
