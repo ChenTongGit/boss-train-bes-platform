@@ -14,7 +14,6 @@
     <modules>
        <module>boss-xtrain-gateway</module>
        <module>boss-xtrain-authentication</module>
-        <module>boss-xtrain-gateway-dao</module>
     </modules>
     <build>
         <plugins>

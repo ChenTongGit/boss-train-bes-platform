@@ -25,7 +25,7 @@ import java.util.List;
  * @see
  * @since
  **/
-@FeignClient(name = "paper-center", fallback = PaperFallBack.class)
+@FeignClient(name = "boss-bes-paper", fallback = PaperFallBack.class)
 @Component
 public interface PaperFeign {
 

@@ -1,6 +1,8 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.permission.api.OrganizationApi;
 import com.boss.xtrain.permission.pojo.dto.OrganizationDTO;
 import com.boss.xtrain.permission.pojo.query.OrganizationQuery;
@@ -36,6 +38,10 @@ public class OrganizationController extends BaseController implements Organizati
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long createdBy = (Long) JSONObject.parseObject(json).get("id");
+        dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -69,6 +75,10 @@ public class OrganizationController extends BaseController implements Organizati
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long updatedBy = (Long) JSONObject.parseObject(json).get("id");
+        dto.setUpdatedBy(updatedBy);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

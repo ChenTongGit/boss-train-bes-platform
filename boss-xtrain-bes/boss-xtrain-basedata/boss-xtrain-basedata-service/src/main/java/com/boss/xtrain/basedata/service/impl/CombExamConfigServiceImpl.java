@@ -19,6 +19,7 @@ import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import tk.mybatis.mapper.entity.Example;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +136,14 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
         List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfig(combExamConfigQueryDTO);
         log.info(combExamConfigs.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
+
+        Example example = new Example(Dictionary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",combExamConfigQueryDTO.getOrgId());
+        criteria.andEqualTo("category","题目难度");
+        List<DifficultDTO> difficultyVos = subjectDao.queryDifficult(example);
+        Map<String, String> difficultyMap = difficultyVos.stream().collect(Collectors.toMap(DifficultDTO::getValue, DifficultDTO::getName, (key1, key2) -> key2));
+
         log.info(combExamConfigDtoList.toString());
         for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
             CombExamItemQueryDTO configItemQueryDTO = new CombExamItemQueryDTO();

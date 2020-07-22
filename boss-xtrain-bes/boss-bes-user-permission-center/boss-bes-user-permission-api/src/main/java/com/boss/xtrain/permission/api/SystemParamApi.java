@@ -46,6 +46,6 @@ public interface SystemParamApi extends CommonCRUDApi<SystemParamDTO, SystemPara
     CommonResponse<Integer> changeUse(@RequestBody @Valid CommonRequest<SystemParamDTO> request);
 
     @DeleteMapping("/deleteBatchByType")
-    CommonResponse<Integer> deleteBatchByType(@RequestBody @Valid CommonRequest<SystemParamDTO> request);
+    CommonResponse<Integer> deleteBatchByType(@RequestBody @Valid CommonRequest<SystemParamQuery> request);
 
 }

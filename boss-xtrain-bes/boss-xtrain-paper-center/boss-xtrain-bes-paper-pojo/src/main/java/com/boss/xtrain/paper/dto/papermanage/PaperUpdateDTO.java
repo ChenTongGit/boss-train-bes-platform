@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.dto.papermanage;
 
 import com.boss.xtrain.common.core.pojo.BaseDTO;
-import com.boss.xtrain.paper.dto.templatemanage.SubjectDTO;
+
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  **/
 
 @Data
-public class PaperUpdateDTO extends BaseDTO {
+public class PaperUpdateDTO {
     /**
      * 试卷id
      */
@@ -33,7 +33,7 @@ public class PaperUpdateDTO extends BaseDTO {
     /**
      * 试卷难度
      */
-    private Long difficulty;
+    private Long difficuty;
     /**
      * 试卷描述
      */

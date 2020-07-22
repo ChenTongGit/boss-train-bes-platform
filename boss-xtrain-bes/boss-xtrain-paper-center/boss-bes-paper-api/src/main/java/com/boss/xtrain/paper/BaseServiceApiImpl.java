@@ -230,6 +230,9 @@ public class BaseServiceApiImpl implements BaseServiceApi {
         for (int i = 0; i <baseData.getTypeName().length ; i++) {
             SubjectTypeVO subjectTypeVO = new SubjectTypeVO();
             subjectTypeVO.setTypeName(baseData.getTypeName()[i]);
+            subjectTypeVO.setSubjectId(String.valueOf(i));
+            subjectTypeVO.setAttribute("题型集合");
+            list.add(subjectTypeVO);
         }
         return list;
     }
@@ -248,6 +251,14 @@ public class BaseServiceApiImpl implements BaseServiceApi {
                 SubjectTypeVO subjectTypeVO = new SubjectTypeVO();
                 subjectTypeVO.setTypeName(baseData.getDifficutyName()[i]);
                 subjectTypeVO.setAttribute("试卷难度");
+                subjectTypeVO.setSubjectId(String.valueOf(i));
+                list.add(subjectTypeVO);
+            }
+        }else if(combInfoQueryDTO.getCategory().equals("题目难度")) {
+            for (int i = 0; i < baseData.getDifficutyName().length; i++) {
+                SubjectTypeVO subjectTypeVO = new SubjectTypeVO();
+                subjectTypeVO.setTypeName(baseData.getDifficutyName()[i]);
+                subjectTypeVO.setAttribute("题目难度");
                 subjectTypeVO.setSubjectId(String.valueOf(i));
                 list.add(subjectTypeVO);
             }

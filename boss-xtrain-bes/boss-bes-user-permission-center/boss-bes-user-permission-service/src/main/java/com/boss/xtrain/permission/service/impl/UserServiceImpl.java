@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserSerivce {
     public UserDTO select(UserQueryDTO query) {
         try {
             UserDTO dto = userDao.queryByCondition(query).get(0);
-            if(dto.getUpdatedBy()!=null){
+            if(dto.getUpdatedBy()!=null) {
                 dto.setUpdateName(userDao.selectByKey(dto.getUpdatedBy()).getName());
             }
             dto.setOrganizationId(companyDao.selectByKey(dto.getCompanyId()).getOrganizationId());
@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserSerivce {
             dto.setDepartmentName(departmentDao.selectByKey(dto.getDepartmentId()).getName());
             return dto;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR,e);
         }
     }
@@ -99,7 +100,6 @@ public class UserServiceImpl implements UserSerivce {
         }else {
             try {
                 for(UserRoleDTO userRoleDTO :dtos){
-//                    userRoleDTO.setId(worker.nextId());
                     userDao.allocateRole(userRoleDTO);
                 }
             }catch (Exception e){
@@ -151,6 +151,7 @@ public class UserServiceImpl implements UserSerivce {
             }
             return userDTOS;
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_USER_QUERY_ERROR);
         }
     }
@@ -229,8 +230,8 @@ public class UserServiceImpl implements UserSerivce {
         }
         try {
             log.info(dto.toString());
-//            return userDao.update(dto);
             dto.setVersion(userDao.selectByKey(dto.getId()).getVersion());
+//            return userDao.update(dto);
             return userDao.userUpdate(dto);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -251,8 +252,8 @@ public class UserServiceImpl implements UserSerivce {
         }
         try {
             dto.setId(worker.nextId());
-            dto.setVersion(0L);
 //            return userDao.insert(dto);
+            dto.setVersion(0L);
             return userDao.userInsert(dto);
         }catch (Exception e){
             log.error(e.getMessage());

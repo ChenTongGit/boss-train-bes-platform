@@ -46,7 +46,7 @@ public interface MainTainPaperService {
      * @return: void
      * @throws:
      */
-    void updateSubejctList(PaperUpdateDTO paperUpdateDto);
+    boolean updateSubejctList(PaperUpdateDTO paperUpdateDto);
     /**
      * @methodsName: getPaper
      * @description: 获取试卷集合

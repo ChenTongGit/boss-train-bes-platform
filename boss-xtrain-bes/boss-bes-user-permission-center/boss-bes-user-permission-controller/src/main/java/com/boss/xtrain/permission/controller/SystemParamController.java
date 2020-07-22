@@ -1,7 +1,10 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.permission.api.SystemParamApi;
 import com.boss.xtrain.permission.pojo.dto.SystemParamDTO;
@@ -111,7 +114,11 @@ public class SystemParamController extends BaseController implements SystemParam
 //        paramType，点击树进行搜索，paramType通过基础数据管理的接口获得列表
 //        param 输入具体参数名进行搜索
 //        通过orgId搜索该组织机构下的所有系统参数
-        Long orgId = 5687565568097L;//测试用
+//        Long orgId = 5687565568097L;//测试用
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+
         SystemParamQuery query = request.getBody().getQuery();
         query.setOrganizationId(orgId);
         List<SystemParamDTO> systemParamDTOList = service.selectByCondition(query);
@@ -121,7 +128,7 @@ public class SystemParamController extends BaseController implements SystemParam
 
     /**
      * 分页全搜索
-     *
+     * 不会用的
      * @param request
      * @return
      */
@@ -132,7 +139,10 @@ public class SystemParamController extends BaseController implements SystemParam
 
 //        Long orgId = token;从token中获取到所负责的组织机构
         //5687565568097是测试用的orgID
-        Long orgId = 5687565568097L;
+        String token = request.getHeader().getToken();
+        String json = JwtUtils.getParseToken(token);
+        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+
         List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(orgId);
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);
         return buildPageResponse(page,systemParamVOList);
@@ -164,8 +174,12 @@ public class SystemParamController extends BaseController implements SystemParam
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "使用paramType作为条件，大量删除同类型的系统参数纪录")
-    public CommonResponse<Integer> deleteBatchByType(@Valid CommonRequest<SystemParamDTO> request) {
-        SystemParamDTO dto = request.getBody();
-        return CommonResponseUtil.ok(service.deleteByParamType(dto));
+    public CommonResponse<Integer> deleteBatchByType(@Valid CommonRequest<SystemParamQuery> request) {
+        SystemParamQuery query = request.getBody();
+        //        Long orgId = token;从token中获取到所负责的组织机构
+        //5687565568097是测试用的orgID
+        Long orgId = 5687565568097L;
+        query.setOrganizationId(orgId);
+        return CommonResponseUtil.ok(service.deleteByParamType(query));
     }
 }
