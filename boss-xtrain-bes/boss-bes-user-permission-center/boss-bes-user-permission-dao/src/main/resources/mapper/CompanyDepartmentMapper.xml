@@ -14,11 +14,14 @@
         <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     </resultMap>
 
-    <select id="query" parameterType="com.boss.xtrain.permission.pojo.query.CompanyDepartmentNode" resultMap="CompanyMap">
+    <select id="query" parameterType="com.boss.xtrain.permission.pojo.query.CompanyQuery" resultMap="CompanyMap">
         SELECT * FROM t_company
         <where>
             <if test="id != null and id != ''">
                 AND id = #{id}
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                AND t_o_id = #{organizationId}
             </if>
         </where>
     </select>

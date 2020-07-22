@@ -17,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -38,9 +42,16 @@ public class OrganizationController extends BaseController implements Organizati
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long createdBy = (Long) JSONObject.parseObject(json).get("id");
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+        //String token = request.getHeader().getToken();
+        String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
+        String json = JwtUtils.getParseToken(parseToken);
+        Long createdBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        log.info("createBy:"+createdBy.toString());
         dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
@@ -74,10 +85,17 @@ public class OrganizationController extends BaseController implements Organizati
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
         OrganizationDTO dto = request.getBody();
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long updatedBy = (Long) JSONObject.parseObject(json).get("id");
-        dto.setUpdatedBy(updatedBy);
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+        //String token = request.getHeader().getToken();
+        String parseToken = token.split(" ")[1];
+        log.info("token:"+token);
+        String json = JwtUtils.getParseToken(parseToken);
+        Long updateBy = ((Number)JSONObject.parseObject(json).get("id")).longValue();
+        dto.setUpdatedBy(updateBy);
         return CommonResponseUtil.ok(service.update(dto));
     }
 

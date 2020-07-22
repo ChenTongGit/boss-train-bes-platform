@@ -55,7 +55,7 @@ public class CombExamConfigDaoImpl implements CombExamConfigDao {
         example.orderBy("updatedTime").desc();
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId",combExamConfigQueryDTO.getOrgId());
-        criteria.andLike("name",combExamConfigQueryDTO.getName());
+        criteria.andLike("name","%"+combExamConfigQueryDTO.getName()+"%");
         return combExamConfigMapper.selectByExample(example);
 
     }

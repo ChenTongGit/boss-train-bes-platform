@@ -107,7 +107,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return organizationDao.update(dto);
+            return organizationDao.orgUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_UPDATE_ERROR,e);
@@ -132,7 +132,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         try {
             dto.setId(worker.nextId());
             dto.setCreatedTime(new Date());
-            return organizationDao.insert(dto);
+            return organizationDao.orgInsert(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_ORGANIZATION_INSERT_ERROR,e);

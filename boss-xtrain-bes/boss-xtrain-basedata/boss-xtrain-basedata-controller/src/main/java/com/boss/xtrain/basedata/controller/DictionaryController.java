@@ -34,7 +34,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class DictionaryController extends BaseController implements DictionaryApi {
 
     @Autowired
@@ -62,8 +61,7 @@ public class DictionaryController extends BaseController implements DictionaryAp
         List<DictionaryDTO> dictionaryDTOS = new ArrayList<>();
         PojoUtils.copyProperties(commonRequest.getBody(), dictionaryDTOS);
         dictionaryService.insertDictionaryList(dictionaryDTOS);
-        List<DictionaryVO> dictionaryVOS = new ArrayList<>();
-        PojoUtils.copyProperties(dictionaryDTOS,dictionaryVOS);
+        List<DictionaryVO> dictionaryVOS = PojoUtils.copyListProperties(dictionaryDTOS,DictionaryVO::new);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),dictionaryVOS);
 
     }

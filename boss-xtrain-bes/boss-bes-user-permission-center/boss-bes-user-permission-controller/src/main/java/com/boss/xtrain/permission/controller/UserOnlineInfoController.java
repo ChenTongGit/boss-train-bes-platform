@@ -17,7 +17,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +49,14 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
 
         UserOnlineInfoQuery query = request.getBody().getQuery();
         query.setOrganizationId(orgId);
@@ -69,9 +78,14 @@ public class UserOnlineInfoController extends BaseController implements UserOnli
     public CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
         //token获得该管理员所负责的org
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
 
         List<UserOnlineInfoDTO> infoDTOList = service.selectAll(orgId);
         List<UserOnlineInfoVO> userOnlineInfoVOList = PojoUtils.copyListProperties(infoDTOList,UserOnlineInfoVO::new);

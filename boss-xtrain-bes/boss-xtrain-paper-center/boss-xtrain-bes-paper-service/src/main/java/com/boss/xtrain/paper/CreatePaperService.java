@@ -2,6 +2,7 @@ package com.boss.xtrain.paper;
 
 import com.boss.xtrain.paper.dto.fastcomb.CombConfigItemQueryDTO;
 import com.boss.xtrain.paper.dto.fastcomb.CombExamDTO;
+import com.boss.xtrain.paper.dto.fastcomb.ConfigItemListDTO;
 import com.boss.xtrain.paper.dto.paperdetail.PaperQueryDTO;
 import com.boss.xtrain.paper.dto.standardcomb.StandardCombDTO;
 import com.boss.xtrain.paper.dto.templatecomb.TemplateCombDTO;
@@ -68,4 +69,6 @@ public interface CreatePaperService {
      * @throws:
      */
     void standardCombExam(StandardCombDTO standardCombDTO);
+
+    boolean saveCombItemList(ConfigItemListDTO configItemListDTO);
 }

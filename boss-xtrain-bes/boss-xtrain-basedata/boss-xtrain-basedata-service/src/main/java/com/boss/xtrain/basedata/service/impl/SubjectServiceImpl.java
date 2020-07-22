@@ -217,6 +217,7 @@ public class SubjectServiceImpl implements SubjectService{
     @Override
     public void updateSubject(SubjectUpdateDTO subjectUpdateDTO) {
         Subject subject = new Subject();
+        log.info(subjectUpdateDTO.toString());
         PojoUtils.copyProperties(subjectUpdateDTO,subject);
         log.info(subject.toString());
         subjectDao.updateSubject(subject);
@@ -276,11 +277,11 @@ public class SubjectServiceImpl implements SubjectService{
             throw new BusinessException(BusinessError.BASE_DATA_SUBJECT_UPDATE_ERROR);
         }else {
             for (SubjectAnswerDTO s : subjectAnswerDTOS) {
-                s.setCategoryName(categoryNames.get(count));
-                log.info("categoryName:{}", categoryNames.get(count));
-                s.setSubjectTypeName(typeNames.get(count));
-                s.setDifficulty(difficulties.get(count));
-                count++;
+                s.setCategoryName(categoryNames.get(0));
+                log.info("categoryName:{}", categoryNames.get(0));
+                s.setSubjectTypeName(typeNames.get(0));
+                s.setDifficulty(difficulties.get(0));
+
             }
         }
 
@@ -360,7 +361,7 @@ public class SubjectServiceImpl implements SubjectService{
                     difficulties = subjectDao.querySubjectDifficult(example);
                 }
                 if (subjects.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
-                    throw new BusinessException(BusinessError.PAPER_QUICK_MAKE_PAPER_ERROR);
+                    throw new BusinessException(BusinessError.MAINTAIN_PAPER_DELETE_ERROR);
                 }else {
                     for (SubjectDTO s : subjectDtoList) {
                         s.setCategoryName(categoryNames.get(count));
