@@ -72,7 +72,16 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @ResponseBody
     public CommonResponse<List<CompanyQuery>> selectTree() {
         try{
-            return CommonResponseUtil.ok(treeService.companyTree());
+            RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+            HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+            String token = servletRequest.getHeader("Authorization");
+
+            String parseToken = token.split(" ")[1];
+            String json = JwtUtils.getParseToken(parseToken);
+            Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+            return CommonResponseUtil.ok(treeService.companyList(orgId));
         }catch (Exception e){
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
@@ -86,7 +95,18 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @ResponseBody
     public CommonResponse<List<CompanyDepartmentNode>> selectDepartmentTree(@Valid CommonRequest<CompanyQuery> request) {
         try{
-            List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(request.getBody());
+            RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+            HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+            String token = servletRequest.getHeader("Authorization");
+
+            String parseToken = token.split(" ")[1];
+            String json = JwtUtils.getParseToken(parseToken);
+            Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+            CompanyQuery query = request.getBody();
+            query.setOrganizationId(orgId);
+            List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(query);
             return CommonResponseUtil.ok(treeList);
         }catch (Exception e){
             log.error(e.getMessage(),e);

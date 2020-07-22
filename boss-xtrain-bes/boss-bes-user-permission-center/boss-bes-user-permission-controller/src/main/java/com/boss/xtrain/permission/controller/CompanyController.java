@@ -82,7 +82,16 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ResponseBody
     public CommonResponse<List<OrganizationQuery>> selectAllOrgToCombine() {
         try{
-            return CommonResponseUtil.ok(treeService.orgTree());
+            RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+            HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+            String token = servletRequest.getHeader("Authorization");
+
+            String parseToken = token.split(" ")[1];
+            String json = JwtUtils.getParseToken(parseToken);
+            Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+            return CommonResponseUtil.ok(treeService.orgTree(orgId));
         }catch (Exception e){
             log.error(e.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_COMPANY_QUERY_ERROR,e);
@@ -123,7 +132,20 @@ public class CompanyController extends BaseController implements CompanyApi {
     @ApiOperation(value = "test")
     public CommonResponse<CommonPage<CompanyVO>> selectByPage(@Valid CommonRequest<CommonPageRequest<CompanyQuery>> request) {
         Page<Object> page =  doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<CompanyDTO> companyDTOList = service.selectByCondition(request.getBody().getQuery());
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        CompanyQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+
+        List<CompanyDTO> companyDTOList = service.selectByCondition(query);
         List<CompanyVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,CompanyVO::new);
         return buildPageResponse(page,companyVOList);
     }
