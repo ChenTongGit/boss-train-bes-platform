@@ -17,7 +17,7 @@ public interface TreeService {
      * company中选择org渲染company
      * @return
      */
-    List<OrganizationQuery> orgTree();
+    List<OrganizationQuery> orgTree(Long orgId);
 
     /**
      * 根据选择的org渲染company

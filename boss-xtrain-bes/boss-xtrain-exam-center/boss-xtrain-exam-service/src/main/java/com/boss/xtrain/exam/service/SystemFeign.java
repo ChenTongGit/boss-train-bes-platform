@@ -3,9 +3,12 @@ package com.boss.xtrain.exam.service;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.exam.service.impl.SystemFallBack;
+import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
+import com.boss.xtrain.feign.interceptor.FeignConfiguration;
 import com.boss.xtrain.permission.pojo.dto.ExamServiceUsersDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +27,7 @@ import java.util.List;
  * @see
  * @since
  **/
-@FeignClient(name = "boss-bes-system", fallback = SystemFallBack.class)
+@FeignClient(name = "boss-bes-system", fallback = SystemFallBack.class, configuration = FeignClientInterceptor.class)
 @Component
 public interface SystemFeign {
 

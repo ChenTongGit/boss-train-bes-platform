@@ -112,7 +112,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
      * @return int
      */
     @Override
-    public int update(OrganizationDTO dto) {
+    public int orgUpdate(OrganizationDTO dto) {
         Organization organization = new Organization();
         PojoUtils.copyProperties(dto,organization);
         return mapper.updateByPrimaryKeySelective(organization);
@@ -125,7 +125,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
      * @return int
      */
     @Override
-    public int insert(OrganizationDTO dto) {
+    public int orgInsert(OrganizationDTO dto) {
         Organization organization = new Organization();
         PojoUtils.copyProperties(dto,organization);
         log.info(organization.getName());
