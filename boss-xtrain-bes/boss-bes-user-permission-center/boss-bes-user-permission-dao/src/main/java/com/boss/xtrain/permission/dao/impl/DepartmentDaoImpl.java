@@ -49,6 +49,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
         if(query.getCompanyId()!=null){
             criteria.andEqualTo("companyId",query.getCompanyId());
         }
+        if(query.getName()!=null){
+            criteria.andEqualTo("name",query.getName());
+        }
         return mapper.selectByExample(example);
     }
 
