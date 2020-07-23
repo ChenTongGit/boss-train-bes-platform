@@ -34,12 +34,11 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    // @Value("spring.security.resource.token-info-uri")
-    private static final String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
-/*    @Autowired
+    private String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
+    @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;
     @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;*/
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
@@ -90,9 +89,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .authenticated();
     }
 
-/*    @Override
+    @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(authExceptionEntryPoint)
             .accessDeniedHandler(customAccessDeniedHandler);
-    }*/
+    }
 }

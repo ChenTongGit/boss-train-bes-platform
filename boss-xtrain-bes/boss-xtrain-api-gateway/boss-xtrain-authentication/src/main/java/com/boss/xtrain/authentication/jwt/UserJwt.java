@@ -6,8 +6,13 @@ import org.springframework.security.core.userdetails.User;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * 自定义UserDetails类型
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 public class UserJwt extends User implements Serializable {
-
 
     private Long id;
     private String positionName;
@@ -17,6 +22,12 @@ public class UserJwt extends User implements Serializable {
     private Long companyId;
     private Long departmentId;
 
+    /**
+     * 构造函数
+     * @param username 用户名
+     * @param password 用户密码
+     * @param authorities 用户所拥有的权限内容
+     */
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }

@@ -26,8 +26,7 @@ import java.util.List;
 public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQuery, DepartmentVO> {
     /**
      * 查树的公司
-     * @param
-     * @return
+     * @return 查询到所有的公司
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @GetMapping("/tree")
@@ -35,17 +34,17 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
 
     /**
      * 查树的部门
-     * @param request
-     * @return
+     * @param request 带有条件的查树
+     * @return 部门树
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @PostMapping("/treeDepartment")
     CommonResponse<List<CompanyDepartmentNode>> selectDepartmentTree(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
     /**
-     * 初始化所有分页
-     * @param request
-     * @return
+     * 所有分页
+     * @param request 分页条件
+     * @return 查到的登录人负责的组织机构下部门
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @PostMapping("/AllByPage")
@@ -56,22 +55,15 @@ public interface DepartmentApi extends CommonCRUDApi<DepartmentDTO, DepartmentQu
 
     /**
      * 初始化所有不分页
-     * @return
+     * @return 所有部门列表
      */
     @GetMapping("/selectAll")
     CommonResponse<List<DepartmentVO>> selectAll();
 
-//    /**
-//     * 通过确认的公司加载这个公司下的部门
-//     * @return
-//     */
-//    @GetMapping("/selectAll")
-//    CommonResponse<List<DepartmentQuery>> selectByCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
-
     /**
-     * 分页条件搜索
-     * @param request
-     * @return
+     * 分页条件搜索，包括初始化
+     * @param request 条件分页
+     * @return 点击树得到相应的组织机构下，公司或上级部门下的部门列表
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request);

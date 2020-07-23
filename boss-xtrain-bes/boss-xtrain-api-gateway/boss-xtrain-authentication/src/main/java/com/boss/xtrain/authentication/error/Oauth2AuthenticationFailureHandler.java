@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 认证失败的事件会在这里被捕获
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 @Component("authFailureHandle")
 public class Oauth2AuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
