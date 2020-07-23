@@ -43,6 +43,9 @@ public class SystemParamDaoImpl implements SystemParamDao {
         if(query.getParam()!=null){
             criteria.andEqualTo("param",query.getParam());
         }
+        if(query.getValue()!=null){
+            criteria.andEqualTo("value",query.getValue());
+        }
         return mapper.selectByExample(example);
     }
 
@@ -131,11 +134,11 @@ public class SystemParamDaoImpl implements SystemParamDao {
      * @return int
      */
     @Override
-    public int update(SystemParamDTO dto) {
+    public int paramUpdate(SystemParamDTO dto) {
         SystemParam systemParam = new SystemParam();
         PojoUtils.copyProperties(dto,systemParam);
         //测试用，修改被注入的orgID使得方法可测试
-        systemParam.setOrganizationId(5687565568097L);
+//        systemParam.setOrganizationId(5687565568097L);
         return mapper.updateByPrimaryKeySelective(systemParam);
     }
 
@@ -146,11 +149,11 @@ public class SystemParamDaoImpl implements SystemParamDao {
      * @return int
      */
     @Override
-    public int insert(SystemParamDTO dto) {
+    public int paramInsert(SystemParamDTO dto) {
         SystemParam systemParam = new SystemParam();
         PojoUtils.copyProperties(dto,systemParam);
         //测试用，修改被注入的orgID使得方法可测试
-        systemParam.setOrganizationId(5687565568097L);
+//        systemParam.setOrganizationId(5687565568097L);
         return mapper.insertSelective(systemParam);
     }
 
@@ -161,7 +164,7 @@ public class SystemParamDaoImpl implements SystemParamDao {
      * @return int
      */
     @Override
-    public int insert(List<SystemParamDTO> dtoList) {
+    public int paramInsert(List<SystemParamDTO> dtoList) {
         List<SystemParam> list = PojoUtils.copyListProperties(dtoList,SystemParam::new);
         return mapper.insertList(list);
     }
