@@ -9,8 +9,6 @@ import com.boss.xtrain.permission.pojo.entity.Department;
 import com.boss.xtrain.permission.pojo.query.CompanyQuery;
 import com.boss.xtrain.permission.pojo.query.DepartmentQuery;
 import com.boss.xtrain.common.util.PojoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
@@ -23,6 +21,7 @@ import java.util.List;
  * @date 2020.07.06
  */
 @Repository
+
 public class DepartmentDaoImpl implements DepartmentDao {
 
     @Resource
