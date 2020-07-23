@@ -26,22 +26,27 @@ import java.util.List;
 @RequestMapping("/education/bes/v1/role")
 public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> {
     /**
+     *带有分页功能的搜索方法
      *
-     *
-     * @param request
-     * @return CommonResponse<CommonPage<PositionListVO>>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return body为有pagehelper,RoleListVo
      *
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<RoleListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<RoleQueryDTO>> request);
-
+    /**
+     *带有分页功能的列出全部方法
+     *
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return body为有pagehelper,RoleListVo
+     *
+     */
     @PostMapping("/selectAllByPage")
     CommonResponse<CommonPage<RoleListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
     /**
      * 列出所有
      *
-     * @param
-     * @return CommonResponse<List<PositionListVO>>
+     * @return body为：PositionListVO列表
      *
      */
     @RequestMapping("/selectAll")
@@ -70,8 +75,8 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
     /**
      * 分配资源
      *
-     * @param request
-     * @return  CommonResponse<Boolean>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return  返回类型：CommonResponse<Boolean>
      *
     */
     @RequestMapping("/allocateResource")
@@ -80,8 +85,8 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
     /**
      * 分配用户
      *
-     * @param request
-     * @return  CommonResponse<Boolean>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return  返回boolean封装成相应
      *
      */
     @RequestMapping("/allocateUser")

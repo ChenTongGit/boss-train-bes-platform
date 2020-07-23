@@ -28,68 +28,61 @@ import java.util.List;
 public interface UserApi {
     /**
      * 添加新的数据
-     * @author ChenTong
+     * @author ysq
      * @param request 请求报文对象，传递dto
-     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
-     * @date 2020/7/7 22:09
+     * @return 返回类型：com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      */
     @PostMapping("/insert")
     CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<UserDTO> request);
 
     /**
      * 查询数据 返回数据vo列表
-     * @author ChenTong
+     * @author ysq
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return CommonResponse<List<UserListVO>>
-     * @date 2020/7/7 22:09
+     * @return 返回类型：CommonResponse<List<UserListVO>>
      */
     @PostMapping("/selectList")
     CommonResponse<List<UserListVO>> selectList(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
 
     /**
      * 查找指定查询条件的数据
-     * @author ChenTong
+     * @author ysq
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return CommonResponse<UserListVO>
-     * @date 2020/7/7 22:09
+     * @return 返回类型：CommonResponse<UserListVO>
      */
     @PostMapping("/select")
     CommonResponse<UserListVO> select(@RequestBody @Valid CommonRequest<UserQueryDTO> request);
 
     /**
      * 指定删除某个数据数据
-     * @author ChenTong
+     * @author ysq
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
-     * @date 2020/7/7 22:09
+     * @return 返回类型：com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      */
     @DeleteMapping("/delete")
     CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<UserDTO> request);
 
     /**
      * 批量删除数据
-     * @author ChenTong
+     * @author ysq
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
-     * @date 2020/7/7 22:09
+     * @return 返回类型：com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      */
     @DeleteMapping("/deleteBatch")
     CommonResponse<Integer> deleteBatch(@RequestBody @Valid CommonRequest<List<UserDTO>> request);
 
     /**
      * 更新数据
-     * @author ChenTong
-     * @param request
-     * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
-     * @date 2020/7/7 22:10
+     * @author ysq
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return 返回类型：com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      */
     @PutMapping("update")
     CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<UserDTO> request);
     /**
      * 列出所有
      *
-     * @param
-     * @return CommonResponse<List<UserListVO>>
+     * @return 返回类型： CommonResponse<List<UserListVO>>
      *
      */
     @RequestMapping("/selectAll")
@@ -98,8 +91,8 @@ public interface UserApi {
     /**
      *
      * 用户的所有角色
-     * @param request
-     * @return CommonResponse<List<RoleListVO>>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return 返回类型：CommonResponse<List<RoleListVO>>
      *
     */
     @PostMapping("/getRoleList")
@@ -108,22 +101,35 @@ public interface UserApi {
     /**
      *
      * 用户的所有资源
-     * @param request
-     * @return CommonResponse<List<ResourceListVO>>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return 返回类型：CommonResponse<List<ResourceListVO>>
      *
     */
     @PostMapping("/getAllResource")
     CommonResponse<List<ResourceListVO>> getAllResource(@RequestBody @Valid CommonRequest<RoleQueryDTO> request);
 
+    /**
+     * 带有分页的搜索功能
+     *
+     * @param request 搜索条件封装类
+     * @return 返回类型：CommonResponse<CommonPage<UserListVO>>
+     *
+    */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<UserListVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserQueryDTO>> request);
-
+    /**
+     * 带有分页的列出所有功能
+     *
+     * @param request 搜索条件封装类
+     * @return 返回类型：CommonResponse<CommonPage<UserListVO>>
+     *
+     */
     @PostMapping("/selectAllByPage")
     CommonResponse<CommonPage<UserListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
     /**
      *
      * 分配角色
-     * @param request
+     * @param request 请求报文对象，传递query（本质也为dto）
      * @return boolean
      *
     */
@@ -133,7 +139,7 @@ public interface UserApi {
     /**
      * 查询用户的角色列表
      *
-     * @param request
+     * @param request 请求报文对象，传递query（本质也为dto）
      * @return CommonResponse<List<RoleListVO>>
      *
     */
@@ -143,7 +149,7 @@ public interface UserApi {
     /**
      * 通过position查找用户
      *
-     * @param request
+     * @param request 请求报文对象，传递query（本质也为dto）
      * @return CommonResponse<List<UserListVO>>
      *
     */
