@@ -29,8 +29,7 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
     /**
      * 列出所有
      *
-     * @param
-     * @return CommonResponse<List<PositionListVO>>
+     * @return 返回类型：body为所有职位
      *
     */
     @RequestMapping("/selectAll")
@@ -39,8 +38,8 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
     /**
      *分页条件搜索
      *
-     * @param request
-     * @return CommonResponse<CommonPage<PositionListVO>>
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return 返回类型：body为带有page的positionVO对象
      *
     */
     @PostMapping("/selectByPage")
@@ -49,8 +48,9 @@ public interface PositionApi extends CommonCRUDApi<PositionDTO,PositionQueryDTO,
 
     /**
      * 分页全搜索
-     * @param request
-     * @return
+     *
+     * @param request 请求报文对象，传递query（本质也为dto）
+     * @return 返回类型：body为带有page的positionVO对象
      */
     @PostMapping("/selectAllByPage")
     CommonResponse<CommonPage<PositionListVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);
