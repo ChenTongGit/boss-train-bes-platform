@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,16 +99,23 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public List<DepartmentDTO> selectByCondition(DepartmentQuery query) {
+        List<DepartmentDTO> departmentDTOList = new ArrayList<>();
         try{
-           List<DepartmentDTO> departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
-           for(DepartmentDTO departmentDTO:departmentDTOList){
-               departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
-               Department parent = departmentDao.selectByKey(departmentDTO.getParentId());
-               if(parent!=null){
-                   departmentDTO.setParentName(parent.getName());
-               }
+           if(query.getCompanyId()!=null||query.getParentId()!=null||query.getId()!=null){
+               //在初始化的基础上，点击树形图进行选择
+               departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectByCondition(query),DepartmentDTO::new);
+           }else{
+               // 初始化展示改组织机构下的所有部门
+               departmentDTOList = PojoUtils.copyListProperties(departmentDao.selectAll(query),DepartmentDTO::new);
            }
-           return departmentDTOList;
+            for(DepartmentDTO departmentDTO:departmentDTOList){
+                departmentDTO.setCompanyName(companyDao.selectByKey(departmentDTO.getCompanyId()).getName());
+                Department parent = departmentDao.selectByKey(departmentDTO.getParentId());
+                if(parent!=null){
+                    departmentDTO.setParentName(parent.getName());
+                }
+            }
+            return departmentDTOList;
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);

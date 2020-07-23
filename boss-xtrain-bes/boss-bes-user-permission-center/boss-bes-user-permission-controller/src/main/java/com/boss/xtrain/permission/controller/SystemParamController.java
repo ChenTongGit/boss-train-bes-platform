@@ -18,7 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -115,9 +119,14 @@ public class SystemParamController extends BaseController implements SystemParam
 //        param 输入具体参数名进行搜索
 //        通过orgId搜索该组织机构下的所有系统参数
 //        Long orgId = 5687565568097L;//测试用
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
 
         SystemParamQuery query = request.getBody().getQuery();
         query.setOrganizationId(orgId);
@@ -139,9 +148,14 @@ public class SystemParamController extends BaseController implements SystemParam
 
 //        Long orgId = token;从token中获取到所负责的组织机构
         //5687565568097是测试用的orgID
-        String token = request.getHeader().getToken();
-        String json = JwtUtils.getParseToken(token);
-        Long orgId = (Long) JSONObject.parseObject(json).get("organizationId");
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
 
         List<SystemParamDTO> systemParamDTOList = service.selectAllUnderOrg(orgId);
         List<SystemParamVO> systemParamVOList = PojoUtils.copyListProperties(systemParamDTOList,SystemParamVO::new);

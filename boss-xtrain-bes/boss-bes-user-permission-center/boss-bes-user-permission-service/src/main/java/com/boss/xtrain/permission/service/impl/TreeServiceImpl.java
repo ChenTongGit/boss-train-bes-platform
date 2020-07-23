@@ -39,8 +39,16 @@ public class TreeServiceImpl implements TreeService {
 
 
     @Override
-    public List<OrganizationQuery> orgTree() {
-        return PojoUtils.copyListProperties(organizationDao.selectAll(),OrganizationQuery::new);
+    public List<OrganizationQuery> orgTree(Long orgId) {
+        if(orgId==null){
+            return PojoUtils.copyListProperties(organizationDao.selectAll(),OrganizationQuery::new);
+        }else {
+            List<OrganizationQuery> queryList = new ArrayList<>();
+            OrganizationQuery query = new OrganizationQuery();
+            PojoUtils.copyProperties(organizationDao.selectByPrimaryKey(orgId),query);
+            queryList.add(query);
+            return queryList;
+        }
     }
 
     @Override

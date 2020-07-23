@@ -160,6 +160,8 @@ public class CombExamConfigController extends BaseController implements CombExam
         PojoUtils.copyProperties(combConfigQueryDTO,combExamConfigQueryDTO);
         log.info(combExamConfigQueryDTO.toString());
         Page<Object> objects = this.doBeforePagination(combConfigQueryDTO.getPageNum(),combConfigQueryDTO.getPageSize(),null);
+        combExamConfigQueryDTO.setOrgId(1L);
+        log.info(combExamConfigQueryDTO.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = combExamConfigService.queryConfig(combExamConfigQueryDTO);
         List<CombConfigVO> combConfigVOS = new ArrayList<>();
         for (CombExamConfigDTO combExamConfigDTO:

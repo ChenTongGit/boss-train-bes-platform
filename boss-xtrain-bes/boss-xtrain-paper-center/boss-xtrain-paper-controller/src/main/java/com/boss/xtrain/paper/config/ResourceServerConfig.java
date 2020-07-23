@@ -30,7 +30,6 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
  */
 @Configuration
 @EnableResourceServer
-@Import(FeignClientInterceptor.class)
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 

@@ -6,6 +6,12 @@ spring:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+    sentinel:
+      transport:
+        dashboard: 123.57.156.184:8080  # 控制台地址
+        port: 8080
+      eager: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://39.101.178.139:3306/db_system_center?serverTimezone=Asia/Shanghai&useAffectedRows=true&characterEncoding=utf8
@@ -24,8 +30,9 @@ spring:
     password: 991018 #bosstrain@14`
 
   nacos-url:
-#    nacos-host: 39.97.106.243
+#    nacos-host: 39.97.106.243、123.57.156.184
     nacos-host: 123.57.156.184
+
     nacos-port: 8848
 
 security:

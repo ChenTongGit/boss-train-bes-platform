@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.JwtUtils;
@@ -41,12 +42,6 @@ public class OrganizationController extends BaseController implements Organizati
     @ApiOperation(value = "test")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> insert(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
-//        OrganizationDTO dto = request.getBody();
-//        String token = request.getHeader().getToken();
-//        String json = JwtUtils.getParseToken(token);
-//        Long createdBy = (Long) JSONObject.parseObject(json).get("id");
-//        dto.setCreatedBy(createdBy);
-//        return CommonResponseUtil.ok(service.insert(dto));
         OrganizationDTO dto = request.getBody();
         RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
@@ -61,7 +56,6 @@ public class OrganizationController extends BaseController implements Organizati
         dto.setCreatedBy(createdBy);
         return CommonResponseUtil.ok(service.insert(dto));
     }
-
 
     @ApiLog(msg = "模糊查询组织机构")
     @Override
@@ -91,12 +85,6 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
     public CommonResponse<Integer> update(@RequestBody @Valid CommonRequest<OrganizationDTO> request) {
-//        OrganizationDTO dto = request.getBody();
-//        String token = request.getHeader().getToken();
-//        String json = JwtUtils.getParseToken(token);
-//        log.info("token:"+token);
-//        Long updatedBy = (Long) JSONObject.parseObject(json).get("id");
-//        dto.setUpdatedBy(updatedBy);
         OrganizationDTO dto = request.getBody();
 
         RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
@@ -149,6 +137,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiOperation(value = "test")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
+    @SentinelResource(value = "selectAllOrg")
     public CommonResponse<List<OrganizationVO>> selectAllOrg() {
         List<OrganizationDTO> organizationDTOList = service.selectAll();
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);

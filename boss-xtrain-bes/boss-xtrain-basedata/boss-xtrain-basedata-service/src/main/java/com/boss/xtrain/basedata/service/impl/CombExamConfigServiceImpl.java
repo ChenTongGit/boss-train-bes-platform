@@ -133,8 +133,8 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Override
     public List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
-        List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfig(combExamConfigQueryDTO);
-        log.info(combExamConfigs.toString());
+        List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfigTest(combExamConfigQueryDTO);
+        log.info("combExamConfigs.toString()"+combExamConfigs.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
 
         Example example = new Example(Dictionary.class);

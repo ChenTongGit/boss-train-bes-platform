@@ -128,15 +128,10 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<List<SubjectAnswerVO>> queryAnswer(@RequestBody CommonRequest<SubjectAnswerQueryVO> commonRequest) {
         SubjectAnswerQueryDTO answerQueryDTO = new SubjectAnswerQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),answerQueryDTO);
-        log.info(answerQueryDTO.toString());
         List<SubjectAnswerDTO> subjectAnswerDTOS = subjectService.queryAnswer(answerQueryDTO);
-        log.info(subjectAnswerDTOS.toString());
         List<SubjectAnswerDTO> subjectAnswerDTOList = subjectService.querySubjectOtherInfo(answerQueryDTO);
-        log.info(subjectAnswerDTOList.toString());
         List<SubjectAnswerVO> subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOS,SubjectAnswerVO::new);
-        log.info(subjectAnswerVOS.toString());
         subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOList,SubjectAnswerVO::new);
-        log.info(subjectAnswerVOS.toString());
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),subjectAnswerVOS);
     }
 
