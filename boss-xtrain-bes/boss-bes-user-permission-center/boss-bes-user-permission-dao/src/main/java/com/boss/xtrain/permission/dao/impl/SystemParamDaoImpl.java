@@ -43,6 +43,9 @@ public class SystemParamDaoImpl implements SystemParamDao {
         if(query.getParam()!=null){
             criteria.andEqualTo("param",query.getParam());
         }
+        if(query.getValue()!=null){
+            criteria.andEqualTo("value",query.getValue());
+        }
         return mapper.selectByExample(example);
     }
 
