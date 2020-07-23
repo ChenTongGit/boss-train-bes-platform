@@ -4,12 +4,9 @@ import com.boss.xtrain.authentication.constant.ClientConstant;
 import com.boss.xtrain.authentication.feign.PermissonServiceClient;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
-import com.boss.xtrain.permission.pojo.dto.RoleDTO;
 import com.boss.xtrain.permission.pojo.dto.UserDTO;
-import com.boss.xtrain.permission.pojo.query.ResourceQueryDTO;
 import com.boss.xtrain.permission.pojo.query.RoleQueryDTO;
 import com.boss.xtrain.permission.pojo.query.UserQueryDTO;
-import com.boss.xtrain.permission.pojo.vo.CompanyVO;
 import com.boss.xtrain.permission.pojo.vo.ResourceListVO;
 import com.boss.xtrain.permission.pojo.vo.RoleListVO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +18,8 @@ import java.util.List;
 
 /**
  * 用户服务断路器实现
- *
+ * @author lzx
+ * @version 1.0.0
  */
 @Slf4j
 @Component
@@ -36,25 +34,19 @@ public class PermissonFallbackImpl implements PermissonServiceClient {
      */
     @Override
     public CommonResponse<UserDTO> findUserByName(@RequestBody @Valid CommonRequest<UserQueryDTO> request){
-        log.error("服务降级返回", throwable);
+        log.error(ClientConstant.FIND_USER_BY_NAME_FAIL_MSG, throwable);
         return null;
     }
 
     @Override
     public CommonResponse<List<RoleListVO>> findRoleByName(@RequestBody @Valid CommonRequest<UserQueryDTO> request){
-        log.error("服务降级返回", throwable);
+        log.error(ClientConstant.FIND_ROLE_BY_NAME_FAIL_MSG, throwable);
         return null;
     }
 
     @Override
     public CommonResponse<List<ResourceListVO>> findResourceByName(@RequestBody @Valid CommonRequest<RoleQueryDTO> request){
-        log.error("服务降级返回", throwable);
-        return null;
-    }
-
-    @Override
-    public CommonResponse<List<CompanyVO>> testFeign(){
-        log.error("服务降级返回", throwable);
+        log.error(ClientConstant.FIND_RESOURCE_BY_NAME_FAIL_MSG, throwable);
         return null;
     }
 

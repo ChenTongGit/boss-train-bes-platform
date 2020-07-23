@@ -1,6 +1,9 @@
 package com.boss.xtrain.permission.configuration;
 
+import com.boss.xtrain.common.core.exception.handler.AuthExceptionEntryPoint;
+import com.boss.xtrain.common.core.exception.handler.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,12 +31,13 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    // @Value("spring.security.resource.token-info
-    private static final String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
-/*    @Autowired
+    @Value("security.oauth2.resource.token-info-uri")
+    private String tokenEndpointUrl;
+
+    @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;
     @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;*/
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
@@ -75,16 +79,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .and()
             .authorizeRequests()
             //下边的路径放行
-            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
-                "/swagger-resources","/swagger-resources/configuration/security",
-                "/swagger-ui.html","/webjars/**","/course/coursepic/list/**", "/education/bes/v1/user/select",
-                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource", "/**").permitAll()
+            .antMatchers("/swagger-resources/configuration/ui", "/swagger-resources",
+                "/swagger-resources/configuration/security", "/swagger-ui.html").permitAll()
             .anyRequest().authenticated();
     }
 
-/*    @Override
+    @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(authExceptionEntryPoint)
             .accessDeniedHandler(customAccessDeniedHandler);
-    }*/
+    }
 }

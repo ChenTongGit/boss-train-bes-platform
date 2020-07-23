@@ -42,7 +42,6 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
     @Autowired
     private DepartmentService service;
-
     @Autowired
     private TreeService treeService;
 
@@ -272,13 +271,22 @@ public class DepartmentController extends BaseController implements DepartmentAp
      * @param ex 阻塞异常
      */
     public void exceptionHandler(CommonRequest<CommonPageRequest> request, BlockException ex) {
-        log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+        } else {
+            log.error( "service system fallback -> and request is null", ex);
+        }
+
     }
 
     /**
      *
      */
     public void  fallbackHandler(CommonRequest<CommonPageRequest> request) {
-        log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
+        } else {
+            log.error( "service system fallback -> and request is null");
+        }
     }
 }

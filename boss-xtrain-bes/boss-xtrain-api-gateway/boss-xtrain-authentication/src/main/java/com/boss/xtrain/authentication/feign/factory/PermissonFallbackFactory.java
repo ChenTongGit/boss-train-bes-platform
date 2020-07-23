@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * 用户断路器工厂
+ *
+ * @author lzx
+ * @version 1.0.0
  */
 @Component
 public class PermissonFallbackFactory implements FallbackFactory<PermissonServiceClient> {
