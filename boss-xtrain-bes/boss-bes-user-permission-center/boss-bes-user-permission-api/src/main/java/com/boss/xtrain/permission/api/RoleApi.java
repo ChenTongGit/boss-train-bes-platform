@@ -76,7 +76,7 @@ public interface RoleApi extends CommonCRUDApi<RoleDTO,RoleQueryDTO,RoleListVO> 
      * 分配资源
      *
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return  返回类型：CommonResponse<Boolean>
+     * @return  返回类型：响应封装，body为boolean值
      *
     */
     @RequestMapping("/allocateResource")

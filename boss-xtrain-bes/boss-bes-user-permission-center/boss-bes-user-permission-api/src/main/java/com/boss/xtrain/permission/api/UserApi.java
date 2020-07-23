@@ -57,7 +57,7 @@ public interface UserApi {
      * 指定删除某个数据数据
      * @author ysq
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return 返回类型：com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
+     * @return 返回类型：响应封装为int,影响行数
      */
     @DeleteMapping("/delete")
     CommonResponse<Integer> delete(@RequestBody @Valid CommonRequest<UserDTO> request);
@@ -82,7 +82,7 @@ public interface UserApi {
     /**
      * 列出所有
      *
-     * @return 返回类型： CommonResponse<List<UserListVO>>
+     * @return 返回类型： 响应封装，body为用户列表
      *
      */
     @RequestMapping("/selectAll")
@@ -92,7 +92,7 @@ public interface UserApi {
      *
      * 用户的所有角色
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return 返回类型：CommonResponse<List<RoleListVO>>
+     * @return 返回类型：body为该用户的角色列表
      *
     */
     @PostMapping("/getRoleList")
@@ -102,7 +102,7 @@ public interface UserApi {
      *
      * 用户的所有资源
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return 返回类型：CommonResponse<List<ResourceListVO>>
+     * @return 返回类型：body为该用户的角色所拥有的所有资源
      *
     */
     @PostMapping("/getAllResource")
@@ -112,7 +112,7 @@ public interface UserApi {
      * 带有分页的搜索功能
      *
      * @param request 搜索条件封装类
-     * @return 返回类型：CommonResponse<CommonPage<UserListVO>>
+     * @return 返回类型：响应封装，body为用户列表
      *
     */
     @PostMapping("/selectByPage")
@@ -121,7 +121,7 @@ public interface UserApi {
      * 带有分页的列出所有功能
      *
      * @param request 搜索条件封装类
-     * @return 返回类型：CommonResponse<CommonPage<UserListVO>>
+     * @return 返回类型：body为所有用户
      *
      */
     @PostMapping("/selectAllByPage")
@@ -140,7 +140,7 @@ public interface UserApi {
      * 查询用户的角色列表
      *
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return CommonResponse<List<RoleListVO>>
+     * @return 响应封装，获取用户对应的角色
      *
     */
     @RequestMapping("/getRoles")
@@ -150,7 +150,7 @@ public interface UserApi {
      * 通过position查找用户
      *
      * @param request 请求报文对象，传递query（本质也为dto）
-     * @return CommonResponse<List<UserListVO>>
+     * @return 通过position查找到的用户列表
      *
     */
     @RequestMapping("/getUserByPosition")
