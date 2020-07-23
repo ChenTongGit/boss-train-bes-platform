@@ -64,23 +64,35 @@ public class DepartmentDaoImpl implements DepartmentDao {
         List<Department> all = new ArrayList<>();
 
         Example companyExample = new Example(Company.class);
-        Example departmentExample = new Example(Department.class);
 
         if(orgId!=null){
             Example.Criteria criteriaCom = companyExample.createCriteria();
             criteriaCom.andEqualTo("organizationId",orgId);
             List<Company> companyList = companyMapper.selectByExample(companyExample);
             if(!companyList.isEmpty()){
-                for(Company temp:companyList){
-                    Example.Criteria criteriaDept = departmentExample.createCriteria();
-                    criteriaDept.andEqualTo("companyId",temp.getId());
-                    all.addAll(mapper.selectByExample(departmentExample));
-                }
+                all = getManyCompanyDept(companyList);
             }
         }else{
             all = mapper.selectAll();
         }
         return all;
+    }
+
+    /**
+     * 通过获得的组织机构所负责的公司，对所负责的部门进行搜索
+     * @param companyList 组织机构所负责的公司
+     * @return 组织机构负责的部门
+     */
+    private List<Department> getManyCompanyDept(List<Company> companyList){
+        List<Department> departmentList = new ArrayList<>();
+        for(Company company:companyList){
+            Example example = new Example(Department.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("companyId",company.getId());
+            List<Department> temp = mapper.selectByExample(example);
+            departmentList.addAll(temp);
+        }
+        return departmentList;
     }
 
     /**
