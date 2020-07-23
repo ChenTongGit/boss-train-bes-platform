@@ -36,7 +36,6 @@ public class MarkingQuery {
      */
     private String examSession;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long markPeople;
 
     public String getExamSession() {
