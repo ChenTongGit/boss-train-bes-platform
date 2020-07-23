@@ -45,7 +45,7 @@ public class UserDaoServiceImpl implements UserDaoService {
         CommonResponse<UserDTO> user = permissonServiceClient.findUserByName(userQuery);
         log.info(user.toString());
         UserDTO userDTO = user.getData();
-
+        log.info(userDTO.toString());
         CommonResponse<List<RoleListVO>> roles = permissonServiceClient.findRoleByName(userQuery);
         List<RoleDTO> roleDTOs = PojoUtils.copyListProperties(roles.getData(), RoleDTO::new);
 

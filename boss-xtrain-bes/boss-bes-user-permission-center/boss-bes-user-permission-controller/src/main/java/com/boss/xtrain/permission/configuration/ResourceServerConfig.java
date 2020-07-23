@@ -31,8 +31,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Value("security.oauth2.resource.token-info-uri")
-    private String tokenEndpointUrl;
+    private String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
 
     @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;
@@ -79,8 +78,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .and()
             .authorizeRequests()
             //下边的路径放行
-            .antMatchers("/swagger-resources/configuration/ui", "/swagger-resources",
-                "/swagger-resources/configuration/security", "/swagger-ui.html").permitAll()
+            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+                "/swagger-resources","/swagger-resources/configuration/security",
+                "/swagger-ui.html","/webjars/**","/course/coursepic/list/**", "/education/bes/v1/user/select",
+                "/education/bes/v1/user/getRoleList", "/education/bes/v1/user/getAllResource", "/**"
+            ).permitAll()
             .anyRequest().authenticated();
     }
 
