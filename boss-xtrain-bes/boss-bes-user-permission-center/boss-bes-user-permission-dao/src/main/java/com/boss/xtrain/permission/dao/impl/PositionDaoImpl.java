@@ -35,11 +35,6 @@ public class PositionDaoImpl implements PositionDao {
         Example example = new Example(Position.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("name","%"+dto.getName()+"%");
-//        Position position = new Position();
-//        log.info("query:",dto.toString());
-//        PojoUtils.copyProperties(dto,position);
-//        log.info("position:",position.toString());
-//        return PojoUtils.copyListProperties(positionMapper.select(position),PositionDTO::new);
         return PojoUtils.copyListProperties(positionMapper.selectByExample(example),PositionDTO::new);
     }
 
