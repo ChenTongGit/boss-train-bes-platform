@@ -37,7 +37,13 @@ public class ResourceServiceImpl implements ResourceService{
 
     @Override
     public int insert(ResourceDTO dto) {
-        if(resourceDao.isExist(dto.getId())){
+        log.info(dto.toString());
+        ResourceQueryDTO query = new ResourceQueryDTO();
+        PojoUtils.copyProperties(dto,query);
+        log.info(query.toString());
+        List<ResourceDTO> list = resourceDao.queryByCondition(query);
+        log.info(list.toString());
+        if(!list.isEmpty()){
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_RESOURCE_REPEAT_ERROR);
         }
         try {
