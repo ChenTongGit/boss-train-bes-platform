@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
- * <p> 配置web服务器 </br>
+ * <p> 配置web服务器 <br>
  * </p>
  *
  * @author lzx
@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Oauth2AuthenticationSuccessHandler successHandler;
 
     @Bean
-    public NoEncryptPasswordEncoder passwordEncoder() {
-        return new NoEncryptPasswordEncoder();
+    public EncryptPasswordEncoder passwordEncoder() {
+        return new EncryptPasswordEncoder();
     }
 
     /**

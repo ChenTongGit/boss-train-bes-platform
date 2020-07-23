@@ -130,7 +130,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @SentinelResource(value = "selectAllByPage", blockHandler = "exceptionHandler", fallback = "fallbackHandler")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
-        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),
+            request.getBody().getOrderBy());
         List<DepartmentDTO> companyDTOList = service.selectAll();
         List<DepartmentVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,DepartmentVO::new);
         return buildPageResponse(page,companyVOList);
@@ -280,7 +281,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     }
 
     /**
-     *
+     * @param request 请求的内容
      */
     public void  fallbackHandler(CommonRequest<CommonPageRequest> request) {
         if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {

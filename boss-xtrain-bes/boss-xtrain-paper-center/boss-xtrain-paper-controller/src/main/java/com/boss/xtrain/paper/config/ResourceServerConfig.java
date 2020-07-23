@@ -72,9 +72,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .and()
             .authorizeRequests()
             //下边的路径放行
-            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
-                "/swagger-resources/configuration/security", "/swagger-ui.html","/webjars/**",
-                "/course/coursepic/list/**", "/**")
+            .antMatchers("/education/bes/v1/exam/queryOnePaper", "/education/bes/v1/exam/queryAllPaper")
             .permitAll()
             .anyRequest()
             .authenticated();

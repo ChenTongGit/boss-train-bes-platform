@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * <p> 配置注入其它一些必要的bean </br>
+ * <p> 配置注入其它一些必要的bean <br>
  * </p>
  * @author lzx
  * @date 2020.07

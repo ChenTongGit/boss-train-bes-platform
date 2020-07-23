@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * <p> 定义注销登录时使用的endpoint </br>
+ * <p> 定义注销登录时使用的endpoint <br>
  * </p>
  *
  * @author lzx
