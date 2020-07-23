@@ -133,6 +133,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean allocateUser(List<UserRoleDTO> userRoleDTOS) {
+        log.info(userRoleDTOS.toString());
         deleteUserRole(userRoleDTOS);
         if(userRoleDTOS.get(0).getUserId() == null){
             return false;

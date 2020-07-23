@@ -26,7 +26,7 @@ import java.util.List;
 public interface OrganizationApi extends CommonCRUDApi<OrganizationDTO, OrganizationQuery, OrganizationVO> {
     /**
      * 查所有
-     * @return
+     * @return 所有组织机构
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
 
@@ -37,17 +37,17 @@ public interface OrganizationApi extends CommonCRUDApi<OrganizationDTO, Organiza
     CommonResponse<OrganizationVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<OrganizationQuery> request);
 
     /**
-     * 分页条件搜索
-     * @param request
-     * @return
+     * 分页条件搜索，包括初始化
+     * @param request 带分页条件的搜索请求
+     * @return 所有或有条件的组织机构列表
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<OrganizationVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<OrganizationQuery>> request);
 
     /**
-     * 分页全搜索
-     * @param request
-     * @return
+     * 分页全搜索，没用到
+     * @param request 带分页条件的搜索请求
+     * @return 所有的组织机构列表
      */
     @PostMapping("/allByPage")
     CommonResponse<CommonPage<OrganizationVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);

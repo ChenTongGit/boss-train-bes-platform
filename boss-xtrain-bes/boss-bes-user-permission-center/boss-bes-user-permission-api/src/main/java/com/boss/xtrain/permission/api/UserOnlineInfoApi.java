@@ -24,24 +24,24 @@ import java.util.List;
 public interface UserOnlineInfoApi extends CommonCRUDApi<UserOnlineInfoDTO, UserOnlineInfoQuery, UserOnlineInfoVO> {
     /**
      * 分页条件搜索
-     * @param request
-     * @return
+     * @param request 带条件的分页搜索
+     * @return 条件搜索列表
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<UserOnlineInfoVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request);
 
     /**
      * 分页全搜索
-     * @param request
-     * @return
+     * @param request 不带条件的分页搜索
+     * @return 全搜索列表
      */
     @PostMapping("/selectAllPage")
     CommonResponse<CommonPage<UserOnlineInfoVO>> selectAllPage(@RequestBody @Valid CommonRequest<CommonPageRequest<UserOnlineInfoQuery>> request);
 
     /**
      * 批量下线
-     * @param request
-     * @return
+     * @param request 请求下线的用户list
+     * @return 下线结果
      */
     @PutMapping("/updateBatch")
     CommonResponse<Integer> updateList(@RequestBody @Valid CommonRequest<List<UserOnlineInfoDTO>> request);

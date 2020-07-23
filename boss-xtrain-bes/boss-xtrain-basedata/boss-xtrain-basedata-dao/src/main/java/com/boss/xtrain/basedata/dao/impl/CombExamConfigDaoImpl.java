@@ -60,6 +60,20 @@ public class CombExamConfigDaoImpl implements CombExamConfigDao {
 
     }
 
+    /**
+     * 因为name为空不支持模糊查询，所以删除了name
+     * @param combExamConfigQueryDTO
+     * @return
+     */
+    @Override
+    public List<CombExamConfig> queryCombExamConfigTest(CombExamConfigQueryDTO combExamConfigQueryDTO) {
+        Example example = new Example(CombExamConfig.class);
+        example.orderBy("updatedTime").desc();
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizationId",combExamConfigQueryDTO.getOrgId());
+        return combExamConfigMapper.selectByExample(example);
+    }
+
     @Override
     public int checkRepeatName(Example example) {
         return combExamConfigMapper.selectCountByExample(example);
