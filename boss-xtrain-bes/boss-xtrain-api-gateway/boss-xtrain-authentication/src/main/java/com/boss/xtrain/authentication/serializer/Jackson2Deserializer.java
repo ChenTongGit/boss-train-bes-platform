@@ -1,6 +1,5 @@
-package com.boss.xtrain.authentication.redis;
+package com.boss.xtrain.authentication.serializer;
 
-import com.boss.xtrain.authentication.configuration.NoEncryptPasswordEncoder;
 import com.boss.xtrain.authentication.jwt.UserJwt;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,9 +11,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.TokenRequest;
@@ -23,6 +20,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * 使用 Jackson 序列化
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> {
     protected Jackson2Deserializer(Class<?> vc) {
         super(vc);
@@ -43,6 +46,14 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         }
     }
 
+    /**
+     * 读取值
+     * @param mapper mapper
+     * @param jsonNode jsonNode
+     * @param type type
+     * @param <T> 泛型
+     * @return 结果
+     */
     private static <T> T readValue(ObjectMapper mapper, JsonNode jsonNode, TypeReference<T> type) {
         if (mapper == null || jsonNode == null || type == null) {
             return null;
@@ -54,6 +65,14 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         }
     }
 
+    /**
+     * 进行反序列化
+     * @param jp parser
+     * @param ctxt 反序列化context
+     * @return 返回OAuth2Authentication
+     * @throws IOException IOException
+     * @throws JsonProcessingException JsonProcessingException
+     */
     @Override
     public OAuth2Authentication deserialize(JsonParser jp, DeserializationContext ctxt)
         throws IOException, JsonProcessingException {
@@ -67,18 +86,28 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         return new OAuth2Authentication(request, authentication);
     }
 
+    /**
+     * 序列化token
+     * @param mapper mapper
+     * @param json json
+     * @return Authentication
+     */
     private Authentication parseAuthentication(ObjectMapper mapper, JsonNode json) {
         if (mapper == null || json == null) {
             return null;
         }
-
         UserJwt principal = parseOAuth2User(mapper, json.get("principal"));
         Object credentials = readValue(mapper, json.get("credentials"), Object.class);
         Set<SimpleGrantedAuthority> grantedAuthorities = parseSimpleGrantedAuthorities(mapper, json.get("authorities"));
-
         return new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
     }
 
+    /**
+     * 序列化改对象
+     * @param mapper mapper
+     * @param json json
+     * @return 返回UserJwt
+     */
     private UserJwt parseOAuth2User(ObjectMapper mapper, JsonNode json) {
         if (mapper == null || json == null) {
             return null;
@@ -99,7 +128,8 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         Boolean enabled = readValue(mapper, json.get("enabled"), Boolean.class);
 
         Set<SimpleGrantedAuthority> grantedAuthorities = parseSimpleGrantedAuthorities(mapper, json.get("authorities"));
-        UserJwt userJwt = new UserJwt(username, "123456", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
+        UserJwt userJwt = new UserJwt(username, "123456", enabled, accountNonExpired, credentialsNonExpired,
+            accountNonLocked, grantedAuthorities);
         userJwt.setId(id);
         userJwt.setCompanyName(companyName);
         userJwt.setDepartmentName(departmentName);
@@ -109,6 +139,12 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         return userJwt;
     }
 
+    /**
+     * 序列化OAuth2Request
+     * @param mapper mapper
+     * @param json json
+     * @return 返回OAuth2Request
+     */
     private OAuth2Request parseOAuth2Request(ObjectMapper mapper, JsonNode json) {
         if (mapper == null || json == null) {
             return null;
@@ -135,6 +171,12 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         return request;
     }
 
+    /**
+     * 序列化权限对象数组
+     * @param mapper mapper
+     * @param json json
+     * @return 返回集合
+     */
     private Set<SimpleGrantedAuthority> parseSimpleGrantedAuthorities(ObjectMapper mapper, JsonNode json) {
         Set<LinkedHashMap<String, String>> authorities = readValue(mapper, json, Set.class);
         Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>(0);
@@ -148,6 +190,12 @@ public class Jackson2Deserializer extends StdDeserializer<OAuth2Authentication> 
         return grantedAuthorities;
     }
 
+    /**
+     * 读取json节点
+     * @param jsonNode jsonNode
+     * @param field field
+     * @return JsonNode
+     */
     private JsonNode readJsonNode(JsonNode jsonNode, String field) {
         return jsonNode.has(field) ? jsonNode.get(field) : MissingNode.getInstance();
     }

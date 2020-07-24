@@ -8,9 +8,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * <p> 配置注入其它一些必要的bean <br>
+ * </p>
+ * @author lzx
+ * @date 2020.07
+ * @version 1.0.0
+ */
 @Configuration
 @Import({RedisConfig.class})
-public class OtherConfig {
+public class FeignConfig {
+    /**
+     * 注入Feign拦截器
+     * @return 返回拦截器
+     */
     @Bean
     public FeignClientInterceptor getFeignClientInterceptor(){
         return new FeignClientInterceptor();
@@ -20,10 +31,5 @@ public class OtherConfig {
     @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
-    }
-
-    @Bean
-    public FeignClientInterceptor feignClientInterceptor(){
-        return new FeignClientInterceptor();
     }
 }

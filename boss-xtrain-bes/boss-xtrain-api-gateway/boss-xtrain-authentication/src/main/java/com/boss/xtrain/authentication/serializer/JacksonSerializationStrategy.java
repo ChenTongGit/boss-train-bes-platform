@@ -1,4 +1,4 @@
-package com.boss.xtrain.authentication.redis;
+package com.boss.xtrain.authentication.serializer;
 
 import com.alibaba.fastjson.util.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +10,13 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 import java.nio.charset.Charset;
 
+/**
+ * 继承自RedisTokenStoreSerializationStrategy
+ * 使用默认的jdk的序列化方式会产生问题，所以自定义序列化策略
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 public class JacksonSerializationStrategy implements RedisTokenStoreSerializationStrategy {
     protected static ObjectMapper mapper = new ObjectMapper();
 
@@ -20,6 +27,13 @@ public class JacksonSerializationStrategy implements RedisTokenStoreSerializatio
         mapper.registerModule(module);
     }
 
+    /**
+     * 进行反序列化
+     * @param bytes bytes
+     * @param clazz clazz
+     * @param <T> 泛型
+     * @return 返回结果
+     */
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         Preconditions.checkArgument(clazz != null,

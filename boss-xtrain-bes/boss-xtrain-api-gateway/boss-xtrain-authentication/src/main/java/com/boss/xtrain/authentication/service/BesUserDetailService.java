@@ -7,22 +7,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 自定义UserDetailsService，以实现业务
+ *
+ * @author lzx
+ * @date 2020.07.15
+ */
 @Slf4j
 @Service("userDetailService")
 public class BesUserDetailService implements UserDetailsService {
@@ -33,15 +33,24 @@ public class BesUserDetailService implements UserDetailsService {
     @Qualifier("userDaoService")
     @Autowired
     UserDaoService userDaoService;
-
+/**
+ * 定义异常类型，拒绝访问异常
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
+    /**
+     * 通过用户名加载信息
+     * @param userName 用户名
+     * @return 返回查找到的 UserDetails
+     * @throws UsernameNotFoundException 返回找不到用户错误
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         log.info("save user info name: " + userName);
-
         if (StringUtils.isEmpty(userName)) {
             return null;
         }
-
         UserDTO userDTO = userDaoService.getUserAllInfo(userName);
         log.info(userDTO.toString());
 

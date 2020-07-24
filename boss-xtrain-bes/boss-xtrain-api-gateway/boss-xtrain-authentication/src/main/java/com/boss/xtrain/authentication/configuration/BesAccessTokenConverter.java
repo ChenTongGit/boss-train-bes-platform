@@ -14,6 +14,14 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * <p> 自定义token翻译器
+ * </p>
+ *
+ * @author lzx
+ * @version 1.0.0
+ * @data 2020.07
+ */
 @Component
 public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
 
@@ -25,6 +33,13 @@ public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
         super.setUserTokenConverter(new BesUserAuthenticationConverter());
     }
 
+    /**
+     * 配置用户认证的翻译器
+     *
+     * @author lzx
+     * @version 1.0.0
+     * @date 2020.07.15
+     */
     private class BesUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
         @Override
         public Map<String, ?> convertUserAuthentication(Authentication authentication) {
@@ -36,8 +51,8 @@ public class BesAccessTokenConverter extends DefaultAccessTokenConverter {
             UserJwt userJwt = null;
             if(principal instanceof  UserJwt){
                 userJwt = (UserJwt) principal;
-            }else{
-                //refresh_token默认不调用userdetailService获取用户信息，这里手动调用，得到 UserJwt
+            } else {
+                // refresh_token默认不调用userdetailService获取用户信息，这里手动调用，得到 UserJwt
                 UserDetails userDetails = userDetailsService.loadUserByUsername(name);
                 userJwt = (UserJwt) userDetails;
             }
