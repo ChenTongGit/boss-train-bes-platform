@@ -3,20 +3,20 @@ package com.boss.xtrain.basedata.dao.impl;
 import com.boss.xtrain.basedata.dao.DictionaryDao;
 import com.boss.xtrain.basedata.mapper.DictionaryMapper;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
-import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.basedata.pojo.entity.Dictionary;
-import com.boss.xtrain.basedata.pojo.entity.Subject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 字典dao
+ * @date 2020/07/08
+ */
 @Slf4j
 @Repository
 public class DictionaryDaoImpl implements DictionaryDao {
@@ -26,11 +26,15 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     @Override
     public int insertDictionary(Dictionary dictionary) {
+        dictionary.setStatus(1);
         return dictionaryMapper.insert(dictionary);
     }
 
     @Override
     public int insertDictionaryList(List<Dictionary> dictionaries) {
+        for (Dictionary dictionary : dictionaries){
+            dictionary.setStatus(1);
+        }
         return dictionaryMapper.insertList(dictionaries);
     }
 
@@ -55,15 +59,13 @@ public class DictionaryDaoImpl implements DictionaryDao {
     @Override
     public List<DictionaryDTO> getDictionary() {
         List<Dictionary> dictionaries = dictionaryMapper.selectAll();
-        List<DictionaryDTO> dictionaryDTOS = PojoUtils.copyListProperties(dictionaries, DictionaryDTO::new);
-        return dictionaryDTOS;
+        return PojoUtils.copyListProperties(dictionaries, DictionaryDTO::new);
     }
 
     @Override
     public List<DictionaryDTO> queryDictionary(Example example) {
         List<Dictionary> dictionaries = dictionaryMapper.selectByExample(example);
-        List<DictionaryDTO> dictionaryDTOS = PojoUtils.copyListProperties(dictionaries,DictionaryDTO::new);
-        return dictionaryDTOS;
+        return PojoUtils.copyListProperties(dictionaries,DictionaryDTO::new);
     }
 
     @Override
@@ -73,9 +75,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     @Override
     public List<DictionaryDTO> selectList(Example example) {
-        List<DictionaryDTO> dictionaryDTOS=  PojoUtils.copyListProperties(dictionaryMapper.selectByExample(example),DictionaryDTO::new);
-        log.info(dictionaryDTOS.toString());
-        return dictionaryDTOS;
+        return PojoUtils.copyListProperties(dictionaryMapper.selectByExample(example),DictionaryDTO::new);
     }
 
     @Override

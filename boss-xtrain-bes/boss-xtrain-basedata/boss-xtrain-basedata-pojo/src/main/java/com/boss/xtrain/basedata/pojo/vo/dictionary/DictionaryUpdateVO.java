@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * @author gxr
  * @description DictionaryUpdateVO
- * @date 2020/7/11
+ * @date 2020/7/6
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -12,4 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface DictionaryMapper extends BaseMapper<Dictionary> {
+
+    int insertDictionaryList(@Param("dictionaries") List<Dictionary> dictionaries);
+
 }

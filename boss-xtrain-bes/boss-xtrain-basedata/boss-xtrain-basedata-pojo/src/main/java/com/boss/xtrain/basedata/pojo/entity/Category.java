@@ -2,6 +2,7 @@ package com.boss.xtrain.basedata.pojo.entity;
 
 import java.io.Serializable;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import tk.mybatis.mapper.annotation.KeySql;
@@ -27,6 +28,7 @@ public class Category extends BaseEntity implements Serializable {
      * 父类别ID
      */
     @Column(name = "parent_id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long parentId;
 
     /**

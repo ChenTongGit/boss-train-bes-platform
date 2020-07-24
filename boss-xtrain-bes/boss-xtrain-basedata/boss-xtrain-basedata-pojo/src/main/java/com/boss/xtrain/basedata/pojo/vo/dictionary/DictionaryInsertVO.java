@@ -1,13 +1,22 @@
 package com.boss.xtrain.basedata.pojo.vo.dictionary;
 
-import com.boss.xtrain.common.core.pojo.BaseVO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-public class DictionaryInsertVO extends BaseVO {
+/**
+ * @author gxr
+ * @description DictionaryInsertVO
+ * @date 2020/7/6
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class DictionaryInsertVO {
+    private Long id;
     private String name;
     private String category;
     private String value;
+    private String remark;
+    private Integer status;
+    private Long version;
+
 }

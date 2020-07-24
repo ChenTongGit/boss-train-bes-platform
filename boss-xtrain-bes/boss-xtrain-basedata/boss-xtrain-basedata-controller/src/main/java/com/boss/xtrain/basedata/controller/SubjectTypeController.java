@@ -17,9 +17,7 @@ import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +25,11 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题型controller
+ * @date 2020/07/08
+ */
 @RestController
 @Slf4j
 public class SubjectTypeController extends BaseController implements SubjectTypeApi {
@@ -63,9 +66,9 @@ public class SubjectTypeController extends BaseController implements SubjectType
     @ResponseBody
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_type_admin')")
     public CommonResponse<Boolean> deleteSubjectTypeList(@RequestBody CommonRequest<SubjectTypeDeleteIdsVO> commonRequest) {
-        SubjectTypeDeleteIdsVO subjectTypeDeleteIdsVO = commonRequest.getBody();
         SubjectTypeDeleteIdsDTO subjectTypeDeleteIdsDTO = new SubjectTypeDeleteIdsDTO();
-        PojoUtils.copyProperties(subjectTypeDeleteIdsVO,subjectTypeDeleteIdsDTO);
+        List<SubjectTypeDeleteDTO> subjectDeleteDTOS =  PojoUtils.copyListProperties(commonRequest.getBody().getIds(),SubjectTypeDeleteDTO::new);
+        subjectTypeDeleteIdsDTO.setIds(subjectDeleteDTOS);
         subjectTypeService.deleteSubjectTypes(subjectTypeDeleteIdsDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),true);
     }

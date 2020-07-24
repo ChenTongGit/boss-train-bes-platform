@@ -4,18 +4,12 @@ import com.boss.xtrain.basedata.dao.CategoryDao;
 import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryTreeDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
-import com.boss.xtrain.basedata.pojo.entity.SubjectType;
 import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -28,12 +22,12 @@ public class CategoryDaoImpl implements CategoryDao {
     @Override
     public List<CategoryDTO> queryCategory() {
         List<Category> categories = categoryMapper.selectAll();
-        List<CategoryDTO> categoryDTOS = PojoUtils.copyListProperties(categories,CategoryDTO::new);
-        return categoryDTOS;
+        return PojoUtils.copyListProperties(categories,CategoryDTO::new);
     }
 
     @Override
     public int insertCategory(Category category) {
+        category.setStatus(1);
         return categoryMapper.insert(category);
     }
 
@@ -57,26 +51,14 @@ public class CategoryDaoImpl implements CategoryDao {
 
 
     @Override
-    public List<String> queryCategoryNameById(Example example){
-        List<Category> categories = categoryMapper.selectByExample(example);
-        List<String> names = new ArrayList<>();
-        for (Category category : categories){
-            names.add(category.getName());
-        }
-        return names;
-    }
-
-    @Override
     public List<CategoryTreeDTO> getCategoryTree(Example example) {
         List<Category> categories = categoryMapper.selectByExample(example);
-        List<CategoryTreeDTO> categoryTreeDTOS = PojoUtils.copyListProperties(categories,CategoryTreeDTO::new);
-        return categoryTreeDTOS;
+        return PojoUtils.copyListProperties(categories,CategoryTreeDTO::new);
     }
 
     @Override
     public List<CategoryDTO> queryByCondition(Example query) {
         List<Category> categories = categoryMapper.selectByExample(query);
-        List<CategoryDTO> categoryDTOS = PojoUtils.copyListProperties(categories,CategoryDTO::new);
-        return categoryDTOS;
+        return PojoUtils.copyListProperties(categories,CategoryDTO::new);
     }
 }

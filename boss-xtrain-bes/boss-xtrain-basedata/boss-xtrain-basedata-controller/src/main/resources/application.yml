@@ -7,19 +7,17 @@ mapper:
 spring:
   application:
     name: boss-bes-basedata
-  redis:
-    host: 123.57.156.184:6379
-    password: bosstrain@14`
   datasource:
+    url: jdbc:mysql://123.56.51.204:3306/db_base_data?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useAffectedRows=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: guoxinrui0622
     driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://39.101.178.139:3306/db_base_data?serverTimezone=Asia/Shanghai&useAffectedRows=true&characterEncoding=utf8
-      username: root
-      password: zzy873190934
-      hikari:
-        connection-test-query: SELECT 1
-        max-lifetime: 30000
-        minimum-idle: 3
-        maximum-pool-size: 10
+
+    hikari:
+      connection-test-query: SELECT 1
+      max-lifetime: 30000
+      minimum-idle: 3
+      maximum-pool-size: 10
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,7 +32,7 @@ spring:
 
     # 组nacos和seata服务地址
   nacos-url:
-    nacos-host: 123.57.156.184
+    nacos-host: localhost #123.57.156.184
     nacos-port: 8848
   security:-url:
     host: localhost

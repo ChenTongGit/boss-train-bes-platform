@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+/**
+ * @author gxr
+ * @description 题目类别接口
+ * @date 2020/7/11
+ */
 @RequestMapping("/combExamConfig")
 public interface CombExamConfigApi {
     /**

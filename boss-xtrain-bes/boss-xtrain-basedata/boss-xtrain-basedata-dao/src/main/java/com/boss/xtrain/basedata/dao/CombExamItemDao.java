@@ -1,14 +1,17 @@
 package com.boss.xtrain.basedata.dao;
 
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDeleteDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
-import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
 import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
 
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目类别dao
+ * @date 2020/07/08
+ */
 public interface CombExamItemDao {
     /**
      * 增加配置明细

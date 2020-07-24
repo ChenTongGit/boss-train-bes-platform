@@ -18,8 +18,8 @@ public class SubjectDTO extends BaseDTO {
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long subjectTypeId;
-    private String subjectTypeName;
-    private String categoryName;
+    private String subjectTypeName = "";
+    private String categoryName = "";
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long categoryId;
     private String difficulty;

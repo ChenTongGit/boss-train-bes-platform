@@ -8,15 +8,18 @@ import com.boss.xtrain.basedata.pojo.entity.*;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.PPMT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目dao
+ * @date 2020/07/08
+ */
 @Repository
 @Slf4j
 public class SubjectDaoImpl implements SubjectDao {
@@ -42,7 +45,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public int insertSubject(Subject subject) {
-        log.info(subject.toString());
+        subject.setStatus(1);
         return subjectMapper.insert(subject);
     }
 
@@ -73,27 +76,24 @@ public class SubjectDaoImpl implements SubjectDao {
         return subjectDTOS;
     }
 
-
     @Override
-    public List<SubjectDTO> querySubjectOtherInfo(Example example){
-        List<Subject> subjects = subjectMapper.selectByExample(example);
-        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
-        return subjectDTOS;
+    public SubjectDTO querySubjectOtherInfo(Long id) {
+        Subject subject = subjectMapper.getSubjectById(id);
+        SubjectDTO subjectDTO = new SubjectDTO();
+        PojoUtils.copyProperties(subject,subjectDTO);
+        return subjectDTO;
     }
 
     @Override
     public List<SubjectDTO> queryByCondition(Example example) {
         List<Subject> subjects = subjectMapper.selectByExample(example);
-        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
-        return subjectDTOS;
+        return PojoUtils.copyListProperties(subjects,SubjectDTO::new);
     }
 
     @Override
     public List<DifficultDTO> queryDifficult(Example example) {
         List<Dictionary> dictionaries = dictionaryMapper.selectByExample(example);
-        List<DifficultDTO> difficultDTOS = PojoUtils.copyListProperties(dictionaries,DifficultDTO::new);
-
-        return difficultDTOS;
+        return PojoUtils.copyListProperties(dictionaries,DifficultDTO::new);
     }
 
     @Override
@@ -142,26 +142,18 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public List<Subject> querySubjectRandom(CombExamItemDTO combExamItemDTO, Integer num) {
-        Long categoryId = combExamItemDTO.getCategoryId();
-        Long subjectTypeId = combExamItemDTO.getSubjectTypeId();
-        String difficulty = combExamItemDTO.getDifficultyName();
-        log.info(categoryId.toString());
-        log.info(subjectTypeId.toString());
-        log.info(difficulty);
         Example example = new Example(Subject.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("categoryId",combExamItemDTO.getCategoryId());
         criteria.andEqualTo("subjectTypeId",combExamItemDTO.getSubjectTypeId());
         criteria.andEqualTo("difficulty",combExamItemDTO.getDifficultyName());
-        return subjectMapper.selectByExample(example);//queryByRandom(categoryId,subjectTypeId,difficulty,num);
-
+        return subjectMapper.selectByExample(example);
     }
 
     @Override
     public List<SubjectDTO> queryExamSubject(Long orgId, Long subjectTypeId) {
         List<Subject> subjects = subjectMapper.getExamSubject(orgId,subjectTypeId);
-        List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
-        return subjectDTOS;
+        return PojoUtils.copyListProperties(subjects,SubjectDTO::new);
 
     }
 
@@ -172,11 +164,6 @@ public class SubjectDaoImpl implements SubjectDao {
         PojoUtils.copyProperties(subject,subjectDto);
         return subjectDto;
 
-    }
-
-    @Override
-    public List<String> queryCategoryById(List<Long> subjectIds) {
-        return subjectMapper.queryCategoryById(subjectIds);
     }
 
     @Override

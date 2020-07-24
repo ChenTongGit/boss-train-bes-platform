@@ -1,15 +1,12 @@
 package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.*;
-import com.boss.xtrain.basedata.mapper.SubjectTypeMapper;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.paper.StandardCombDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.*;
 import com.boss.xtrain.basedata.pojo.entity.*;
-
 import com.boss.xtrain.common.core.exception.BusinessException;
-
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
@@ -18,13 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.boss.xtrain.basedata.service.SubjectService;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * @author guo xinrui
+ * @description 题目service
+ * @date 2020/07/08
+ */
 @Slf4j
 @Service
 public class SubjectServiceImpl implements SubjectService{
@@ -50,97 +50,36 @@ public class SubjectServiceImpl implements SubjectService{
     @Autowired
     private IdWorker idWorker;
 
-    @Autowired
-    private SubjectTypeMapper subjectTypeMapper;
-
-
+    private String ORG_ID = "organizationId";
     @Override
     public List<SubjectDTO> querySubjectByCondition(SubjectQueryDTO subjectQueryDTO) {
-        List<SubjectDTO> subjectDTOList = new ArrayList<>();
+        List<SubjectDTO> subjectDTOList;
         Long orgId = subjectQueryDTO.getOrgId();
-        String name= subjectQueryDTO.getName();
-        String subjectTypeName = subjectQueryDTO.getSubjectTypeName();
-        //Long categoryId = subjectQueryDTO.getCategoryId();
-        String categoryName = subjectQueryDTO.getCategoryName();
-        subjectQueryDTO.setCategoryName(categoryName);
 
         Example example = new Example(Subject.class);
         Example.Criteria criteria = example.createCriteria();
 
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
-        PojoUtils.copyProperties(subjectQueryDTO,subjectUpdateDTO);
-        log.info(subjectUpdateDTO.toString());
+        PojoUtils.copyProperties(subjectQueryDTO, subjectUpdateDTO);
 
-        List<Long> typesIds = queryTypeIdByName(subjectUpdateDTO);
-        log.info(typesIds.toString());
-        List<Long> categoryIds = queryCategoryIdByName(subjectUpdateDTO);
+        criteria.andEqualTo(ORG_ID,subjectUpdateDTO.getOrganizationId());
 
-
-        if(orgId != null){
-            Category category;
-            List<SubjectDTO> subjectDTOS = new ArrayList<>();
-            criteria.andEqualTo("organizationId",orgId);
-            if (!categoryName.equals("")){
-                for (Long id :categoryIds){
-                    subjectUpdateDTO.setCategoryId(id);
-                    criteria.andEqualTo("categoryId",subjectUpdateDTO.getCategoryId());
-                    category = categoryDao.queryCategoryById(subjectUpdateDTO.getCategoryId());
-                    criteria.andLike("name","%"+name+"%");
-
-                    if (subjectDao.queryByCondition(example).size()>0){
-                        subjectDTOS = subjectDao.queryByCondition(example);
-                    }
-                    Example example1 = new Example(SubjectType.class);
-                    Example.Criteria criteria1 = example1.createCriteria();
-                    for (SubjectDTO subjectDTO : subjectDTOS){
-                        subjectDTO.setCategoryName(category.getName());
-                        criteria1.andEqualTo("id",subjectDTO.getSubjectTypeId());
-                        List<String> typeNameById = subjectTypeDao.queryTypeNameById(example1);
-                        subjectDTO.setSubjectTypeName(typeNameById.get(0));
-                    }
-
-                }
-                log.info(subjectDTOS.toString());
+        List<SubjectDTO> subjectDTOS;
+        if (orgId != null) {
+            if (!subjectUpdateDTO.getCategoryName().equals("")) {
+                subjectDTOS = querySubjectByCategory(subjectUpdateDTO);
                 return subjectDTOS;
             }
-
-            if (!subjectTypeName.equals("")){
-                for (Long id : typesIds){
-                    subjectUpdateDTO.setSubjectTypeId(id);
-                    criteria.andEqualTo("subjectTypeId",subjectUpdateDTO.getSubjectTypeId());
-                    log.info(subjectUpdateDTO.getSubjectTypeId().toString());
-                    criteria.andLike("name","%"+name+"%");
-                    if (subjectDao.queryByCondition(example).size()>0){
-                        subjectDTOS = subjectDao.queryByCondition(example);
-                    }
-                    log.info("sbdto:{}",subjectDTOS.toString());
-                    Example example1 = new Example(SubjectType.class);
-                    Example.Criteria criteria1 = example1.createCriteria();
-
-                    for (SubjectDTO subjectDTO : subjectDTOS){
-                        criteria1.andEqualTo("id",subjectDTO.getSubjectTypeId());
-                        List<String> typeList = subjectTypeDao.queryTypeNameById(example1);
-                        log.info("typelist{}",typeList.toString());
-                        category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
-                        subjectDTO.setSubjectTypeName(typeList.get(0));
-                        subjectDTO.setCategoryName(category.getName());
-                        log.info(subjectDTO.toString());
-                    }
-
-                }
-
-                log.info("dtos:{}",subjectDTOS.toString());
+            if (!subjectUpdateDTO.getSubjectTypeName().equals("")){
+                subjectDTOS = querySubjectByType(subjectUpdateDTO);
                 return subjectDTOS;
             }
-
-            SubjectType subjectType = new SubjectType();
-            criteria.andEqualTo("organizationId",orgId);
-            criteria.andLike("name","%"+name+"%");
+            criteria.andEqualTo(ORG_ID,orgId);
+            criteria.andLike("name","%"+subjectUpdateDTO.getName()+"%");
             subjectDTOList = subjectDao.queryByCondition(example);
-            log.info(subjectDTOList.toString());
             for (SubjectDTO subjectDTO : subjectDTOList){
-                category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
-                subjectType = subjectTypeMapper.selectByPrimaryKey(subjectDTO.getSubjectTypeId());
+                Category category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
+                SubjectType subjectType = subjectTypeDao.queryTypeById(subjectDTO.getSubjectTypeId());
                 subjectDTO.setCategoryName(category.getName());
                 subjectDTO.setSubjectTypeName(subjectType.getName());
             }
@@ -242,53 +181,26 @@ public class SubjectServiceImpl implements SubjectService{
 
     @Override
     public List<SubjectAnswerDTO> querySubjectOtherInfo(SubjectAnswerQueryDTO answerQueryDTO){
-        Example example = new Example(Subject.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("id",answerQueryDTO.getSubjectId());
-        List<SubjectDTO> subjectDTOS = subjectDao.querySubjectOtherInfo(example);
+        SubjectDTO subjectDTO = subjectDao.querySubjectOtherInfo(answerQueryDTO.getSubjectId());
 
-        log.info(subjectDTOS.toString());
-        List<String> categoryNames = new ArrayList<>();
-        List<String> typeNames = new ArrayList<>();
-        List<String> difficulties = new ArrayList<>();
-
-        for (SubjectDTO subjectDTO : subjectDTOS){
-            Example example1 = new Example(Category.class);
-            Example.Criteria criteria1 = example1.createCriteria();
-            criteria1.andEqualTo("id",subjectDTO.getCategoryId());
-            categoryNames = categoryDao.queryCategoryNameById(example1);
-            Example example2 = new Example(SubjectType.class);
-            Example.Criteria criteria2 = example2.createCriteria();
-            criteria2.andEqualTo("id",subjectDTO.getSubjectTypeId());
-            typeNames = subjectTypeDao.queryTypeNameById(example2);
-            Example example3 = new Example(Subject.class);
-            Example.Criteria criteria3 = example3.createCriteria();
-            criteria3.andEqualTo("difficulty",subjectDTO.getId());
-            difficulties = subjectDao.querySubjectDifficult(example);
-        }
-
-        log.info(typeNames.toString());
-        log.info(categoryNames.toString());
-        log.info(difficulties.toString());
-        int count = 0;
+        Category category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
+        SubjectType subjectType = subjectTypeDao.queryTypeById(subjectDTO.getSubjectTypeId());
+        Example example3 = new Example(Subject.class);
+        Example.Criteria criteria3 = example3.createCriteria();
+        criteria3.andEqualTo("difficulty",subjectDTO.getId());
+        List<String> difficulties = subjectDao.querySubjectDifficult(example3);
 
         List<SubjectAnswerDTO> subjectAnswerDTOS =  queryAnswer(answerQueryDTO);
-        if (subjectAnswerDTOS.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
+        if (subjectAnswerDTOS.isEmpty() || category.getName().isEmpty() || subjectType.getName().isEmpty() || difficulties.isEmpty()){
             throw new BusinessException(BusinessError.BASE_DATA_SUBJECT_UPDATE_ERROR);
         }else {
             for (SubjectAnswerDTO s : subjectAnswerDTOS) {
-                s.setCategoryName(categoryNames.get(0));
-                log.info("categoryName:{}", categoryNames.get(0));
-                s.setSubjectTypeName(typeNames.get(0));
+                s.setCategoryName(category.getName());
+                s.setSubjectTypeName(subjectType.getName());
                 s.setDifficulty(difficulties.get(0));
 
             }
         }
-
-
-        log.info(subjectAnswerDTOS.toString());
-
-
         return subjectAnswerDTOS;
 
     }
@@ -329,8 +241,6 @@ public class SubjectServiceImpl implements SubjectService{
             criteria.andEqualTo("subjectTypeId",item.getSubjectTypeId());
             criteria.andEqualTo("difficulty",item.getDifficultyName());
             Integer actualNum = subjectDao.countSubject(example);
-            log.info(actualNum.toString());
-
             BigDecimal score = item.getScore();
             if(num <= actualNum){
                 List<Subject> subjects;
@@ -339,33 +249,26 @@ public class SubjectServiceImpl implements SubjectService{
                 }else{
                     subjects =  subjectDao.querySubjectRandom(item,num);
                 }
-                log.info(subjects.toString());
                 List<SubjectDTO> subjectDtoList = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
-                List<String> categoryNames = new ArrayList<>();
-                List<String> typeNames = new ArrayList<>();
+                Category category = new Category();
+                SubjectType subjectType = new SubjectType();
                 List<String> difficulties = new ArrayList<>();
 
                 int count = 0;
                 for (Subject subject : subjects){
-                    Example example1 = new Example(Category.class);
-                    Example.Criteria criteria1 = example1.createCriteria();
-                    criteria1.andEqualTo("id",subject.getCategoryId());
-                    categoryNames = categoryDao.queryCategoryNameById(example1);
-                    Example example2 = new Example(SubjectType.class);
-                    Example.Criteria criteria2 = example2.createCriteria();
-                    criteria2.andEqualTo("id",subject.getSubjectTypeId());
-                    typeNames = subjectTypeDao.queryTypeNameById(example2);
+                    category= categoryDao.queryCategoryById(subject.getCategoryId());
+                    subjectType = subjectTypeDao.queryTypeById(subject.getSubjectTypeId());
                     Example example3 = new Example(Subject.class);
                     Example.Criteria criteria3 = example3.createCriteria();
                     criteria3.andEqualTo("difficulty",subject.getId());
                     difficulties = subjectDao.querySubjectDifficult(example);
                 }
-                if (subjects.isEmpty() || categoryNames.isEmpty() || typeNames.isEmpty() || difficulties.isEmpty()){
+                if (subjects.isEmpty() || category.getName().isEmpty() || subjectType.getName().isEmpty() || difficulties.isEmpty()){
                     throw new BusinessException(BusinessError.MAINTAIN_PAPER_DELETE_ERROR);
                 }else {
                     for (SubjectDTO s : subjectDtoList) {
-                        s.setCategoryName(categoryNames.get(count));
-                        s.setSubjectTypeName(typeNames.get(count));
+                        s.setCategoryName(category.getName());
+                        s.setSubjectTypeName(subjectType.getName());
                         s.setDifficulty(difficulties.get(count));
                         if (subjectDtoList.size() < count-1) {
                             count++;
@@ -436,6 +339,61 @@ public class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
+    public List<SubjectDTO> querySubjectByCategory(SubjectUpdateDTO subjectUpdateDTO) {
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(ORG_ID,subjectUpdateDTO.getOrganizationId());
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+            List<Long> categoryIds = queryCategoryIdByName(subjectUpdateDTO);
+            for (Long id : categoryIds) {
+                subjectUpdateDTO.setCategoryId(id);
+                criteria.andEqualTo("categoryId", subjectUpdateDTO.getCategoryId());
+                Category category = categoryDao.queryCategoryById(subjectUpdateDTO.getCategoryId());
+                criteria.andLike("name", "%" + subjectUpdateDTO.getName() + "%");
+
+                if (subjectDao.queryByCondition(example).size()>0) {
+                    subjectDTOS = subjectDao.queryByCondition(example);
+                }
+
+                for (SubjectDTO subjectDTO : subjectDTOS) {
+                    subjectDTO.setCategoryName(category.getName());
+                    SubjectType subjectType = subjectTypeDao.queryTypeById(subjectDTO.getSubjectTypeId());
+                    subjectDTO.setSubjectTypeName(subjectType.getName());
+                }
+
+            }
+        return subjectDTOS;
+    }
+
+    @Override
+    public List<SubjectDTO> querySubjectByType(SubjectUpdateDTO subjectUpdateDTO) {
+        Example example = new Example(Subject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(ORG_ID,subjectUpdateDTO.getOrganizationId());
+        List<Long> typesIds = queryTypeIdByName(subjectUpdateDTO);
+        List<SubjectDTO> subjectDTOS = new ArrayList<>();
+
+        for (Long id : typesIds) {
+            subjectUpdateDTO.setSubjectTypeId(id);
+            criteria.andEqualTo("subjectTypeId", subjectUpdateDTO.getSubjectTypeId());
+            criteria.andLike("name", "%" + subjectUpdateDTO.getName() + "%");
+            if (subjectDao.queryByCondition(example).size() > 0) {
+                subjectDTOS = subjectDao.queryByCondition(example);
+            }
+
+            for (SubjectDTO subjectDTO : subjectDTOS) {
+                SubjectType subjectType = subjectTypeDao.queryTypeById(subjectDTO.getSubjectTypeId());
+                Category category = categoryDao.queryCategoryById(subjectDTO.getCategoryId());
+                subjectDTO.setSubjectTypeName(subjectType.getName());
+                subjectDTO.setCategoryName(category.getName());
+            }
+
+        }
+
+        return subjectDTOS;
+    }
+
+    @Override
     public List<SubjectDTO> queryExamSubject(SubjectExamQueryDTO examSubjectQueryDTO) {
         Long orgId = examSubjectQueryDTO.getOrgId();
         Long subjectTypeId = examSubjectQueryDTO.getSubjectTypeId();
@@ -455,11 +413,11 @@ public class SubjectServiceImpl implements SubjectService{
 
     @Override
     public Integer querySubjectCount(CombExamItemDTO configItemDto) {
-        if (configItemDto.getDifficultyName() == "简单"){
+        if (configItemDto.getDifficultyName().equals("简单")){
             configItemDto.setDifficulty(1L);
-        }else if (configItemDto.getDifficultyName() == "中等"){
+        }else if (configItemDto.getDifficultyName().equals("中等")){
             configItemDto.setDifficulty(2L);
-        }else if (configItemDto.getDifficultyName() == "复杂"){
+        }else if (configItemDto.getDifficultyName().equals("复杂")){
             configItemDto.setDifficulty(3L);
         }
         Example example = new Example(Subject.class);
@@ -476,7 +434,7 @@ public class SubjectServiceImpl implements SubjectService{
         Example.Criteria criteria = example.createCriteria();
         log.info(String.valueOf(subjectUpdateDTO.getOrganizationId()));
         if(subjectUpdateDTO.getOrganizationId()!= null){
-            criteria.andEqualTo("organizationId",subjectUpdateDTO.getOrganizationId());
+            criteria.andEqualTo(ORG_ID,subjectUpdateDTO.getOrganizationId());
         }
         criteria.andEqualTo("name",subjectUpdateDTO.getName());
         log.info(subjectUpdateDTO.getName());

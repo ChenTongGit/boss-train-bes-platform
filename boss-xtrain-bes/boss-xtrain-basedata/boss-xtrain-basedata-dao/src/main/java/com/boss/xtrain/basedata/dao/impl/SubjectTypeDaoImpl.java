@@ -9,10 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目类型dao
+ * @date 2020/07/08
+ */
 @Repository
 @Slf4j
 public class SubjectTypeDaoImpl implements SubjectTypeDao{
@@ -22,6 +25,7 @@ public class SubjectTypeDaoImpl implements SubjectTypeDao{
 
     @Override
     public int insertSubjectType(SubjectType subjectType) {
+        subjectType.setStatus(1);
         return subjectTypeMapper.insert(subjectType);
     }
 
@@ -32,7 +36,6 @@ public class SubjectTypeDaoImpl implements SubjectTypeDao{
 
     @Override
     public int updateSubjectType(SubjectType subjectType) {
-        log.info("sql",this.subjectTypeMapper.updateSubjectType(subjectType));
         return subjectTypeMapper.updateSubjectType(subjectType);
     }
 
@@ -42,24 +45,18 @@ public class SubjectTypeDaoImpl implements SubjectTypeDao{
     }
 
     @Override
-    public List<String> queryTypeNameById(Example example){
-        List<SubjectType> subjectTypes = subjectTypeMapper.selectByExample(example);
-        List<String> names = new ArrayList<>();
-        for (SubjectType subjectType : subjectTypes){
-            names.add(subjectType.getName());
-        }
-        return names;
-    }
-
-    @Override
     public List<SubjectTypeDTO> queryByCondition(Example example) {
         List<SubjectType> subjectTypes = subjectTypeMapper.selectByExample(example);
-        List<SubjectTypeDTO> subjectTypeDTOS = PojoUtils.copyListProperties(subjectTypes,SubjectTypeDTO::new);
-        return subjectTypeDTOS;
+        return PojoUtils.copyListProperties(subjectTypes,SubjectTypeDTO::new);
     }
 
     @Override
     public int checkRepeatName(Example example) {
         return subjectTypeMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public SubjectType queryTypeById(Long id) {
+        return subjectTypeMapper.selectByPrimaryKey(id);
     }
 }

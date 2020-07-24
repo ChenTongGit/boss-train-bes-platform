@@ -1,13 +1,16 @@
 package com.boss.xtrain.basedata.service;
 
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
-import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryIdsDTO;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryQueryDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 字典service
+ * @date 2020/07/08
+ */
 public interface DictionaryService{
 
     /**

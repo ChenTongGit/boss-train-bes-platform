@@ -22,5 +22,25 @@
     id, t_o_id, `name`, category, `value`, remark, `status`, created_by, created_time,
     updated_by, updated_time, version
   </sql>
+<insert id="insertDictionaryList" parameterType="java.util.List" >
+        insert into t_dictionary(id,name,category,value,remark,status,org_id,created_by,created_time,updated_by,updated_time,version)
+        values
+        <foreach collection="dictionaries" index="index" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.name},
+            #{item.category},
+            #{item.value},
+            #{item.remark},
+            #{item.status},
+            #{item.organizationId},
+            #{item.createdBy},
+            #{item.createdTime},
+            #{item.updatedBy},
+            #{item.updatedTime},
+            #{item.version}
+            )
+        </foreach>
+    </insert>
 
 </mapper>

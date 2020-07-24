@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author gxr
+ * @description DictionaryDeleteVO
+ * @date 2020/7/6
+ */
 @Getter
 @Setter
 public class DictionaryDeleteVO extends BaseVO {
