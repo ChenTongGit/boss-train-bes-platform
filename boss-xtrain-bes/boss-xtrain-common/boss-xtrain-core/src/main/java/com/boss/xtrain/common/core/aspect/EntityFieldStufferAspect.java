@@ -1,6 +1,8 @@
 package com.boss.xtrain.common.core.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.boss.xtrain.common.redis.api.RedisUtil;
+import com.boss.xtrain.common.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -62,6 +65,11 @@ public class EntityFieldStufferAspect {
 	private static final String VERSION = "version";
 
 	/**
+	 * 当前用户Id
+	 */
+	private static final String CURRENT_USER = "id";
+
+	/**
 	 * 创建时间
 	 */
 	private static final String CREATE_TIME = "createdTime";
@@ -85,12 +93,7 @@ public class EntityFieldStufferAspect {
     public Object doAroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("update");
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		if (attributes == null) {
-			return pjp.proceed();
-		}
-		HttpServletRequest request = attributes.getRequest();
-		String token = request.getHeader("token");
-		EntityFields entityFields = getEntityFields();
+		EntityFields entityFields = getEntityFields(attributes);
 		if (entityFields == null) return pjp.proceed();
 
 		Object[] objects = pjp.getArgs();
@@ -119,14 +122,10 @@ public class EntityFieldStufferAspect {
 	public Object doAroundCreate(ProceedingJoinPoint pjp) throws Throwable {
 		log.info("create");
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		if (attributes == null) {
-			return pjp.proceed();
-		}
 		Object[] objects = pjp.getArgs();
 		if (objects != null && objects.length > 0) {
 			for (Object arg : objects) {
-
-				EntityFields entityFields = getEntityFields();
+				EntityFields entityFields = getEntityFields(attributes);
 				if (entityFields == null) {
 					continue;
 				}
@@ -138,10 +137,8 @@ public class EntityFieldStufferAspect {
 					setCommonProperty(arg, entityFields);
 				}
 
-
 			}
 		}
-		log.info(getEntityFields().toString());
 		return pjp.proceed();
 	}
 
@@ -154,15 +151,29 @@ public class EntityFieldStufferAspect {
 		BeanUtils.setProperty(item, STATUS, 0);
 	}
 
-	private EntityFields getEntityFields() {
-		//TODO		return SecurityUtils.getUserID();从自定义token中获取数据 || 从缓存中获取EntityFields entityFields =(EntityFields) redisUtil.get("current:"+"id");
-
+	private EntityFields getEntityFields(ServletRequestAttributes attributes) {
 		EntityFields entityFields = new EntityFields();
+
+		if(attributes!=null){
+			HttpServletRequest httpRequest = attributes.getRequest();
+			String token = httpRequest.getHeader("Authorization");
+			if (token == null){
+				return null;
+			}
+			String parseToken = token.split(" ")[1];
+			Map<String, Object> map = JSON.parseObject(JwtUtils.getParseToken(parseToken));
+			entityFields.setCompanyId(((Number) map.get(COMPANY)).longValue());
+			entityFields.setOrgId(((Number) map.get(ORG_ID)).longValue());
+			entityFields.setCreatedBy(((Number) map.get(CURRENT_USER)).longValue());
+			entityFields.setUpdatedBy(((Number) map.get(CURRENT_USER)).longValue());
+			return entityFields;
+		}
+
 //		redisUtil.hashGetAll(key)
-		entityFields.setCompanyId(11L);
-		entityFields.setCreatedBy(1L);
-		entityFields.setUpdatedBy(2L);
-		entityFields.setOrgId(1L);
-		return entityFields;
+//		entityFields.setCompanyId(11L);
+//		entityFields.setCreatedBy(1L);
+//		entityFields.setUpdatedBy(2L);
+//		entityFields.setOrgId(1L);
+		return null;
 	}
 }
