@@ -5,8 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
-import tk.mybatis.spring.annotation.MapperScan;
 
+/**
+ * 程序启动入口
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients

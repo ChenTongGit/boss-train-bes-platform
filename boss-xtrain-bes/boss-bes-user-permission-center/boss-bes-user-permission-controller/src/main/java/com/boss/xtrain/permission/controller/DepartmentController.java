@@ -42,7 +42,6 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
     @Autowired
     private DepartmentService service;
-
     @Autowired
     private TreeService treeService;
 
@@ -131,7 +130,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @SentinelResource(value = "selectAllByPage", blockHandler = "exceptionHandler", fallback = "fallbackHandler")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
-        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),
+            request.getBody().getOrderBy());
         List<DepartmentDTO> companyDTOList = service.selectAll();
         List<DepartmentVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,DepartmentVO::new);
         return buildPageResponse(page,companyVOList);
@@ -218,7 +218,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
         DepartmentQuery query = request.getBody();
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
+        List<DepartmentDTO> departmentDTOList = service.selectByCompany(query);
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return CommonResponseUtil.ok(departmentVOList);
     }
@@ -272,13 +272,22 @@ public class DepartmentController extends BaseController implements DepartmentAp
      * @param ex 阻塞异常
      */
     public void exceptionHandler(CommonRequest<CommonPageRequest> request, BlockException ex) {
-        log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+        } else {
+            log.error( "service system fallback -> and request is null", ex);
+        }
+
     }
 
     /**
-     *
+     * @param request 请求的内容
      */
     public void  fallbackHandler(CommonRequest<CommonPageRequest> request) {
-        log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
+        } else {
+            log.error( "service system fallback -> and request is null");
+        }
     }
 }

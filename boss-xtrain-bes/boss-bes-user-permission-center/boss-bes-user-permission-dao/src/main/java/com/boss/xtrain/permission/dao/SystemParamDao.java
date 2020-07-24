@@ -66,7 +66,7 @@ public interface SystemParamDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int update(SystemParamDTO dto);
+    int paramUpdate(SystemParamDTO dto);
 
     /**
      * 插入数据
@@ -74,14 +74,14 @@ public interface SystemParamDao {
      * @param dto T extends BaseDTO 数据传输对象
      * @return int
      */
-    int insert(SystemParamDTO dto);
+    int paramInsert(SystemParamDTO dto);
 
     /**
      * 批量添加
      * @param dtoList 列表
      * @return
      */
-    int insert(List<SystemParamDTO> dtoList);
+    int paramInsert(List<SystemParamDTO> dtoList);
 
     /**
      * 是否存在
