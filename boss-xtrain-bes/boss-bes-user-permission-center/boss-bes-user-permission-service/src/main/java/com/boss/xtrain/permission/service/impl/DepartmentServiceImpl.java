@@ -89,6 +89,18 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
+    @Override
+    public List<DepartmentDTO> selectByCompany(DepartmentQuery query) {
+        try{
+            Long companyId = query.getCompanyId();
+            List<Department> departmentList =  departmentDao.selectByCompany(companyId);
+            return PojoUtils.copyListProperties(departmentList,DepartmentDTO::new);
+        }catch (Exception e){
+            log.error(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR.getMessage(),e);
+            throw new BusinessException(BusinessError.SYSTEM_MANAGER_DEPARTMENT_QUERY_ERROR,e);
+        }
+    }
+
     /**
      * 通过query查找列表
      *

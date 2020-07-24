@@ -27,5 +27,11 @@ public interface DepartmentService extends CommonCurdService<DepartmentDTO, Depa
      */
     DepartmentDTO selectOne(DepartmentQuery query);
 
+    /**
+     * 使用公司查找下拉框
+     * @param query companyId
+     * @return 公司下的部门
+     */
+    List<DepartmentDTO> selectByCompany(DepartmentQuery query);
 }
 

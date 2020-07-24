@@ -218,7 +218,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
         DepartmentQuery query = request.getBody();
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
+        List<DepartmentDTO> departmentDTOList = service.selectByCompany(query);
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return CommonResponseUtil.ok(departmentVOList);
     }
