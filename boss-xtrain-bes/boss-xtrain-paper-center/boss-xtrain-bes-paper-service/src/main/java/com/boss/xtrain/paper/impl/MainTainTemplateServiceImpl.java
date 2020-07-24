@@ -3,7 +3,7 @@ package com.boss.xtrain.paper.impl;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.papaer.annotation.TryCatch;
+import com.boss.xtrain.paper.annotation.TryCatch;
 import com.boss.xtrain.paper.MainTainTemplateService;
 import com.boss.xtrain.paper.dao.MainTainTemplateDao;
 import com.boss.xtrain.paper.dto.templatemanage.*;

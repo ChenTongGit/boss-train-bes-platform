@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.impl;
 
 
-import com.boss.xtrain.papaer.annotation.TryCatch;
+import com.boss.xtrain.paper.annotation.TryCatch;
 import com.boss.xtrain.paper.ConditionQueryPaperService;
 import com.boss.xtrain.paper.dao.ConditionQueryPaperDao;
 import com.boss.xtrain.paper.dto.conditionquerypaper.QueryPaperDTO;

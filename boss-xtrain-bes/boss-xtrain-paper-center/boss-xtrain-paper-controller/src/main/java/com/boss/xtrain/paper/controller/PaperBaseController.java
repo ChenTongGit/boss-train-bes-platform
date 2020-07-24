@@ -4,8 +4,8 @@ import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.boss.xtrain.common.core.http.CommonResponseUtil;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.papaer.utils.BasicConverter;
-import com.boss.xtrain.papaer.utils.BeanCopierUtil;
+import com.boss.xtrain.paper.utils.BasicConverter;
+import com.boss.xtrain.paper.utils.BeanCopierUtil;
 import com.boss.xtrain.paper.CreatePaperService;
 
 
@@ -16,7 +16,6 @@ import com.boss.xtrain.paper.dto.templatecomb.TemplateQueryDTO;
 
 import com.boss.xtrain.paper.vo.paperdetail.PaperQueryVO;
 import com.boss.xtrain.paper.vo.paperdetail.PaperVO;
-import com.boss.xtrain.paper.vo.templatecomb.TemplateCombExamVO;
 import com.boss.xtrain.paper.vo.templatecomb.TemplateQueryVO;
 import com.boss.xtrain.paper.vo.templatecomb.TemplateVO;
 import com.github.pagehelper.Page;

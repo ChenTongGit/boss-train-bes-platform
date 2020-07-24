@@ -1,4 +1,4 @@
-package com.boss.xtrain.papaer.annotation;
+package com.boss.xtrain.paper.annotation;
 
 import java.lang.annotation.*;
 

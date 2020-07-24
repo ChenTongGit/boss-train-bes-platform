@@ -1,7 +1,7 @@
 package com.boss.xtrain.paper.impl;
 
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.papaer.annotation.TryCatch;
+import com.boss.xtrain.paper.annotation.TryCatch;
 import com.boss.xtrain.paper.ExamPaperService;
 import com.boss.xtrain.paper.dao.ExamPaperDao;
 import com.boss.xtrain.paper.dto.examservice.ExamPaperInfoDTO;

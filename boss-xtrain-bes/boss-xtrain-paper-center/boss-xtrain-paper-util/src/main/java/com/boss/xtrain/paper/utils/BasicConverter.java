@@ -1,4 +1,4 @@
-package com.boss.xtrain.papaer.utils;
+package com.boss.xtrain.paper.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Converter;
