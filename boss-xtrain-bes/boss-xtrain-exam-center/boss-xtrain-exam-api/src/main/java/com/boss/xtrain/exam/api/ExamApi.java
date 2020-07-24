@@ -27,7 +27,6 @@ import java.util.List;
  * @since
  **/
 public interface ExamApi {
-    // 考试开始前 获取考试基本信息
 
     /**
      * 获取考试基本信息
@@ -42,7 +41,6 @@ public interface ExamApi {
      * @param request
      * @return
      */
-    // 考试开始 创建改考生的考试记录 根据该场次的阅卷方式分配阅卷官以及阅卷时间
     @PostMapping("/examRecord")
     CommonResponse<ExamRecordIdVO> createExamRecord(@RequestBody @Valid CommonRequest<ExamStartAddRecordDTO> request);
 
@@ -54,7 +52,6 @@ public interface ExamApi {
     @PostMapping("/tempAnswers")
     CommonResponse<Integer> saveTempAnswers(@RequestBody @Valid CommonRequest<List<AnswerRecordTempInsertDTO>> request);
 
-    // 提交答案 更新考试记录信息 得分
 
     @PostMapping("/submit")
     CommonResponse<Integer>submitExam(@RequestBody @Valid CommonRequest<SubmitExamDTO> dto);

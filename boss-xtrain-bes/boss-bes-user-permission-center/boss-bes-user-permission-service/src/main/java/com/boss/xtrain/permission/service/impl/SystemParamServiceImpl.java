@@ -188,7 +188,7 @@ public class SystemParamServiceImpl implements SystemParamService {
         }
         try{
             dto.setUpdatedTime(new Date());
-            return systemParamDao.update(dto);
+            return systemParamDao.paramUpdate(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_UPDATE_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_UPDATE_ERROR,e);
@@ -216,7 +216,7 @@ public class SystemParamServiceImpl implements SystemParamService {
         try {
             dto.setId(worker.nextId());
             dto.setCreatedTime(new Date());
-            return systemParamDao.insert(dto);
+            return systemParamDao.paramInsert(dto);
         }catch (Exception e){
             log.error(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR.getMessage(),e);
             throw new BusinessException(BusinessError.SYSTEM_MANAGER_PARAM_INSERT_ERROR,e);

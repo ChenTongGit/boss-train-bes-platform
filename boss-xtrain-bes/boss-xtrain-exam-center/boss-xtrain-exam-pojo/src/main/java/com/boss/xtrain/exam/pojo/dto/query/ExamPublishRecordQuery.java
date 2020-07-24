@@ -63,7 +63,6 @@ public class ExamPublishRecordQuery extends BaseQuery {
     /**
      * 公司id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
 
     public Long getCompanyId() {

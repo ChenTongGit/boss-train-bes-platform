@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 认证成功的事件会在这里被捕获
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 @Slf4j
 @Component("authSuccessHandle")
 public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -22,7 +28,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+        Authentication authentication) throws IOException, ServletException {
         log.info("认证成功");
         UserJwt userJwt = (UserJwt) authentication.getPrincipal();
         redisUtil.set("bes:effectentity:" + userJwt.getId(), userJwt);

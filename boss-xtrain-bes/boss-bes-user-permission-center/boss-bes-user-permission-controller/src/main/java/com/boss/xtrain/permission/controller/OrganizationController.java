@@ -1,5 +1,6 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.util.JwtUtils;
@@ -136,6 +137,7 @@ public class OrganizationController extends BaseController implements Organizati
     @Override
     @ApiOperation(value = "test")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('origanization_admin')")
+    @SentinelResource(value = "selectAllOrg")
     public CommonResponse<List<OrganizationVO>> selectAllOrg() {
         List<OrganizationDTO> organizationDTOList = service.selectAll();
         List<OrganizationVO> organizationVOList = PojoUtils.copyListProperties(organizationDTOList,OrganizationVO::new);

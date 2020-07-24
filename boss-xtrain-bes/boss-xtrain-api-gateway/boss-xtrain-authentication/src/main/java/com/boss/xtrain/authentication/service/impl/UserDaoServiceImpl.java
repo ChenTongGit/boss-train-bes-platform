@@ -17,6 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 远程调用系统管理服务
+ *
+ * @author lzx
+ * @version 1.0.0
+ */
 @Slf4j
 @Service("userDaoService")
 public class UserDaoServiceImpl implements UserDaoService {
@@ -24,6 +30,11 @@ public class UserDaoServiceImpl implements UserDaoService {
     @Autowired
     PermissonServiceClient permissonServiceClient;
 
+    /**
+     * 获取所有的用户信息
+     * @param userName 用户名
+     * @return 返回结果
+     */
     @Override
     public UserDTO getUserAllInfo(String userName) {
         CommonRequest<UserQueryDTO> userQuery = new CommonRequest<>();
@@ -34,7 +45,7 @@ public class UserDaoServiceImpl implements UserDaoService {
         CommonResponse<UserDTO> user = permissonServiceClient.findUserByName(userQuery);
         log.info(user.toString());
         UserDTO userDTO = user.getData();
-
+        log.info(userDTO.toString());
         CommonResponse<List<RoleListVO>> roles = permissonServiceClient.findRoleByName(userQuery);
         List<RoleDTO> roleDTOs = PojoUtils.copyListProperties(roles.getData(), RoleDTO::new);
 

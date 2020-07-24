@@ -1,5 +1,7 @@
 package com.boss.xtrain.permission.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
@@ -40,7 +42,6 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
     @Autowired
     private DepartmentService service;
-
     @Autowired
     private TreeService treeService;
 
@@ -106,6 +107,8 @@ public class DepartmentController extends BaseController implements DepartmentAp
 
             CompanyQuery query = request.getBody();
             query.setOrganizationId(orgId);
+            //Long companyId = ((Number) JSONObject.parseObject(json).get("companyId")).longValue();
+            //query.setId(companyId);
             List<CompanyDepartmentNode> treeList = treeService.departmentUnderCompany(query);
             return CommonResponseUtil.ok(treeList);
         }catch (Exception e){
@@ -124,9 +127,11 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @Override
     @ApiOperation(value = "test")
     @ApiLog(msg = "分页搜索所有部门信息并排序")
+    @SentinelResource(value = "selectAllByPage", blockHandler = "exceptionHandler", fallback = "fallbackHandler")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectAllByPage(@Valid CommonRequest<CommonPageRequest> request) {
-        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
+        Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),
+            request.getBody().getOrderBy());
         List<DepartmentDTO> companyDTOList = service.selectAll();
         List<DepartmentVO> companyVOList = PojoUtils.copyListProperties(companyDTOList,DepartmentVO::new);
         return buildPageResponse(page,companyVOList);
@@ -153,7 +158,20 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<CommonPage<DepartmentVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<DepartmentQuery>> request) {
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(),request.getBody().getPageSize(),request.getBody().getOrderBy());
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(request.getBody().getQuery());
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        DepartmentQuery query = request.getBody().getQuery();
+        query.setOrganizationId(orgId);
+
+        List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return buildPageResponse(page,departmentVOList);
     }
@@ -200,7 +218,7 @@ public class DepartmentController extends BaseController implements DepartmentAp
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('department_admin')")
     public CommonResponse<List<DepartmentVO>> selectList(@Valid CommonRequest<DepartmentQuery> request) {
         DepartmentQuery query = request.getBody();
-        List<DepartmentDTO> departmentDTOList = service.selectByCondition(query);
+        List<DepartmentDTO> departmentDTOList = service.selectByCompany(query);
         List<DepartmentVO> departmentVOList = PojoUtils.copyListProperties(departmentDTOList,DepartmentVO::new);
         return CommonResponseUtil.ok(departmentVOList);
     }
@@ -245,5 +263,31 @@ public class DepartmentController extends BaseController implements DepartmentAp
     public CommonResponse<Integer> delete(@Valid CommonRequest<DepartmentDTO> request) {
         DepartmentDTO dto = request.getBody();
         return CommonResponseUtil.ok(service.delete(dto));
+    }
+
+    /**
+     * 对限流与阻塞处理
+     *
+     * @param request 与资源点的入参一致
+     * @param ex 阻塞异常
+     */
+    public void exceptionHandler(CommonRequest<CommonPageRequest> request, BlockException ex) {
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "blockHandler：" + request.getBody().getQuery().toString(), ex);
+        } else {
+            log.error( "service system fallback -> and request is null", ex);
+        }
+
+    }
+
+    /**
+     * @param request 请求的内容
+     */
+    public void  fallbackHandler(CommonRequest<CommonPageRequest> request) {
+        if (request != null && request.getBody() != null && request.getBody().getQuery() != null) {
+            log.error( "service system fallback ->" + "request:" + request.getBody().getQuery().toString());
+        } else {
+            log.error( "service system fallback -> and request is null");
+        }
     }
 }

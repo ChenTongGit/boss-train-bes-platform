@@ -16,7 +16,6 @@ public class ReportDetailQuery {
     /**
      * 考试发布记录id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long publishId;
 
     public Long getPublishId() {

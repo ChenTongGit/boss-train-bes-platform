@@ -58,6 +58,17 @@ public class SystemParamController extends BaseController implements SystemParam
     @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> insert(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO dto = request.getBody();
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        dto.setOrganizationId(orgId);
         return CommonResponseUtil.ok(service.insert(dto));
     }
 
@@ -90,6 +101,17 @@ public class SystemParamController extends BaseController implements SystemParam
     @PreAuthorize("hasAnyRole('admin') OR hasAuthority('sys_param_admin')")
     public CommonResponse<Integer> update(@Valid CommonRequest<SystemParamDTO> request) {
         SystemParamDTO dto = request.getBody();
+
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
+        dto.setOrganizationId(orgId);
         return CommonResponseUtil.ok(service.update(dto));
     }
 
@@ -192,7 +214,15 @@ public class SystemParamController extends BaseController implements SystemParam
         SystemParamQuery query = request.getBody();
         //        Long orgId = token;从token中获取到所负责的组织机构
         //5687565568097是测试用的orgID
-        Long orgId = 5687565568097L;
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) JSONObject.parseObject(json).get("organizationId")).longValue();
+
         query.setOrganizationId(orgId);
         return CommonResponseUtil.ok(service.deleteByParamType(query));
     }

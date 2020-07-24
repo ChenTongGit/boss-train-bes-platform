@@ -11,7 +11,6 @@ import com.boss.xtrain.common.core.http.CommonResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 /**
  * @author gxr

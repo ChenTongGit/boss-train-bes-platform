@@ -10,7 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Jwt内容增强器
+ * <p> Jwt内容增强器 <br>
+ * 在这里可以自定义往Jwt中添加想要存储的数据 <br>
+ *
+ * @author lzx
+ *
  */
 public class JwtTokenEnhancer implements TokenEnhancer {
     @Override

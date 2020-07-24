@@ -82,6 +82,14 @@ public class ExamRecordServiceImpl implements ExamRecordService {
 
     }
 
+    /**
+     * 获取考生答卷详情
+     * @author ChenTong
+     * @param submitPaperQuery
+ * @param queryRedis 
+     * @return com.boss.xtrain.exam.pojo.vo.PaperSubjectAnswerVO
+     * @date 2020/7/24 10:44
+     */
     @Override
     public PaperSubjectAnswerVO getCompletePaper(SubmitExamDTO submitPaperQuery, boolean queryRedis) {
 

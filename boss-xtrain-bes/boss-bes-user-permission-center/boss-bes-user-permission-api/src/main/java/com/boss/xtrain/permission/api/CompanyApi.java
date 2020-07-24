@@ -26,7 +26,7 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
 
     /**
      * 查所有
-     * @return
+     * @return 无条件查所有的公司列表
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @GetMapping("/selectAll")
@@ -34,7 +34,7 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
 
     /**
      * 查所有ORG以供选择
-     * @return
+     * @return 所有的org
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @GetMapping("/selectAllOrgTree")
@@ -42,27 +42,33 @@ public interface CompanyApi extends CommonCRUDApi<CompanyDTO, CompanyQuery, Comp
 
     /**
      * 点击org获得company树
-     * @return
+     * @param request 包含搜索条件的请求
+     * @return org下的公司
      * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
      */
     @PostMapping("/selectCompamyTreeByOrg")
     CommonResponse<List<CompanyQuery>> selectCombineCompany(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
+    /**
+     * 点击org获得company树
+     * @return org下的公司
+     * RequestBody @Valid CommonPageRequest<OrganizationQuery> commonRequest
+     */
     @PostMapping("/selectByKey")
     CommonResponse<CompanyVO> selectByPrimaryKey(@RequestBody @Valid CommonRequest<CompanyQuery> request);
 
     /**
      * 分页条件搜索
-     * @param request
-     * @return
+     * @param request 包含分页及搜索条件的请求
+     * @return 分页条件搜索下的公司列表
      */
     @PostMapping("/selectByPage")
     CommonResponse<CommonPage<CompanyVO>> selectByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<CompanyQuery>> request);
 
     /**
      * 分页全搜索
-     * @param request
-     * @return
+     * @param request 包含分页及搜索条件的请求
+     * @return 分页全搜索下的公司列表
      */
     @PostMapping("/selectAllByPage")
     CommonResponse<CommonPage<CompanyVO>> selectAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest> request);

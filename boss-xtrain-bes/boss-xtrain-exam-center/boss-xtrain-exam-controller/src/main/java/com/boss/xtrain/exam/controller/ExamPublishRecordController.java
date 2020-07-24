@@ -6,6 +6,7 @@ import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamPublishRecordApi;
+import com.boss.xtrain.exam.configuration.TokenUtil;
 import com.boss.xtrain.exam.pojo.dto.*;
 import com.boss.xtrain.exam.pojo.dto.query.ExamPublishRecordQuery;
 import com.boss.xtrain.exam.pojo.vo.ExamPaperInfoListVO;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -94,9 +97,16 @@ public class ExamPublishRecordController extends BaseController implements ExamP
     @ApiOperation(value = "查询考试发布记录")
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_publish_admin')")
     public CommonResponse<CommonPage<ExamPublishRecordVO>> findAllByPage(@RequestBody @Valid CommonRequest<CommonPageRequest<ExamPublishRecordQuery>> request){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long companyId = TokenUtil.getCompanyId(attributes);
+        ExamPublishRecordQuery query = request.getBody().getQuery();
+        if(companyId!=-1L){
+            log.info("current company"+companyId);
+            query.setCompanyId(companyId);
+        }
         // 设置分页区间 index size
         Page<Object> page = doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
-        List<ExamPublishRecordDTO> recordDTOS = examPublishRecordService.selectByPage(request.getBody().getQuery());
+        List<ExamPublishRecordDTO> recordDTOS = examPublishRecordService.selectByPage(query);
         // 转换为vo
         List<ExamPublishRecordVO> examPublishRecordVOS = PojoUtils.copyListProperties(recordDTOS, ExamPublishRecordVO::new);
         return buildPageResponse(page,examPublishRecordVOS);

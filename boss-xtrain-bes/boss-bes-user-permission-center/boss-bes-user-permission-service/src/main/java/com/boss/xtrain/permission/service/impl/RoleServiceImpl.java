@@ -16,6 +16,7 @@ import com.boss.xtrain.permission.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -133,6 +135,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean allocateUser(List<UserRoleDTO> userRoleDTOS) {
+        log.info(userRoleDTOS.toString());
         deleteUserRole(userRoleDTOS);
         if(userRoleDTOS.get(0).getUserId() == null){
             return false;
