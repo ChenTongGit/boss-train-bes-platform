@@ -33,7 +33,7 @@ public interface ExamPublishRecordApi {
 
     /**
      * 更新考试发布记录
-     * @param request
+     * @param request ExamPublishRecordUpdateDTO
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Integer>
      * @author ChenTong
      * @date 2020/7/7 22:10
@@ -44,7 +44,7 @@ public interface ExamPublishRecordApi {
     /**
      * 发布考试
      * @author ChenTong
-     * @param request 
+     * @param request ExamPublishDTO
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Boolean>
      * @date 2020/7/7 22:22
      */
@@ -55,7 +55,7 @@ public interface ExamPublishRecordApi {
     /**
      * 发布考试
      * @author ChenTong
-     * @param request
+     * @param request List<ExamPublishDTO>
      * @return com.boss.xtrain.common.core.http.CommonResponse<java.lang.Boolean>
      * @date 2020/7/7 22:22
      */
@@ -86,7 +86,7 @@ public interface ExamPublishRecordApi {
     /**
      * 条件查询并分页
      * @author ChenTong
-     * @param request
+     * @param request ExamPublishRecordQuery
      * @return com.boss.xtrain.common.core.http.CommonResponse<com.boss.xtrain.common.core.http.CommonPage<com.boss.xtrain.exam.pojo.vo.ExamPublishRecordVO>>
      * @date 2020/7/8 21:34
      */

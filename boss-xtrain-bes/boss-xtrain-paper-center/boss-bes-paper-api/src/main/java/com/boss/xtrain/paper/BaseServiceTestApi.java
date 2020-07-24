@@ -25,7 +25,7 @@ public interface BaseServiceTestApi {
 //    List<SubjectTypeVO> querySubjectType(@Valid CombInfoQueryDTO combInfoQueryDTO);
     @PostMapping("/combExamConfig/queryCombExamConfiguration")
     PageInfo<CombConfigVO> queryCombExamConfiguration(@RequestBody CombConfigQueryDTO combConfigQueryDTO);
-    @PostMapping("/combExamConfig//queryCombExamConfigItem")
+    @PostMapping("/combExamConfig/queryCombExamConfigItem")
     List<CombConfigItemVO> queryCombExamConfigItem(@RequestBody CombConfigItemQueryDTO combConfigItemQueryDTO);
     @PostMapping("/subject/standardCombExam")
     List<CombSubjectListVO> standardCombExam(StandardCombDTO standardCombDTO);

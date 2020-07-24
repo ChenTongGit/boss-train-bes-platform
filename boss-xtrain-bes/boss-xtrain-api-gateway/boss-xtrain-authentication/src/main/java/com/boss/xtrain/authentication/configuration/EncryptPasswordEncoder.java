@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author lzx
  * @since 1.0.0
  */
-public class NoEncryptPasswordEncoder implements PasswordEncoder {
+public class EncryptPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence charSequence) {
         return (String) charSequence;

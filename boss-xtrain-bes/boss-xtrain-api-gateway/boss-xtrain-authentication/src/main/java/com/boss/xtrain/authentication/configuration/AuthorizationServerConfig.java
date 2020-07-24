@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p> 配置认证服务器 <br/>
- * 包括指定使用redis存储token、Jwt加密方式、异常翻译器等 <br/>
+ * <p> 配置认证服务器 <br>
+ * 包括指定使用redis存储token、Jwt加密方式、异常翻译器等 <br>
  *  多个资源服务器可以使用一个认证服务器
  * </p>
  *
@@ -43,7 +43,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private BesAccessTokenConverter besAccessTokenConverter;
     @Autowired
-    private NoEncryptPasswordEncoder noEncryptPasswordEncoder;
+    private EncryptPasswordEncoder encryptPasswordEncoder;
 
     // 使用redis存储
     @Bean
@@ -128,7 +128,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security
             .allowFormAuthenticationForClients()
-            .passwordEncoder(noEncryptPasswordEncoder)
+            .passwordEncoder(encryptPasswordEncoder)
             .tokenKeyAccess("permitAll()")
             .checkTokenAccess("permitAll()");
     }

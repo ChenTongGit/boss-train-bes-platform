@@ -33,10 +33,8 @@ public class ExamReportQuery {
     /**
      * 试卷发布人id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long publisher;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyId;
 
     public Long getCompanyId() {
