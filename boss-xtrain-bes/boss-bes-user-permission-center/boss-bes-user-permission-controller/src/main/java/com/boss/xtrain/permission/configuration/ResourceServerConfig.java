@@ -30,7 +30,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    private String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
+    private String tokenEndpointUrl = "http://123.57.156.184:18006/oauth/check_token";
 
     @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;

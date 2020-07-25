@@ -81,6 +81,7 @@ public class UserDaoImpl implements UserDao {
         if(dto.getCompanyId()!=null){
             criteria.andEqualTo("companyId",dto.getCompanyId());
         }
+        example.orderBy("createdTime").desc();
         return PojoUtils.copyListProperties(userMapper.selectByExample(example),UserDTO::new);
 
     }

@@ -50,6 +50,7 @@ public class UserOnlineInfoDaoImpl implements UserOnlineInfoDao {
         if(query.getUserId()!=null) {
             criteria.andEqualTo("userId", query.getUserId());
         }
+        example.orderBy("onlineTime").desc();
         return mapper.selectByExample(example);
     }
 

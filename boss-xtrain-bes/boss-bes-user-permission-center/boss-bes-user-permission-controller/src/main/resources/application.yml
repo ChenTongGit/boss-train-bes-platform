@@ -26,8 +26,8 @@ spring:
   application:
     name: boss-bes-system
   redis:
-    host: 39.97.106.243 #123.57.156.184:6379
-    password: 991018 #bosstrain@14`
+    host: 123.57.156.184 #123.57.156.184:6379\39.97.106.243
+    password: bosstrain@14 #bosstrain@14`\991018
 
   nacos-url:
 #    nacos-host: 39.97.106.243、123.57.156.184
@@ -40,15 +40,15 @@ security:
     client:
       clientId: bes
       clientSecret: 12345
-      userAuthorizationUri: http://localhost:18006/oauth/authorize
+      userAuthorizationUri: http://123.57.156.184:18006/oauth/authorize
       grant-type: password
       scope: read
-      access-token-uri: http://localhost:18006/oauth/token
+      access-token-uri: http://123.57.156.184:18006/oauth/token
     resource:
-      token-info-uri: http://localhost:18006/oauth/check_token
-      user-info-uri: http://localhost:18006/user
+      token-info-uri: http://123.57.156.184:18006/oauth/check_token
+      user-info-uri: http://123.57.156.184:18006/user
     authorization:
-      check-token-access: http://localhost:18006/oauth/check_token
+      check-token-access: http://123.57.156.184:18006/oauth/check_token
   #cloud:
     #nacos:
       # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类

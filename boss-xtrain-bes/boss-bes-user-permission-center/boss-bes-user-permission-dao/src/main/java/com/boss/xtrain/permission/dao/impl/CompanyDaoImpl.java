@@ -41,6 +41,7 @@ public class CompanyDaoImpl implements CompanyDao {
         if(query.getId()!=null){
             criteria.andEqualTo("id",query.getId());
         }
+        example.orderBy("createdTime").desc();
         return mapper.selectByExample(example);
     }
 
