@@ -1,11 +1,12 @@
 server:
   port: 18001
-
 spring:
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+        ip: ${spring.nacos-url.nacos-host}
+        port: ${server.port}
     sentinel:
       transport:
         dashboard: 123.57.156.184:8080  # 控制台地址
