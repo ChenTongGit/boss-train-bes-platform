@@ -31,6 +31,11 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目controller
+ * @date 2020/07/08
+ */
 @RestController
 @Slf4j
 public class SubjectController extends BaseController implements SubjectApi {
@@ -99,7 +104,6 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<SubjectVO> insertSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
-        log.info("插入{}",subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.insertSubject(subjectUpdateDTO);
@@ -114,7 +118,6 @@ public class SubjectController extends BaseController implements SubjectApi {
     public CommonResponse<SubjectVO> updateSubject(@RequestBody CommonRequest<SubjectUpdateVO> commonRequest) {
         SubjectUpdateDTO subjectUpdateDTO = new SubjectUpdateDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),subjectUpdateDTO);
-        log.info(subjectUpdateDTO.toString());
         List<SubjectAnswer> answerList = subjectUpdateDTO.getSubjectAnswers();
         subjectUpdateDTO.setSubjectAnswers(answerList);
         subjectService.updateSubject(subjectUpdateDTO);
@@ -153,12 +156,10 @@ public class SubjectController extends BaseController implements SubjectApi {
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('subject_admin')")
     public CommonResponse<SubjectVO> insertSubjectList(@RequestBody CommonRequest<List<SubjectUpdateVO>> commonRequest) {
         List<SubjectUpdateDTO> subjectUpdateDTOS = PojoUtils.copyListProperties(commonRequest.getBody(),SubjectUpdateDTO::new);
-        log.info(commonRequest.getBody().toString());
         for(SubjectUpdateDTO s : subjectUpdateDTOS){
             List<SubjectAnswer> answers = s.getSubjectAnswers();
             s.setSubjectAnswers(answers);
         }
-        log.info(subjectUpdateDTOS.toString());
         subjectService.insertSubjectList(subjectUpdateDTOS);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
     }
@@ -179,11 +180,8 @@ public class SubjectController extends BaseController implements SubjectApi {
     public List<CombSubjectListVO> addPaper(@RequestBody CreatePaperDTO createPaperDTO) {
         CombExamItemQueryDTO combExamItemQueryDTO = new CombExamItemQueryDTO();
         PojoUtils.copyProperties(createPaperDTO,combExamItemQueryDTO);
-        log.info(combExamItemQueryDTO.toString());
         List<CombExamItemDTO> combExamItemDTOS = combExamConfigService.queryItem(combExamItemQueryDTO);
-        log.info(combExamItemDTOS.toString());
         List<SubjectDTO> subjectDTOS = subjectService.querySubject(combExamItemDTOS);
-        log.info(subjectDTOS.toString());
         return PojoUtils.copyListProperties(subjectDTOS,CombSubjectListVO::new);
     }
 

@@ -1,4 +1,4 @@
-package com.boss.xtrain.papaer.utils;
+package com.boss.xtrain.paper.utils;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import lombok.extern.slf4j.Slf4j;

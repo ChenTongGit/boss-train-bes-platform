@@ -1,6 +1,5 @@
-package com.boss.xtrain.papaer.aspect;
+package com.boss.xtrain.paper.aspect;
 
-import com.boss.xtrain.common.core.exception.AppException;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

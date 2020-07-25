@@ -73,19 +73,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         //所有请求必须认证通过
         http
-            .csrf().disable().cors()
-            .and()
-            .authorizeRequests()
-            //下边的路径放行
-            .antMatchers("/education/bes/v1/user/select", "/education/bes/v1/user/getRoleList",
-                "/education/bes/v1/user/getAllResource", "/education/bes/v1/user/getUserByPosition"
-            ).permitAll()
-            .anyRequest().authenticated();
+                .csrf().disable().cors()
+                .and()
+                .authorizeRequests()
+                //下边的路径放行
+                .antMatchers("/education/bes/v1/user/select", "/education/bes/v1/user/getRoleList",
+                        "/education/bes/v1/user/getAllResource", "/education/bes/v1/user/getUserByPosition"
+                ).permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(authExceptionEntryPoint)
-            .accessDeniedHandler(customAccessDeniedHandler);
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 }

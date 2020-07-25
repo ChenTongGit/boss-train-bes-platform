@@ -43,7 +43,6 @@ public class ExamRecordQuery extends BaseQuery {
     /**
      * 试卷发布人
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long publisher;
 
     /**
@@ -66,7 +65,6 @@ public class ExamRecordQuery extends BaseQuery {
     /**
      * 公司id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     public Long companyId;
 
     public Long getCompanyId() {

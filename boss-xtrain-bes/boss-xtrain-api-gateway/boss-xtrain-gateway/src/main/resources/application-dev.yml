@@ -1,8 +1,12 @@
+server:
+  port: 18005
 spring:
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+        ip: ${spring.nacos-url.nacos-host}
+        port: ${server.port}
     gateway:
       routes:
         - id: boss-bes-authentication
@@ -56,6 +60,7 @@ spring:
   nacos-url:
     #    nacos-host: 39.97.106.243 123.57.156.184
     nacos-host: 123.57.156.184
+#    nacos-host: 39.97.106.243
     nacos-port: 8848
   seata-url:
     seata-host: 123.57.156.184

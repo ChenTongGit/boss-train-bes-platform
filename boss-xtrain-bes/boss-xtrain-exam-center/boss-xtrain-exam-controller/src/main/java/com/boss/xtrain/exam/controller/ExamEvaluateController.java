@@ -5,6 +5,7 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.boss.xtrain.exam.api.ExamEvaluateApi;
+import com.boss.xtrain.exam.configuration.TokenUtil;
 import com.boss.xtrain.exam.pojo.dto.MarkingDataListDto;
 import com.boss.xtrain.exam.pojo.dto.MarkingSubmitDTO;
 import com.boss.xtrain.exam.pojo.dto.MarkingTempListDTO;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -64,6 +67,13 @@ public class ExamEvaluateController extends BaseController implements ExamEvalua
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('exam_evalute_admin')")
     @Override
     public CommonResponse<CommonPage<MarkingDataListVO>> doQueryExamRecord(@Valid @RequestBody CommonRequest<CommonPageRequest<MarkingQuery>> request) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long currentUser = TokenUtil.getCurrentUser(attributes);
+        MarkingQuery markingQuery = request.getBody().getQuery();
+        if(currentUser!=-1L){
+            log.info("current user"+currentUser);
+            markingQuery.setMarkPeople(currentUser);
+        }
         Page<Object> page = this.doBeforePagination(request.getBody().getPageNum(), request.getBody().getPageSize(), request.getBody().getOrderBy());
         List<MarkingDataListDto> markingDataListDtos = this.examEvaluateService.queryByCondition(request.getBody().getQuery());
         List<MarkingDataListVO>  markingDataListVOS = PojoUtils.copyListProperties(markingDataListDtos, MarkingDataListVO::new);

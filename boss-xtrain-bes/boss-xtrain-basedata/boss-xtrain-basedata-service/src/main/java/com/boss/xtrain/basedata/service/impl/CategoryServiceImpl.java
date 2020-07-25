@@ -1,29 +1,25 @@
 package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.CategoryDao;
-import com.boss.xtrain.basedata.mapper.CategoryMapper;
 import com.boss.xtrain.basedata.pojo.dto.category.*;
-import com.boss.xtrain.basedata.pojo.vo.category.CategoryDeleteIdsVO;
-import com.boss.xtrain.basedata.pojo.vo.category.CategoryDeleteVO;
-import com.boss.xtrain.basedata.pojo.vo.category.CategoryVO;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
-import com.boss.xtrain.common.core.http.CommonPage;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.basedata.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目类别service
+ * @date 2020/07/08
+ */
 @Service
-@Slf4j
 public class CategoryServiceImpl implements CategoryService{
 
     @Autowired
@@ -42,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
             categoryDao.insertCategory(category);
         }else {
             category.setParentId(0L);
+            categoryDao.insertCategory(category);
         }
         if (result != 0){
             throw new BusinessException(BusinessError.BASE_DATA_CATEGORY_INSERT_ERROR);
@@ -82,8 +79,7 @@ public class CategoryServiceImpl implements CategoryService{
         Example.Criteria criteria = example.createCriteria();
         example.orderBy("updatedTime").desc();
         criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
-        criteria.andEqualTo("name", categoryQueryDTO.getName());
-        log.info(categoryQueryDTO.getName());
+        criteria.andLike("name", "%"+categoryQueryDTO.getName()+"%");
         return categoryDao.queryByCondition(example);
     }
 
@@ -94,7 +90,6 @@ public class CategoryServiceImpl implements CategoryService{
         Example.Criteria criteria = example.createCriteria();
         criteria.andIn("id",categoryIdsDTO.getIds());
         criteria.andEqualTo("organizationId",categoryIdsDTO.getOrgId());
-        log.info(categoryDao.queryByCondition(example).toString());
         return categoryDao.queryByCondition(example);
     }
 
@@ -103,8 +98,7 @@ public class CategoryServiceImpl implements CategoryService{
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
-        criteria.andEqualTo("name", categoryQueryDTO.getName());
-        log.info(categoryQueryDTO.getName());
+        criteria.andLike("name", "%"+categoryQueryDTO.getName()+"%");
 
         return categoryDao.queryByCondition(example);
     }
@@ -114,7 +108,6 @@ public class CategoryServiceImpl implements CategoryService{
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
-        log.info(categoryQueryDTO.toString());
         return categoryDao.getCategoryTree(example);
     }
 
@@ -126,9 +119,7 @@ public class CategoryServiceImpl implements CategoryService{
             criteria.andEqualTo("organizationId", categoryDTO.getOrganizationId());
         }
         criteria.andEqualTo("name", categoryDTO.getName());
-        log.info(categoryDTO.getName());
         int result = categoryDao.checkRepeatName(example);
-        log.info("result:{}",result);
         if (result != 0){
             throw new BusinessException(BusinessError.BASE_DATA_CATEGORY_INSERT_REPEAT_ERROR);
         }

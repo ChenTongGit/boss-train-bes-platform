@@ -59,7 +59,13 @@
         </dependency>
         <dependency>
             <groupId>com.boss.xtrain.bes</groupId>
-            <artifactId>boss-xtrain-paper-center</artifactId>
+            <artifactId>boss-xtrain-paper-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.boss.xtrain.bes</groupId>
+            <artifactId>boss-xtrain-paper-util</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

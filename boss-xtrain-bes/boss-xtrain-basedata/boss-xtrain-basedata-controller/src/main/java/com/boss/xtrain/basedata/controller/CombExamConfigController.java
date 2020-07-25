@@ -20,10 +20,8 @@ import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,8 +30,12 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 组卷controller
+ * @date 2020/07/08
+ */
 @RestController
-@Slf4j
 public class CombExamConfigController extends BaseController implements CombExamConfigApi {
 
     @Autowired
@@ -52,7 +54,7 @@ public class CombExamConfigController extends BaseController implements CombExam
         Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         CombExamConfigQueryDTO combExamConfigQueryDTO = new CombExamConfigQueryDTO();
         PojoUtils.copyProperties(combExamConfigQueryVO,combExamConfigQueryDTO);
-        List<CombExamConfigDTO> combExamConfigDTOS = combExamConfigService.queryConfig(combExamConfigQueryDTO);
+        List<CombExamConfigDTO> combExamConfigDTOS = combExamConfigService.queryExamConfig(combExamConfigQueryDTO);
         List<CombExamConfigVO> combExamConfigVOS = PojoUtils.copyListProperties(combExamConfigDTOS,CombExamConfigVO::new);
         return buildPageResponse(objects,combExamConfigVOS);
     }
@@ -64,7 +66,6 @@ public class CombExamConfigController extends BaseController implements CombExam
     public CommonResponse<List<CombExamItemVO>> queryExamItemById(@RequestBody CommonRequest<CombExamItemQueryVO> commonRequest) {
         CombExamItemQueryDTO configItemQueryDto = new CombExamItemQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),configItemQueryDto);
-        log.info(configItemQueryDto.toString());
         List<CombExamItemDTO> configItemDtoList = combExamConfigService.queryItem(configItemQueryDto);
         List<CombExamItemVO> configItemVos = PojoUtils.copyListProperties(configItemDtoList,CombExamItemVO::new);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),configItemVos);
@@ -119,7 +120,6 @@ public class CombExamConfigController extends BaseController implements CombExam
         CombExamConfigUpdateVO combExamConfigUpdateVO = commonRequest.getBody();
         CombExamConfigUpdateDTO combExamConfigUpdateDTO = new CombExamConfigUpdateDTO();
         PojoUtils.copyProperties(combExamConfigUpdateVO,combExamConfigUpdateDTO);
-        log.info(combExamConfigUpdateDTO.toString());
         List<CombExamItemDTO> combExamItemDTOS =  PojoUtils.copyListProperties(commonRequest.getBody().getItemList(),CombExamItemDTO::new);
         combExamConfigUpdateDTO.setItemList(combExamItemDTOS);
         combExamConfigService.updateConfig(combExamConfigUpdateDTO);
@@ -133,7 +133,6 @@ public class CombExamConfigController extends BaseController implements CombExam
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<List<CombExamItemVO>> insertExamItem(@RequestBody CommonRequest<List<CombExamItemVO>> commonRequest) {
         List<CombExamItemDTO> itemList = PojoUtils.copyListProperties(commonRequest.getBody(),CombExamItemDTO::new);
-        log.info(itemList.toString());
         combExamConfigService.insertItem(itemList);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage());
 
@@ -158,10 +157,8 @@ public class CombExamConfigController extends BaseController implements CombExam
     public PageInfo<CombConfigVO> queryCombExamConfiguration(@RequestBody CombConfigQueryDTO combConfigQueryDTO) {
         CombExamConfigQueryDTO combExamConfigQueryDTO = new CombExamConfigQueryDTO();
         PojoUtils.copyProperties(combConfigQueryDTO,combExamConfigQueryDTO);
-        log.info(combExamConfigQueryDTO.toString());
         Page<Object> objects = this.doBeforePagination(combConfigQueryDTO.getPageNum(),combConfigQueryDTO.getPageSize(),null);
         combExamConfigQueryDTO.setOrgId(1L);
-        log.info(combExamConfigQueryDTO.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = combExamConfigService.queryConfig(combExamConfigQueryDTO);
         List<CombConfigVO> combConfigVOS = new ArrayList<>();
         for (CombExamConfigDTO combExamConfigDTO:
@@ -172,7 +169,6 @@ public class CombExamConfigController extends BaseController implements CombExam
             combConfigVO.setCombExamConfigId(String.valueOf(combExamConfigDTO.getId()));
             combConfigVOS.add(combConfigVO);
         }
-        log.info(combConfigVOS.toString());
         PageInfo<CombConfigVO> pageInfo = new PageInfo<>(combConfigVOS);
         pageInfo.setTotal(objects.getTotal());
 
@@ -184,10 +180,8 @@ public class CombExamConfigController extends BaseController implements CombExam
     @ResponseBody
     public List<CombConfigItemVO> queryCombExamConfigItem(@RequestBody CombConfigItemQueryDTO combConfigItemQueryDTO) {
         CombExamItemQueryDTO combExamItemQueryDTO = new CombExamItemQueryDTO();
-        // PojoUtils.copyProperties(combConfigItemQueryDTO,combExamItemQueryDTO);
         combExamItemQueryDTO.setId(combConfigItemQueryDTO.getConfigId());
         combExamItemQueryDTO.setOrgId(1L);
-        System.out.println(combExamItemQueryDTO.getId());
         List<CombExamItemDTO> combExamItemDTOS = combExamConfigService.queryItem(combExamItemQueryDTO);
         return PojoUtils.copyListProperties(combExamItemDTOS,CombConfigItemVO::new);
 
@@ -199,13 +193,11 @@ public class CombExamConfigController extends BaseController implements CombExam
     public boolean saveCombItemList( @RequestBody ConfigItemListDTO configItemListDTO) {
         int count = 0;
         List<ConfigItemDTO> itemList = configItemListDTO.getItemList();
-        log.info(itemList.toString());
         List<CombExamItemDTO> itemDTOS = PojoUtils.copyListProperties(itemList,CombExamItemDTO::new);
         for (CombExamItemDTO combExamItemDTO : itemDTOS){
             combExamItemDTO.setCombExamConfigId(itemList.get(count).getConfigExamConfigId());
             count++;
         }
-        log.info(itemDTOS.toString());
         return combExamConfigService.insertItem(itemDTOS);
     }
 

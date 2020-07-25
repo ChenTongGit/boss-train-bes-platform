@@ -1,14 +1,12 @@
+server:
+  port: 18006
 spring:
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
-    # druid 数据源配置 根据自己的微服务数据库信息配置
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: bosstrain
-    password: Boss20Train@#$
-    url: jdbc:mysql://123.57.156.184:3306/db_sys_manager_center?useUnicode=true&serverTimezone=UTC&useSSL=false
+        ip: ${spring.nacos-url.nacos-host}
+        port: ${server.port}
   redis:
     database: 0
     # Redis服务器地址
@@ -16,7 +14,7 @@ spring:
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
-    password: bosstrain@14
+    password: bosstrain
     # 连接池最大连接数（使用负值表示没有限制）
     jedis:
       pool:
@@ -34,6 +32,7 @@ spring:
   nacos-url:
     #    nacos-host: 39.97.106.243 123.57.156.184
     nacos-host: 123.57.156.184
+#    nacos-host: 39.97.106.243
     nacos-port: 8848
   seata-url:
     seata-host: 123.57.156.184
@@ -60,13 +59,3 @@ feign:
         readTimeout: 600000
   #sentinel:
     #enabled: true
-
-# Generator
-generator:
-  targetProject: src/main/java
-  mappers: com.boss.xtrain.common.core.web.dao.CommonMapper
-  javaModel-targetPackage: com.boss.xtrain.authentication.pojo
-  sqlMap-targetPackage: mapper
-  javaClient-targetPackage: com.boss.xtrain.authentication.mapper
-mybatis:
-  mapper-locations: classpath:mapper/*.xml

@@ -3,22 +3,25 @@ package com.boss.xtrain.basedata.dao.impl;
 import com.boss.xtrain.basedata.dao.SubjectAnswerDao;
 import com.boss.xtrain.basedata.mapper.SubjectAnswerMapper;
 import com.boss.xtrain.basedata.pojo.dto.subject.SubjectAnswerDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDTO;
-import com.boss.xtrain.basedata.pojo.entity.Subject;
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 题目答案dao
+ * @date 2020/07/08
+ */
 @Repository
 public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
 
     @Autowired
     private SubjectAnswerMapper answerMapper;
+
+    private String SUBJECT = "subjectId";
 
     @Override
     public int insertAnswer(List<SubjectAnswer> subjectAnswers) {
@@ -29,7 +32,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public int deleteAnswer(Long subjectId) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("subjectId",subjectId);
+        criteria.andEqualTo(SUBJECT,subjectId);
         return answerMapper.deleteByExample(example);
 
     }
@@ -38,7 +41,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public void deleteAnswerList(List<Long> idList) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("subjectId",idList);
+        criteria.andIn(SUBJECT,idList);
         answerMapper.deleteByExample(example);
     }
 
@@ -50,8 +53,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     @Override
     public List<SubjectAnswerDTO> queryAnswer(Example example) {
         List<SubjectAnswer> subjectAnswers = answerMapper.selectByExample(example);
-        List<SubjectAnswerDTO> subjectAnswerDTOS = PojoUtils.copyListProperties(subjectAnswers,SubjectAnswerDTO::new);
-        return subjectAnswerDTOS;
+        return PojoUtils.copyListProperties(subjectAnswers,SubjectAnswerDTO::new);
 
     }
 
@@ -59,7 +61,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public List<SubjectAnswer> queryAnswerList(Long id) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("subjectId",id);
+        criteria.andEqualTo(SUBJECT,id);
         return answerMapper.selectByExample(example);
 
     }

@@ -1,13 +1,13 @@
 mapper:
   mappers:
     - tk.mybatis.mapper.common.Mapper
-  notEmpty: true
+  notEmpty: on
 mybatis:
   mapper-locations: classpath*:mapper/*.xml # mapper.xml文件所在位置
   #    config-location: classpath:config/mybatis_config.xml
   type-aliases-package: com.boss.bes.paper.entity*         #对应实体类的包名
   configuration:
-    map-underscore-to-camel-case: true  #配置驼峰命名转换 在进行sql查询和初始化实体时mybatis会为我们自动转化
+    map-underscore-to-camel-case: on  #配置驼峰命名转换 在进行sql查询和初始化实体时mybatis会为我们自动转化
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #mybatis 控制台打印sql
 server:
   port: 18004
@@ -33,9 +33,10 @@ spring:
   nacos-url:
     #    nacos-host: 39.97.106.243 123.57.156.184
     nacos-host: 123.57.156.184
+#    nacos-host: 39.97.106.243
     nacos-port: 8848
   security:-url:
-    host: localhost
+    host: 39.101.178.139
     port: 18006
 
 

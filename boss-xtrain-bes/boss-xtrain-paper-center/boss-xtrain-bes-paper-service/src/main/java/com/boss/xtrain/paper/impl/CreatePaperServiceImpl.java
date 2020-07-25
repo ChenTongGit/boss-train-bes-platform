@@ -1,13 +1,11 @@
 package com.boss.xtrain.paper.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.papaer.annotation.TryCatch;
-import com.boss.xtrain.papaer.utils.BasicConverter;
-import com.boss.xtrain.papaer.utils.BeanCopierUtil;
-import com.boss.xtrain.papaer.utils.SomeParamChange;
+import com.boss.xtrain.paper.annotation.TryCatch;
+import com.boss.xtrain.paper.utils.BasicConverter;
+import com.boss.xtrain.paper.utils.BeanCopierUtil;
 import com.boss.xtrain.paper.BaseServiceApi;
 import com.boss.xtrain.paper.BaseServiceTestApi;
 import com.boss.xtrain.paper.CreatePaperService;
@@ -25,7 +23,6 @@ import com.boss.xtrain.paper.vo.fastcomb.AnswerVO;
 import com.boss.xtrain.paper.vo.fastcomb.CombSubjectListVO;
 import com.boss.xtrain.paper.vo.paperdetail.PaperVO;
 import com.boss.xtrain.paper.vo.templatecomb.TemplateVO;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

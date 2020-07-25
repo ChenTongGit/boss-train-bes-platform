@@ -12,7 +12,7 @@ public class TreeUtil {
     }
 
     //获取顶层节点
-    public static List<CategoryTreeVO> getTreeList(Long topId, List<CategoryTreeVO> entityList){
+    public static List<CategoryTreeVO> getTreeList(String topId, List<CategoryTreeVO> entityList){
         //存储顶层的数据
         List<CategoryTreeVO> resultList = new ArrayList<>();
         Map<Object, CategoryTreeVO> treeMap = new HashMap<>();
@@ -21,7 +21,7 @@ public class TreeUtil {
             itemTree = entityList.get(i);
             //把所有的数据放到map当中，id为key
             treeMap.put(itemTree.getId(),itemTree);
-            if(topId == itemTree.getParentId() || itemTree.getParentId() == null) {
+            if(topId.equals(itemTree.getParentId())|| itemTree.getParentId() == null) {
                 //把顶层数据放到集合中
                 resultList.add(itemTree);
             }
@@ -37,9 +37,6 @@ public class TreeUtil {
                     data.setChildren(new ArrayList<>());
                 }
                 //把子节点 放到父节点children当中
-              //  resultList.add(itemTree);
-              //  data.setChildren(itemTree);
-
                 data.getChildren().add(itemTree);
                 //把放好的数据放回map当中
                 treeMap.put(itemTree.getParentId(), data);

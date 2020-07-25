@@ -14,13 +14,12 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@JsonIgnoreProperties(value = "{handler}")
 public class CategoryDTO extends BaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private Integer status;
     private String remark;
     private String name;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long parentId;
 }

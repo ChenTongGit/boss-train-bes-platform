@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author gxr
+ * @description 题目类别接口
+ * @date 2020/7/11
+ */
 @RequestMapping("/category")
 public interface CategoryApi {
 

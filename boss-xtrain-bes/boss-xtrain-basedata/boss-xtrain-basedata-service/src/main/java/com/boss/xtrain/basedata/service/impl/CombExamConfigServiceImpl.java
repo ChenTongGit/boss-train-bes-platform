@@ -3,31 +3,27 @@ package com.boss.xtrain.basedata.service.impl;
 import com.boss.xtrain.basedata.dao.*;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.*;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.*;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.google.gson.internal.$Gson$Preconditions;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-
-import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import tk.mybatis.mapper.entity.Example;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author guo xinrui
+ * @description 组卷service
+ * @date 2020/07/08
+ */
 @Service
-@Slf4j
 public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Resource
@@ -91,11 +87,11 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Override
     public void updateConfig(CombExamConfigUpdateDTO combExamConfigUpdateDTO) {
-        if (combExamConfigUpdateDTO.getDifficultyName() == "简单"){
+        if (combExamConfigUpdateDTO.getDifficultyName().equals("简单")){
             combExamConfigUpdateDTO.setDifficulty(1L);
-        }else if (combExamConfigUpdateDTO.getDifficultyName() == "中等"){
+        }else if (combExamConfigUpdateDTO.getDifficultyName().equals("中等")){
             combExamConfigUpdateDTO.setDifficulty(2L);
-        }else if (combExamConfigUpdateDTO.getDifficultyName() == "复杂"){
+        }else if (combExamConfigUpdateDTO.getDifficultyName().equals("复杂")){
             combExamConfigUpdateDTO.setDifficulty(3L);
         }
         CombExamConfig combExamConfig = new CombExamConfig();
@@ -134,17 +130,8 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     @Override
     public List<CombExamConfigDTO> queryConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
         List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfigTest(combExamConfigQueryDTO);
-        log.info("combExamConfigs.toString()"+combExamConfigs.toString());
         List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
 
-        Example example = new Example(Dictionary.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId",combExamConfigQueryDTO.getOrgId());
-        criteria.andEqualTo("category","题目难度");
-        List<DifficultDTO> difficultyVos = subjectDao.queryDifficult(example);
-        Map<String, String> difficultyMap = difficultyVos.stream().collect(Collectors.toMap(DifficultDTO::getValue, DifficultDTO::getName, (key1, key2) -> key2));
-
-        log.info(combExamConfigDtoList.toString());
         for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
             CombExamItemQueryDTO configItemQueryDTO = new CombExamItemQueryDTO();
             configItemQueryDTO.setId(combExamConfigDTO.getId());
@@ -153,15 +140,21 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
             combExamConfigDTO.setCombExamItems(combExamItemDTOS);
         }
 
-        if (!combExamConfigDtoList.isEmpty()){
-            List<Long> companyIds = new ArrayList<>();
-            List<Long> updateByIds = new ArrayList<>();
-            for (CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
-                if (combExamConfigDTO.getCompanyId() != null){
-                    companyIds.add(combExamConfigDTO.getCompanyId());
-                }
-                updateByIds.add(combExamConfigDTO.getUpdatedBy());
-            }
+        return combExamConfigDtoList;
+
+    }
+
+    @Override
+    public List<CombExamConfigDTO> queryExamConfig(CombExamConfigQueryDTO combExamConfigQueryDTO) {
+        List<CombExamConfig> combExamConfigs = combExamConfigDao.queryCombExamConfig(combExamConfigQueryDTO);
+        List<CombExamConfigDTO> combExamConfigDtoList = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
+
+        for(CombExamConfigDTO combExamConfigDTO : combExamConfigDtoList){
+            CombExamItemQueryDTO configItemQueryDTO = new CombExamItemQueryDTO();
+            configItemQueryDTO.setId(combExamConfigDTO.getId());
+            configItemQueryDTO.setOrgId(combExamConfigDTO.getOrganizationId());
+            List<CombExamItemDTO> combExamItemDTOS = combExamItemDao.queryItemById(configItemQueryDTO);
+            combExamConfigDTO.setCombExamItems(combExamItemDTOS);
         }
 
         return combExamConfigDtoList;
@@ -172,7 +165,6 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
     public List<CombExamItemDTO> queryItem(CombExamItemQueryDTO combExamItemQueryDTO) {
         List<CombExamItemDTO> configItemDtoList = combExamItemDao.queryItemById(combExamItemQueryDTO);
 
-        log.info(configItemDtoList.toString());
         int count = 0;
         Example example = new Example(Dictionary.class);
         Example.Criteria criteria = example.createCriteria();
@@ -183,31 +175,18 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
             combExamItemDTO.setDifficultyName(difficultyVOS.get(count).getValue());
             count++;
         }
-        int count1 = 0;
-        List<String> categories = new ArrayList<>();
+
         for (CombExamItemDTO combExamItemDTO : configItemDtoList){
             Example example1 = new Example(Category.class);
             Example.Criteria criteria1 = example1.createCriteria();
             criteria1.andEqualTo("id",combExamItemDTO.getCategoryId());
-            categories = categoryDao.queryCategoryNameById(example1);
-            combExamItemDTO.setCategoryName(categories.get(count1));
-            if (categories.size() > count1+1){
-                count1++;
-            }
-
+            Category category = categoryDao.queryCategoryById(combExamItemDTO.getId());
+            combExamItemDTO.setCategoryName(category.getName());
         }
 
-        int count2 = 0;
-        List<String> types = new ArrayList<>();
         for (CombExamItemDTO combExamItemDTO : configItemDtoList){
-            Example example2 = new Example(SubjectType.class);
-            Example.Criteria criteria2 = example2.createCriteria();
-            criteria2.andEqualTo("id",combExamItemDTO.getSubjectTypeId());
-            types = subjectTypeDao.queryTypeNameById(example2);
-            combExamItemDTO.setSubjectTypeName(types.get(count2));
-            if (types.size() > count2+1){
-                count2++;
-            }
+            SubjectType subjectType = subjectTypeDao.queryTypeById(combExamItemDTO.getId());
+            combExamItemDTO.setSubjectTypeName(subjectType.getName());
         }
         return configItemDtoList;
 

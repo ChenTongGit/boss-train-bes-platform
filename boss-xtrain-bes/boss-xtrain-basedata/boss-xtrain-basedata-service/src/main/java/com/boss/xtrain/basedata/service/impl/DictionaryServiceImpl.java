@@ -2,15 +2,12 @@ package com.boss.xtrain.basedata.service.impl;
 
 import com.boss.xtrain.basedata.dao.DictionaryDao;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
-import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryIdsDTO;
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryQueryDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
 import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.ServiceException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
-import com.boss.xtrain.common.util.MyStringUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +16,15 @@ import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import com.boss.xtrain.basedata.service.DictionaryService;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * @author guo xinrui
+ * @description 字典service
+ * @date 2020/07/08
+ */
 @Service
 @Slf4j
 public class DictionaryServiceImpl implements DictionaryService{
@@ -47,10 +47,13 @@ public class DictionaryServiceImpl implements DictionaryService{
     @Override
     public void insertDictionaryList(List<DictionaryDTO> dictionaryDTOS) {
         List<Dictionary> dictionaries = new ArrayList<>();
+
         for (DictionaryDTO dictionaryDTO : dictionaryDTOS){
             Dictionary dictionary = new Dictionary();
             PojoUtils.copyProperties(dictionaryDTO, dictionary);
             dictionary.setId(idWorker.nextId());
+            dictionary.setName(dictionaryDTO.getName());
+            dictionary.setCategory(dictionaryDTO.getCategory());
             dictionaries.add(dictionary);
         }
         dictionaryDao.insertDictionaryList(dictionaries);

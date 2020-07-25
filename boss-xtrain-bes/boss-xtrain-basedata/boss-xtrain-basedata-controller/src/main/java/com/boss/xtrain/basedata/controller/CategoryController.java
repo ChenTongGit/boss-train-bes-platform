@@ -10,20 +10,21 @@ import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
-import com.boss.xtrain.paper.dto.baseinfo.CombInfoQueryDTO;
-import com.boss.xtrain.paper.vo.baseinfo.SubjectCategoryVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author guo xinrui
+ * @description 题目类别controller
+ * @date 2020/07/08
+ */
 @RestController
 @Slf4j
 public class CategoryController extends BaseController implements CategoryApi {
@@ -38,6 +39,7 @@ public class CategoryController extends BaseController implements CategoryApi {
     public CommonResponse<CategoryVO> insertCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setParentId(Long.valueOf(categoryVO.getParentId()));
         PojoUtils.copyProperties(categoryVO,categoryDTO);
         categoryService.insertCategory(categoryDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),categoryVO);
@@ -73,7 +75,6 @@ public class CategoryController extends BaseController implements CategoryApi {
     @ResponseBody
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public List<CategoryVO> getCategoryList(@RequestBody CategoryQueryVO categoryQueryVo) {
-        log.info(categoryQueryVo.toString());
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
         CategoryQueryVO categoryQueryVO = new CategoryQueryVO();
         PojoUtils.copyProperties(categoryQueryVO,categoryQueryDTO);
@@ -111,19 +112,17 @@ public class CategoryController extends BaseController implements CategoryApi {
         CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
         PojoUtils.copyProperties(commonRequest.getBody(),categoryQueryDTO);
         List<CategoryTreeDTO> categoryTreeDTOList = categoryService.queryCategoryTree(categoryQueryDTO);
-        log.info(categoryTreeDTOList.toString());
         List<CategoryTreeVO> categoryTreeVOList = PojoUtils.copyListProperties(categoryTreeDTOList,CategoryTreeVO::new);
-        log.info(categoryTreeVOList.toString());
         for(CategoryTreeVO c : categoryTreeVOList){
             c.setLabel(c.getName());
             c.setValue(c.getId());
         }
-        List<CategoryTreeVO> data = TreeUtil.getTreeList(0L,categoryTreeVOList);
-        log.info(data.toString());
+        List<CategoryTreeVO> data = TreeUtil.getTreeList("0",categoryTreeVOList);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),data);
     }
 
     @Override
+    @ApiLog(msg = "查询题目类别")
     @ResponseBody
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('category_admin')")
     public CommonResponse<CommonPage<CategoryVO>> getCategory(@RequestBody CommonRequest<CommonPageRequest<CategoryIdsVO>> commonRequest) {
@@ -131,7 +130,6 @@ public class CategoryController extends BaseController implements CategoryApi {
         PojoUtils.copyProperties(commonRequest.getBody(),categoryIdListDTO);
         Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
         List<CategoryDTO> categoryDtoList = categoryService.queryByIdList(categoryIdListDTO);
-        log.info(categoryDtoList.toString());
         List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDtoList,CategoryVO::new);
         return buildPageResponse(objects,categoryVOS);
 

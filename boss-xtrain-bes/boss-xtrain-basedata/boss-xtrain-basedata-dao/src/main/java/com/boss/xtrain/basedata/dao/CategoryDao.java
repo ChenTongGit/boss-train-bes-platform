@@ -16,19 +16,51 @@ import java.util.List;
  */
 public interface CategoryDao extends CommonQuery<CategoryDTO,Example> {
 
+    /**
+     * 查询所有的题目类别
+     * @return
+     */
     List<CategoryDTO> queryCategory();
 
+    /**
+     * 插入题目类别
+     * @param category
+     * @return
+     */
     int insertCategory(Category category);
 
+    /**
+     * 删除题目类别
+     * @param example
+     * @return
+     */
     int deleteCategory(Example example);
 
+    /**
+     * 更新题目类别
+     * @param category
+     * @return
+     */
     int updateCategory(Category category);
 
+    /**
+     * 根据id查询题目类别
+     * @param id
+     * @return
+     */
     Category queryCategoryById(Long id);
 
-    List<String> queryCategoryNameById(Example example);
-
+    /**
+     * 检查名称是否重复
+     * @param example
+     * @return
+     */
     int checkRepeatName(Example example);
 
+    /**
+     * 获取题目类别树
+     * @param example
+     * @return
+     */
     List<CategoryTreeDTO> getCategoryTree(Example example);
 }

@@ -2,7 +2,6 @@ package com.boss.xtrain.basedata.dao.impl;
 
 import com.boss.xtrain.basedata.dao.CombExamItemDao;
 import com.boss.xtrain.basedata.mapper.CombExamItemMapper;
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDeleteDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemQueryDTO;
@@ -12,10 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 组卷详情dao
+ * @date 2020/07/08
+ */
 @Repository
 @Slf4j
 public class CombExamItemDaoImpl implements CombExamItemDao {

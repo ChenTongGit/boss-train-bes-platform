@@ -2,17 +2,18 @@ package com.boss.xtrain.basedata.dao.impl;
 
 import com.boss.xtrain.basedata.dao.CombExamConfigDao;
 import com.boss.xtrain.basedata.mapper.CombExamConfigMapper;
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamConfigQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.CombExamConfig;
-import com.boss.xtrain.common.util.PojoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author guo xinrui
+ * @description 组卷dao
+ * @date 2020/07/08
+ */
 @Repository
 public class CombExamConfigDaoImpl implements CombExamConfigDao {
 
@@ -21,6 +22,7 @@ public class CombExamConfigDaoImpl implements CombExamConfigDao {
 
     @Override
     public int insertCombExamConfig(CombExamConfig combExamConfig) {
+        combExamConfig.setStatus(1);
         return combExamConfigMapper.insert(combExamConfig);
     }
 
@@ -40,13 +42,6 @@ public class CombExamConfigDaoImpl implements CombExamConfigDao {
     @Override
     public void updateCombExamConfig(CombExamConfig combExamConfig) {
         combExamConfigMapper.updateCombConfig(combExamConfig);
-    }
-
-    @Override
-    public List<CombExamConfigDTO> getAll(Example example) {
-        List<CombExamConfig> combExamConfigs = combExamConfigMapper.selectByExample(example);
-        List<CombExamConfigDTO> combExamConfigDTOS = PojoUtils.copyListProperties(combExamConfigs,CombExamConfigDTO::new);
-        return combExamConfigDTOS;
     }
 
     @Override
