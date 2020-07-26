@@ -10,6 +10,7 @@ import com.boss.xtrain.common.core.exception.error.SystemError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
 import com.boss.xtrain.common.log.annotation.ApiLog;
+import com.boss.xtrain.common.util.JwtUtils;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +19,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.alibaba.fastjson.JSON.parseObject;
 
 
 /**
@@ -111,6 +119,7 @@ public class DictionaryController extends BaseController implements DictionaryAp
     @Override
     @ApiLog(msg = "分页查询字典")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('dictionary_admin')")
     public CommonResponse<CommonPage<DictionaryVO>> queryDictionaryPage(@RequestBody CommonRequest<CommonPageRequest<DictionaryQueryVO>> commonRequest) {
         DictionaryQueryVO dictionaryQueryVO = commonRequest.getBody().getQuery();
         DictionaryQueryDTO dictionaryQueryDTO= new DictionaryQueryDTO();
@@ -125,8 +134,20 @@ public class DictionaryController extends BaseController implements DictionaryAp
     @ApiLog(msg = "根据orgId获取category")
     @ResponseBody
     public CommonResponse<List<DifficultQueryDTO>> queryCategory() {
+        //token获得该管理员所负责的org
+        RequestAttributes attribute = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attribute;
+        HttpServletRequest servletRequest = servletRequestAttributes.getRequest();
+        String token = servletRequest.getHeader("Authorization");
+        String parseToken = token.split(" ")[1];
+        String json = JwtUtils.getParseToken(parseToken);
+        Long orgId = ((Number) parseObject(json).get("organizationId")).longValue();
+        log.info(orgId.toString());
         DifficultQueryDTO difficultQueryDTO = new DifficultQueryDTO();
-        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(), dictionaryService.queryCategory(difficultQueryDTO));
+        difficultQueryDTO.setOrgId(orgId);
+        List<DifficultQueryDTO> difficultQueryDTOS = PojoUtils.copyListProperties(dictionaryService.queryCategory(difficultQueryDTO),DifficultQueryDTO::new);
+        log.info(difficultQueryDTOS.toString());
+        return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),difficultQueryDTOS);
     }
 
 

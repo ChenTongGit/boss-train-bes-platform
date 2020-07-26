@@ -4,13 +4,11 @@ import com.boss.xtrain.common.core.exception.handler.AuthExceptionEntryPoint;
 import com.boss.xtrain.common.core.exception.handler.CustomAccessDeniedHandler;
 import com.boss.xtrain.feign.interceptor.FeignClientInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -34,7 +32,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    private String tokenEndpointUrl = "http://localhost:18006/oauth/check_token";
+    private String tokenEndpointUrl = "http://123.57.156.184:18006/oauth/check_token";
     @Autowired
     private AuthExceptionEntryPoint authExceptionEntryPoint;
     @Autowired

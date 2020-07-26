@@ -12,6 +12,8 @@ import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.basedata.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,11 +30,14 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private IdWorker idWorker;
 
+    private final static String ORG_ID = "organizationId";
+
     @Override
     public int insertCategory(CategoryDTO categoryDTO) {
         int result = checkRepeatName(categoryDTO);
         Category category = new Category();
         PojoUtils.copyProperties(categoryDTO, category);
+        category.setUpdatedTime(new Date());
         category.setId(idWorker.nextId());
         if(category.getParentId() != null){
             categoryDao.insertCategory(category);
@@ -50,15 +55,20 @@ public class CategoryServiceImpl implements CategoryService{
     @Transactional(rollbackFor = Exception.class)
     public int deleteCategory(CategoryDeleteIdsDTO categoryDeleteIds) {
         List<CategoryDeleteDTO> categoryDeleteDTOS = categoryDeleteIds.getIds();
+        int count = 0;
         for (CategoryDeleteDTO categoryDeleteDTO : categoryDeleteDTOS) {
-
-            Example example = new Example(Category.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("id", categoryDeleteDTO.getId());
-            criteria.andEqualTo("version", categoryDeleteDTO.getVersion());
-            categoryDao.deleteCategory(example);
+         try {
+             Example example = new Example(Category.class);
+             Example.Criteria criteria = example.createCriteria();
+             criteria.andEqualTo("id", categoryDeleteDTO.getId());
+             criteria.andEqualTo("version", categoryDeleteDTO.getVersion());
+             categoryDao.deleteCategory(example);
+             count++;
+         }catch (Exception e){
+             throw new BusinessException(BusinessError.BASE_DATA_CATEGORY_INUSE_ERROR);
+         }
         }
-        return 0;
+        return count;
     }
 
     @Override
@@ -70,6 +80,7 @@ public class CategoryServiceImpl implements CategoryService{
     public void updateCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         PojoUtils.copyProperties(categoryDTO,category);
+        category.setUpdatedTime(new Date());
         categoryDao.updateCategory(category);
     }
 
@@ -78,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService{
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
         example.orderBy("updatedTime").desc();
-        criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
+        criteria.andEqualTo(ORG_ID, categoryQueryDTO.getOrgId());
         criteria.andLike("name", "%"+categoryQueryDTO.getName()+"%");
         return categoryDao.queryByCondition(example);
     }
@@ -89,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService{
         example.orderBy("updatedTime").desc();
         Example.Criteria criteria = example.createCriteria();
         criteria.andIn("id",categoryIdsDTO.getIds());
-        criteria.andEqualTo("organizationId",categoryIdsDTO.getOrgId());
+        criteria.andEqualTo(ORG_ID,categoryIdsDTO.getOrgId());
         return categoryDao.queryByCondition(example);
     }
 
@@ -97,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService{
     public List<CategoryDTO> queryCategory(CategoryQueryDTO categoryQueryDTO) {
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
+        criteria.andEqualTo(ORG_ID, categoryQueryDTO.getOrgId());
         criteria.andLike("name", "%"+categoryQueryDTO.getName()+"%");
 
         return categoryDao.queryByCondition(example);
@@ -107,7 +118,7 @@ public class CategoryServiceImpl implements CategoryService{
     public List<CategoryTreeDTO> queryCategoryTree(CategoryQueryDTO categoryQueryDTO) {
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId", categoryQueryDTO.getOrgId());
+        criteria.andEqualTo(ORG_ID, categoryQueryDTO.getOrgId());
         return categoryDao.getCategoryTree(example);
     }
 
@@ -116,7 +127,7 @@ public class CategoryServiceImpl implements CategoryService{
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
         if (categoryDTO.getOrganizationId() != null){
-            criteria.andEqualTo("organizationId", categoryDTO.getOrganizationId());
+            criteria.andEqualTo(ORG_ID, categoryDTO.getOrganizationId());
         }
         criteria.andEqualTo("name", categoryDTO.getName());
         int result = categoryDao.checkRepeatName(example);

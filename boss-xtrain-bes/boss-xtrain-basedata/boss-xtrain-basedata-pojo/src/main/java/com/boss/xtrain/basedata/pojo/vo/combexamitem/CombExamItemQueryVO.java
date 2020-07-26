@@ -7,6 +7,7 @@ import lombok.Data;
 public class CombExamItemQueryVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long orgId;
     private String name;
 }

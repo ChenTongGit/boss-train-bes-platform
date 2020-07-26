@@ -4,9 +4,6 @@ import java.io.Serializable;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import tk.mybatis.mapper.annotation.KeySql;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
 

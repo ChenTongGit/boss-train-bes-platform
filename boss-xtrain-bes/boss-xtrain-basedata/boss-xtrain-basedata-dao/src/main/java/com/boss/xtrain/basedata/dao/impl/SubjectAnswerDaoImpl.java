@@ -21,7 +21,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     @Autowired
     private SubjectAnswerMapper answerMapper;
 
-    private String SUBJECT = "subjectId";
+    private final static String SUBJECT_ID = "subjectId";
 
     @Override
     public int insertAnswer(List<SubjectAnswer> subjectAnswers) {
@@ -32,7 +32,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public int deleteAnswer(Long subjectId) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(SUBJECT,subjectId);
+        criteria.andEqualTo(SUBJECT_ID,subjectId);
         return answerMapper.deleteByExample(example);
 
     }
@@ -41,7 +41,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public void deleteAnswerList(List<Long> idList) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIn(SUBJECT,idList);
+        criteria.andIn(SUBJECT_ID,idList);
         answerMapper.deleteByExample(example);
     }
 
@@ -61,7 +61,7 @@ public class SubjectAnswerDaoImpl implements SubjectAnswerDao {
     public List<SubjectAnswer> queryAnswerList(Long id) {
         Example example = new Example(SubjectAnswer.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(SUBJECT,id);
+        criteria.andEqualTo(SUBJECT_ID,id);
         return answerMapper.selectByExample(example);
 
     }

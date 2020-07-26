@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class CombSubjectListVO extends BaseVO {
+
     /**
      * 题目
      */
@@ -35,7 +36,7 @@ public class CombSubjectListVO extends BaseVO {
     /**
      * 答案集合
      */
-    private List<SubjectAnswerVO> answerList;
+    private transient List<SubjectAnswerVO> answerList;
     /**
      * 题目类别
      */

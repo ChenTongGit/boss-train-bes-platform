@@ -3,7 +3,7 @@ package com.boss.xtrain.basedata.pojo.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import com.boss.xtrain.common.core.pojo.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,18 +30,21 @@ public class CombExamItem implements Serializable {
      * 题型ID
      */
     @Column(name = "t_s_id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long subjectTypeId;
 
     /**
      * 题目类别ID
      */
     @Column(name = "t_c_id2")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long categoryId;
 
     /**
      * 组卷ID
      */
     @Column(name = "t_c_id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long combExamConfigId;
 
     /**
@@ -54,7 +57,7 @@ public class CombExamItem implements Serializable {
      * 难度
      */
     @Column(name = "difficult")
-    private Long difficulty;
+    private Long difficult;
 
     /**
      * 分值

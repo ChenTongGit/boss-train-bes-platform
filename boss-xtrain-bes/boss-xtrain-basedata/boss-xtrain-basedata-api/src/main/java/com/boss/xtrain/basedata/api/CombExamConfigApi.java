@@ -13,7 +13,6 @@ import com.boss.xtrain.common.core.http.CommonPageRequest;
 import com.boss.xtrain.common.core.http.CommonRequest;
 import com.boss.xtrain.common.core.http.CommonResponse;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 

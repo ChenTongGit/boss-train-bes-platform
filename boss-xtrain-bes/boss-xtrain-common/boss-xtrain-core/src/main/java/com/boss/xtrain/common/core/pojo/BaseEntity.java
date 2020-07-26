@@ -6,8 +6,6 @@
  */  
 package com.boss.xtrain.common.core.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import tk.mybatis.mapper.annotation.Version;
 
 import javax.persistence.Column;

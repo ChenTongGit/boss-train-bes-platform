@@ -2,7 +2,6 @@ package com.boss.xtrain.basedata.pojo.dto.subject;
 
 import com.boss.xtrain.basedata.pojo.entity.SubjectAnswer;
 import com.boss.xtrain.common.core.pojo.BaseDTO;
-import com.boss.xtrain.common.core.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

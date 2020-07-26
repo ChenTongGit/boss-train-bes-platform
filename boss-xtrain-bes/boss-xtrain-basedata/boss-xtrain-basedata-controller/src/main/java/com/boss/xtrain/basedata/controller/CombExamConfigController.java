@@ -2,6 +2,8 @@ package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.basedata.api.CombExamConfigApi;
 import com.boss.xtrain.basedata.pojo.dto.paper.CombConfigQueryDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeDTO;
+import com.boss.xtrain.basedata.pojo.dto.subjecttype.SubjectTypeQueryDTO;
 import com.boss.xtrain.basedata.pojo.vo.paper.CombConfigVO;
 import com.boss.xtrain.basedata.pojo.dto.paper.ConfigItemListDTO;
 import com.boss.xtrain.basedata.pojo.dto.combexamconfig.*;
@@ -13,6 +15,7 @@ import com.boss.xtrain.basedata.pojo.vo.combexamitem.CombExamItemQueryVO;
 import com.boss.xtrain.basedata.pojo.vo.combexamitem.CombExamItemVO;
 import com.boss.xtrain.basedata.service.CombExamConfigService;
 import com.boss.xtrain.basedata.service.SubjectService;
+import com.boss.xtrain.basedata.service.SubjectTypeService;
 import com.boss.xtrain.common.core.exception.error.SystemError;
 import com.boss.xtrain.common.core.http.*;
 import com.boss.xtrain.common.core.web.controller.BaseController;
@@ -20,6 +23,7 @@ import com.boss.xtrain.common.log.annotation.ApiLog;
 import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +40,7 @@ import java.util.List;
  * @date 2020/07/08
  */
 @RestController
+@Slf4j
 public class CombExamConfigController extends BaseController implements CombExamConfigApi {
 
     @Autowired
@@ -43,6 +48,9 @@ public class CombExamConfigController extends BaseController implements CombExam
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private SubjectTypeService subjectTypeService;
 
 
     @Override
@@ -65,9 +73,12 @@ public class CombExamConfigController extends BaseController implements CombExam
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<List<CombExamItemVO>> queryExamItemById(@RequestBody CommonRequest<CombExamItemQueryVO> commonRequest) {
         CombExamItemQueryDTO configItemQueryDto = new CombExamItemQueryDTO();
-        PojoUtils.copyProperties(commonRequest.getBody(),configItemQueryDto);
+        CombExamItemQueryVO combExamItemQueryVO = commonRequest.getBody();
+        PojoUtils.copyProperties(combExamItemQueryVO,configItemQueryDto);
         List<CombExamItemDTO> configItemDtoList = combExamConfigService.queryItem(configItemQueryDto);
+        log.info(configItemQueryDto.toString());
         List<CombExamItemVO> configItemVos = PojoUtils.copyListProperties(configItemDtoList,CombExamItemVO::new);
+        log.info(configItemVos.toString());
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),configItemVos);
 
     }
@@ -118,7 +129,17 @@ public class CombExamConfigController extends BaseController implements CombExam
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<CombExamConfigUpdateVO> updateExamConfig(@RequestBody CommonRequest<CombExamConfigUpdateVO> commonRequest) {
         CombExamConfigUpdateVO combExamConfigUpdateVO = commonRequest.getBody();
+        log.info(commonRequest.getBody().getItemList().toString());
         CombExamConfigUpdateDTO combExamConfigUpdateDTO = new CombExamConfigUpdateDTO();
+        List<CombExamItemVO> combExamItemVOS = combExamConfigUpdateVO.getItemList();
+        for (CombExamItemVO combExamItemVO : combExamItemVOS){
+            if (!combExamItemVO.getSubjectTypeName().equals("") || combExamItemVO.getSubjectTypeName() != null){
+                SubjectTypeQueryDTO subjectTypeQueryDTO = new SubjectTypeQueryDTO();
+                subjectTypeQueryDTO.setName(combExamItemVO.getSubjectTypeId());
+                List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.querySubjectType(subjectTypeQueryDTO);
+                combExamItemVO.setSubjectTypeId(String.valueOf(subjectTypeDTOS.get(0).getId()));
+            }
+        }
         PojoUtils.copyProperties(combExamConfigUpdateVO,combExamConfigUpdateDTO);
         List<CombExamItemDTO> combExamItemDTOS =  PojoUtils.copyListProperties(commonRequest.getBody().getItemList(),CombExamItemDTO::new);
         combExamConfigUpdateDTO.setItemList(combExamItemDTOS);
@@ -144,7 +165,15 @@ public class CombExamConfigController extends BaseController implements CombExam
     @PreAuthorize("hasAuthority('ROLE_admin') or hasAuthority('comb_exam_admin')")
     public CommonResponse<Integer> querySubjectCount(@RequestBody CommonRequest<CombExamItemVO> commonRequest) {
         CombExamItemDTO configItemDto = new CombExamItemDTO();
-        PojoUtils.copyProperties(commonRequest.getBody(),configItemDto);
+        configItemDto.setId(commonRequest.getBody().getId());
+        configItemDto.setCategoryId(Long.valueOf(commonRequest.getBody().getCategoryId()));
+        configItemDto.setCategoryName(commonRequest.getBody().getCategoryName());
+        configItemDto.setDifficulty(commonRequest.getBody().getDifficulty());
+        configItemDto.setDifficultyName(commonRequest.getBody().getDifficultyName());
+        SubjectTypeQueryDTO subjectTypeQueryDTO = new SubjectTypeQueryDTO();
+        subjectTypeQueryDTO.setName(commonRequest.getBody().getSubjectTypeId());
+        List<SubjectTypeDTO> subjectTypeDTOS = subjectTypeService.querySubjectType(subjectTypeQueryDTO);
+        configItemDto.setSubjectTypeId(subjectTypeDTOS.get(0).getId());
         Integer i = subjectService.querySubjectCount(configItemDto);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),i);
 

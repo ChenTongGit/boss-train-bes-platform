@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,9 +39,11 @@ public class DictionaryServiceImpl implements DictionaryService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insertDictionary(DictionaryDTO dictionaryDTO) {
+        checkRepeatName(dictionaryDTO);
         dictionaryDTO.setId(idWorker.nextId());
         Dictionary dictionary = new Dictionary();
         PojoUtils.copyProperties(dictionaryDTO, dictionary);
+        dictionary.setUpdatedTime(new Date());
         return dictionaryDao.insertDictionary(dictionary);
     }
 
@@ -51,6 +54,7 @@ public class DictionaryServiceImpl implements DictionaryService{
         for (DictionaryDTO dictionaryDTO : dictionaryDTOS){
             Dictionary dictionary = new Dictionary();
             PojoUtils.copyProperties(dictionaryDTO, dictionary);
+            dictionary.setUpdatedTime(new Date());
             dictionary.setId(idWorker.nextId());
             dictionary.setName(dictionaryDTO.getName());
             dictionary.setCategory(dictionaryDTO.getCategory());
@@ -106,6 +110,7 @@ public class DictionaryServiceImpl implements DictionaryService{
         }
         Dictionary dictionary = new Dictionary();
         PojoUtils.copyProperties(dictionaryDTO,dictionary);
+        dictionary.setUpdatedTime(new Date());
         if(dictionaryDao.updateDictionary(dictionary) != 1){
             throw new BusinessException(BusinessError.BASE_DATA_DICTIONARY_UPDATE_ERROR);
         }
@@ -120,9 +125,15 @@ public class DictionaryServiceImpl implements DictionaryService{
     @Override
     public List<DictionaryDTO> queryDictionary(DictionaryQueryDTO dictionaryQueryDTO) {
         Example example = new Example(Dictionary.class);
+        example.orderBy("updatedTime").desc();
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("name",dictionaryQueryDTO.getName());
-        criteria.andEqualTo("category",dictionaryQueryDTO.getCategory());
+        if (!dictionaryQueryDTO.getName().equals(""))
+        {
+            criteria.andLike("name","%"+dictionaryQueryDTO.getName()+"%");
+        }
+        if (!dictionaryQueryDTO.getCategory().equals("")){
+            criteria.andLike("category","%"+dictionaryQueryDTO.getCategory()+"%");
+        }
         log.info(dictionaryDao.queryDictionary(example).toString());
         return dictionaryDao.queryDictionary(example);
     }
@@ -146,10 +157,35 @@ public class DictionaryServiceImpl implements DictionaryService{
         Example example = new Example(Dictionary.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizationId",difficultQueryDTO.getOrgId());
-        return dictionaryDao.queryCategory(example);
+        List<DifficultQueryDTO> difficultQueryDTOS = PojoUtils.copyListProperties(dictionaryDao.queryDictionary(example),DifficultQueryDTO::new);
+        for (DifficultQueryDTO difficultQueryDTO1 : difficultQueryDTOS){
+            difficultQueryDTO1.setOrgId(difficultQueryDTO.getOrgId());
+        }
+        log.info(difficultQueryDTOS.toString());
+        return difficultQueryDTOS;
+    }
+
+    @Override
+    public void checkRepeatName(DictionaryDTO dictionaryDTO) {
+        Example example = new Example(Dictionary.class);
+        Example.Criteria criteria = example.createCriteria();
+        int result = 0;
+
+        criteria.andEqualTo("category",dictionaryDTO.getCategory());
+        List<DictionaryDTO> dictionaryDTOS  = dictionaryDao.queryDictionary(example);
+        for (DictionaryDTO dictionaryDTO1 : dictionaryDTOS){
+            criteria.andEqualTo("name",dictionaryDTO1.getName());
+            result = dictionaryDao.checkRepeatName(example);
+        }
+
+        if(result != 0){
+            throw new BusinessException(BusinessError.BASE_DATA_SUBJECT_TYPE_REPEAT_ERROR);
+        }
+
     }
 
 
+    @Override
     public boolean existKey(Long id){
         return dictionaryDao.existId(id);
     }

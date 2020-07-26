@@ -8,6 +8,7 @@ import com.boss.xtrain.common.core.exception.BusinessException;
 import com.boss.xtrain.common.core.exception.error.BusinessError;
 import com.boss.xtrain.common.util.IdWorker;
 import com.boss.xtrain.common.util.PojoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @date 2020/07/08
  */
 @Service
+@Slf4j
 public class CombExamConfigServiceImpl implements CombExamConfigService{
 
     @Resource
@@ -49,6 +51,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
         checkRepeatName(combExamConfigDTO);
         CombExamConfig combExamConfig = new CombExamConfig();
         PojoUtils.copyProperties(combExamConfigDTO,combExamConfig);
+        combExamConfig.setUpdatedTime(new Date());
         combExamConfig.setId(idWorker.nextId());
         combExamConfigDao.insertCombExamConfig(combExamConfig);
 
@@ -96,6 +99,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
         }
         CombExamConfig combExamConfig = new CombExamConfig();
         PojoUtils.copyProperties(combExamConfigUpdateDTO,combExamConfig);
+        combExamConfig.setUpdatedTime(new Date());
         combExamConfigDao.updateCombExamConfig(combExamConfig);
 
         List<Long> deleteItemIds = combExamConfigUpdateDTO.getDeleteItemIds();
@@ -111,6 +115,7 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
                 if(c.getId() ==  null){
                     c.setId(idWorker.nextId());
                     c.setCombExamConfigId(combExamConfigUpdateDTO.getId());
+                    c.setDifficult(combExamConfigUpdateDTO.getDifficulty());
                     addList.add(c);
                 }else{
                     updateList.add(c);
@@ -138,6 +143,15 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
             configItemQueryDTO.setOrgId(combExamConfigDTO.getOrganizationId());
             List<CombExamItemDTO> combExamItemDTOS = combExamItemDao.queryItemById(configItemQueryDTO);
             combExamConfigDTO.setCombExamItems(combExamItemDTOS);
+            if (combExamItemDTOS.get(0).getDifficulty() == 1L){
+                combExamItemDTOS.get(0).setDifficultyName("简单");
+            }else if (combExamItemDTOS.get(0).getDifficulty() == 2L){
+                combExamItemDTOS.get(0).setDifficultyName("中等");
+            }else if (combExamItemDTOS.get(0).getDifficulty() == 3L){
+            combExamItemDTOS.get(0).setDifficultyName("复杂");
+            }
+            combExamConfigDTO.setDifficultyName(combExamItemDTOS.get(0).getDifficultyName());
+            combExamConfigDTO.setDifficulty(combExamItemDTOS.get(0).getDifficulty());
         }
 
         return combExamConfigDtoList;
@@ -173,21 +187,18 @@ public class CombExamConfigServiceImpl implements CombExamConfigService{
         List<DifficultDTO> difficultyVOS = subjectDao.queryDifficult(example);
         for(CombExamItemDTO combExamItemDTO : configItemDtoList){
             combExamItemDTO.setDifficultyName(difficultyVOS.get(count).getValue());
-            count++;
         }
 
         for (CombExamItemDTO combExamItemDTO : configItemDtoList){
-            Example example1 = new Example(Category.class);
-            Example.Criteria criteria1 = example1.createCriteria();
-            criteria1.andEqualTo("id",combExamItemDTO.getCategoryId());
-            Category category = categoryDao.queryCategoryById(combExamItemDTO.getId());
+            Category category = categoryDao.queryCategoryById(combExamItemDTO.getCategoryId());
             combExamItemDTO.setCategoryName(category.getName());
         }
 
         for (CombExamItemDTO combExamItemDTO : configItemDtoList){
-            SubjectType subjectType = subjectTypeDao.queryTypeById(combExamItemDTO.getId());
+            SubjectType subjectType = subjectTypeDao.queryTypeById(combExamItemDTO.getSubjectTypeId());
             combExamItemDTO.setSubjectTypeName(subjectType.getName());
         }
+        log.info(configItemDtoList.toString());
         return configItemDtoList;
 
     }

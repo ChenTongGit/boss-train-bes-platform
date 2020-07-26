@@ -1,4 +1,4 @@
-package com.boss.xtrain.basedata;
+package com.boss.xtrain.basedata.controller;
 
 import com.boss.xtrain.common.core.constant.CommonConstant;
 import org.springframework.boot.SpringApplication;

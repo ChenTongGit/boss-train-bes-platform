@@ -21,14 +21,10 @@ import com.boss.xtrain.common.util.PojoUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -135,6 +131,7 @@ public class SubjectController extends BaseController implements SubjectApi {
         List<SubjectAnswerDTO> subjectAnswerDTOList = subjectService.querySubjectOtherInfo(answerQueryDTO);
         List<SubjectAnswerVO> subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOS,SubjectAnswerVO::new);
         subjectAnswerVOS = PojoUtils.copyListProperties(subjectAnswerDTOList,SubjectAnswerVO::new);
+        log.info(subjectAnswerVOS.toString());
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),subjectAnswerVOS);
     }
 

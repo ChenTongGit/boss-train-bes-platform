@@ -6,10 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
-import java.util.Date;
-
 /**
  * @author gxr
  * @description 题目类别vo

@@ -72,4 +72,18 @@ public interface DictionaryService{
      */
     List<DifficultQueryDTO> queryCategory(DifficultQueryDTO difficultQueryDTO);
 
+    /**
+     * 检查名称重复
+     * @param id
+     * @return
+     */
+    boolean existKey(Long id);
+
+    /**
+     * 检查名称重复
+     * @param dictionaryDTO
+     */
+    void checkRepeatName(DictionaryDTO dictionaryDTO);
+
+
 }

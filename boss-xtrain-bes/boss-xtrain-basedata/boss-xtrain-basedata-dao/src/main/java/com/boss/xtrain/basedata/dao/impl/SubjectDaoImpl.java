@@ -72,6 +72,17 @@ public class SubjectDaoImpl implements SubjectDao {
     public List<SubjectDTO> queryAll() {
         List<Subject> subjects = subjectMapper.selectAll();
         List<SubjectDTO> subjectDTOS = PojoUtils.copyListProperties(subjects,SubjectDTO::new);
+        int count = 0;
+        for (Subject subject : subjects){
+            Category category = categoryMapper.selectByPrimaryKey(subject.getCategoryId());
+            SubjectType subjectType = subjectTypeMapper.selectByPrimaryKey(subject.getSubjectTypeId());
+
+            subjectDTOS.get(count).setSubjectTypeName(subjectType.getName());
+            subjectDTOS.get(count).setCategoryName(category.getName());
+
+            count++;
+
+        }
         log.info(subjectDTOS.toString());
         return subjectDTOS;
     }

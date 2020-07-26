@@ -13,9 +13,9 @@ public class CombExamItemVO extends BaseVO {
     private Integer num;
     private Long difficulty;
     private BigDecimal score;
-    private Long subjectTypeId;
-    private Long categoryId;
-    private Long combExamConfigId;
+    private String subjectTypeId;
+    private String categoryId;
+    private String combExamConfigId;
     private String subjectTypeName;
     private String categoryName;
     private String combExamConfigName;

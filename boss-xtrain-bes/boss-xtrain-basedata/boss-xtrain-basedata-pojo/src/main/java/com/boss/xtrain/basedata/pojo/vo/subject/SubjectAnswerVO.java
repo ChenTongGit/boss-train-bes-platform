@@ -3,13 +3,17 @@ package com.boss.xtrain.basedata.pojo.vo.subject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author gxr
  * @description 题目答案VO
  * @date 2020/7/6
  */
 @Data
-public class SubjectAnswerVO {
+public class SubjectAnswerVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     /**
      * 题目答案id
      */

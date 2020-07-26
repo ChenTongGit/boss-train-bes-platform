@@ -3,12 +3,8 @@ package com.boss.xtrain.basedata.pojo.entity;
 import com.boss.xtrain.common.core.pojo.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import tk.mybatis.mapper.annotation.KeySql;
-
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 
 /**

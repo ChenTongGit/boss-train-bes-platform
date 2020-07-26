@@ -1,11 +1,6 @@
 package com.boss.xtrain.basedata.mapper;
 
 import com.boss.xtrain.basedata.base.BaseMapper;
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectDeleteDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Subject;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

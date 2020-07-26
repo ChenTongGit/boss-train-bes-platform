@@ -1,8 +1,6 @@
 package com.boss.xtrain.basedata.pojo.dto.category;
 
-import com.boss.xtrain.basedata.pojo.vo.category.CategoryTreeVO;
 import com.boss.xtrain.common.core.pojo.TreeEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;

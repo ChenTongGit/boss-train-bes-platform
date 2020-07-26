@@ -1,7 +1,6 @@
 package com.boss.xtrain.basedata.dao;
 
 import com.boss.xtrain.basedata.pojo.dto.dictionary.DictionaryDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.DifficultQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Dictionary;
 import tk.mybatis.mapper.entity.Example;
 import java.util.List;
@@ -61,6 +60,14 @@ public interface DictionaryDao{
      */
     List<DictionaryDTO> queryDictionary(Example example);
 
+
+    /**
+     * 检查名称重复
+     * @param example
+     * @return
+     */
+    int checkRepeatName(Example example);
+
     /**
      * 字典是否存在
      * @param id
@@ -74,12 +81,5 @@ public interface DictionaryDao{
      * @return
      */
     List<DictionaryDTO> selectList(Example example);
-
-    /**
-     * 根据category查询
-     * @param example
-     * @return
-     */
-    List<DifficultQueryDTO> queryCategory(Example example);
 
 }

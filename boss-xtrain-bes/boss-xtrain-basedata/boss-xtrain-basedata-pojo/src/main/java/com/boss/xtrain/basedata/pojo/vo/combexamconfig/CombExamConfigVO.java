@@ -1,7 +1,5 @@
 package com.boss.xtrain.basedata.pojo.vo.combexamconfig;
 
-import com.boss.xtrain.basedata.pojo.dto.combexamconfig.CombExamItemDTO;
-import com.boss.xtrain.basedata.pojo.entity.CombExamItem;
 import com.boss.xtrain.basedata.pojo.vo.combexamitem.CombExamItemVO;
 import com.boss.xtrain.common.core.pojo.BaseVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -9,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)

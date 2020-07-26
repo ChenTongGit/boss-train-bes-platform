@@ -53,7 +53,7 @@
                 updated_time = #{updatedTime},
             </if>
             <if test="version != null" >
-                version = #{version},
+                version = #{version}+1,
             </if>
         </set>
         where id = #{id}

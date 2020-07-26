@@ -32,6 +32,8 @@ public class SubjectTypeServiceImpl implements SubjectTypeService{
     @Autowired
     private IdWorker idWorker;
 
+    private final static String ORG_ID = "organizationId";
+
     @Override
     public int insertSubjectType(SubjectTypeDTO subjectTypeDTO) {
         SubjectType subjectType = new SubjectType();
@@ -89,7 +91,7 @@ public class SubjectTypeServiceImpl implements SubjectTypeService{
         Example example = new Example(SubjectType.class);
         example.orderBy("updatedTime").desc();
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId",subjectTypeQueryDTO.getOrgId());
+        criteria.andEqualTo(ORG_ID,subjectTypeQueryDTO.getOrgId());
         criteria.andLike("name","%"+subjectTypeQueryDTO.getName()+"%");
         log.info(subjectTypeDao.queryByCondition(example).toString());
         return subjectTypeDao.queryByCondition(example);
@@ -106,7 +108,7 @@ public class SubjectTypeServiceImpl implements SubjectTypeService{
     public List<SubjectTypeDTO> querySubjectTypeById(Long orgId) {
         Example example = new Example(SubjectType.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId",orgId);
+        criteria.andEqualTo(ORG_ID,orgId);
         return subjectTypeDao.queryByCondition(example);
     }
 
@@ -115,7 +117,7 @@ public class SubjectTypeServiceImpl implements SubjectTypeService{
         Example example = new Example(SubjectType.class);
         Example.Criteria criteria = example.createCriteria();
         if(subjectTypeDTO.getOrganizationId()!= null){
-            criteria.andEqualTo("organizationId",subjectTypeDTO.getOrganizationId());
+            criteria.andEqualTo(ORG_ID,subjectTypeDTO.getOrganizationId());
         }
         criteria.andEqualTo("name",subjectTypeDTO.getName());
         int result = subjectTypeDao.checkRepeatName(example);

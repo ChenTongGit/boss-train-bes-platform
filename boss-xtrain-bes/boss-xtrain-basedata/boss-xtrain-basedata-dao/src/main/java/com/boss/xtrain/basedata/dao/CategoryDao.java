@@ -2,7 +2,6 @@ package com.boss.xtrain.basedata.dao;
 
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryDTO;
 import com.boss.xtrain.basedata.pojo.dto.category.CategoryTreeDTO;
-import com.boss.xtrain.basedata.pojo.dto.subject.SubjectQueryDTO;
 import com.boss.xtrain.basedata.pojo.entity.Category;
 import com.boss.xtrain.common.core.web.dao.CommonQuery;
 import tk.mybatis.mapper.entity.Example;

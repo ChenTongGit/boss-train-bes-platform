@@ -39,7 +39,12 @@ public class CategoryController extends BaseController implements CategoryApi {
     public CommonResponse<CategoryVO> insertCategory(@RequestBody CommonRequest<CategoryVO> commonRequest) {
         CategoryVO categoryVO = commonRequest.getBody();
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setParentId(Long.valueOf(categoryVO.getParentId()));
+        log.info(categoryVO.toString());
+        if (categoryVO.getParentId().equals("")){
+            categoryVO.setParentId(null);
+        }else {
+            categoryDTO.setParentId(Long.valueOf(categoryVO.getParentId()));
+        }
         PojoUtils.copyProperties(categoryVO,categoryDTO);
         categoryService.insertCategory(categoryDTO);
         return CommonResponseUtil.ok(SystemError.SUCCESS.getCode(),SystemError.SUCCESS.getMessage(),categoryVO);
@@ -89,19 +94,12 @@ public class CategoryController extends BaseController implements CategoryApi {
     @ResponseBody
     public CommonResponse<CommonPage<CategoryVO>> queryCategoryPage(@RequestBody CommonRequest<CommonPageRequest<CategoryQueryVO>> commonRequest) {
         CategoryQueryVO categoryQueryVO = commonRequest.getBody().getQuery();
-        if (categoryQueryVO.getName().isEmpty()){
-            Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(),commonRequest.getBody().getPageSize(),commonRequest.getBody().getOrderBy());
-            List<CategoryDTO> categoryDTOS  = categoryService.queryAll();
-            List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS,CategoryVO::new);
-            return buildPageResponse(objects,categoryVOS);
-        }else {
-            CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
-            PojoUtils.copyProperties(categoryQueryVO, categoryQueryDTO);
-            Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(), commonRequest.getBody().getPageSize(), commonRequest.getBody().getOrderBy());
-            List<CategoryDTO> categoryDTOS = categoryService.queryCategoryPage(categoryQueryDTO);
-            List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS, CategoryVO::new);
-            return buildPageResponse(objects, categoryVOS);
-        }
+        CategoryQueryDTO categoryQueryDTO = new CategoryQueryDTO();
+        PojoUtils.copyProperties(categoryQueryVO, categoryQueryDTO);
+        Page<Object> objects = this.doBeforePagination(commonRequest.getBody().getPageNum(), commonRequest.getBody().getPageSize(), commonRequest.getBody().getOrderBy());
+        List<CategoryDTO> categoryDTOS = categoryService.queryCategoryPage(categoryQueryDTO);
+        List<CategoryVO> categoryVOS = PojoUtils.copyListProperties(categoryDTOS, CategoryVO::new);
+        return buildPageResponse(objects, categoryVOS);
     }
 
     @Override

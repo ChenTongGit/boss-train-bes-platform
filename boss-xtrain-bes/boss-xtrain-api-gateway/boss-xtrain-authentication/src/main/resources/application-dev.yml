@@ -6,9 +6,9 @@ spring:
     # druid 数据源配置 根据自己的微服务数据库信息配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: bosstrain
-    password: Boss20Train@#$
-    url: jdbc:mysql://123.57.156.184:3306/db_sys_manager_center?useUnicode=true&serverTimezone=UTC&useSSL=false
+    username: root
+    password: root
+    url: jdbc:mysql://123.57.156.184:3306/test?useUnicode=true&serverTimezone=UTC&useSSL=false#db_sys_manager_center?useUnicode=true&serverTimezone=UTC&useSSL=false
   redis:
     database: 0
     # Redis服务器地址
@@ -16,7 +16,7 @@ spring:
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
-    password: bosstrain@14
+    password: bosstrain
     # 连接池最大连接数（使用负值表示没有限制）
     jedis:
       pool:
