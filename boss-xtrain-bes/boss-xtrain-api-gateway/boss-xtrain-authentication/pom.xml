@@ -89,7 +89,7 @@
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
 
-        <!-- druid mysql -->
+<!--        &lt;!&ndash; druid mysql &ndash;&gt;
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -99,12 +99,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.16</version>
         </dependency>
-        <!--tk.mybatis依赖-->
+        &lt;!&ndash;tk.mybatis依赖&ndash;&gt;
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.2</version>
-        </dependency>
+        </dependency>-->
 
         <!-- swagger -->
         <dependency>
@@ -198,29 +198,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <!-- mybatis逆向工程插件 -->
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <overwrite>true</overwrite>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.16</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>tk.mybatis</groupId>
-                        <artifactId>mapper</artifactId>
-                        <version>4.1.5</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

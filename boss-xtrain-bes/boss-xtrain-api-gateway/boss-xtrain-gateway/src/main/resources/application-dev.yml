@@ -1,8 +1,12 @@
+server:
+  port: 18005
 spring:
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-url.nacos-host}:${spring.nacos-url.nacos-port}
+        ip: ${spring.nacos-url.nacos-host}
+        port: ${server.port}
     gateway:
       routes:
         - id: boss-bes-authentication
